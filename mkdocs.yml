@@ -92,7 +92,7 @@ use_directory_urls: false
 
 # Customization
 extra_css:
-  - ../assets/css/style.css
+  - /voltscript-interface-designer/assets/css/style.css
 
 plugins:
   - awesome-pages
