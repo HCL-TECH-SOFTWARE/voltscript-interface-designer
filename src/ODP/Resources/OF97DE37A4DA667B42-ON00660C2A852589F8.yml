@@ -1,0 +1,26 @@
+---
+class: 1
+flags: 0x0100
+unid: OF97DE37A4DA667B42-ON00660C2A852589F8
+items:
+  - name: Form
+    type: text
+    data: Skeleton
+  - name: FormId
+    type: number
+    data: 34
+  - name: FormName
+    type: text
+    data: EVENT_ID_TAB
+  - name: TheCodeAbstract
+    type: text
+    data: "static LSUINT %3%_eventnameids [] = %4% #define  N_%2%_EVENTS  ((sizeof(%3%_eventnameids)) / (sizeo"
+  - name: TheCode
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: |
+      hf8tAAEAAApzdGF0aWMgTFNVSU5UICUzJV9ldmVudG5hbWVpZHMgW10gPSAAIIX/CgABAAAKewCF/wwA
+      AQAACiU0JQCF/wsAAQAACn07ACCF/wkAAQAACgAghf9PAAEAAAojZGVmaW5lICBOXyUyJV9FVkVOVFMg
+      ICgoc2l6ZW9mKCUzJV9ldmVudG5hbWVpZHMpKSAvIChzaXplb2YoTFNVSU5UKSkpACA=
+remaining: []

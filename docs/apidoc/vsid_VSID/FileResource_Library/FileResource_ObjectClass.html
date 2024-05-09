@@ -1,0 +1,198 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<!-- {{vsidgenerated}} -->
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Class: FileResource</title>
+	<meta name="date" content="2024-03-20">
+	<meta name="keywords" content="GetFileItem()"><meta name="keywords" content="HasItem()"><meta name="keywords" content="Save()"><meta name="keywords" content="DOMElement()"><meta name="keywords" content="DOMParser()"><meta name="keywords" content="MimeCharSet()"><meta name="keywords" content="Delete()"><meta name="keywords" content="DeleteItem()"><meta name="keywords" content="New()"><meta name="keywords" content="ReadFileData()"><meta name="keywords" content="RegisterFileItem()"><meta name="keywords" content="UpdateFileData()"><meta name="keywords" content="Log()"><meta name="keywords" content="m_db()"><meta name="keywords" content="m_domp()"><meta name="keywords" content="m_elElRoot()"><meta name="keywords" content="m_elFD()"><meta name="keywords" content="m_fileItem()"><meta name="keywords" content="m_fItems()"><meta name="keywords" content="m_iMode()"><meta name="keywords" content="VSID.FileResource.FileResource Class">
+	<link rel="stylesheet" type="text/css" href="..\..\resources/vsid.css" title="balistyle">
+	<script type="text/javascript" src="..\..\resources/vsid.js"></script>
+</head>
+<body>
+<script type="text/javascript"></script>
+<noscript><div>JavaScript is disabled on your browser.</div></noscript>
+
+
+<header id="masterHeader" class="dark master-header dark-master">
+	<div id="header-topbar" class="header-topbar">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-6 text-left">
+					<a href="https://www.hcltechsw.com/" target="_blank" class="logo-hcl" rel="nofollow"><img src="..\..\resources/hcl-white.png" class="img-responsive"></a>
+				</div>
+				<div class="col-xs-6 text-right">
+					<a href="https://www.hcltechsw.com/" target="_blank" class="logo-hcl-tech" rel="nofollow">HCL Software</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+<!-- ========= START OF TOP NAVBAR ======= -->
+<div class="topNav">
+	<a name="navbar.top">
+	<!--   -->
+	</a>
+	<div class="skipNav"><a href="#skip.navbar.top" title="Skip navigation links">Skip navigation links</a></div>
+	<a name="navbar.top.firstrow">
+	<!--   -->
+	</a>	
+	<ul class="navList" title="Navigation">
+		<!-- -->
+		<li><a href="..\VSID_VSID.html" title="Navigate to VSID">VSID</a></li><li><a href="..\FileResource_Library.html" title="Navigate to VSID.FileResource">FileResource</a></li> 
+		<li class="navBarCell1Rev">FileResource</li>
+	</ul>
+</div>
+
+<div class="subNav">
+	<ul class="navList">
+	<!-- --> 
+	</ul>
+	<div><!--  -->
+		<script type="text/javascript"><!--
+		navcontentLink = document.getElementById("navcontent_navbar_top");
+		if (!!navcontentLink) {
+		  if(window==top) {
+			navcontentLink.style.display = "block";
+		  }
+		  else {
+			navcontentLink.style.display = "none";
+		  }
+		}
+		  //-->
+		</script>
+	</div>
+	<div>
+		<ul class="subNavList">
+			
+		</ul>
+	</div>
+	<a name="skip.navbar.top">
+	<!--   -->
+	</a>
+</div>
+<!-- ========= END OF TOP NAVBAR ========= -->
+
+<!-- Class -->
+
+<!-- ======== START OF CLASS DATA ======== -->
+<div class="header">
+	<h1 title="Class FileResource" class="title">Public Class FileResource</h1>
+</div>
+
+<div class="contentContainer">
+	<ul class="inheritance">
+		<!-- --> 
+
+		<ul class="inheritance">
+		<!-- --> 
+
+			<ul class="inheritance">
+				<li><h2>VSID.FileResource.FileResource</h2></li>
+			</ul>
+		</ul>
+	</ul>
+
+	<hr />
+
+	<div class="description">	<ul class="blockList">		<li class="blockList">			<div class="comments"><!-- comment --><pre>Represents a design element of the file-resource type or a relative, such as stylesheet or xpage. <br />		<br />The data are manipulated internally using DXL and DOM.<br />		<br />This class has no objection if you want to also manipulate the other items of the document, e.g. by using the DOMElement property to get the node representing the design element, then using the DOM to locate other items and attributes.<br />		<br />However, please use this class and FileItem for manipulation of base-64 encoded file data items. </pre></div>			<hr />		</li>	</ul></div>
+	<ul class="blockList">	<li class="blockList">		<a name="class.summary"><!--   --></a>		<h3>Class Summary</h3>		<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Class Summary Table">			<thead>						</thead>			<tbody>			<tr class="altColor"><td class="colFirst"><span class="memberNameLabel" title="{{fqn}}">Project ID</span></td><td class="colLast">3EF59CC821EBE72F85258AE2007313C7</td></tr><tr class="rowColor"><td class="colFirst"><span class="memberNameLabel" title="{{fqn}}">Version</span></td><td class="colLast"></td></tr><tr class="altColor"><td class="colFirst"><span class="memberNameLabel" title="{{fqn}}">Class ID</span></td><td class="colLast">A1CF0755E52CBC4285258AE2007355C2</td></tr><tr class="rowColor"><td class="colFirst"><span class="memberNameLabel" title="{{fqn}}">Class Type</span></td><td class="colLast">Base</td></tr><tr class="altColor"><td class="colFirst"><span class="memberNameLabel" title="{{fqn}}">Attributes</span></td><td class="colLast"></td></tr>			</tbody>		</table>	</li></ul>
+	
+	<div class="summary">
+		<ul class="blockList">
+			<li class="blockList">
+				
+				<ul class="blockList">	<li class="blockList">		<a name="variables.summary"><!--   --></a>		<h3>Variables</h3>		<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Variable Summary table, listing variables">			<thead>			<tr><th class="colFirst">Name</th><th class="colOne">Type</th><th class="colLast">Comment</th></tr>			</thead>			<tbody>			<tr class="rowColor"><td class="colFirst"><code>Public <strong>Log</strong></code></td><td><code> As String</code></td><td class="colLast comment"><em>&nbsp;</em></td></tr><tr class="altColor"><td class="colFirst"><code>Public <strong>m_db</strong></code></td><td><code> As NotesDatabase</code></td><td class="colLast comment"><em>&nbsp;</em></td></tr><tr class="rowColor"><td class="colFirst"><code>Public <strong>m_domp</strong></code></td><td><code> As NotesDOMParser</code></td><td class="colLast comment"><em>&nbsp;</em></td></tr><tr class="altColor"><td class="colFirst"><code>Public <strong>m_elElRoot</strong></code></td><td><code> As NotesDOMElementNode</code></td><td class="colLast comment"><em>&nbsp;</em></td></tr><tr class="rowColor"><td class="colFirst"><code>Public <strong>m_elFD</strong></code></td><td><code> As NotesDOMElementNode</code></td><td class="colLast comment"><em>&nbsp;</em></td></tr><tr class="altColor"><td class="colFirst"><code>Public <strong>m_fileItem</strong></code></td><td><code> As FileItem</code></td><td class="colLast comment"><em>&nbsp;</em></td></tr><tr class="rowColor"><td class="colFirst"><code>Public <strong>m_fItems</strong></code></td><td><code> List As FileItem</code></td><td class="colLast comment"><em>&nbsp;</em></td></tr><tr class="altColor"><td class="colFirst"><code>Public <strong>m_iMode</strong></code></td><td><code> As Integer</code></td><td class="colLast comment"><em>&nbsp;</em></td></tr>			</tbody>		</table>	</li></ul> 
+				
+				<ul class="blockList">	<li class="blockList">		<a name="properties.summary"><!--   --></a>		<h3>Property Summaries</h3>		<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Property Summary table, listing methods and comments">			<thead>						</thead>			<tbody>			<tr class="rowColor"><td class="colFirst"><code><span class="memberNameLink"><a href="#VSID.FileResource.FileResource.Get.DOMElement-">DOMElement</a> (Get)</span> As NotesDOMElementNode</code></td></tr><tr class="altColor"><td class="colFirst"><code><span class="memberNameLink"><a href="#VSID.FileResource.FileResource.Get.DOMParser-">DOMParser</a> (Get)</span> As NotesDOMParser</code></td></tr><tr class="rowColor"><td class="colFirst"><code><span class="memberNameLink"><a href="#VSID.FileResource.FileResource.Get.MimeCharSet-">MimeCharSet</a> (Get)</span> As String</code></td></tr>			</tbody>		</table>	</li></ul>  
+				
+				<ul class="blockList">	<li class="blockList">		<a name="methods.summary"><!--   --></a>		<h3>Method Summaries</h3>		<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Method Summary table, listing methods and comments">			<thead>						</thead>			<tbody>			<tr class="rowColor"><td class="colFirst"><code><span class="memberNameLink"><a href="#VSID.FileResource.FileResource.GetFileItem-">GetFileItem</a></span>(itemname As FileItem) As FileItem</code></td></tr><tr class="altColor"><td class="colFirst"><code><span class="memberNameLink"><a href="#VSID.FileResource.FileResource.HasItem-">HasItem</a></span>(itemName As String) As Boolean</code></td></tr><tr class="rowColor"><td class="colFirst"><code><span class="memberNameLink"><a href="#VSID.FileResource.FileResource.Save-">Save</a></span>() As Boolean</code></td></tr><tr class="altColor"><td class="colFirst"><code><span class="memberNameLink"><a href="#VSID.FileResource.FileResource.Delete-">Delete</a></span>()</code></td></tr><tr class="rowColor"><td class="colFirst"><code><span class="memberNameLink"><a href="#VSID.FileResource.FileResource.DeleteItem-">DeleteItem</a></span>(itemname As String)</code></td></tr><tr class="altColor"><td class="colFirst"><code><span class="memberNameLink"><a href="#VSID.FileResource.FileResource.New-">New</a></span>(db As NotesDatabase, elElement As NotesDOMDocumentNode, domp As NotesDOMParser)</code></td></tr><tr class="rowColor"><td class="colFirst"><code><span class="memberNameLink"><a href="#VSID.FileResource.FileResource.ReadFileData-">ReadFileData</a></span>(stream As NotesStream)</code></td></tr><tr class="altColor"><td class="colFirst"><code><span class="memberNameLink"><a href="#VSID.FileResource.FileResource.RegisterFileItem-">RegisterFileItem</a></span>(x As FileItem)</code></td></tr><tr class="rowColor"><td class="colFirst"><code><span class="memberNameLink"><a href="#VSID.FileResource.FileResource.UpdateFileData-">UpdateFileData</a></span>()</code></td></tr>			</tbody>		</table>	</li></ul> 
+			</li>
+		</ul>
+	</div>
+
+	<div class="details">
+		<ul class="blockList">
+			<li class="blockList">
+				
+				
+				<!-- ============ PROPERTY DETAIL ========== --><ul class="blockList">	<li class="blockList">		<a name="property.detail"><!--   --></a>		<h3>Properties Detail</h3>		<!-- Method Detail Element --><a name="VSID.FileResource.FileResource.Get.DOMElement-"><!--  --></a><ul class="blockList">	<li class="blockList">		<a name="VSID.FileResource.FileResource.Get.DOMElement"><!--   --></a>		<h4>DOMElement (Get)</h4>		<table class="methoddetail" border="0" cellpadding="3" cellspacing="0" summary="DOMElement method detail table">			<thead>				<tr><th class="colFirst" scope="col" colspan="5"><pre>Public Property Get DOMElement<em></em> As NotesDOMElementNode</pre></th></tr>			</thead>			<tbody>	<tr class="altColor"><td class="colFirst" colspan="5"><a name="VSID.FileResource.FileResource.Get.DOMElement.comments"><!--   --></a>Element node representing the design element.</td></tr>				</tbody>		</table>			</li></ul><!-- Method Detail Element --><a name="VSID.FileResource.FileResource.Get.DOMParser-"><!--  --></a><ul class="blockList">	<li class="blockList">		<a name="VSID.FileResource.FileResource.Get.DOMParser"><!--   --></a>		<h4>DOMParser (Get)</h4>		<table class="methoddetail" border="0" cellpadding="3" cellspacing="0" summary="DOMParser method detail table">			<thead>				<tr><th class="colFirst" scope="col" colspan="5"><pre>Public Property Get DOMParser<em></em> As NotesDOMParser</pre></th></tr>			</thead>			<tbody>	<tr class="altColor"><td class="colFirst" colspan="5"><a name="VSID.FileResource.FileResource.Get.DOMParser.comments"><!--   --></a>DOM parser containing this design element description.</td></tr>				</tbody>		</table>			</li></ul><!-- Method Detail Element --><a name="VSID.FileResource.FileResource.Get.MimeCharSet-"><!--  --></a><ul class="blockList">	<li class="blockList">		<a name="VSID.FileResource.FileResource.Get.MimeCharSet"><!--   --></a>		<h4>MimeCharSet (Get)</h4>		<table class="methoddetail" border="0" cellpadding="3" cellspacing="0" summary="MimeCharSet method detail table">			<thead>				<tr><th class="colFirst" scope="col" colspan="5"><pre>Public Property Get MimeCharSet<em></em> As String</pre></th></tr>			</thead>			<tbody>	<tr class="altColor"><td class="colFirst" colspan="5"><a name="VSID.FileResource.FileResource.Get.MimeCharSet.comments"><!--   --></a>Use this to read the $MimeCharSet item and discover what character set was used to encode the text file data (if it is text). <br />			<br />Note some design elements don&apos;t have this because it&apos;s assumed based on the design element type.</td></tr>				</tbody>		</table>			</li></ul>	</li></ul>
+				<!-- ============ METHOD DETAIL ========== --><ul class="blockList">	<li class="blockList">		<a name="method.detail"><!--   --></a>		<h3>Methods Detail</h3>		<!-- Method Detail Element --><a name="VSID.FileResource.FileResource.GetFileItem-"><!--  --></a><ul class="blockList">	<li class="blockList">		<a name="VSID.FileResource.FileResource.GetFileItem"><!--   --></a>		<h4>GetFileItem</h4>		<table class="methoddetail" border="0" cellpadding="3" cellspacing="0" summary="GetFileItem method detail table">			<thead>				<tr><th class="colFirst" scope="col" colspan="5"><pre>Public Function GetFileItem<em>(itemname As FileItem)</em> As FileItem</pre></th></tr>			</thead>			<tbody>	<tr class="altColor"><td class="colFirst" colspan="5"><a name="VSID.FileResource.FileResource.GetFileItem.comments"><!--   --></a>Retrieve the FileItem object associated with a CD-record item.<br />			<br />An object will be returned even if the item doesn&apos;t exist, which you can use to create the item via UpdateFile method.<br />			<br />Use this only for items other than the default $FileData item, which you can handle via ReadFileData and UpdateFileData methods.</td></tr>	<tr>	<th class="colFirst min" scope="col">idx</th>	<th class="colOne" scope="col"><a name="VSID.FileResource.FileResource.GetFileItem.arguments"><!--   --></a>Argument</th>	<th class="colOne" scope="col">Data Type</th>	<th class="colOne attributes" scope="col">Attributes</th>	<th class="colLast comment" scope="col">Comments</th></tr><tr class="altColor"><td class="colFirst min">1</strong></td><td class="colOne"><strong>itemname</strong></td><td class="colOne">FileItem</td><td class="colOne attributes"></td><td class="colLast comment"><em>Name of the FileItem to retrieve&nbsp;</em></td></tr>			</tbody>		</table>			</li></ul><!-- Method Detail Element --><a name="VSID.FileResource.FileResource.HasItem-"><!--  --></a><ul class="blockList">	<li class="blockList">		<a name="VSID.FileResource.FileResource.HasItem"><!--   --></a>		<h4>HasItem</h4>		<table class="methoddetail" border="0" cellpadding="3" cellspacing="0" summary="HasItem method detail table">			<thead>				<tr><th class="colFirst" scope="col" colspan="5"><pre>Public Function HasItem<em>(itemName As String)</em> As Boolean</pre></th></tr>			</thead>			<tbody>	<tr class="altColor"><td class="colFirst" colspan="5"><a name="VSID.FileResource.FileResource.HasItem.comments"><!--   --></a>Determine whether there&apos;s an item element in the note DXL with a given item name.<br />			<br />Note that the presence of an item doesn&apos;t guarantee it&apos;s formatted as a file CD record.</td></tr>	<tr>	<th class="colFirst min" scope="col">idx</th>	<th class="colOne" scope="col"><a name="VSID.FileResource.FileResource.HasItem.arguments"><!--   --></a>Argument</th>	<th class="colOne" scope="col">Data Type</th>	<th class="colOne attributes" scope="col">Attributes</th>	<th class="colLast comment" scope="col">Comments</th></tr><tr class="altColor"><td class="colFirst min">1</strong></td><td class="colOne"><strong>itemName</strong></td><td class="colOne">String</td><td class="colOne attributes"></td><td class="colLast comment"><em>Name of the item for which to check. &nbsp;</em></td></tr>			</tbody>		</table>			</li></ul><!-- Method Detail Element --><a name="VSID.FileResource.FileResource.Save-"><!--  --></a><ul class="blockList">	<li class="blockList">		<a name="VSID.FileResource.FileResource.Save"><!--   --></a>		<h4>Save</h4>		<table class="methoddetail" border="0" cellpadding="3" cellspacing="0" summary="Save method detail table">			<thead>				<tr><th class="colFirst" scope="col" colspan="5"><pre>Public Function Save<em>()</em> As Boolean</pre></th></tr>			</thead>			<tbody>	<tr class="altColor"><td class="colFirst" colspan="5"><a name="VSID.FileResource.FileResource.Save.comments"><!--   --></a>Save changes to disk by importing the (presumably modified) DOM tree.</td></tr>				</tbody>		</table>			</li></ul><!-- Method Detail Element --><a name="VSID.FileResource.FileResource.Delete-"><!--  --></a><ul class="blockList">	<li class="blockList">		<a name="VSID.FileResource.FileResource.Delete"><!--   --></a>		<h4>Delete</h4>		<table class="methoddetail" border="0" cellpadding="3" cellspacing="0" summary="Delete method detail table">			<thead>				<tr><th class="colFirst" scope="col" colspan="5"><pre>Public Sub Delete<em>()</em></pre></th></tr>			</thead>			<tbody>	<tr class="altColor"><td class="colFirst" colspan="5"><a name="VSID.FileResource.FileResource.Delete.comments"><!--   --></a>Destructor</td></tr>				</tbody>		</table>			</li></ul><!-- Method Detail Element --><a name="VSID.FileResource.FileResource.DeleteItem-"><!--  --></a><ul class="blockList">	<li class="blockList">		<a name="VSID.FileResource.FileResource.DeleteItem"><!--   --></a>		<h4>DeleteItem</h4>		<table class="methoddetail" border="0" cellpadding="3" cellspacing="0" summary="DeleteItem method detail table">			<thead>				<tr><th class="colFirst" scope="col" colspan="5"><pre>Public Sub DeleteItem<em>(itemname As String)</em></pre></th></tr>			</thead>			<tbody>	<tr class="altColor"><td class="colFirst" colspan="5"><a name="VSID.FileResource.FileResource.DeleteItem.comments"><!--   --></a>Delete an item with a specified name from the note data.</td></tr>	<tr>	<th class="colFirst min" scope="col">idx</th>	<th class="colOne" scope="col"><a name="VSID.FileResource.FileResource.DeleteItem.arguments"><!--   --></a>Argument</th>	<th class="colOne" scope="col">Data Type</th>	<th class="colOne attributes" scope="col">Attributes</th>	<th class="colLast comment" scope="col">Comments</th></tr><tr class="altColor"><td class="colFirst min">1</strong></td><td class="colOne"><strong>itemname</strong></td><td class="colOne">String</td><td class="colOne attributes"></td><td class="colLast comment"><em>Name of the item to be deleted&nbsp;</em></td></tr>			</tbody>		</table>			</li></ul><!-- Method Detail Element --><a name="VSID.FileResource.FileResource.New-"><!--  --></a><ul class="blockList">	<li class="blockList">		<a name="VSID.FileResource.FileResource.New"><!--   --></a>		<h4>New</h4>		<table class="methoddetail" border="0" cellpadding="3" cellspacing="0" summary="New method detail table">			<thead>				<tr><th class="colFirst" scope="col" colspan="5"><pre>Public Sub New<em>(db As NotesDatabase, elElement As NotesDOMDocumentNode, domp As NotesDOMParser)</em></pre></th></tr>			</thead>			<tbody>	<tr class="altColor"><td class="colFirst" colspan="5"><a name="VSID.FileResource.FileResource.New.comments"><!--   --></a>Create a new FileResource.</td></tr>	<tr>	<th class="colFirst min" scope="col">idx</th>	<th class="colOne" scope="col"><a name="VSID.FileResource.FileResource.New.arguments"><!--   --></a>Argument</th>	<th class="colOne" scope="col">Data Type</th>	<th class="colOne attributes" scope="col">Attributes</th>	<th class="colLast comment" scope="col">Comments</th></tr><tr class="altColor"><td class="colFirst min">1</strong></td><td class="colOne"><strong>db</strong></td><td class="colOne">NotesDatabase</td><td class="colOne attributes"></td><td class="colLast comment"><em>database containing the design element.&nbsp;</em></td></tr><tr class="altColor"><td class="colFirst min">2</strong></td><td class="colOne"><strong>elElement</strong></td><td class="colOne">NotesDOMDocumentNode</td><td class="colOne attributes"></td><td class="colLast comment"><em>the DOM element corresponding to the design note (e.g. the &lt;note&gt; element).&nbsp;</em></td></tr><tr class="altColor"><td class="colFirst min">3</strong></td><td class="colOne"><strong>domp</strong></td><td class="colOne">NotesDOMParser</td><td class="colOne attributes"></td><td class="colLast comment"><em>The DOM parser object containing elElement.&nbsp;</em></td></tr>			</tbody>		</table>			</li></ul><!-- Method Detail Element --><a name="VSID.FileResource.FileResource.ReadFileData-"><!--  --></a><ul class="blockList">	<li class="blockList">		<a name="VSID.FileResource.FileResource.ReadFileData"><!--   --></a>		<h4>ReadFileData</h4>		<table class="methoddetail" border="0" cellpadding="3" cellspacing="0" summary="ReadFileData method detail table">			<thead>				<tr><th class="colFirst" scope="col" colspan="5"><pre>Public Sub ReadFileData<em>(stream As NotesStream)</em></pre></th></tr>			</thead>			<tbody>	<tr class="altColor"><td class="colFirst" colspan="5"><a name="VSID.FileResource.FileResource.ReadFileData.comments"><!--   --></a>Read the file data from the design note. The caller provides a stream to read into, for ease of streaming directly into a disk file (since you have to open the file before writing to the stream).</td></tr>	<tr>	<th class="colFirst min" scope="col">idx</th>	<th class="colOne" scope="col"><a name="VSID.FileResource.FileResource.ReadFileData.arguments"><!--   --></a>Argument</th>	<th class="colOne" scope="col">Data Type</th>	<th class="colOne attributes" scope="col">Attributes</th>	<th class="colLast comment" scope="col">Comments</th></tr><tr class="altColor"><td class="colFirst min">1</strong></td><td class="colOne"><strong>stream</strong></td><td class="colOne">NotesStream</td><td class="colOne attributes"></td><td class="colLast comment"><em>Target stream for the file data&nbsp;</em></td></tr>			</tbody>		</table>			</li></ul><!-- Method Detail Element --><a name="VSID.FileResource.FileResource.RegisterFileItem-"><!--  --></a><ul class="blockList">	<li class="blockList">		<a name="VSID.FileResource.FileResource.RegisterFileItem"><!--   --></a>		<h4>RegisterFileItem</h4>		<table class="methoddetail" border="0" cellpadding="3" cellspacing="0" summary="RegisterFileItem method detail table">			<thead>				<tr><th class="colFirst" scope="col" colspan="5"><pre>Public Sub RegisterFileItem<em>(x As FileItem)</em></pre></th></tr>			</thead>			<tbody>	<tr class="altColor"><td class="colFirst" colspan="5"><a name="VSID.FileResource.FileResource.RegisterFileItem.comments"><!--   --></a>For internal use -- lets the FileItem class notify us that it&apos;s referencing our DOM tree so that we can delete the object if we erase the corresponding item element.</td></tr>	<tr>	<th class="colFirst min" scope="col">idx</th>	<th class="colOne" scope="col"><a name="VSID.FileResource.FileResource.RegisterFileItem.arguments"><!--   --></a>Argument</th>	<th class="colOne" scope="col">Data Type</th>	<th class="colOne attributes" scope="col">Attributes</th>	<th class="colLast comment" scope="col">Comments</th></tr><tr class="altColor"><td class="colFirst min">1</strong></td><td class="colOne"><strong>x</strong></td><td class="colOne">FileItem</td><td class="colOne attributes"></td><td class="colLast comment"><em>FileItem objet to be registered. &nbsp;</em></td></tr>			</tbody>		</table>			</li></ul><!-- Method Detail Element --><a name="VSID.FileResource.FileResource.UpdateFileData-"><!--  --></a><ul class="blockList">	<li class="blockList">		<a name="VSID.FileResource.FileResource.UpdateFileData"><!--   --></a>		<h4>UpdateFileData</h4>		<table class="methoddetail" border="0" cellpadding="3" cellspacing="0" summary="UpdateFileData method detail table">			<thead>				<tr><th class="colFirst" scope="col" colspan="5"><pre>Public Sub UpdateFileData<em>()</em></pre></th></tr>			</thead>			<tbody>	<tr class="altColor"><td class="colFirst" colspan="5"><a name="VSID.FileResource.FileResource.UpdateFileData.comments"><!--   --></a>Take a binary data stream (it may contain text but we don&apos;t care) and update the DOM representation of the note to store that as the filedata.<br />			<br />The data ends up stored in the $FileData item, whether this is represented via descriptive format with a &lt;filedata&gt; element, or in note format with an &lt;item&gt; element. We take our cue from whatever was in the DXL when we loaded it.</td></tr>				</tbody>		</table>			</li></ul>	</li></ul>
+			</li>
+		</ul>
+	</div> 
+
+</div>
+<!-- ========= END OF CLASS DATA ========= -->
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<div class="bottomNav">
+	<a name="navbar.bottom"><!--   --></a>
+	<div class="skipNav"><a href="#skip.navbar.bottom" title="Skip navigation links">Skip navigation links</a></div>
+	
+	<a name="navbar.bottom.firstrow"><!--   --></a>
+	<ul class="navList" title="Navigation">
+		<!--  -->
+	</ul>
+</div>
+
+<div class="subNav">
+	<ul class="navList">
+		<!-- 
+		<li><a href="prevelement (class or package)url.html" title="previous element (class or package) fqn in parent/package"><span element (class or package)="typeNameLink">Previous element (class or package) Name</span></a></li>
+		{{link_prevelement}}
+		-->
+
+		<!-- 
+		<li><a href="nextelement (class or package)url.html" title="next element (class or package) fqn in parent/package"><span element (class or package)="typeNameLink">Next element (class or package) Name</span></a></li>
+		{{link_nextelement}}
+		-->
+	</ul>
+	<ul class="navList">
+	<!-- 
+		<li><a href="../../../../index.html?url for frames" target="_top">Frames</a></li>
+		<li><a href="{{elementurl}}" target="_top">No&nbsp;Frames</a></li>
+	-->
+	</ul>
+	<ul class="navList" id="navcontent_navbar_bottom">
+	<!-- 
+		<li><a href="../../../nav-content-noframe.html">All&nbsp;Classes</a></li>
+	 -->
+	</ul>
+	
+	<div>
+		<script type="text/javascript"><!--
+		  navcontentLink = document.getElementById("navcontent_navbar_bottom");
+		  if(window==top) {
+			navcontentLink.style.display = "block";
+		  }
+		  else {
+			navcontentLink.style.display = "none";
+		  }
+		  //-->
+		</script>
+	</div>
+	
+	<div>
+		<ul class="subNavList">
+		<!-- 
+			<li>Summary:&nbsp;</li>
+			<li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
+			<li><a href="#method.summary">Method</a></li>
+		 -->
+		</ul>
+		<ul class="subNavList">
+		<!-- 
+			<li>Detail:&nbsp;</li>
+			<li>Field&nbsp;|&nbsp;</li>
+			<li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
+			<li><a href="#method.detail">Method</a></li>
+		 -->
+		</ul>
+	</div>
+	
+	<a name="skip.navbar.bottom"><!--   --></a>
+</div>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+<p class="legalCopy"><small>Copyright &#169; <a href="https://www.hcltechsw.com/">HCL America, Inc.</a> 1999, 2023. All Rights Reserved.</small></p>
+</body>
+</html>

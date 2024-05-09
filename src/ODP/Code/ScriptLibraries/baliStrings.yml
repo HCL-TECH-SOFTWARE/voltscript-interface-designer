@@ -1,0 +1,949 @@
+---
+class: 512
+flags: 0x2000
+unid: OF78E7361DE7ACB27E-ON0035D2C180258939
+items:
+  - name: $Comment
+    type: text
+    data: String Utilities
+  - name: $DesignerVersion
+    type: text
+    data: 8.5.3
+  - name: $Flags
+    type: text
+    data: s34Q
+  - name: $PublicAccess
+    type: text
+    data: "1"
+    signed: true
+  - name: $ScriptLib
+    type: text
+    data: |
+      '++LotusScript Development Environment:2:5:(Options):0:74
+      %REM
+      	Library baliStrings
+      	Created Sep 2022 by Devin Olson/USA/PNPHCL
+      	String handling utilities 
+      %END REM
+      %REM
+      	**********************************************************************
+      	**********************************************************************
+      		
+          Copyright HCL America, Inc. 1999, 2023
+      
+         	Licensed under the Apache License, Version 2.0 (the "License");
+          you may not use this file except in compliance with the License.
+          You may obtain a copy of the License at
+      
+              http://www.apache.org/licenses/LICENSE-2.0
+      
+          Unless required by applicable law or agreed to in writing, software
+          distributed under the License is distributed on an "AS IS" BASIS,
+          WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+          See the License for the specific language governing permissions and
+         	limitations under the License.
+      
+      	**********************************************************************
+      	**********************************************************************
+      %END REM
+      Option Public
+      Option Declare
+      Use "baliExceptions" 
+      
+      
+      '++LotusScript Development Environment:2:5:(Forward):0:1
+      Declare Public Class BaliStrings 
+      Declare Static Function getBaliStrings() As BaliStrings
+      
+      '++LotusScript Development Environment:2:5:(Declarations):0:10
+      Private Const MODULE_NAME = |baliStrings| 
+      
+      
+      %REM ***************************************************************************
+       ************************************************************************************
+      	SC_xxxxx CONSTANTS  
+      	StrConv constants declared here to avoid conflicts with 
+      	other libraries using lsconst.lss
+       ************************************************************************************
+      %END REM *********************************************************************
+      Private Const SC_UPPERCASE			= 1			' convert to uppercase
+      Private Const SC_LOWERCASE			= 2			' convert to lowercase
+      Private Const SC_PROPERCASE			= 3			' convert to propercase
+      Private Const SC_WIDE				= 4			' convert narrow to wide
+      Private Const SC_NARROW				= 8			' convert wide to narrow
+      Private Const SC_KATAKANA			= 16		' convert Hiragana to Katakana
+      Private Const SC_HIRAGANA			= 32		' convert Katakana to Hiragana
+      Private Const SC_NATIVEDIGIT		= 256		' convert '0'-'9' to native digits
+      Private Const SC_ARABICDIGIT		= 512		' convert native digits to '0'-'9'
+      
+      %REM
+      	Class BaliStrings
+      	Carrier for String Utilities
+      %END REM
+      Public Class BaliStrings 
+      	Private asciiranges_ List As IntegerPair
+      	%REM 
+      		ascii character ranges 
+      	
+      		Numeric 	ASCII 0 to 9
+      		AlphaUpper 	ASCII A to Z
+      		AlphaLower 	ASCII a to z
+      		Hyphen 		ASCII - to -
+      		Period 		ASCII . to .
+      		Underscore 	ASCII _ to _ 
+      	%END REM
+      	
+      
+      	Private ampersandsequences_ List As String 
+      	%REM 
+      		ampersand sequences for special characters (quote, apostrophe, less than, greater than, ampersand)
+      	
+      		&   &amp;
+      		"   &quot;
+      		'	&apos;
+      		<   &lt;
+      		>   &gt;
+      	%END REM 
+      
+      
+      	%REM
+      		Property Get CLASS_NAME
+      		Name of the Class
+      	%END REM
+      	Private Property Get CLASS_NAME As String 
+      		CLASS_NAME = |BaliStrings|
+      	End Property
+      	
+      	%REM
+      		Property Get CLASS_PREFIX
+      		Prefix of the Class:  MODULE_NAME.CLASS_NAME.
+      	%END REM
+      	Private Property Get CLASS_PREFIX As String 
+      		CLASS_PREFIX = MODULE_NAME & |.| & CLASS_NAME & |.|
+      	End Property
+      
+      
+      	%REM
+      		Constructor
+      	%END REM 
+      	Sub New() 
+      		' initialize the asciiranges_ 
+      		
+      		Set me.asciiranges_(|Numeric|) = 		New IntegerPair(48, 57) 	' ASCII 0 to 9
+      		Set me.asciiranges_(|AlphaUpper|) = 	New IntegerPair(65, 90) 	' ASCII A to Z
+      		Set me.asciiranges_(|AlphaLower|) = 	New IntegerPair(97, 122) 	' ASCII a to z
+      		Set me.asciiranges_(|Hyphen|) = 		New IntegerPair(45, 45) 	' ASCII - to -
+      		Set me.asciiranges_(|Period|) = 		New IntegerPair(46, 46) 	' ASCII . to . 
+      		Set me.asciiranges_(|Underscore|) = 	New IntegerPair(95, 95) 	' ASCII _ to _
+      				
+      		
+      		
+      		' initialize the ampersandsequences_ 
+      		' ORDER IS IMPORTANT!!!   The & encoding MUST BE FIRST
+      		me.ampersandsequences_(|&|) = |&amp;| 	
+      		me.ampersandsequences_(|"|) = |&quot;|
+      		me.ampersandsequences_(|'|) = |&apos;|
+      		me.ampersandsequences_(|<|) = |&lt;|
+      		me.ampersandsequences_(|>|) = |&gt;|
+      	End Sub 
+      
+      	%REM
+      		Function beginsWith 
+      		Tests a string to determine if it begins with another string 
+      		
+      		@param source String to test 
+      		@param searchfor Substring to check if source string begins with 
+      		
+      		@return Flag indicating if source begins with searchfor 
+      	%END REM	
+      	Function beginsWith(source$, searchfor$) As Boolean
+      		beginsWith = False 
+      		If (Len(searchfor$) <= Len(source$)) Then 
+      			beginsWith = (searchfor$ = Left$(source$, Len(searchfor$)))
+      		End If 
+      	End Function
+      
+      
+      	%REM
+      		Function endsWith 
+      		Tests a string to determine if it ends with another string 
+      		
+      		@param source String to test 
+      		@param searchfor Substring to check if source string ends with 
+      		
+      		@return Flag indicating if source ends with searchfor 
+      	%END REM	
+      	Function endsWith(source$, searchfor$) As Boolean
+      		endsWith = False 
+      		If (Len(searchfor$) <= Len(source$)) Then 
+      			endsWith = (searchfor$ = Right$(source$, Len(searchfor$)))
+      		End If 
+      	End Function
+      
+      
+      	%REM
+      		Function escapeSingleBackslashes
+      		Parses a source string and replaces and single backslash characters (\) with escaped backslashes (\\)
+      		
+      		@param source String to search for single backslash characters 
+      		
+      		@return source with all instances of single backslashes replaced with escaped backslashes  
+      	%END REM
+      	Function escapeSingleBackslashes(source$) As String 
+      
+      		Dim idx&
+      		Dim result$
+      		Dim temp$ 
+      		
+      		
+      		' BEGIN CODE
+      		If isBlankString(source$) Then GoTo ExitPoint 
+      
+      		idx& = InStr(source$, |\|)
+      		
+      		If (idx& < 1) Then 
+      			result$ = source$ 
+      		Else
+      			If (|\| = Mid$(source$, idx& + 1, 1)) Then 
+      				' recursion fun! 
+      				result$ = Mid$(source$, 1, idx& + 1) & escapeSingleBackslashes(Mid$(source$, idx + 2, Len(source)))
+      			Else 
+      				result$ = Mid$(source$, 1, idx&) & |\| & escapeSingleBackslashes(Mid$(source$, idx + 1, Len(source)))
+      			End If		
+      		End If
+      		
+      		
+      	ExitPoint: 
+      		escapeSingleBackslashes = result$
+      		Exit Function 
+      	End Function
+      	
+      	
+      	%REM
+      		Function properCase
+      		Converts a source string to Proper Case
+      	%END REM
+      	Function properCase(source$) As String 
+      		On Error GoTo ErrorTrap
+      		
+      		' exception variables
+      		Dim extendedinfo List As String 
+      		
+      		Dim result$ 
+      		
+      		' BEGIN CODE
+      		extendedinfo(source$) = source$ 
+      		If Not isBlankString(source$) Then result$ = StrConv(source$, SC_ProperCase)
+      		
+      	ExitPoint: 
+      		properCase = result$
+      		Exit Function 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		Resume ExitPoint
+      	End Function
+      	
+      	
+      	
+      	%REM
+      		Function replaceCRLF
+      		Replaces Carriage Returns and Line Feeds in a string with a new string and returns a new string. 
+      		
+      		@param source$  String from which Carriage Returns and Line Feeds should be removed. 
+      		@param replacement$ New string to replace all Carriage Returns and Line Feeds.
+      		@return source$ with all Carriage Returns and Line Feeds replaced 
+      	%END REM
+      	Function replaceCRLF(source$, replacement$) As String 
+      		Dim result$
+      
+      		' BEGIN CODE
+      		
+      		result$ = source$
+      		If isBlankString(result$) Then GoTo ExitPoint 
+      		
+      		' replace carriage returns and line feeds
+      		If (InStr(result$, CRLF) > 0) Then result$ = Join(Split(result$, CRLF), replacement$)
+      		If (InStr(result$, CR) > 0) Then result$ = Join(Split(result$, CR), replacement$)
+      		If (InStr(result$, LF) > 0) Then result$ = Join(Split(result$, LF), replacement$)
+      
+      		
+      	ExitPoint: 
+      		replaceCRLF = result$
+      		Exit Function 
+      	End Function
+      	
+      	
+      	%REM
+      		Function stripCRLF
+      		Strips Carriage Returns and Line Feeds from a string and returns the result as a new string. 
+      		
+      		NOTE: This is a convenience wrapper for replaceCRLF(source$, ||) 
+      		
+      		@param source$ String from which Carriage Returns and Line Feeds should be removed. 
+      		@return source$ with all Carriage Returns and Line Feeds stripped out. 
+      	%END REM
+      	Function stripCRLF(source$) As String 
+      		stripCRLF = me.replaceCRLF(source$, ||) 
+      	End Function
+      	
+      	
+      	%REM
+      	Function replaceHT
+      		Replaces Horizontal Tabs in a string with a new string and returns a new string. 
+      		
+      		@param source$  String from which Horiontal Tabs should be removed. 
+      		@param replacement$ New string to replace all Tabs.
+      		@return source$ with all Horizontal Tabs replaced 
+      	%END REM
+      	Function replaceHT(source$, replacement$) As String 
+      		Dim result$
+      
+      		
+      		' BEGIN CODE
+      		result$ = source$
+      		If isBlankString(result$) Then GoTo ExitPoint 
+      		
+      		' replace Tabs
+      		If (InStr(result$, HT) > 0) Then result$ = Join(Split(result$, HT), replacement$)
+      
+      	ExitPoint: 
+      		replaceHT = result$
+      		Exit Function 
+      	End Function	
+      
+      	
+      	%REM
+      	Function stripHT
+      		Strips Tabs from a string and returns the result as a new string. 
+      		
+      		NOTE: This is a convenience wrapper for replaceHT(source$, ||) 
+      		
+      		@param source$ String from which Tabs should be removed. 
+      		@return source$ with all Tabs stripped out. 
+      	%END REM
+      	Function stripHT(source$) As String 
+      		stripHT = me.replaceHT(source$, ||)
+      	End Function  
+      	
+      	
+      	%REM
+      		Function shellSortStrings
+      		Performs a "divide and conquer" sort of a String Array, based on an insertion sort algorithm.
+      		
+      		@param source: Array of Strings to be sorted.  This is an IN-OUT argument, passed by reference.  
+      
+      	%END REM
+      	Public Sub shellSortStrings(source As Variant)
+      		Dim insertionValue$
+      		
+      		Dim errmsg$
+      		Dim errcode%
+      		
+      		Dim lowerbound&
+      		Dim upperbound&
+      		Dim elementcount&
+      		
+      		Dim idxOuter&
+      		Dim idxInner&
+      		
+      		Dim interval&
+      		
+      		If Not IsArray(source) Then GoTo ExitPoint 
+      
+      		lowerbound& = LBound(source)
+      		upperbound& = UBound(source)
+      		elementcount& = upperbound& - lowerbound& + 1
+      		
+      		interval& = 1
+      
+      		
+      		' Determine the interval 
+      		While (interval& < (elementcount& / 3)) 
+      			interval& = (3 * interval&) + 1
+      		Wend
+      
+      		' Perform the sort		
+      		While (interval& > 0) 
+      			idxOuter& = interval&
+      			While idxOuter& < elementcount&
+      				
+      				' get the insertion value 
+      				insertionValue$ = source(idxOuter&) 
+      				
+      				idxInner& = idxOuter& 
+      				
+      				' shift the element to the right
+      				Do While (idxInner& > (interval& -1)) 
+      					If (StrCompare(source(idxInner& - interval&), insertionValue$) < 0) Then Exit Do 
+      					source(idxInner&) = source(idxInner& - interval&) 
+      					idxInner& = idxInner& - interval& 
+      				Loop
+      				
+      				' insert the value 
+      				source(idxInner&) = insertionValue$ 
+      				
+      				idxOuter& = idxOuter& + 1
+      			Wend
+      
+      			' recompute the interval 
+      			interval& = (interval& -1) / 3		
+      		Wend
+      		
+      		
+      	ExitPoint:
+      		If (errcode% <> 0) Then Error errcode%, errmsg$
+      		Exit Sub
+      	End Sub
+      
+      
+      	%REM
+      		Function ampersandEncode
+      		Replaces special characters (quote, apostrophe, less than, greater than, ampersand, etc) in a string with ampersand sequences	
+      		
+      		@param source String to encode
+      		 
+      		@return Ampersand-Encoded representation of source   
+      	%END REM
+      	Function ampersandEncode(source$) As String
+      		Dim result$
+      		
+      		' BEGIN CODE
+      		If isBlankString(source$) Then GoTo ExitPoint
+      		
+      		result$ = source$
+      		ForAll sequence In me.ampersandsequences_
+      			result$ = Join(Split(result$, ListTag(sequence)), sequence)
+      		End ForAll
+      
+      		
+      	ExitPoint:		
+      		ampersandEncode = result$
+      		Exit Function 
+      	End Function
+      
+      
+      	%REM
+      	Function ampersandDecode
+      		Replaces ampersand sequences in a string with special characters (quote, apostrophe, less than, greater than, ampersand, etc)
+      		
+      		@param source String to decode
+      		 
+      		@return Ampersand-Decoded representation of source   
+      	%END REM
+      	Function ampersandDecode(source$) As String 
+      		Dim result$
+      		
+      		' BEGIN CODE
+      		If isBlankString(source$) Then GoTo ExitPoint
+      		
+      		result$ = source$
+      		ForAll sequence In me.ampersandsequences_
+      			result$ = Join(Split(result$, sequence), ListTag(sequence))
+      		End ForAll
+      		
+      		
+      	ExitPoint: 
+      		ampersandDecode = result$
+      		Exit Function 
+      	End Function
+      
+      
+      	%REM
+      		Function asciiFilterByRange
+      		Removes all non-allowed characters from a string 
+      		
+      		@param source$ String from which to remove non-allowed characters 
+      		@param ranges IntegerPair, List As IntegerPair, or Array of IntegerPair objects. 
+      			ascii range(s) definining the allowed characters.
+      		
+      		@return source with all non-alphanumeric characters removed.
+      		
+      		@throws ERR_PARAMETER_INVALID if ranges is not an IntegerPair, a List As IntegerPair, nor an Array of IntegerPair objects.    
+      	%END REM
+      	Public Function asciiFilterByRange(source$, ranges As Variant) As String 
+      		Dim range As IntegerPair
+      		Dim ranges_() As IntegerPair   	
+      		
+      		Dim character$ 
+      		Dim result$
+      		
+      		Dim idx&
+      		Dim code&
+      		Dim include As Boolean  
+      		
+      		
+      		' Populate the internal array.  
+      		' If an exception is thrown here it is due to invalid ranges data type.  
+      		On Error GoTo ErrorParameterInvalid
+      		If IsObject(ranges) Then 
+      			ReDim ranges_(0) As IntegerPair
+      			Set range = ranges 
+      			Set ranges_(UBound(ranges_)) = range 
+      			 
+      		ElseIf IsArray(ranges) Then 
+      			ReDim ranges_(0) As IntegerPair
+      			ForAll arrayelement In ranges 
+      				If Not (ranges_(UBound(ranges_)) Is Nothing) Then ReDim Preserve ranges_(UBound(ranges_) + 1) As IntegerPair  
+      
+      				Set range = arrayelement 
+      				Set ranges_(UBound(ranges_)) = range 
+      			End ForAll
+      
+      		ElseIf IsList(ranges) Then 
+      			ReDim ranges_(0) As IntegerPair
+      			ForAll listelement In ranges 
+      				If Not (ranges_(UBound(ranges_)) Is Nothing) Then ReDim Preserve ranges_(UBound(ranges_) + 1) As IntegerPair  
+      
+      				Set range = listelement 
+      				Set ranges_(UBound(ranges_)) = range 
+      			End ForAll
+      
+      		Else 
+      			Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID
+      		End If
+      		
+      		On Error GoTo 0 ' Turn off ErrorParameterInvalid checking 
+      		If (range Is Nothing) Then GoTo ExitPoint ' No Parameter errors, but no valid IntegerPair object passed in.  
+      		If isBlankString(source$) Then GoTo ExitPoint 
+      
+      		For idx& = 1 To Len(source$) 
+      			include = False 
+      			character$ = Mid$(source$, idx&, 1)
+      			code& = Asc(character$)
+      			
+      			ForAll element In ranges_ 
+      				Set range = element 
+      				include = ((code& >= range.First) And (code& <= range.Last)) 
+      				If include Then Exit ForAll 
+      			End ForAll
+      			
+      			If include Then result$ = result$ & character$
+      		Next
+      		
+      	ExitPoint: 
+      		asciiFilterByRange = result$
+      		Exit Function 
+      	ErrorParameterInvalid:
+      		On Error GoTo 0 
+      		Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & | ranges is not an IntegerPair, a List As IntegerPair, nor an Array of IntegerPair objects.|	
+      	End Function
+      
+      
+      	%REM
+      		Function getAlphanumericRanges
+      		Gets a List of alphanumeric ASCII ranges 
+      		
+      		@return List of ASCII ranges for alphanumeric (Numeric, Alpha Upper, and Alpha Lower only)
+      	%END REM
+      	Public Function getAlphanumericRanges() As Variant 
+      		Dim result List As IntegerPair 
+      		
+      		Set result(|Numeric|) = me.asciiranges_(|Numeric|) 
+      		Set result(|AlphaUpper|) = me.asciiranges_(|AlphaUpper|) 
+      		Set result(|AlphaLower|) = me.asciiranges_(|AlphaLower|) 
+      		
+      		getAlphanumericRanges = result 
+      	End Function
+      
+      
+      	%REM
+      		Function getFieldNameyRanges
+      		Gets a List of fieldnamey ASCII ranges 
+      		
+      		@return List of ASCII ranges for filenamey (Numeric, Alpha Upper, Alpha Lower, and Underscore only)
+      	%END REM
+      	Public Function getFieldNameyRanges() As Variant 
+      		Dim result List As IntegerPair 
+      		
+      		Set result(|Numeric|) = me.asciiranges_(|Numeric|) 
+      		Set result(|AlphaUpper|) = me.asciiranges_(|AlphaUpper|) 
+      		Set result(|AlphaLower|) = me.asciiranges_(|AlphaLower|) 
+      		Set result(|Underscore|) = me.asciiranges_(|Underscore|) 
+      		
+      		getFieldNameyRanges = result 
+      	End Function
+      
+      
+      
+      	%REM
+      		Function getFilenameyRanges
+      		Gets a List of filenamey ASCII ranges 
+      		
+      		@return List of ASCII ranges for filenamey (Numeric, Alpha Upper, Alpha Lower, Hyphen, Period, and Underscore only)
+      	%END REM
+      	Public Function getFilenameyRanges() As Variant 
+      		Dim result List As IntegerPair 
+      		
+      		Set result(|Numeric|) = me.asciiranges_(|Numeric|) 
+      		Set result(|AlphaUpper|) = me.asciiranges_(|AlphaUpper|) 
+      		Set result(|AlphaLower|) = me.asciiranges_(|AlphaLower|) 
+      		Set result(|Hyphen|) = me.asciiranges_(|Hyphen|) 
+      		Set result(|Period|) = me.asciiranges_(|Period|) 
+      		Set result(|Underscore|) = me.asciiranges_(|Underscore|) 
+      				
+      		getFilenameyRanges = result 
+      	End Function
+      
+      
+      
+      	%REM
+      		Function alphanumericOnly
+      		Removes all non-alphanumeric (a-z, A-Z, 0-9) characters from String 
+      		
+      		@param source$ String from which to remove non-alphanumeric characters 
+      		@return source$ with all non-alphanumeric characters removed. 
+      	%END REM
+      	Public Function alphanumericOnly(source$) As String 
+      		alphanumericOnly = me.asciiFilterbyRange(source$, me.getAlphanumericRanges()) 
+      	End Function
+      
+      
+      
+      	%REM
+      		Function fieldnamefy
+      		Removes all non "fieldnamey" characters from String 
+      		"Fieldname" characters are (a-z, A-Z, 0-9, _) 
+      		
+      		@param source$ String from which to remove non-fieldnamey characters 
+      		@return source with all non-fieldnamey characters removed. 
+      	%END REM
+      	Public Function fieldnamefy(source$) As String 
+      		fieldnamefy = me.asciiFilterbyRange(source$, me.getFieldnameyRanges()) 
+      	End Function
+      
+      
+      	%REM
+      		Function filenameify
+      		Removes all non "filenamey" (a-z, A-Z, 0-9, _, -, .) characters from String 
+      		
+      		@param source$ String from which to remove non-filenamey characters 
+      		@return source with all non-filenamey characters removed. 
+      	%END REM
+      	Public Function filenameify(source$) As String 
+      		filenameify = me.asciiFilterbyRange(source$, me.getFilenameyRanges()) 
+      	End Function
+      
+      
+      	
+      	%REM
+      		Function padLeft
+      		Conditionally pads a source string with leading blank spaces. 
+      		
+      		@param source$ String to be padded 
+      		@param length% Length of the resulting string 
+      		
+      		@return source with appropiate leading blank spaces added to match the requested length.  
+      		NOTE: if Len(source$) >= length%, no padding will occur and source will be returned.
+      	%END REM
+      	Function padLeft(source$, length%) As String 
+      		
+      		Dim result$ 
+      		Dim sourcelen%
+      	
+      		sourcelen% = Len(source$) 
+      		If sourcelen% < length% Then
+      			result$ = Space(length% - sourcelen%) & source$  
+      		Else
+      			result$ = source$ 
+      		End If
+      		
+      	ExitPoint: 
+      		padLeft = result$ 
+      	End Function
+      
+      
+      
+      
+      
+      	%REM  THIS METHOD INTENTIONALLY HAS NO ERROR TRAPPING
+      		Function replaceSubstring 
+      		Replaces a substring with another string and returns the result
+      		
+      		@param source$  	String within which to search 
+      		@param searchfor$ 	String to search for within source
+      		@replacewith 		String used to replace all instances of searchfor
+      		
+      		@return source with all instances of searchfor replaced with replacewith 
+      	%END REM ERRORS MUST BE HANDLED BY CALLING CODE
+      	Public Function replaceSubstring (source$, searchfor$, replacewith$) As String
+      		Dim result As String
+      		
+      		If isBlankString(searchfor$) Then
+      			replaceSubstring$ = source$
+      		Else
+      			If (InStr(source$, searchfor$) > 0) Then
+      				result$ = StrLeft(source$, searchfor$) & replacewith$ 
+      				result$ = result$ & replaceSubstring(StrRight(source$, searchfor$), searchfor$, replacewith$)
+      			Else 
+      				result$ = source$
+      			End If 
+      			
+      			replaceSubstring$ = result$
+      		End If 
+      	End Function 
+      
+      
+      
+      
+      	%REM  THIS METHOD INTENTIONALLY HAS NO ERROR TRAPPING
+      		Function stripFirstSubstr 
+      		Strips the first substring from a string and returns the result
+      		
+      		@param source$  String within which to search 
+      		@param searchfor$ String to search for within source
+      		
+      		@return source with the first instance of searchfor removed
+      	%END REM ERRORS MUST BE HANDLED BY CALLING CODE
+      	Public Function stripFirstSubstr (source$, searchfor$) As String
+      		
+      		If (InStr(source$, searchfor$) > 0) Then
+      			stripFirstSubstr$ = StrLeft(source$, searchfor$) & StrRight(source$, searchfor$)
+      		Else
+      			stripFirstSubstr$ = source$
+      		End If 
+      	End Function  
+      
+      
+      
+      	%REM THIS METHOD INTENTIONALLY HAS NO ERROR TRAPPING  
+      		Function stripHTML 
+      		Replaces all html tags from a string
+      		
+      		@param source$  String within which to search 
+      		@param stripOrphans Flag indicating if Orphan HTML tags should also be stripped
+      		
+      		@return source with all html tags stripped out
+      	%END REM ERRORS MUST BE HANDLED BY CALLING CODE
+      	Public Function stripHTML (source$, stripOrphans As Boolean) As String
+      		Dim intPosOpen As Integer
+      		Dim intPosClose As Integer
+      		Dim strTarget As String
+      		
+      		strTarget$ = source$
+      		
+      		If stripOrphans Then
+      			' Strip out Orphan Tags
+      			Do
+      				intPosOpen% = InStr(strTarget$, |<|)
+      				intPosClose% = InStr(strTarget$, |>|)
+      				
+      				If intPosOpen% < intPosClose% Then
+      					' Either the first open indicator occurs prior to the first close indicator,
+      					' or doesn't exist at all.
+      					If intPosOpen% = 0 Then
+      						' The first open indicator doesn't exist.
+      						' If the Orphan close indicator exists, then strip it out.
+      						
+      						If (intPosClose% > 0) Then strTarget$ = stripFirstSubstr(strTarget$, |>|)
+      					Else
+      						' The first open indicator exists, and occurs prior to the first close indicator.
+      						' THIS INDICATES STANDARD MARKUP. STRIP IT OUT
+      						
+      						strTarget$ = stripFirstSubstr(strTarget$, Mid$(strTarget$, intPosOpen%, _ 
+      						(intPosClose% - intPosOpen%) + 1))
+      					End If ' intPosOpen% = 0
+      				Else
+      					' Either the first close indicator occurs prior to the first open indicator,
+      					' or doesn't exist at all.
+      					If intPosClose% = 0 Then
+      						' The first close indicator doesn't exist.
+      						' If the Orphan open indicator exists, then strip it out.
+      						
+      						If (intPosOpen% > 0) Then strTarget$ = stripFirstSubstr(strTarget$, |<|)
+      					Else
+      						' The first close indicator occurs prior to the first open indicator,
+      						' and is therefore an Orphan. Strip it out.
+      						
+      						strTarget$ = stripFirstSubstr(strTarget$, |>|)
+      					End If 
+      				End If 
+      			Loop While ((intPosOpen% + intPosClose%) > 0)
+      			
+      		Else
+      			' Orphan tags are to be ignored.
+      			
+      			Do
+      				intPosOpen% = InStr(strTarget$, |<|)
+      				If intPosOpen% > 0 Then
+      					' An open indicator exists. Find the subsequent close indicator
+      					intPosClose% = InStr(intPosOpen, strTarget$, |>|)
+      				Else
+      					' No open indicator exists. Set the close position to zero and bail out.
+      					intPosClose% = 0
+      				End If 
+      				
+      				If intPosClose% > intPosOpen% Then
+      					' The first open indicator exists, and occurs prior to the first close indicator.
+      					' THIS INDICATES STANDARD MARKUP. STRIP IT OUT
+      					strTarget$ = stripFirstSubstr(strTarget$, Mid$(strTarget$, intPosOpen%, _ 
+      					(intPosClose% - intPosOpen%) + 1))
+      				Else
+      					' No close indicator exists. Set the open position to zero and bail out.
+      					intPosOpen% = 0
+      				End If 
+      			Loop While ((intPosOpen% + intPosClose%) > 0)		
+      		End If 
+      		
+      		stripHTML$ = strTarget$	
+      
+      	End Function 
+      
+      
+      	%REM
+      		Function condcat
+      		
+      		Conditionally Concatenates two strings with a delimiter 
+      		
+      		@param string1		First string for the concatenation 
+      		@param string2 		Second string for the concatenation 
+      		@param delimiter 	String used to conditionally concatenate string1 and string2 
+      		
+      		@return string1 concatenated with string2. 	
+      			If both strings are not blank they will be concatenated using the delimiter. 
+      			Otherwise the non-blank string will be returned. 
+      	%END REM
+      	Public Function condcat(ByVal string1$, ByVal string2$, delimiter$) As String
+      		
+      		Dim result$ 
+      		
+      		trimString string1$
+      		trimString string2$
+      		
+      		If isBlankString(string1$) Then 
+      			result$ = string2$
+      		ElseIf isBlankString(string2$) Then 
+      			result$ = string1$ 
+      		Else 
+      			result$ = string1$ & delimiter$ & string2$
+      		End If
+      		
+      		condcat = result$
+      	End Function
+       
+       
+      	%REM
+      		Function getScalarString
+      		Gets the scalar value of an object as a string 
+      		
+      		@param source variant from which to get the scalar value
+      		
+      		@return String representation of the scalar value of the object.
+      		
+      		@see getScalar()  
+      	%END REM
+      	Public Function getScalarString(source As Variant) As String 
+      		getScalarString = CStr(getScalar(source))
+      	End Function
+      
+      
+      
+      	%REM
+      		Function hasMoustacheTags
+      		Tests a string to determine if it has one or more moustache tags. 
+      		Note: a moustache tag is any substring that follows the pattern {{substring}} 
+      		
+      		@param source String to check 
+      		@return Flag indicating if the source string contains a moustache tag
+      	%END REM
+      	Function hasMoustacheTags(source$) As Boolean 
+      		On Error GoTo ErrorTrap
+      		
+      		' exception variables
+      		Dim extendedinfo List As String 
+      		
+      		Dim idx_tagbegin%
+      		Dim idx_tagend%
+      		Dim taglength%
+      			
+      		Dim result As Boolean
+      		
+      		' BEGIN CODE
+      		extendedinfo(|source|) = source$
+      		If isBlankString(source$) Then GoTo ExitPoint 
+      		
+      		idx_tagbegin% = InStr(source$, |{{|) 
+      		If idx_tagbegin% < 1 Then GoTo ExitPoint 
+      		
+      		idx_tagend% = InStr(idx_tagbegin%, source$, |}}|)
+      		taglength% = idx_tagend% - (idx_tagbegin% + 2)
+      		result = (taglength% > 0)
+      		
+      	ExitPoint: 
+      		hasMoustacheTags = result
+      		Exit Function 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		Resume ExitPoint
+      	End Function
+      
+      
+      
+      	%REM
+      		Function isStringArrayEmpty
+      		Tests a String array to determine if it is empty. 
+      		
+      		Empty is defined as having no elements, or all elements are blank 
+      		
+      		@param source String array to test
+      		
+      		@return Flag indicating if the source array is empty. 
+      	%END REM
+      	Function isStringArrayEmpty (source As Variant) As Boolean
+      		Dim result As Boolean
+      		Dim sourceType As String
+      		Dim extendedinfo As String
+      		
+      		On Error GoTo ErrorTrap
+      		
+      		sourceType$ = TypeName(source)
+      		
+      		Select Case sourceType$
+      			Case |STRING|
+      				result = (Len(Trim$(source)) = 0)
+      				
+      			Case |STRING( )|
+      				result = True
+      				ForAll element In source
+      					result = Not (Len(Trim$(source)) = 0)
+      					If Not result Then GoTo ExitPoint
+      				End ForAll 	
+      				
+      			Case Else 
+      				extendedinfo = |Parameter must be a String or an array of Strings.| & _ 
+      				Chr(10) & |Parameter type = | & sourceType$ & |.|
+      				
+      				Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID
+      		End Select 	
+      		
+      	ExitPoint:	
+      		isStringArrayEmpty = result
+      		Exit Function	
+      	ErrorTrap:
+      		On Error GoTo 0 
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedInfo 
+      		Resume ExitPoint 
+      	End Function 
+      
+      End Class
+      '++LotusScript Development Environment:2:1:getBaliStrings:5:8
+      %REM
+      	Function getBaliStrings
+      	Gets the BaliStrings instance
+      %END REM
+      Static Function getBaliStrings() As BaliStrings
+      	Dim result As BaliStrings 
+      	
+      	If (result Is Nothing) Then Set result = New BaliStrings() 
+      	
+      	Set getBaliStrings = result 
+      	
+      End Function
+    signed: true
+    nonsummary: true
+  - name: $TITLE
+    type: text
+    data: baliStrings
+    signed: true
+remaining: []

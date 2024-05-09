@@ -1,0 +1,273 @@
+---
+class: 8
+flags: 0x0000
+unid: OF3E3DE564DDD45C46-ON0002CC7B8525663C
+items:
+  - name: $Collation
+    type_num: 2
+    type: opaque
+    opaque: EwABAABEAGYAAAAGAEZvcm1JZA==
+  - name: $Comment
+    type: text
+    data: ""
+    signed: true
+  - name: $DesignerVersion
+    type: text
+    data: 8.5.3
+  - name: $Flags
+    type: text
+    data: Y
+  - name: $Formula
+    type: formula
+    data: " ((Form = \"Skeleton\"))"
+    opaque: |
+      agAFADYAMgAEAAYACAAPAAkARm9ybUlkRm9ybU5hbWVUaGVDb2RlQWJzdHJhY3QkQ29uZmxpY3QEAAQA
+      AAAgAAUABABGb3JtAQAIAFNrZWxldG9uCgIEAAQAAwAHAA4ACAAJTDFTNFM1Uw==
+    signed: true
+  - name: $FormulaClass
+    type: text
+    data: "1"
+    signed: true
+  - name: $Index
+    type: text
+    data: ""
+    signed: true
+  - name: $SelQuery
+    type_num: 15
+    type: opaque
+    opaque: gQYAAAAAif8UAAAAAAABAAgAU2tlbGV0b24=
+    signed: true
+    nonsummary: true
+  - name: $TITLE
+    type: text
+    data: VSE Skeletons|LSX Skeletons
+    signed: true
+  - name: $ViewFormat
+    type_num: 5
+    type: opaque
+    opaque: |
+      AQAEAAAACgAAAFZDAQAGAAYAAAAAADAAAQAACgAAAAEAAAAAAAICAAAAVkMAAAgACQAAAAAAeAABAAAK
+      AAAAAAAAAAAAAgIAAABWQwAADwAIAAAAAAAAAgEAAAoAAAAAAAAAAAACAgAAEFZDAAACAAAADgAKAFAA
+      AQAACgAAAAAAAAAAAAICAAAARm9ybUlkRm9ybUlkRm9ybU5hbWVGb3JtIE5hbWVUaGVDb2RlQWJzdHJh
+      Y3RUaGUgQ29kZSQwDgACAAwAAgAkMJIAAwABBQEABAB/QTD/JgABAAAAAQEACQEAAAoBAQ4KAAABAK0r
+      AQABAAEAAAAAAAAAAABXQwEBAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wAAAAAAAAAAAAAAAAAA
+      V0MBAQAJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//8AAAAAAAAAAAAAAAAAAFdDAQEACQAAAAAAAAAA
+      AAAAAAAAAAAAAAAAAAAAAP//AAAAAAAAAAAAAAAAAABXQwEBAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      AAD//wAAAAAAAAAAAAAAAAAAQgAQAAAAAQD///8ABQD///8AAQAAAAAAAAAAAAAAAAABAP///wABAP//
+      /wAAAAEAAAAAAAEAgICAAAEAAAAAAAAACAAAAAAAAQA=
+    signed: true
+  - name: $ViewGlobalScript
+    type: text
+    data: |
+      '++LotusScript Development Environment:2:5:(Options):0:74
+      Option Public
+      Option Declare 
+      Use "BSXnotesUtilsUI"
+      
+      '++LotusScript Development Environment:2:5:(Forward):0:1
+      
+      '++LotusScript Development Environment:2:5:(Declarations):0:2
+    signed: true
+    nonsummary: true
+  - name: $V5ACTIONS
+    type: composite
+    signed: true
+    nonsummary: true
+    data:
+      - type: 0xff8b
+        opaque: i/8oAAEABSZUcmVidWNoZXQgTVMAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+      - type: 0x00bd
+        BackColor: 0
+        BorderStyle: 1
+        BorderWidth: 0
+        BtnHeight: 24
+        FontID: 0x09060101
+        HeightSpc: 0
+        LineColor: 0
+        LineStyle: 1
+        ShareID: 0x00000000
+        dwFlags: 0x00000301
+      - type: 0xff79
+        BackColor:
+          Flags: 0x0001
+          rgb: 0x000000
+        BtnBorderDisplay: 0
+        BtnTextJustify: 0
+        BtnWidthStyle: 0
+        ButtonColor:
+          Flags: 0x0001
+          rgb: 0x000000
+        FontColor:
+          Flags: 0x0001
+          rgb: 0xffff00
+        LineColor:
+          Flags: 0x0001
+          rgb: 0x000000
+        Spare:
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+        barFontID: 0x09000005
+        barHeight:
+          Flags: 0x0000
+          Length:
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 22
+            - 64
+          Reserved: 0
+          Units: 5
+        dwFlags: 0x00000003
+        wAppletHeight: 33
+        wBarBackgroundRepeat: 0
+        wBtnInternalMargin: 3
+        wBtnWidthAbsolute: 0
+        wSpare: 0x0000
+        wThemeSetting: 0
+      - type: 0xfffc
+        BorderFlags: 0
+        BorderStyle: 1
+        BorderWidthBottom: 2
+        BorderWidthLeft: 0
+        BorderWidthRight: 0
+        BorderWidthTop: 0
+        Color:
+          Flags: 0x0001
+          rgb: 0x808080
+        DropShadowWidth: 12
+        Flags: 0x00000000
+        InnerWidthBottom: 0
+        InnerWidthLeft: 0
+        InnerWidthRight: 0
+        InnerWidthTop: 0
+        OuterWidthBottom: 0
+        OuterWidthLeft: 0
+        OuterWidthRight: 0
+        OuterWidthTop: 0
+        dwSpare: 0x00000000
+        wSpares:
+          - 0x0000
+          - 0x0000
+          - 0x0000
+          - 0x0000
+          - 0x0000
+      - type: 0xffbe
+        Flags: 0x0000019f
+        IconIndex: 89
+        ShareId: 0
+        Type: 2
+        data: |
+          '++LotusScript Development Environment:2:5:(Options):0:66
+          
+          '++LotusScript Development Environment:2:5:(Forward):0:1
+          Declare Sub Click(Source As Button)
+          
+          '++LotusScript Development Environment:2:5:(Declarations):0:2
+          
+          '++LotusScript Development Environment:2:2:Click:1:12
+          Sub Click(Source As Button)
+          	Call DumpSkeletons()
+          	Stop	
+          End Sub
+          '++LotusScript Development Environment:2:2:BindEvents:1:129
+          Private Sub BindEvents(Byval Objectname_ As String)
+          	Static Source As BUTTON
+          	Set Source = Bind(Objectname_)
+          	On Event Click From Source Call Click
+          End Sub
+        title: DumpSkeletons
+      - type: 0xff5f
+        dwReserved: 0x00000000
+        wActionType: 2
+        wEventId: 213
+        wPlatform: 1
+        wReserved: 0
+      - type: 0xffbe
+        Flags: 0x0000019f
+        IconIndex: 0
+        ShareId: 0
+        Type: 2
+        data: |
+          '++LotusScript Development Environment:2:5:(Options):0:66
+          
+          '++LotusScript Development Environment:2:5:(Forward):0:1
+          Declare Sub Click(Source As Button)
+          
+          '++LotusScript Development Environment:2:5:(Declarations):0:2
+          
+          '++LotusScript Development Environment:2:2:Click:1:12
+          Sub Click(Source As Button)
+          	Call exportSkeletonsAsFiles
+          End Sub
+          '++LotusScript Development Environment:2:2:BindEvents:1:129
+          Private Sub BindEvents(Byval Objectname_ As String)
+          	Static Source As BUTTON
+          	Set Source = Bind(Objectname_)
+          	On Event Click From Source Call Click
+          End Sub
+        title: Export Skeletons as Files
+      - type: 0xff5f
+        dwReserved: 0x00000000
+        wActionType: 2
+        wEventId: 213
+        wPlatform: 1
+        wReserved: 0
+      - type: 0xffbe
+        Flags: 0x0000019f
+        IconIndex: 0
+        ShareId: 0
+        Type: 2
+        data: |
+          '++LotusScript Development Environment:2:5:(Options):0:66
+          
+          '++LotusScript Development Environment:2:5:(Forward):0:1
+          Declare Sub Click(Source As Button)
+          
+          '++LotusScript Development Environment:2:5:(Declarations):0:2
+          
+          '++LotusScript Development Environment:2:2:Click:1:12
+          Sub Click(Source As Button)
+          	Call importSkeletonsAsFiles
+          End Sub
+          '++LotusScript Development Environment:2:2:BindEvents:1:129
+          Private Sub BindEvents(Byval Objectname_ As String)
+          	Static Source As BUTTON
+          	Set Source = Bind(Objectname_)
+          	On Event Click From Source Call Click
+          End Sub
+        title: Import Skeletons as Files
+      - type: 0xff5f
+        dwReserved: 0x00000000
+        wActionType: 2
+        wEventId: 213
+        wPlatform: 1
+        wReserved: 0
+      - type: 0xffbe
+        Flags: 0x0000019f
+        IconIndex: 14
+        ShareId: 0
+        Type: 1
+        data: "@PostedCommand([Compose];\"Skeleton\")"
+        data_opaque: LAAAAB4AAgDoAwAAAAAAAAEACABTa2VsZXRvbrECAwAHAAwABQAJMFMwRQA=
+        title: New skeleton
+      - type: 0xffbe
+        Flags: 0x0000019f
+        IconIndex: 5
+        ShareId: 0
+        Type: 1
+        data: "@PostedCommand([EditDocument];1)"
+        data_opaque: KgAAABwAAgDoBwAAAAAAAAAAAAAAAAAA8D+xAgMABwAMAAUACTBTMEUA
+        title: Edit skeleton
+remaining: []

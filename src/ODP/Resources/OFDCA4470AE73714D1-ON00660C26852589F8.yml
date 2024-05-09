@@ -1,0 +1,25 @@
+---
+class: 1
+flags: 0x0100
+unid: OFDCA4470AE73714D1-ON00660C26852589F8
+items:
+  - name: Form
+    type: text
+    data: Skeleton
+  - name: FormId
+    type: number
+    data: 30
+  - name: FormName
+    type: text
+    data: EV_ENUM_HPP
+  - name: TheCodeAbstract
+    type: text
+    data: typedef enum %1%_EVENT_NONE=0
+  - name: TheCode
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: |
+      hf8VAAEAAAp0eXBlZGVmIGVudW0AIIX/CgABAAAKewCF/xwAAQAACiAgICUxJV9FVkVOVF9OT05FPTAA
+      hf8MAAEAAAolMiUAhf8ZAAEAAAp9ICAlMSVfRVZFTlRfSURTOyA=
+remaining: []

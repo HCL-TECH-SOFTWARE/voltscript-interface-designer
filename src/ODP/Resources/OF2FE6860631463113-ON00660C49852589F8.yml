@@ -1,0 +1,31 @@
+---
+class: 1
+flags: 0x0100
+unid: OF2FE6860631463113-ON00660C49852589F8
+items:
+  - name: Form
+    type: text
+    data: Skeleton
+  - name: FormId
+    type: number
+    data: 8
+  - name: FormName
+    type: text
+    data: COMPILE_IT - Intel
+  - name: TheCodeAbstract
+    type: text
+    data: "$(OBJ_DIR)\\%1%.$(OBJX):         %1%.$(CPPX)      %1%.$(HPPX)      \\"
+  - name: TheCode
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: |
+      hf9MAAEAAAokKE9CSl9ESVIpXCUxJS4kKE9CSlgpOiAgICAgICAgICUxJS4kKENQUFgpICAgICAgJTEl
+      LiQoSFBQWCkgICAgICBcAIX/TAABAAAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgJChB
+      UFBfSERSUykgICAgICAgICAkKENPTU1PTl9IRFJTKQCF/zsAAQAACiAgICQoQ09NUElMRV9JVCkgJChN
+      T1JFX0NPTVBJTEVfRkxBR1MpICUxJS4kKENQUFgpACCF/wkAAQAACgAghf9OAAEAAAokKE9CSl9ESVIp
+      XGklMSUuJChPQkpYKTogICAgICAgICBpJTElLiQoQ1BQWCkgICAgICAlMSUuJChIUFBYKSAgICAgIFwA
+      hf9MAAEAAAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAkKEFQUF9IRFJTKSAgICAgICAg
+      ICQoQ09NTU9OX0hEUlMpAIX/OwABAAAKICAgJChDT01QSUxFX0lUKSAkKE1PUkVfQ09NUElMRV9GTEFH
+      UykgaSUxJS4kKENQUFgpIA==
+remaining: []

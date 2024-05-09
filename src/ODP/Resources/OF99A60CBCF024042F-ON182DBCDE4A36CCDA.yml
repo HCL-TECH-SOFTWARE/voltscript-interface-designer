@@ -1,0 +1,73 @@
+---
+class: 1
+flags: 0x0100
+unid: OF99A60CBCF024042F-ON182DBCDE4A36CCDA
+items:
+  - name: $Revisions
+    type: time
+    data:
+      - data: "2023-07-25T17:38:42.94-04:00"
+        dst: true
+      - data: "2023-07-25T17:38:47.81-04:00"
+        dst: true
+      - data: "2023-07-26T17:07:40.30-04:00"
+        dst: true
+      - data: "2023-07-26T17:13:42.59-04:00"
+        dst: true
+      - data: "2023-07-26T17:24:34.61-04:00"
+        dst: true
+      - data: "2023-08-03T09:43:15.79-04:00"
+        dst: true
+      - data: "2023-08-03T10:04:57.39-04:00"
+        dst: true
+      - data: "2023-08-03T10:05:00.98-04:00"
+        dst: true
+      - data: "2023-08-03T10:05:05.48-04:00"
+        dst: true
+      - data: "2023-08-03T10:06:49.50-04:00"
+        dst: true
+      - data: "2023-08-03T10:08:53.12-04:00"
+        dst: true
+      - data: "2023-08-03T10:13:58.59-04:00"
+        dst: true
+      - data: "2023-08-03T10:15:41.93-04:00"
+        dst: true
+      - data: "2023-08-03T10:16:14.92-04:00"
+        dst: true
+      - data: "2023-08-03T10:17:55.15-04:00"
+        dst: true
+      - data: "2023-08-03T10:20:10.62-04:00"
+        dst: true
+      - data: "2023-08-03T10:22:34.29-04:00"
+        dst: true
+      - data: "2023-08-03T10:39:42.12-04:00"
+        dst: true
+      - data: "2023-08-03T10:41:36.97-04:00"
+        dst: true
+      - data: "2023-08-03T10:41:53.05-04:00"
+        dst: true
+  - name: F_ConfigID
+    type: text
+    data: F024042F99A60CBC4A36CCDA182DBCDE
+  - name: F_LSXDirectory
+    type: text
+    data: "c:\\temp\\vse\\"
+  - name: F_LSXSrcDirectory
+    type: text
+    data: "C:\\LSX\\SRC"
+  - name: F_LSXXincDirectory
+    type: text
+    data: "C:\\LSX\\XINC\\W32"
+  - name: F_LSXXlibDirectory
+    type: text
+    data: "C:\\LSX\\XLIB\\W32"
+  - name: Form
+    type: text
+    data: Toolkit Configuration
+  - name: TargetDirectory_VSE
+    type: text
+    data: "C:\\lsx\\"
+  - name: editModeFlag
+    type: text
+    data: "Yes"
+remaining: []

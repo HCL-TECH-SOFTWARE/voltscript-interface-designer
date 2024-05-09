@@ -1,0 +1,230 @@
+---
+class: 512
+flags: 0x2000
+unid: OFB0322B98D318277C-ON006CDB20852589F8
+items:
+  - name: $Comment
+    type: text
+    data: Notes/Domino UI specifi utilities
+  - name: $DesignerVersion
+    type: text
+    data: 8.5.3
+  - name: $Flags
+    type: text
+    data: s34Q
+  - name: $PublicAccess
+    type: text
+    data: "1"
+    signed: true
+  - name: $ScriptLib
+    type: text
+    data: |
+      '++LotusScript Development Environment:2:5:(Options):0:74
+      %REM
+      	Library baliUtils_nlsxUI
+      	Created Jul 2023 by Devin Olson/USA/PNPHCL
+      	Notes/Domino UI specific utilities. 
+      %END REM
+      %REM
+      	**********************************************************************
+      	**********************************************************************
+      		
+          Copyright HCL America, Inc. 1999, 2023
+      
+         	Licensed under the Apache License, Version 2.0 (the "License");
+          you may not use this file except in compliance with the License.
+          You may obtain a copy of the License at
+      
+              http://www.apache.org/licenses/LICENSE-2.0
+      
+          Unless required by applicable law or agreed to in writing, software
+          distributed under the License is distributed on an "AS IS" BASIS,
+          WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+          See the License for the specific language governing permissions and
+         	limitations under the License.
+      
+      	**********************************************************************
+      	**********************************************************************
+      %END REM
+      Option Public
+      Option Declare
+      
+      Use "baliUtils_nlsxBE" 
+      
+      
+      '++LotusScript Development Environment:2:5:(Forward):0:1
+      Declare Public Function uiSelectDatabase(title$, msg$, fieldnameServer$, fieldnameFilepath$) As NotesDatabase 
+      Declare Public Function uiSelectDirectory(title$, prompt$, fieldnameDirectory$) As String 
+      
+      '++LotusScript Development Environment:2:5:(Declarations):0:10
+      
+      Private Const MODULE_NAME = |baliUtils_nlsxUI|  
+      
+      
+      
+      %REM ***************************************************************************
+       ************************************************************************************
+      	MessageBox CONSTANTS  
+      	MessageBox constants declared here to avoid conflicts with 
+      	other libraries using lsconst.lss; which has its own 
+      	%INCLUDE "lsprcval.lss" command.
+       ************************************************************************************
+      %END REM *********************************************************************
+      Private Const MB_OK = 0 				' OK
+      Private Const MB_OKCANCEL = 1 			' OK And Cancel 
+      Private Const MB_ABORTRETRYIGNORE = 2 	' Abort, Retry, And Ignore 
+      Private Const MB_YESNOCANCEL = 3 		' Yes, No, And Cancel
+      Private Const MB_YESNO = 4 				' Yes And No 
+      Private Const MB_RETRYCANCEL = 5		' Retry And Cancel 
+      
+      Private Const MB_ICONSTOP = 16 			' Stop sign
+      Private Const MB_ICONQUESTION = 32 		' Question mark 
+      Private Const MB_ICONEXCLAMATION = 48 	' Exclamation point
+      Private Const MB_ICONINFORMATION = 64 	' Information 
+       
+      Private Const IDOK = 1 					' OK
+      Private Const IDCANCEL = 2 				' Cancel
+      Private Const IDABORT = 3 				' Abort
+      Private Const IDRETRY = 4 				' Retry
+      Private Const IDIGNORE = 5 				' Ignore
+      Private Const IDYES = 6 				' Yes
+      Private Const IDNO = 7 					' No
+      
+      Private Const PROMPT_CHOOSEDATABASE = 13 	' Choose Database 
+      Private Const PROMPT_CHOOSEDIRECTORY = 14 	' Choose a Directory 
+      
+      
+      
+      '++LotusScript Development Environment:2:1:uiSelectDatabase:13:8
+      
+       
+      %REM
+      	Function uiSelectDatabase
+      	Presents the user with a dialog box from which to select a database 
+      	and conditionally updates the appropriate fields on the current UIdocument. 
+      		
+      	@param title$ Title for the prompt
+      	@param msg$ Message for the prompt
+      	@param fieldnameServer$ Fieldname for the server field to be set
+      	@param fieldnameFilepath$ Fieldname for the filepath field to be set
+      %END REM
+      Public Function uiSelectDatabase(title$, msg$, fieldnameServer$, fieldnameFilepath$) As NotesDatabase 
+      	On Error GoTo ErrorTrap
+      
+      	Dim nuiwsp As New NotesUIWorkspace()
+      
+      	Dim result As NotesDatabase 
+      	Dim nuidoc As NotesUIDocument
+      	Dim ndb As NotesDatabase
+      	Dim selection As Variant
+      
+      	Dim extendedinfo List As String 
+      	
+      	Dim server As String
+      	Dim filepath As String
+      	Dim errors As Integer
+      	Dim updated As Boolean 
+      	
+      	
+      Prompt:
+      	On Error GoTo ErrorTrap
+      	selection = nuiwsp.Prompt(13, title$, msg$)
+      	If Not IsArray(selection) Then GoTo ExitPoint
+      	
+      	extendedinfo(|Database|) = Join(selection, |   |)
+      	server$ = selection(0)
+      	filepath$ = selection(1)
+      	
+      	Set ndb = New NotesDatabase(server$, filepath$)
+      	If Not ndb.IsOpen Then Call ndb.Open(ndb.Server, ndb.FilePath)
+      	If Not ndb.IsOpen Then Error ERR_DATABASE_NOTOPEN, MSG_DATABASE_NOTOPEN
+      	
+      	Set result = ndb 
+      	If isBlankString(fieldnameServer$) And isBlankString(fieldnameFilepath$) Then GoTo ExitPoint 
+      
+      	Set nuidoc = nuiwsp.CurrentDocument
+      	If Not isBlankString(fieldnameServer$) Then 
+      		extendedinfo(|fieldnameServer|) = fieldnameServer$ 
+      		Call nuidoc.FieldSetText(fieldnameServer$, server$)
+      		updated = True
+      	End If 
+      	
+      	If Not isBlankString(fieldnameFilepath$) Then 
+      		extendedinfo(|fieldnameFilepath|) = fieldnameFilepath$ 
+      		Call nuidoc.FieldSetText(fieldnameFilepath$, filepath$)
+      		updated = True
+      	End If 
+      	
+      	If updated Then Call nuidoc.Refresh()
+      	
+      	
+      ExitPoint:
+      	Set uiSelectDatabase = result
+      	Exit Function
+      ErrorTrap:
+      	On Error GoTo 0 
+      	Set result = Nothing 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedInfo$
+      	MessageBox Error(), MB_ICONSTOP, |Error | & CStr(Err())
+      	errors% = errors% + 1
+      	If (errors% > 5) Then Resume ExitPoint
+      	Resume Prompt
+      End Function
+      
+      '++LotusScript Development Environment:2:1:uiSelectDirectory:11:8
+      %REM
+      	Function uiSelectDirectory
+      	Presents the user with a dialog box from which to select a directory 
+      	and conditionally updates the appropriate fields on the current UIdocument. 
+      	
+      	@param title 	The text that you want displayed in the dialog box title bar.
+      	@param prompt 	The text that you want displayed within the dialog box.
+      		
+      	@param fieldnameDirectory Fieldname for the directory field to be set
+      %END REM
+      Public Function uiSelectDirectory(title$, prompt$, fieldnameDirectory$) As String 
+      	Dim nuiwsp As New NotesUIWorkspace()
+      	On Error GoTo ErrorTrap
+      
+      	Dim nuidoc As NotesUIDocument
+      
+      	Dim extendedinfo List As String 
+      	
+      	Dim result$ 
+      	Dim errors%
+      	
+      	Dim updated As Boolean 
+      	
+      	
+      Prompt:
+      	On Error GoTo ErrorTrap 
+      	result$ = nuiwsp.Prompt(PROMPT_CHOOSEDIRECTORY, title$, prompt$)
+      	
+      	
+      	If (Not isBlankString(result$)) And (Not isBlankString(fieldnameDirectory$)) Then 
+      		Set nuidoc = nuiwsp.CurrentDocument 
+      		extendedinfo(|fieldnameDirectory|) = fieldnameDirectory$ 
+      		Call nuidoc.FieldSetText(fieldnameDirectory$, result$)
+      		Call nuidoc.Refresh()
+      	End If 
+      	
+      	
+      ExitPoint:
+      	uiSelectDirectory = result$
+      	Exit Function
+      ErrorTrap:
+      	On Error GoTo 0 
+      	result$ = ||  
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	MessageBox Error(), MB_ICONSTOP, |Error | & CStr(Err())
+      	errors% = errors% + 1
+      	If (errors% > 5) Then Resume ExitPoint
+      	Resume Prompt
+      End Function
+    signed: true
+    nonsummary: true
+  - name: $TITLE
+    type: text
+    data: baliUtils_nlsxUI
+    signed: true
+remaining: []

@@ -1,0 +1,326 @@
+---
+class: 4
+flags: 0x0000
+unid: OF845BC49250278769-ON005CE18085258A52
+items:
+  - name: $$ScriptName
+    type: text
+    data: hiddenFieldsBottom
+    signed: true
+    nonsummary: true
+  - name: $DesignerVersion
+    type: text
+    data: 8.5.3
+  - name: $Fields
+    type: text
+    data: ProjectsViewSummary
+  - name: $Flags
+    type: text
+    data: CU3xA
+  - name: $TITLE
+    type: text
+    data:
+      - hiddenFields - bottom of Form
+      - hiddenFieldsBottom
+  - name: ProjectsViewSummary
+    type: iou
+    type_num: 0
+    nonsummary: true
+    ph: true
+  - name: $Body
+    type: composite
+    signed: true
+    nonsummary: true
+    data:
+      - type: 0x0081
+      - type: 0xff82
+        FirstLineLeftMargin: 1440
+        Flags: 0x8100
+        Flags2: 0x8095
+        JustifyMode: 0
+        LeftMargin: 1440
+        LineSpacing: 0
+        PABID: 1
+        ParagraphSpacingAfter: 0
+        ParagraphSpacingBefore: 0
+        RightMargin: 0
+        Tab:
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+        TabTypes: 0x00000000
+        Tabs: 0
+        data:
+          - 1440
+          - 12
+          - 1440
+          - 12
+          - 12240
+          - 100
+          - 0x00000001
+          - 0x00000006
+      - type: 0x0083
+        PABID: 1
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090101
+        data: "=================================================="
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x0081
+      - type: 0x0083
+        PABID: 1
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090101
+        data: " BEGIN Subform "
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090101
+        data: hiddenFields - bottom of Form | hiddenFieldsBottom
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x0081
+      - type: 0x0083
+        PABID: 1
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090101
+        data: "=================================================="
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x0081
+      - type: 0x0083
+        PABID: 1
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090001
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff8a
+        Version: 0
+      - type: 0xfffe
+        opaque: |
+          /v9QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          AAAAAAAAAAAAAAAAAAAAAAAAAAA=
+      - type: 0xff8a
+        opaque: |
+          iv+aDYoAAAUAMAAAAAAAAAAAAQAJCAAAYg0AAAAAEwAAAAAAYg0KAAQABwBsAGUAIElucHV0IFRyYW5z
+          bGF0aW9uIEZvcm11bGEgdXNlZCBhcyBDb21wdXRlZCBWYWx1ZSBzbyB0aGF0IGl0IGdldHMgcGlja2Vk
+          IHVwIGJ5IENvbXB1dGVXaXRoRm9ybSBjYWxscyAABwAKAAMACTFTAAcANgAwACBGaXJzdCBjaGVjayBm
+          b3JtcyB0aGF0IGRvIG5vdCBzdXBvcnQgYXJndW1lbnRzIAcADAAGAAkwUlIxUwEAGAAFAHZGb3JtAAUA
+          BABGb3JtYQEDAAcADgAHAAkwUjFTMlMAAQDAAQsAdkNvbXBvbmVudHMABQAFAHZGb3JtAAEABQBjbGFz
+          cwABAAwAY2xhc3Nfc2NyaXB0HwJ0Aq8AggFwAAEABQBDbGFzcwAFAAsARl9DbGFzc05hbWUAHwIFAAsA
+          Rl9DbGFzc1R5cGUAAQAEAEJhc2UKAq8AMAAKAAEAAACuACYAAQACAEFzBQARAEZfQ2xhc3NEZXJpdmVU
+          eXBlAB8CrgAEALUDHwKuABIBAQALAHR5cGVfc2NyaXB0AAUABQB2Rm9ybQAKAq8A8gAeAAEABABUeXBl
+          BQAKAEZfVHlwZU5hbWUfAq4A1AABAAgAcHJvcGVydHkFAAUAdkZvcm0ACgKvALgARAAFAAoARl9Qcm9w
+          TmFtZQEAAgBBcx8CBQAOAEZfUHJvcERhdGFUeXBlHwIFAA0ARl9Qcm9wSXNBcnJheQAfAq4AdAABAA8A
+          dmFyaWFibGVfc2NyaXB0AAUABQB2Rm9ybQAKAq8AUABEAAUACQBGX1Zhck5hbWUABQAOAEZfVmFyQXR0
+          cmlidXRlHwIBAAIAQXMfAgUADQBGX1ZhckRhdGFUeXBlAB8CrgAMAAEAAACuAAQAtQkDAAcASgBEAAkw
+          UjFTMlM4UzEzUzIwUzJFMjFTMjNTMjVTMzBSVDMxUzMyUzM0UzM4UlQzOVM0MFM0MlM1MFJUNTFTNTJT
+          NTRTNjJSCACCAAUABQB2Rm9ybQABAAUAZXZlbnQAAQAGAG1ldGhvZB8CAQANAG1ldGhvZF9zY3JpcHQA
+          HwIBAA8AcHJvcGVydHlfc2NyaXB0AB8CdAKvAC4ACgABAAAArgAkAAUACwB2Q29tcG9uZW50cwBeAQEA
+          AQAgAIUCwgGuAAQAtQMDAAcAFgAPAAkwUlI2UzE1UzE3UzI2UwAHACQAHgAgRm9ybXMgdGhhdCBzdXBw
+          b3J0IGFyZ3VtZW50cyAHAA4ABwAJMFJSUjFTAAEAWgARAHZIYXNBcmdMaXN0RmllbGRzAAUABQB2Rm9y
+          bQABAAUAZXZlbnQAAQANAG1ldGhvZF9zY3JpcHQAHwIBAA8AcHJvcGVydHlfc2NyaXB0AB8CdAIDAAcA
+          EAAJAAkwUjFTMlM2UwABADAAEgB2SGFzQXJnQXJyYXlGaWVsZHMFAAUAdkZvcm0AAQAGAG1ldGhvZHQC
+          AwAHABAACQAJMFIxUzJTNlMAAQASAAUAdkFyZ3MAAQAAAAMABwAOAAgACTBSUjFTMlMBABYABAB2SWR4
+          AAAAAAAAAADwPwMABwAOAAgACTBSUjFTMlMBABoABwB2U3VmZml4AAUABAB2SWR4VgEDAAcADgAHAAkw
+          UjFTMlMAAQAwAAgAdkFyZ05hbWUBAAoARl9BcmdOYW1lXwUABwB2U3VmZml4ACIC+wEzAQMABwASAAsA
+          CTBSMVMyUzVTNlMACAAgAgEAAAAFAAgAdkFyZ05hbWULAgUABgB2QnlWYWwBAAsARl9BcmdCeVZhbF8A
+          BQAHAHZTdWZmaXgAIgL7ATMBCQIFAAcAdklzTGlzdAAFABEAdkhhc0FyZ0xpc3RGaWVsZHMArwA0ACgA
+          AQAMAEZfQXJnSXNMaXN0XwUABwB2U3VmZml4ACIC+wEzAa4ADAABAAAArgAEALUDCQIFAAkAdkRhdGFU
+          eXBlAAEADgBGX0FyZ0RhdGFUeXBlXwUABwB2U3VmZml4ACIC+wEzAQkCBQAIAHZJc0FycmF5BQASAHZI
+          YXNBcmdBcnJheUZpZWxkc68ANgAqAAEADQBGX0FyZ0lzQXJyYXlfAAUABwB2U3VmZml4ACIC+wEzAa4A
+          DAABAAAArgAEALUDCQIFAAgAdkFyZ0xpbmUFAAYAdkJ5VmFsBQAIAHZBcmdOYW1lHwIFAAcAdklzTGlz
+          dAAfAgEAAgBBcx8CBQAJAHZEYXRhVHlwZQAfAgUACAB2SXNBcnJheR8CXgEBAAEAIACFAgkCBQAFAHZB
+          cmdzAAUABQB2QXJncwAFAAgAdkFyZ0xpbmUfAgkCBQAEAHZJZHgFAAQAdklkeAAAAAAAAAAA8D8iAgkC
+          BQAHAHZTdWZmaXgABQAEAHZJZHhWAQkCBQAIAHZBcmdOYW1lAQAKAEZfQXJnTmFtZV8FAAcAdlN1ZmZp
+          eAAiAvsBMwEJAvsKRgEDAAcAoACaAAkwUlIzUzRTNlJUN1M4UzExUzEyUzE1UlQxNlMxN1MyMVMyNFMy
+          NVMyOFMzMVJUMzJTMzNTMzZTMzdTNDBSVDQxUzQyUzQ2UzQ5UzUwUzUzUzU2UlQ1N1M1OFM3NVM3OFJU
+          NzlTODBTODRSVFJUODVTODZTODdTODhTOTBSVDkxUzkyUzk3UlQ5OFM5OVMxMDJTMTAzUzEwNVIBACIA
+          BQB2QXJncwAFAAUAdkFyZ3MAXgEBAAIALCCFAgMABwAQAAoACTBSUjFTMlM5UwEAfAAFAHZBcmdzAAEA
+          AAAFAAUAdkFyZ3MACgIEAAEADwBwcm9wZXJ0eV9zY3JpcHQABQAFAHZGb3JtAAoCBAAcAq8ANgAKAAEA
+          AACuACwAAQABACgABQAFAHZBcmdzAF4BAQACACwghQIiAgEAAQApACICrgAEALUDAwAHADQALQAJMFIx
+          UzJTNlM3UzlTMTBTMTJTMTNTMTZTMThTMkUxOVMyMFMyN1MyOVMzMFMAAQBSAAMAdkFzAAEABABMaXN0
+          BQAPAEZfUHJvcEF0dHJpYnV0ZQB0Aq8AJAAWAAEABABMaXN0AQACAEFzHwKuAA4AAQACAEFzrgAEALUD
+          XgEDAAcAGAARAAkwUlIxUzJTMTBTMTNTMTdTAAEAOgAOAHZQcm9wQXR0cmlidXRlBQAPAEZfUHJvcEF0
+          dHJpYnV0ZQABAAQATGlzdAEAAACNA14BAwAHABIADAAJMFIxUzJTOFMxMFMBALYACQB2QXJyYXlUYWcA
+          BQAFAHZGb3JtAAEACABwcm9wZXJ0eQEADwBwcm9wZXJ0eV9zY3JpcHQAHwJ0Aq8AdAAYAAUADQBGX1By
+          b3BJc0FycmF5AK4AXAAFAAUAdkZvcm0AAQAGAG1ldGhvZAEADQBtZXRob2Rfc2NyaXB0AB8CdAKvAC4A
+          IgAFABcARl9NZXRoUmV0dXJuVHlwZUlzQXJyYXkArgAMAAEAAACuAAQAtQUDAAcAIAAZAAkwUlIxUzJT
+          OFMxM1MxNVMxOVMyNFMyNlMAAQAIAQsAdlJldHVyblR5cGUABQAFAHZGb3JtAAEACABwcm9wZXJ0eQEA
+          DwBwcm9wZXJ0eV9zY3JpcHQAHwJ0Aq8AwgAyAAUAAwB2QXMABQAOAEZfUHJvcERhdGFUeXBlHwIFAAkA
+          dkFycmF5VGFnAB8CrgCQAAUABQB2Rm9ybQABAAYAbWV0aG9kAQANAG1ldGhvZF9zY3JpcHQAHwJ0AgEA
+          CABGdW5jdGlvbgUADgBGX0Z1bmN0X29yX1N1YgoCBAAcAq8APgAyAAEAAgBBcwUAEABGX01ldGhSZXR1
+          cm5UeXBlHwIFAAkAdkFycmF5VGFnAB8CrgAMAAEAAACuAAQAtQVeAQMABwAsACUACTBSMVMyUzEwUzE1
+          UzIxUzI1UzI5UzMwUzMyUzMzUzM2UzQyUwABAEwBCwB2Q29tcG9uZW50cwABAA8AcHJvcGVydHlfc2Ny
+          aXB0AAUABQB2Rm9ybQAKAq8AFgEoAAUADgB2UHJvcEF0dHJpYnV0ZQUACgBGX1Byb3BOYW1lHwKuAO4A
+          AQAFAGV2ZW50AAUABQB2Rm9ybQAKAq8A1AAmAAEACQBPbiBFdmVudCAABQALAEZfRXZlbnROYW1lAB8C
+          rgCuAAEABgBtZXRob2QFAAUAdkZvcm0ACgKvAJQAKAAFAA4ARl9GdW5jdF9vcl9TdWIFAAoARl9NZXRo
+          TmFtZR8CrgBsAAEADQBtZXRob2Rfc2NyaXB0AAUABQB2Rm9ybQAKAq8ASgA+AAUADwBGX01ldGhBdHRy
+          aWJ1dGUABQAOAEZfRnVuY3Rfb3JfU3ViHwIFAAoARl9NZXRoTmFtZR8CrgAMAAEAAACuAAQAtQkDAAcA
+          PgA4AAkwUlIxUzJTNVM2UzhTMTJSVDEzUzE0UzE2UzIwUlQyMVMyMlMyNFMyOFJUMjlTMzBTMzJTMzhS
+          AABSAAUACwB2Q29tcG9uZW50cwBeAQEAAQAgAIUCBQAFAHZBcmdzAAUACwB2UmV0dXJuVHlwZQAfAl4B
+          AQABACAAhQIfAgEAAQAgAIUCXgEDAAcAFAANAAkwUlIxMVMyM1MyNlMAUHJvamVjdHNWaWV3U3VtbWFy
+          eQA=
+      - type: 0x0062
+        opaque: Yg4BAIQAAAAAAAAAAAA=
+      - type: 0x00de
+        Signature: 0xff8a
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x80a0001
+        data: " "
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x000080
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090001
+        data: " (Editable -uses InputTranslation for Computed value) - used for summary column in Projects view"
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x0081
+      - type: 0x0083
+        PABID: 1
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090101
+        data: "=================================================="
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x0081
+      - type: 0x0083
+        PABID: 1
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090101
+        data: " END Subform "
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090101
+        data: hiddenFields - bottom of Form | hiddenFieldsBottom
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x0081
+      - type: 0x0083
+        PABID: 1
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090101
+        data: "=================================================="
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+  - name: $HTMLCode
+    signed: true
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: X/8QAAIADwAHAAAAAAAAAA==
+  - name: $Info
+    signed: true
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+remaining: []

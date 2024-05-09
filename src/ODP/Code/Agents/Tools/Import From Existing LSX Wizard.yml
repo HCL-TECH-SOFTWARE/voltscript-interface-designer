@@ -1,0 +1,219 @@
+---
+class: 512
+flags: 0x0000
+unid: OF9700C44567737CD1-ON006C4316852589F8
+items:
+  - name: $AssistAction
+    type: action
+    code_type: 65413
+    data: |
+      '++LotusScript Development Environment:2:5:(Options):0:74
+      %REM
+      	Agent Tools\Import From Existing LSX Wizard
+      	Created Jul 26, 2023 by Devin Olson/USA/PNPHCL
+      	Imports and Updates documents from an existing LSX Wizard database. 
+      %END REM
+      %REM
+      	**********************************************************************
+      	**********************************************************************
+      		
+          Copyright HCL America, Inc. 1999, 2023
+      
+         	Licensed under the Apache License, Version 2.0 (the "License");
+          you may not use this file except in compliance with the License.
+          You may obtain a copy of the License at
+      
+              http://www.apache.org/licenses/LICENSE-2.0
+      
+          Unless required by applicable law or agreed to in writing, software
+          distributed under the License is distributed on an "AS IS" BASIS,
+          WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+          See the License for the specific language governing permissions and
+         	limitations under the License.
+      
+      	**********************************************************************
+      	**********************************************************************
+      %END REM
+      Option Public
+      Option Explicit 
+      Use "enhLogClassLite"
+      Use "BSXnotesUtils"
+      
+      
+      '++LotusScript Development Environment:2:5:(Forward):0:1
+      Declare Sub Initialize
+      
+      '++LotusScript Development Environment:2:5:(Declarations):0:10
+      
+      Private Const MODULE_NAME = |Agent: Import from Existing LSX Wizard|
+      
+      
+      %REM ***************************************************************************
+       ************************************************************************************
+      	MessageBox CONSTANTS  
+      	MessageBox constants declared here to avoid conflicts with 
+      	other libraries using lsconst.lss; which has its own 
+      	%INCLUDE "lsprcval.lss" command.
+       ************************************************************************************
+      %END REM *********************************************************************
+      Private Const MB_OK = 0 				' OK
+      Private Const MB_OKCANCEL = 1 			' OK And Cancel 
+      Private Const MB_ABORTRETRYIGNORE = 2 	' Abort, Retry, And Ignore 
+      Private Const MB_YESNOCANCEL = 3 		' Yes, No, And Cancel
+      Private Const MB_YESNO = 4 				' Yes And No 
+      Private Const MB_RETRYCANCEL = 5		' Retry And Cancel 
+      
+      Private Const MB_ICONSTOP = 16 			' Stop sign
+      Private Const MB_ICONQUESTION = 32 		' Question mark 
+      Private Const MB_ICONEXCLAMATION = 48 	' Exclamation point
+      Private Const MB_ICONINFORMATION = 64 	' Information 
+       
+      Private Const IDOK = 1 					' OK
+      Private Const IDCANCEL = 2 				' Cancel
+      Private Const IDABORT = 3 				' Abort
+      Private Const IDRETRY = 4 				' Retry
+      Private Const IDIGNORE = 5 				' Ignore
+      Private Const IDYES = 6 				' Yes
+      Private Const IDNO = 7 					' No
+      
+      Private Const MB_DEFBUTTON1 = 0 		' First Button 
+      Private Const MB_DEFBUTTON2 = 256 		' Second Button
+      Private Const MB_DEFBUTTON3 = 512 		' Third Button
+       
+      
+      
+      
+      
+      '++LotusScript Development Environment:2:2:Initialize:1:10
+      Sub Initialize
+      	On Error Goto ErrorTrap
+      	
+      	Dim ndb As NotesDatabase 
+      	Dim importedUNIDs As StringQueue 
+      	
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	Dim errmsg$ 
+      	Dim errcode% 
+      	
+      	
+      	Dim aborted As Boolean 
+      	
+      	
+      	' BEGIN CODE 
+      	Set ndb = uiSelectDatabase(|LSX Source Database|, |Please select the LSX Source database from which to import|, ||, ||)
+      	
+      	
+      	If (ndb Is Nothing) Then 
+      		aborted = True 
+      	Else 
+      		' Import the Project Documents 
+      		Set importedUNIDs = importProjects(ndb) 
+      		
+      		' Update the Project Documents 
+      		Call updateProjects() 
+      	End If 
+      
+      	
+      ExitPoint: 
+      	If aborted Then 
+      		Messagebox |Operation Aborted|, MB_ICONEXCLAMATION, |Aborted|
+      	
+      	Elseif (0 = errcode%) Then 
+      		Messagebox "Import Complete", MB_OK + MB_ICONINFORMATION, "Success"
+      	
+      	Else 
+      		Messagebox "One or more errors occured while generating files." & CRLF & |Please check the log for additional information.|, MB_ICONSTOP, |Finished With Errors|
+      	End If 
+      	
+      	Exit Sub 
+      ErrorTrap:
+      	On Error Goto 0
+      	errcode% = Err() 
+      	errmsg$ = Error$()
+      	pushExceptionCarrier ||, ||, extendedinfo
+      	Resume ExitPoint
+      End Sub
+    dwFlags: 0x00000000
+    signed: true
+    nonsummary: true
+  - name: $AssistDocCount
+    type: number
+    data: 0
+    signed: true
+  - name: $AssistFlags
+    type: text
+    data: Es
+    signed: true
+  - name: $AssistInfo
+    type_num: 17
+    type: opaque
+    opaque: |
+      AQAEAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    signed: true
+    nonsummary: true
+  - name: $AssistLastRun
+    type: time
+    signed: true
+  - name: $AssistQuery
+    type_num: 15
+    type: opaque
+    opaque: gQYAAAAA
+    signed: true
+    nonsummary: true
+  - name: $AssistRunInfo
+    type: object
+    obj_type: 0x0008
+    obj_class: 0x0200
+    obj_privs: 0x0000
+    opaque: |
+      AAAAAAUAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      0mpqAFuKJYXgZVsAOYolhQAAAAAAAAAAAAAAAAAAAAAAAAAAqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqq
+  - name: $AssistTrigger
+    type: text
+    data: "4"
+  - name: $AssistType
+    type: number
+    data: 65413
+    signed: true
+  - name: $Comment
+    type: text
+    data: Imports and updates documents from an existing LSX Wizard database.
+    signed: true
+  - name: $DesignerVersion
+    type: text
+    data: 8.5.3
+  - name: $Flags
+    type: text
+    data: 3fL
+  - name: $FlagsExt
+    type: text
+    data: ""
+    signed: true
+  - name: $Restricted
+    type: number
+    data: 1
+    signed: true
+  - name: $TITLE
+    type: text
+    data: "Tools\\Import From Existing LSX Wizard|ui-importFromLSX"
+    signed: true
+remaining: []

@@ -1,0 +1,25 @@
+---
+class: 1
+flags: 0x0100
+unid: OFAECAAB32D22C7421-ON00660C33852589F8
+items:
+  - name: Form
+    type: text
+    data: Skeleton
+  - name: FormId
+    type: number
+    data: 42
+  - name: FormName
+    type: text
+    data: EVENT_ITEM_TAB
+  - name: TheCodeAbstract
+    type: text
+    data: "{(LSREGNAME *)LSNULL, C%1%_%2%EVENT_%3%, %4%, (LSREGNAME *)%6%, %5%, LSI_ADTEVENT_SUB, LSI_NO_HELPI"
+  - name: TheCode
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: |
+      hf9xAAEAAAogICB7KExTUkVHTkFNRSAqKUxTTlVMTCwgQyUxJV8lMiVFVkVOVF8lMyUsICU0JSwgKExT
+      UkVHTkFNRSAqKSU2JSwgJTUlLCBMU0lfQURURVZFTlRfU1VCLCBMU0lfTk9fSEVMUElEfSwg
+remaining: []

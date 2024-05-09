@@ -1,0 +1,30 @@
+---
+class: 4
+flags: 0x0000
+unid: OFC6B7004078E58D53-ON0035AECD8025893B
+items:
+  - name: $DesignerVersion
+    type: text
+    data: 8.5.3
+  - name: $FileNames
+    type: text
+    data: vsid.css.vsid.css
+    signed: true
+  - name: $Flags
+    type: text
+    data: "=34QC"
+  - name: $FlagsExt
+    type: text
+    data: D
+    signed: true
+  - name: $TITLE
+    type: text
+    data:
+      - vsid.css.vsid.css
+      - vsid.css
+    signed: true
+  - name: $FileData
+    type: composite
+    signed: true
+    nonsummary: true
+remaining: []

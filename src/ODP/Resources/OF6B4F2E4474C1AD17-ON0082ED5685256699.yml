@@ -1,0 +1,27 @@
+---
+class: 1
+flags: 0x0100
+unid: OF6B4F2E4474C1AD17-ON0082ED5685256699
+items:
+  - name: $Revisions
+    type: time
+    data:
+      - data: "1998-10-10T19:50:58.72-04:00"
+        dst: true
+      - data: "2023-07-18T11:36:44.69-04:00"
+        dst: true
+  - name: Category
+    type: text
+    data: "2"
+  - name: DataType
+    type: text
+    data: NotesACL
+  - name: Form
+    type: text
+    data: DataType
+  - name: ProjectType
+    type: text
+    data:
+      - "2"
+      - "1"
+remaining: []

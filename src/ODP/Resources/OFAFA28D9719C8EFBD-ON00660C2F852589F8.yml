@@ -1,0 +1,25 @@
+---
+class: 1
+flags: 0x0100
+unid: OFAFA28D9719C8EFBD-ON00660C2F852589F8
+items:
+  - name: Form
+    type: text
+    data: Skeleton
+  - name: FormId
+    type: number
+    data: 39
+  - name: FormName
+    type: text
+    data: GPROP_TAB
+  - name: TheCodeAbstract
+    type: text
+    data: "static LSADTPROPDESCR %3%_gprops[N_%2%_PROPS] = %1%"
+  - name: TheCode
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: |
+      hf84AAEAAApzdGF0aWMgTFNBRFRQUk9QREVTQ1IgJTMlX2dwcm9wc1tOXyUyJV9QUk9QU10gPQCF/woA
+      AQAACnsAhf8MAAEAAAolMSUAhf8LAAEAAAp9OwAg
+remaining: []

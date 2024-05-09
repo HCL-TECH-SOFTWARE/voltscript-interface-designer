@@ -1,0 +1,4630 @@
+---
+class: 512
+flags: 0x2000
+unid: OF51089ABEB7ACA019-ON0036973880258939
+items:
+  - name: $Comment
+    type: text
+    data: BaliSX Lists and Collections
+  - name: $DesignerVersion
+    type: text
+    data: 8.5.3
+    signed: true
+  - name: $Flags
+    type: text
+    data: s34Q
+  - name: $POID
+    type: time
+    data: "2019-06-30T19:25:03.29-04:00"
+    dst: true
+  - name: $PublicAccess
+    type: text
+    data: "1"
+    signed: true
+  - name: $ScriptLib
+    type: text
+    data: |
+      '++LotusScript Development Environment:2:5:(Options):0:74
+      %REM ***************************************************************************
+       ************************************************************************************
+      	Bali Lists & Collections Lotusscript Library
+      
+      	Based on Apache Open Source Libraries:
+      		Lists & Collections Lotusscript Library - Copyright &copy; 2002 - 2052, Devin S. Olson 
+      		enhLogClass Lotusscript Library - Copyright &copy; 2002 - 2052, Devin S. Olson
+      	
+       ************************************************************************************
+      %END REM *********************************************************************
+      %REM ***************************************************************************
+       ************************************************************************************
+      	Lists & Collections Lotusscript Library
+      		Lists and Collections 
+      
+      	Released under the Apache License, Version 2.0
+      	
+      	
+      	' ************************************************************************************
+      	' *  Copyright 2002 Devin S. Olson
+      	' *  
+      	' *  Licensed under the Apache License, Version 2.0 (the "License"); 
+      	' *  you may not use this file except in compliance with the License. 
+      	' *  You may obtain a copy of the License at 
+      	' *  
+      	' *  http://www.apache.org/licenses/LICENSE-2.0 
+      	' *  	
+      	' *  Unless required by applicable law or agreed to in writing, software 
+      	' *  distributed under the License is distributed on an "AS IS" BASIS, 
+      	' *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+      	' *  See the License for the specific language governing permissions and 
+      	' *  limitations under the License. 
+      	' *  	
+       	' ************************************************************************************
+       	' ************************************************************************************
+      	' BEGIN NOTICE	
+      	' *	NOTICE
+      	' *		azlwListsCollections & enhLogClass 
+      	' *		Copyright (c) 2002 - 2052 Devin S. Olson.  All rights reserved.
+      	' *
+      	' *  Developed by: Devin S. Olson
+      	' *                azlighthouse works, llc.
+      	' *                http://www.azlighthouse.com
+      	' *  
+      	' *  Permission is hereby granted, free of charge, to any person obtaining a copy
+      	' *  of this software and associated documentation files (the "Software"), to
+      	' *  deal with the Software without restriction, including without limitation the
+      	' *  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+      	' *  sell copies of the Software, and to permit persons to whom the Software is
+      	' *  furnished to do so, subject to the following conditions:
+      	' *  
+      	' *    1. Redistributions of source code must retain the above copyright notice,
+      	' *       this list of conditions and the following disclaimers.
+      	' *  
+      	' *    2. Redistributions in binary form must reproduce the above copyright
+      	' *       notice, this list of conditions and the following disclaimers in the
+      	' *       documentation and/or other materials provided with the distribution.
+      	' *  
+      	' *    3. Neither the names of Devin S. Olson, azlighthouse works, nor the names  
+      	' *       of its contributors may be used to endorse or promote products derived 
+      	' *       from this Software without specific prior written permission.
+      	' *  
+      	' *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+      	' *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+      	' *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE 
+      	' *  CONTRIBUTORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+      	' *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
+      	' *  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
+      	' *  WITH THE SOFTWARE.
+      	' *  
+      	' *  NOTICE TRANSLATION: 
+      	' *  	You can give away this code.  
+      	' *  	You can sell this code.  
+      	' *  	You can use this code in your programs, either to give away or to sell.  
+      	' *  	You can to whatever you want to do with this code, 
+      	' *  	AS LONG AS YOU CREDIT THE AUTHOR AND INCLUDE THE ABOVE LICENSE AND NOTICE.  
+      	' *  	It's pretty simple: don't be a jerk and claim that you wrote the code.
+      	' *	END NOTICE
+       	' ************************************************************************************
+      %END REM
+      %REM
+      	**********************************************************************
+      	**********************************************************************
+      		
+          Copyright HCL America, Inc. 1999, 2023
+      
+         	Licensed under the Apache License, Version 2.0 (the "License");
+          you may not use this file except in compliance with the License.
+          You may obtain a copy of the License at
+      
+              http://www.apache.org/licenses/LICENSE-2.0
+      
+          Unless required by applicable law or agreed to in writing, software
+          distributed under the License is distributed on an "AS IS" BASIS,
+          WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+          See the License for the specific language governing permissions and
+         	limitations under the License.
+      
+      	**********************************************************************
+      	**********************************************************************
+      %END REM
+      Option Public
+      Option Explicit 
+      
+      Use "baliStrings"
+      
+      
+      '++LotusScript Development Environment:2:5:(Forward):0:1
+      Declare Public Class azlwListCarrier
+      Declare Public Class BooleanList As azlwListCarrier 
+      Declare Public Class DateList As azlwListCarrier 
+      Declare Public Class IntegerList As azlwListCarrier 
+      Declare Public Class VariantList As azlwListCarrier 
+      Declare Public Class StringList As azlwListCarrier 
+      Declare Public Class LongList As azlwListCarrier 
+      Declare Public Class SingleList As azlwListCarrier 
+      Declare Public Class DoubleList As azlwListCarrier 
+      Declare Public Class CurrencyList As azlwListCarrier 
+      Declare Class KeyedStringList As azlwListCarrier 
+      Declare Class IntegerPairList As azlwListCarrier 
+      Declare Class KeyedVariant 
+      Declare Public Class azlwKeyedValueCarrier 
+      Declare Class KeyedString As azlwKeyedValueCarrier 
+      Declare Class KeyedNotesDateTime As azlwKeyedValueCarrier  
+      Declare Class StringsCarrier 
+      Declare Class StringQueue As StringsCarrier
+      Declare Class StringStack As StringsCarrier
+      Declare Public Class StringsCarrierList As azlwListCarrier 
+      Declare Class IntegersCarrier 
+      Declare Class IntegerStack As IntegersCarrier
+      Declare Class IntegerQueue As IntegersCarrier
+      Declare Sub Initialize
+      Declare Public Function getSortedListTags(source As Variant) As Variant 
+      Declare Function jsonArrayToStringList(source As NotesJSONArray) As StringList 
+      Declare Public Function at_urlEncode(source$) As String
+      Declare Function getJSONelementTypeName(source%) As String  
+      Declare Function jsonObjectToStringList(source As NotesJSONObject) As StringList 
+      Declare Function jsonArrayToJSON(source As NotesJSONArray) As String 
+      Declare Public Function jsonElementToJSON(source As NotesJSONElement) As String 
+      Declare Public Function jsonElementToStringList(source As NotesJSONElement) As StringList 
+      Declare Function StringToStringsCarrier(source$) As StringsCarrier  
+      Declare Private Function equals(var1 As Variant, var2 As Variant) As Boolean 
+      Declare Function jsonObjectToJSON(source As NotesJSONObject) As String 
+      Declare Public Function toJSONvalue(source As Variant) As String 
+      Declare Function write_StringQueueToFile(source As StringQueue, target$) As Long 
+      
+      '++LotusScript Development Environment:2:5:(Declarations):0:10
+      
+      
+      Private Const MODULE_NAME = |baliListsCollections| 
+      
+      
+      Private Const V_EMPTY = 0 
+      Private Const V_NULL = 1
+      Private Const V_INTEGER = 2
+      Private Const V_LONG = 3 
+      Private Const V_SINGLE = 4
+      Private Const V_DOUBLE = 5
+      Private Const V_CURRENCY = 6
+      Private Const V_DATE = 7
+      Private Const V_STRING = 8
+      Private Const V_DISPATCH = 9 
+      Private Const V_ERROR = 10 
+      Private Const V_BOOLEAN = 11 
+      Private Const V_VARIANT = 12 
+      Private Const V_IUNKNOWN = 13
+      Private Const V_BYTE = 17 
+      Private Const V_LSOBJ = 34
+      Private Const V_PRODOBJ = 35  
+      
+      
+      
+      
+      %REM
+      	Class azlwListCarrier
+      	Base Class for List Carriers 
+      %END REM
+      Public Class azlwListCarrier
+      	
+      	Private Property Get CLASS_NAME As String 
+      		CLASS_NAME = |azlwListCarrier|
+      	End Property
+      	
+      	Private Property Get CLASS_PREFIX As String 
+      		CLASS_PREFIX = MODULE_NAME & |.| & CLASS_NAME & |.|
+      	End Property
+      
+      	Property Get JSON As String 
+      		On Error GoTo ErrorTrap
+      		
+      		Dim result$
+      		
+      		If me.hasContent Then 
+      			result$ = toJSONvalue(me.getContent())
+      		Else 
+      			result$ = |{}|
+      		End If
+      		
+      	ExitPoint:		
+      		JSON = result$
+      		Exit Property 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, ||
+      		result$ = |{}|
+      		Resume ExitPoint 
+      	End Property
+      	
+      	
+      	Property Get JSONallStrings As String 
+      		On Error GoTo ErrorTrap
+      
+      		Dim pair(1) As String 
+      		Dim valuesarray() As String 
+      
+      		Dim result$
+      		Dim tag$
+      		Dim stringvalue$
+      		Dim i%
+      		
+      		If me.hasContent Then 
+      			ReDim valuesarray(me.size - 1) As String 
+      
+      			ForAll element In me.getContent()
+      				tag$ = ListTag(element)
+      				stringvalue$ = toJSONvalue(element)
+      				If isBlankString(stringvalue$) Then 
+      					stringvalue$ = ""
+      				ElseIf (|"| <> Left$(stringvalue$, 1)) Then
+      					stringvalue$ = |"| & stringvalue$ & |"|
+      				End If
+      
+      				pair(0) = |"| & getBaliStrings().ampersandEncode(tag$) & |"|
+      				pair(1) = stringvalue$
+      				
+      				valuesarray(i%) = Join(pair, |:|)
+      				i% = i% + 1
+      			End ForAll
+      			
+      			result$ = |{| & Join(valuesarray, |,|) & |}|
+      		Else 
+      			result$ = |{}|
+      		End If
+      		
+      	ExitPoint:		
+      		JSONallStrings = result$
+      		Exit Property 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, |tag: | & tag$ & Chr(10) & |stringvalue: | & stringvalue$
+      		result$ = |{}|
+      		Resume ExitPoint 
+      	End Property
+      	
+      	
+      	%REM
+      		Function getContent
+      		Gets the content list for the object
+      		
+      		This method is designed to be overriden by child classes
+      	%END REM
+      	Function getContent() As Variant	
+      		Error ERR_PARENT_METHOD_NOT_ALLOWED, MSG_PARENT_METHOD_NOT_ALLOWED
+      	End Function
+      
+      	
+      	%REM
+      		Function hasTag 
+      		Indicates if the specified tag represents an element in the internal List 
+      		
+      		@param tag$  ListTag for the element 
+      		
+      		@return Flag indicating if the tag represents an element in the internal list   
+      	%END REM
+      	Function hasTag(tag$) As Boolean 
+      		If IsList(me.getContent()) Then 
+      			hasTag = IsElement(me.getContent()(tag$))
+      		End If
+      	End Function 
+      	
+      	
+      	%REM
+      		Property listTags
+      		array of all ListTags
+      	%END REM
+      	Property Get listTags As Variant 
+      		listTags =  getListTags(me.getContent()) 
+      	End Property
+      
+      	
+      	%REM
+      		Property Get sortedListTags
+      		sorted Array of all ListTags
+      	%END REM
+      	Property Get sortedListTags As Variant 
+      		sortedListTags = getSortedListTags(me.getContent()) 
+      	End Property
+      	
+      	%REM
+      		Property Get size
+      		Number of elements in the list
+      	%END REM
+      	Property Get size As Long 
+      		size = getListSize(me.getContent()) 
+      	End Property
+      	
+      	Property Get hasContent As Boolean
+      		On Error GoTo ErrorTrap
+      		
+      		Dim result As Boolean 
+      		
+      		result = False 
+      		ForAll element In me.getContent()  
+      			result = True 
+      			Exit ForAll 
+      		End ForAll
+      		
+      	ExitPoint:
+      		hasContent = result
+      		Exit Property 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, || 
+      		Resume ExitPoint 
+      	End Property
+      	
+      	
+      	
+      	
+      	%REM
+      		Function isEqual
+      		Compares tags and values to another azlwListCarrier 
+      		
+      		@param source 	azlwListCarrier object to compare 
+      		
+      		@return 		Flag indicating all tags and values have equal values
+      	%END REM
+      	Function isEqual(source As azlwListCarrier) As Boolean 	
+      		On Error GoTo ErrorTrap 
+      
+      		Dim result As Boolean 
+      
+      		' BEGIN CODE
+      
+      		result = False 
+      		
+      		If (source Is Nothing) Then GoTo ExitPoint 
+      		If (CLASS_PREFIX <> source.CLASS_PREFIX) Then GoTo ExitPoint ' Class Prefix must match
+      		
+      		result = equals(me.getContent(), source.getContent()) 
+      		
+      	ExitPoint:
+      		isEqual = result 
+      		Exit Function 
+      	ErrorTrap:
+      		On Error GoTo 0 
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, ||
+      		Resume ExitPoint 
+      	End Function  
+      
+      	
+      	%REM
+      		Sub setElementValue() 
+      		Sets the value for an element in the list
+      		
+      		This method is designed to be overriden by child classes
+      		
+      		@param key Unique key identifying the element whose value should be set 
+      		@parm value Value to be associated with the key 
+      	%END REM
+      	Sub setElementValue(key$, value As Variant) 
+      		Error ERR_PARENT_METHOD_NOT_ALLOWED, MSG_PARENT_METHOD_NOT_ALLOWED
+      	End Sub
+      	
+      	
+      	%REM
+      		Sub removeElement() 
+      		Removes an element (if it exists) from the list
+      		
+      		This method is designed to be overriden by child classes
+      		
+      		@param key Unique key identifying the element to be removed
+      	%END REM
+      	Sub removeElement(key$) 
+      		Error ERR_PARENT_METHOD_NOT_ALLOWED, MSG_PARENT_METHOD_NOT_ALLOWED
+      	End Sub
+      	
+      	%REM
+      		Sub clear
+      		Clears the object's content
+      		
+      		This method is designe to be overriden by child classes
+      	%END REM
+      	Sub clear() 
+      		Error ERR_PARENT_METHOD_NOT_ALLOWED, MSG_PARENT_METHOD_NOT_ALLOWED
+      	End Sub
+      
+      End Class
+      
+      
+      %REM
+      	Class BooleanList 
+      	Wrapper for a List As Boolean object, with extended functionality through the various properties and methods. 
+      %END REM
+      Public Class BooleanList As azlwListCarrier 
+      	Private content_ List As Boolean
+      
+      	Public Sub New()
+      	End Sub
+      
+      	Public Sub Delete()
+      		Erase me.content_
+      	End Sub
+      	
+      	Private Property Get CLASS_NAME As String 
+      		CLASS_NAME = |BooleanList|
+      	End Property
+      
+      
+      
+      	%REM
+      		Function getContent
+      		Gets the content list for the object
+      	%END REM
+      	Public Function getContent() As Variant 	
+      		getContent = me.content_	
+      	End Function
+      
+      	
+      	Sub addAll(source As BooleanList) 	
+      		If (source Is Nothing) Then GoTo ExitPoint 
+      		On Error GoTo ErrorTrap 
+      		
+      		Dim tag$ 
+      
+      		ForAll element In source.content_
+      			tag$ = ListTag(element) 
+      			me.content_(tag$) = element 
+      		End ForAll
+      		
+      	ExitPoint: 
+      		Exit Sub
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, |tag: | & tag$
+      		Resume ExitPoint 
+      	End Sub
+      	
+      	
+      	Function getValue(key$) As Boolean
+      		Dim result As Boolean 
+      		On Error GoTo ErrorTrap 
+      		
+      		result = False 
+      		If isBlankString(key$) Then GoTo ExitPoint 
+      		
+      		If IsElement(me.content_(key$)) Then 
+      			result = me.content_(key$) 
+      		Else 
+      			ForAll element In me.content_ 
+      				If (0 = StrCompare(key$, ListTag(element), 5)) Then 
+      					result = element 
+      					Exit ForAll   
+      				End If
+      			End ForAll
+      		End If
+      		
+      	ExitPoint: 
+      		getValue = result 
+      		Exit Function
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, |key: | & key$
+      		Resume ExitPoint 
+      	End Function
+      
+      
+      
+      	%REM
+      		Property trueOnly
+      		subset of all True values
+      	%END REM
+      	Property Get trueOnly As BooleanList
+      		Dim result As New BooleanList() 
+      		On Error GoTo ErrorTrap 
+      		
+      		ForAll booleanValue In me.content_ 
+      			If (booleanValue) Then result.content_(ListTag(booleanValue)) = booleanValue
+      		End ForAll
+      		
+      	ExitPoint: 
+      		Set trueOnly = result
+      		Exit Property 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, ||
+      		Resume ExitPoint 
+      	End Property	
+      	
+      	
+      	%REM
+      		Property falseOnly
+      		subset of all False values
+      	%END REM
+      	Property Get falseOnly As BooleanList
+      		Dim result As New BooleanList() 
+      		On Error GoTo ErrorTrap 
+      		
+      		ForAll booleanValue In me.content_ 
+      			If (Not booleanValue) Then result.content_(ListTag(booleanValue)) = booleanValue
+      		End ForAll
+      		
+      	ExitPoint: 
+      		Set falseOnly = result
+      		Exit Property 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, ||
+      		Resume ExitPoint 
+      	End Property	
+      	
+      	
+      	
+      	%REM
+      		Function isTrue
+      		Indicates if a key is a member of the internal list AND it's associated value is True. 
+      	%END REM
+      	Function isTrue(key$) As Boolean 
+      		On Error GoTo ErrorTrap
+      		isTrue = me.getValue(key$) 
+      
+      	ExitPoint:
+      		Exit Function 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		isTrue = False
+      		Resume ExitPoint  
+      	End Function
+      	
+      	
+      	%REM
+      		Property Get hasTrue
+      		Flag indicating if the object contains a True value
+      	%END REM
+      	Property Get hasTrue As Boolean
+      		hasTrue = False 
+      		If me.hasContent Then 
+      			ForAll element In me.content_ 
+      				If (element) Then 
+      					hasTrue = True 
+      					Exit ForAll
+      				End If  
+      			End ForAll
+      		End If
+      	End Property
+      	
+      	
+      	%REM
+      		Property Get hasFalse
+      		Flag indicating if the object contains a False value
+      	%END REM
+      	Property Get hasFalse As Boolean
+      		hasFalse = False 
+      		If me.hasContent Then 
+      			ForAll element In me.content_ 
+      				If (Not element) Then 
+      					hasFalse = True 
+      					Exit ForAll
+      				End If  
+      			End ForAll
+      		End If
+      	End Property
+      	
+      	
+      	Sub setElementValue(key$, value As Variant)
+      		me.content_(key$) = CBool(value)  
+      	End Sub
+      	
+      	
+      	Sub removeElement(key$) 
+      		Erase me.content_(key$)
+      	End Sub
+      	
+      	Sub clear() 
+      		Erase me.content_
+      	End Sub	
+      	
+      End Class
+      
+      
+      %REM
+      	Class DateList 
+      	Wrapper for a List As NotesDateTime object, with extended functionality through the various properties and methods. 
+      %END REM
+      Public Class DateList As azlwListCarrier 
+      	Private content_ List As NotesDateTime 
+      
+      	Public Sub New()
+      	End Sub
+      
+      	Public Sub Delete()
+      		Erase me.content_
+      	End Sub
+      	
+      	Private Property Get CLASS_NAME As String 
+      		CLASS_NAME = |DateList|
+      	End Property
+      
+      
+      	%REM
+      		Function getContent
+      		Gets the content list for the object
+      	%END REM
+      	Public Function getContent() As Variant 	
+      		getContent = me.content_ 	
+      	End Function
+      
+      
+      	
+      	Sub addAll(source As DateList) 	
+      		If (source Is Nothing) Then GoTo ExitPoint 
+      		On Error GoTo ErrorTrap 
+      		
+      		Dim tag$ 
+      
+      		ForAll element In source.content_
+      			tag$ = ListTag(element) 
+      			Set me.content_(tag$) = element 
+      		End ForAll
+      		
+      	ExitPoint: 
+      		Exit Sub
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, |tag: | & tag$
+      		Resume ExitPoint 
+      	End Sub
+      	
+      	
+      	
+      	Function getValue(key$) As NotesDateTime
+      		Dim result As NotesDateTime  
+      		On Error GoTo ErrorTrap 
+      		
+      		Set result = Nothing 
+      		If isBlankString(key$) Then GoTo ExitPoint 
+      		
+      		If IsElement(me.content_(key$)) Then 
+      			Set result = me.content_(key$)
+      		Else 
+      			ForAll element In me.content_ 
+      				If (0 = StrCompare(key$, ListTag(element), 5)) Then 
+      					Set result = element 
+      					Exit ForAll   
+      				End If
+      			End ForAll
+      		End If
+      
+      	ExitPoint: 
+      		Set getValue = result 
+      		Exit Function
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, |key: | & key$
+      		Resume ExitPoint 
+      	End Function
+      	
+      	
+      	%REM
+      		Property listTagsByDateAsc
+      		array of all listTags, ordered by Date (Ascending) 
+      	%END REM
+      	Function getlistTagsByDate(ascending As Boolean) As Variant 
+      		Dim kndtArray() As KeyedNotesDateTime
+      		Dim kndt As KeyedNotesDateTime 	
+      		
+      		
+      		Dim valuesArray() As String
+      		Dim i#
+      		On Error GoTo ErrorTrap 
+      		
+      		If (me.hasContent) Then
+      			i# = me.size -1 
+      			ReDim valuesArray(i#) As String 
+      			ReDim kndtArray(i#) As KeyedNotesDateTime 
+      			i# = 0
+      
+      			' populate the KeyedNotesDateTimes						
+      			ForAll element In me.content_
+      				Set kndt = New KeyedNotesDateTime() 
+      				kndt.key = ListTag(element) 
+      				Set kndt.value = element
+      				Set kndtArray(i#) = kndt
+      				i# = i# + 1 
+      			End ForAll
+      			
+      			' Sort the KeyedNotesDateTimes 
+      			If (ascending) Then 
+      				me.sortAsc kndtArray
+      			Else 
+      				me.sortDesc kndtArray
+      			End If 
+      			
+      			
+      			' Add the keys from kndt to the result
+      			For i# = 0 To UBound(kndtArray) 
+      				valuesArray(i#) = kndtArray(i#).key
+      			Next
+      			
+      			getlistTagsByDate = valuesArray
+      		Else 
+      			getlistTagsByDate = Null  
+      		End If 
+      		
+      	ExitPoint: 
+      		Exit Function 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, ||
+      		Resume ExitPoint 
+      	End Function
+      	
+      	
+      	Private Sub sortAsc(source() As KeyedNotesDateTime)
+      		Dim kndt As KeyedNotesDateTime
+      		Dim Lower As Integer
+      		Dim Upper As Integer
+      		Dim botMax As Integer
+      		Dim i As Integer
+      		Dim k As Integer
+      		Dim h As Integer
+      		
+      		Lower% = LBound(source())
+      		Upper% = UBound(source())
+      
+      		h% = 1
+      		Do
+      			h% = (3*h%) + 1
+      		Loop Until h% > Upper%-Lower%+1
+      
+      		Do
+      			h% = h% \ 3
+      			botMax% = Lower% + h% - 1
+      			For i% = botMax% + 1 To Upper%
+      				Set kndt = source( i% )
+      				k% = i%
+      				While (source(k% - h%).value.timeDifferenceDouble(kndt.value) > 0)
+      					Set source(k%) = source( k% - h% )
+      					k% = k% - h%
+      					If (k% <= botMax%) Then GoTo wOut
+      				Wend
+      			wOut:
+      				If (k% <> i%) Then Set source(k%) = kndt
+      			Next
+      		Loop Until h% = 1
+      	End Sub
+      	
+      	Private Sub sortDesc(source() As KeyedNotesDateTime)
+      		Dim kndt As KeyedNotesDateTime
+      		Dim Lower As Integer
+      		Dim Upper As Integer
+      		Dim botMax As Integer
+      		Dim i As Integer
+      		Dim k As Integer
+      		Dim h As Integer
+      		
+      
+      		Lower% = LBound(source())
+      		Upper% = UBound(source())
+      
+      		h% = 1
+      		Do
+      			h% = (3*h%) + 1
+      		Loop Until h% > Upper%-Lower%+1
+      
+      		Do
+      			h% = h% \ 3
+      			botMax% = Lower% + h% - 1
+      			For i% = botMax% + 1 To Upper%
+      				Set kndt = source( i% )
+      				k% = i%
+      				While (kndt.value.timeDifferenceDouble(source(k% - h%).value) > 0)
+      					Set source(k%) = source( k% - h% )
+      					k% = k% - h%
+      					If (k% <= botMax%) Then GoTo wOut
+      				Wend
+      			wOut:
+      				If (k% <> i%) Then Set source(k%) = kndt
+      			Next
+      		Loop Until h% = 1
+      	End Sub
+      	
+      	
+      	Sub setElementValue(key$, value As Variant)
+      		Dim ndt As NotesDateTime
+      		Set ndt = value 
+      		Set me.content_(key$) = ndt  
+      	End Sub
+      	
+      	
+      	Sub removeElement(key$) 
+      		Erase me.content_(key$)
+      	End Sub
+      	
+      	Sub clear() 
+      		Erase me.content_
+      	End Sub	
+      	
+      End Class
+      
+      
+      %REM
+      	Class IntegerList 
+      	Wrapper for a List As Integer object, with extended functionality through the various properties and methods. 
+      %END REM
+      Public Class IntegerList As azlwListCarrier 
+      	Private content_ List As Integer
+      
+      	Public Sub New()
+      	End Sub
+      
+      	Public Sub Delete()
+      		Erase me.content_
+      	End Sub
+      	
+      	Private Property Get CLASS_NAME As String 
+      		CLASS_NAME = |IntegerList|
+      	End Property
+      
+      	
+      	%REM
+      		Function getContent
+      		Gets the content list for the object
+      	%END REM
+      	Public Function getContent() As Variant 	
+      		getContent = me.content_ 	
+      	End Function
+      
+      	
+      
+      	Sub addAll(source As IntegerList) 	
+      		If (source Is Nothing) Then GoTo ExitPoint 
+      		On Error GoTo ErrorTrap 
+      		
+      		Dim tag$ 
+      
+      		ForAll element In source.content_
+      			tag$ = ListTag(element) 
+      			me.content_(tag$) = element 
+      		End ForAll
+      		
+      	ExitPoint: 
+      		Exit Sub
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, |tag: | & tag$
+      		Resume ExitPoint 
+      	End Sub
+      	
+      	
+      	
+      	Function getValue(key$) As Integer
+      		Dim result As Integer  
+      		On Error GoTo ErrorTrap 
+      		
+      		result = 0
+      		If isBlankString(key$) Then GoTo ExitPoint 
+      		
+      		If IsElement(me.content_(key$)) Then 
+      			result = me.content_(key$)
+      		Else 
+      			ForAll element In me.content_ 
+      				If (0 = StrCompare(key$, ListTag(element), 5)) Then 
+      					result = element 
+      					Exit ForAll   
+      				End If
+      			End ForAll
+      		End If
+      	
+      		
+      	ExitPoint: 
+      		getValue = result 
+      		Exit Function
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, |key: | & key$
+      		Resume ExitPoint 
+      	End Function
+      	
+      	Sub setElementValue(key$, value As Variant)
+      		me.content_(key$) = CInt(value)  
+      	End Sub
+      	
+      	
+      	Sub removeElement(key$) 
+      		Erase me.content_(key$)
+      	End Sub
+      	
+      	Sub clear() 
+      		Erase me.content_
+      	End Sub	
+      	
+      End Class
+      
+      
+      %REM
+      	Class VariantList 
+      	Wrapper for a List As Variant object, with extended functionality through the various properties and methods. 
+      %END REM
+      Public Class VariantList As azlwListCarrier 
+      	Public content_ List As Variant 
+      	
+      	
+      	Private Property Get CLASS_NAME As String 
+      		CLASS_NAME = |VariantList|
+      	End Property
+      	
+      
+      	Public Sub New()
+      	End Sub
+      
+      
+      	Public Sub Delete()
+      		Erase me.content_
+      	End Sub
+      	
+      	
+      	%REM
+      		Function getContent
+      		NOTE: A List as Variant object cannot be returned as a variant due to LotusScript interpreter restrictions.
+      		Developers should directly access the public .content_ variable instead.
+      		
+      		@throws ERR_OPERATION_PROHIBITED 
+      		
+      		@see content
+      	%END REM
+      	Public Function getContent() As Variant 	
+      		Error ERR_OPERATION_PROHIBITED, MSG_OPERATION_PROHIBITED & |Directly use public .content_ instead.  |
+      	End Function
+      	
+      	
+      	Property Get hasContent As Boolean
+      		On Error GoTo ErrorTrap
+      		
+      		Dim result As Boolean 
+      
+      		result = False 
+      		ForAll element In me.content_
+      			result = True 
+      			Exit ForAll 
+      		End ForAll
+      		
+      	ExitPoint:
+      		hasContent = result
+      		Exit Property 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, ||
+      		Resume ExitPoint 
+      	End Property
+      	
+      	
+      	Sub addAll(source As VariantList) 	
+      		If (source Is Nothing) Then GoTo ExitPoint 
+      		On Error GoTo ErrorTrap 
+      		
+      		Dim tag$ 
+      
+      		ForAll element In source.content_
+      			tag$ = ListTag(element) 
+      			If IsObject(element) Then 
+      				Set me.content_(tag$) = element
+      			Else 
+      				me.content_(tag$) = element
+      			End If  
+      		End ForAll
+      		
+      	ExitPoint: 
+      		Exit Sub
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, |tag: | & tag$
+      		Resume ExitPoint 
+      	End Sub
+      	
+      	
+      	Sub setElementValue(key$, value As Variant)
+      		If IsObject(value) Then 
+      			Set me.content_(key$) = value
+      		Else 
+      			me.content_(key$) = value
+      		End If 
+      	End Sub
+      	
+      	
+      	Function getValue(key$) As Variant
+      		Dim result As Variant  
+      		On Error GoTo ErrorTrap 
+      		
+      		result = Null  
+      		If isBlankString(key$) Then GoTo ExitPoint 
+      		
+      		If IsElement(me.content_(key$)) Then 
+      			If IsObject(me.content_(key$)) Then 
+      				Set result = me.content_(key$)
+      			Else 
+      				result = me.content_(key$) 
+      			End If 
+      		Else 
+      			ForAll element In me.content_ 
+      				If (0 = StrCompare(key$, ListTag(element), 5)) Then 
+      					If IsObject(me.content_(key$)) Then 
+      						Set result = me.content_(key$)
+      					Else 
+      						result = me.content_(key$) 
+      					End If 
+      					Exit ForAll   
+      				End If
+      			End ForAll
+      		End If
+      		
+      	ExitPoint: 
+      		If IsObject(result) Then 
+      			Set getValue =result
+      		Else 
+      			getValue = result
+      		End If 
+      		Exit Function
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, |key: | & key$
+      		Resume ExitPoint 
+      	End Function
+      
+      
+      	%REM
+      		Function hasTag 
+      		Indicates if the specified tag represents an element in the internal List 
+      		
+      		@param tag$  ListTag for the element 
+      		
+      		@return Flag indicating if the tag represents an element in the internal list   
+      	%END REM
+      	Function hasTag(tag$) As Boolean 
+      		hasTag = IsList(me.content_) And IsElement(me.content_(tag$)) 
+      	End Function 
+      	
+      	
+      	%REM
+      		Property listTags
+      		array of all ListTags
+      	%END REM
+      	Property Get listTags As Variant 
+      		listTags =  getListTags(me.content_) 
+      	End Property
+      
+      	
+      	%REM
+      		Property Get sortedListTags
+      		sorted Array of all ListTags
+      	%END REM
+      	Property Get sortedListTags As Variant 
+      		sortedListTags = getSortedListTags(me.content_) 
+      	End Property
+      	
+      	
+      	Property Get size As Long 
+      		size = getListSize(me.content_) 
+      	End Property
+      
+      End Class
+      
+      %REM
+      	Class StringList 
+      	Wrapper for a List As String object, with extended functionality through the various properties and methods. 
+      %END REM
+      Public Class StringList As azlwListCarrier 
+      	Private content_ List As String
+      
+      	Public Sub New()
+      	End Sub
+      
+      	Public Sub Delete()
+      		Erase me.content_
+      	End Sub
+      	
+      	
+      	Private Property Get CLASS_NAME As String 
+      		CLASS_NAME = |StringList|
+      	End Property
+      	
+      
+      	%REM
+      		Tagged Values of the object  
+      		NOTE: It is expected that this property be overridden by child classes 
+      	%END REM
+      	Property Get TaggedValues As StringList 
+      		Dim result As New StringList() 
+      		result.addAll Me
+      		
+      		Set TaggedValues = result
+      	End Property	
+      
+      	
+      	%REM
+      		Function getContent
+      		Gets the content list for the object
+      	%END REM
+      	Public Function getContent() As Variant 	
+      		getContent = me.content_ 	
+      	End Function
+      
+      
+      
+      	%REM
+      		Property Get isBlank
+      		Flag indicating if the Object's content contains only blank strings
+      		
+      		@return Flag indicating if the Object is blank. 
+      	%END REM
+      	Public Property Get isBlank As Boolean 
+      	
+      		Dim result As Boolean 
+      	
+      		' BEGIN CODE
+      		result = True 
+      		If me.hasContent Then
+      			ForAll element In me.content_ 
+      				If Not isBlankString(element) Then
+      					result = False 
+      					Exit ForAll  
+      				End If
+      			End ForAll 
+      		End If
+      	
+      	ExitPoint: 
+      		isBlank = result
+      	End Property
+      
+      	
+      	Sub addAll(source As StringList) 	
+      		If (source Is Nothing) Then GoTo ExitPoint 
+      		On Error GoTo ErrorTrap 
+      		
+      		Dim tag$ 
+      
+      		ForAll element In source.content_
+      			tag$ = ListTag(element) 
+      			me.content_(tag$) = element 
+      		End ForAll
+      		
+      	ExitPoint: 
+      		Exit Sub
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, |tag: | & tag$
+      		Resume ExitPoint 
+      	End Sub
+      	
+      	
+      	
+      	
+      	Function getValue(key$) As String
+      		Dim result As String  
+      		On Error GoTo ErrorTrap 
+      		
+      		result = || 
+      		If isBlankString(key$) Then GoTo ExitPoint 
+      		
+      		If IsElement(me.content_(key$)) Then 
+      			result = me.content_(key$)
+      		Else 
+      			ForAll element In me.content_ 
+      				If (0 = StrCompare(key$, ListTag(element), 5)) Then 
+      					result = element 
+      					Exit ForAll   
+      				End If
+      			End ForAll
+      		End If
+      		
+      	ExitPoint: 
+      		getValue = result 
+      		Exit Function
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, |key: | & key$
+      		Resume ExitPoint 
+      	End Function
+      	
+      	
+      	
+      	%REM
+      		Property Get uniqueValues
+      		array containing unique values 
+      	%END REM
+      	Property Get uniqueValues As Variant
+      		On Error GoTo ErrorTrap
+      		Dim valueTags List As String 
+      		Dim valuesArray() As String
+      		Dim i#
+      		
+      		If (me.hasContent) Then 
+      			ForAll element In me.content_ 
+      				valueTags(element) = ListTag(element) 
+      			End ForAll
+      
+      			i# = me.size -1 
+      			ReDim valuesArray(i) As String 
+      			
+      			i# = 0 
+      			ForAll element In valueTags 
+      				valuesArray(i#) = me.content_(element) 
+      				i# = i# + 1
+      			End ForAll
+      
+      			uniqueValues = valuesArray 	
+      		Else 
+      			uniqueValues = Null
+      		End If 	
+      		
+      	ExitPoint: 
+      		Exit Property 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, || 
+      		Resume ExitPoint
+      	End Property	
+      	
+      	%REM
+      		Function replaceStringTags
+      		Replaces substring tags in a source string with string values from the object. 
+      		
+      		Searches a source string for instances of tags matching the object's keys, and replaces them with the associated string values.
+      		
+      		@param source String within which to search for tags 
+      		
+      		@return source string with all instances of object's keys replaced with associated string values  
+      	%END REM
+      	Function replaceStringTags(source As String) As String 
+      		On Error GoTo ErrorTrap
+      		
+      		Dim strings As Variant 
+      		
+      		Dim tag$ 
+      		Dim result$
+      		
+      		' BEGIN CODE
+      		If isBlankString(source) Then GoTo ExitPoint 
+      		
+      		result$ = source
+      		
+      		strings = me.TaggedValues.getContent() 
+      		ForAll stringvalue In strings
+      			tag$ = ListTag(stringvalue) 
+      			result$ = Replace(result$, tag$, CStr(stringValue)) 	
+      		End ForAll	
+      		
+      	ExitPoint: 
+      		replaceStringTags = result$
+      		Exit Function 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, |source: | & source
+      		Resume ExitPoint
+      	End Function
+      
+      
+      	%REM
+      		Function replaceMoustacheTags
+      		Replaces substring tags in a source StringsCarrier with string values from the object. 
+      		
+      		Searches a source StringsCarrier for instances of moustache tags matching the object's keys, and replaces them with the associated string values.
+      		
+      		Object's keys will be moustached prior to comparison, wrapped with double open and double close curly braces: {{key}}
+      		
+      		@param source StringsCarrier within which to search for tags 
+      		
+      		@return source string with all instances of object's keys replaced with associated string values  
+      	%END REM
+      	Function replaceMoustacheTags(source As StringsCarrier) As StringsCarrier
+      		On Error GoTo ErrorTrap
+      		
+      		Dim tv As StringList 
+      		
+      		Dim strings As Variant 
+      		Dim tags List As String 
+      		
+      		Dim tag$ 
+      		Dim textline$ 
+      		Dim result As New StringsCarrier()
+      		
+      		' BEGIN CODE
+      		If (source Is Nothing) Then GoTo ExitPoint  
+      		If Not source.hasContent Then GoTo ExitPoint 
+      
+      		' load the tags 	
+      		Set tv = me.TaggedValues 
+      		strings = tv.getContent() 
+      		ForAll stringvalue In strings
+      			tags(|{{| & ListTag(stringvalue) & |}}|) = stringvalue  
+      		End ForAll	
+      		
+      		' process each string element in source
+      		strings = source.values 
+      		ForAll stringvalue In strings 
+      			textline$ = stringvalue 
+      			ForAll replacevalue In tags
+      				tag$ = ListTag(replacevalue)
+      				textline$ = Replace(textline$, tag$, replacevalue)
+      			End ForAll	
+      
+      			result.push textline$ 		 
+      		End ForAll
+      		
+      	ExitPoint: 	
+      		Set replaceMoustacheTags = result
+      		Exit Function 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, ||
+      		Resume ExitPoint
+      	End Function
+      	
+      	
+      	
+      	
+      	Sub setElementValue(key$, value As Variant)
+      		me.content_(key$) = CStr(value)  
+      	End Sub
+      	
+      	
+      	Sub removeElement(key$) 
+      		If me.hasTag(key$) Then Erase me.content_(key$)
+      	End Sub
+      
+      	
+      	Sub clear() 
+      		Erase me.content_
+      	End Sub	
+      
+      
+      	%REM
+      		Sub clearBlanks
+      		Erases all blank elements from the internal List.  
+      	%END REM
+      	Sub clearBlanks() 
+      		On Error GoTo ErrorTrap
+      		
+      		' exception variables
+      		Dim extendedinfo List As String
+      		Dim killtags List As Boolean 
+      		
+      		
+      		' BEGIN CODE
+      		ForAll stringvalue In me.content_ 
+      			If isBlankString(stringvalue) Then killtags(ListTag(stringvalue)) = True 
+      		End ForAll 
+      		
+      		ForAll booleanvalue In killtags 
+      			Erase me.content_(ListTag(booleanvalue)) 
+      		End ForAll
+      		
+      		
+      	ExitPoint: 
+      		Exit Sub 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		Resume ExitPoint
+      	End Sub
+      	
+      
+      	
+      	%REM
+      		Function writeToFile
+      		Writes Contents of StringList to a Text File. 
+      		
+      		IMPORTANT NOTE: Existing files will be OVERWRITTEN!  It is up to the calling code to pre-check for existence of file.
+      		
+      		@param target$ Filepath of file to be written. 
+      	
+      		@return Number of bytes written to the target file.   
+      	
+      		@throws ERR_PARAMETER_BLANK if target filepath is blank.
+      		@throws ERR_OPERATION_FAILED or other file system exception on failure.  
+      	%END REM
+      	Function writeToFile(target$) As Long 
+      		If isBlankString(target$) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |Target filepath is blank.  |
+      		On Error GoTo ErrorTrap 
+      
+      		Dim directory$
+      		Dim filepath$ 	
+      		Dim errcode%    
+      		Dim errmsg$
+      		Dim textline$ 
+      		
+      		Dim result& 
+      
+      		Dim file As Integer 
+      
+      		Dim isOpen As Boolean 
+      
+      
+      		' BEGIN CODE
+      		directory$ = StrLeftBack(target$, DIRECTORY_DELIMITER) 
+      		If Not makeDirectory(directory$) Then GoTo ExitPoint  ' The directory does not exist and could not be created.
+      		
+      		' Check for existence 	
+      		filepath$ = Dir$(target$, 0) 
+      		If Not isBlankString(filepath$) Then Kill target$
+      		
+      		file% = FreeFile() 
+      		Open target$ For Output Access Write As #file% 
+      		isOpen = True 
+      
+      		If me.hasContent Then 
+      			ForAll element In me.content_ 
+      				Print #file%, ListTag(element) & |: | 
+      				Print #file%, element   	
+      				Print #file%, ||   	
+      				result& = result& + LenB(textline$)
+      			End ForAll
+      		End If 
+      
+      	ExitPoint: 
+      		If isOpen Then 
+      			isOpen = False 
+      			Close #file% 
+      		End If
+      		If (0 <> errcode%) Then Error ERR_OPERATION_FAILED, MSG_OPERATION_FAILED & |Error #| & CStr(errcode%) &  |: | & errmsg$
+      		writeToFile = result&
+      		Exit Function 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		errcode% = Err() 
+      		errmsg$ = Error$()
+      		Resume ExitPoint
+      	End Function
+      	
+      	
+      	
+      End Class
+      
+      
+      %REM
+      	Class LongList 
+      	Wrapper for a List As Long object, with extended functionality through the various properties and methods. 
+      %END REM
+      Public Class LongList As azlwListCarrier 
+      	Private content_ List As Long
+      
+      	Public Sub New()
+      	End Sub
+      
+      	Public Sub Delete()
+      		Erase me.content_
+      	End Sub
+      	
+      	
+      	Private Property Get CLASS_NAME As String 
+      		CLASS_NAME = |LongList|
+      	End Property
+      	
+      
+      	%REM
+      		Function getContent
+      		Gets the content list for the object
+      	%END REM
+      	Public Function getContent() As Variant 	
+      		getContent = me.content_ 	
+      	End Function
+      
+      
+      	
+      	Sub addAll(source As LongList) 	
+      		If (source Is Nothing) Then GoTo ExitPoint 
+      		On Error GoTo ErrorTrap 
+      		
+      		Dim tag$ 
+      
+      		ForAll element In source.content_
+      			tag$ = ListTag(element) 
+      			me.content_(tag$) = element 
+      		End ForAll
+      		
+      	ExitPoint: 
+      		Exit Sub
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, |tag: | & tag$
+      		Resume ExitPoint 
+      	End Sub
+      	
+      	
+      	
+      	Function getValue(key$) As Long
+      		Dim result As Long  
+      		On Error GoTo ErrorTrap 
+      		
+      		result = 0
+      		If isBlankString(key$) Then GoTo ExitPoint 
+      		
+      		If IsElement(me.content_(key$)) Then 
+      			result = me.content_(key$)
+      		Else 
+      			ForAll element In me.content_ 
+      				If (0 = StrCompare(key$, ListTag(element), 5)) Then 
+      					result = element 
+      					Exit ForAll   
+      				End If
+      			End ForAll
+      		End If
+      		
+      	ExitPoint: 
+      		getValue = result 
+      		Exit Function
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, |key: | & key$
+      		Resume ExitPoint 
+      	End Function
+      	
+      	Sub setElementValue(key$, value As Variant)
+      		me.content_(key$) = CLng(value)  
+      	End Sub
+      	
+      	
+      	Sub removeElement(key$) 
+      		Erase me.content_(key$)
+      	End Sub
+      	
+      	Sub clear() 
+      		Erase me.content_
+      	End Sub	
+      	
+      	
+      End Class
+      
+      
+      %REM
+      	Class SingleList 
+      	Wrapper for a List As Single object, with extended functionality through the various properties and methods. 
+      %END REM
+      Public Class SingleList As azlwListCarrier 
+      	Private content_ List As Single
+      
+      	Public Sub New()
+      	End Sub
+      
+      	Public Sub Delete()
+      		Erase me.content_
+      	End Sub
+      	
+      	Private Property Get CLASS_NAME As String 
+      		CLASS_NAME = |SingleList|
+      	End Property
+      
+      	%REM
+      		Function getContent
+      		Gets the content list for the object
+      	%END REM
+      	Public Function getContent() As Variant 	
+      		getContent = me.content_ 	
+      	End Function
+      
+      	
+      
+      	Sub addAll(source As SingleList) 	
+      		If (source Is Nothing) Then GoTo ExitPoint 
+      		On Error GoTo ErrorTrap 
+      		
+      		Dim tag$ 
+      
+      		ForAll element In source.content_
+      			tag$ = ListTag(element) 
+      			me.content_(tag$) = element 
+      		End ForAll
+      		
+      	ExitPoint: 
+      		Exit Sub
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, |tag: | & tag$
+      		Resume ExitPoint 
+      	End Sub
+      	
+      	
+      	
+      	Function getValue(key$) As Single
+      		Dim result As Single  
+      		On Error GoTo ErrorTrap 
+      		
+      		result = 0
+      		If isBlankString(key$) Then GoTo ExitPoint 
+      		
+      		If IsElement(me.content_(key$)) Then 
+      			result = me.content_(key$)
+      		Else 
+      			ForAll element In me.content_ 
+      				If (0 = StrCompare(key$, ListTag(element), 5)) Then 
+      					result = element 
+      					Exit ForAll   
+      				End If
+      			End ForAll
+      		End If
+      		
+      	ExitPoint: 
+      		getValue = result 
+      		Exit Function
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, |key: | & key$
+      		Resume ExitPoint 
+      	End Function
+      
+      	Sub setElementValue(key$, value As Variant)
+      		me.content_(key$) = CSng(value)  
+      	End Sub
+      	
+      	
+      	Sub removeElement(key$) 
+      		Erase me.content_(key$)
+      	End Sub
+      	
+      	Sub clear() 
+      		Erase me.content_
+      	End Sub	
+      	
+      	
+      End Class
+      
+      
+      %REM
+      	Class DoubleList 
+      	Wrapper for a List As Double object, with extended functionality through the various properties and methods. 
+      %END REM
+      Public Class DoubleList As azlwListCarrier 
+      	Private content_ List As Double
+      
+      	Public Sub New()
+      	End Sub
+      
+      	Public Sub Delete()
+      		Erase me.content_
+      	End Sub
+      	
+      	Private Property Get CLASS_NAME As String 
+      		CLASS_NAME = |DoubleList|
+      	End Property
+      
+      
+      	%REM
+      		Function getContent
+      		Gets the content list for the object
+      	%END REM
+      	Public Function getContent() As Variant 	
+      		getContent = me.content_ 	
+      	End Function
+      
+      	
+      
+      	Sub addAll(source As DoubleList) 	
+      		If (source Is Nothing) Then GoTo ExitPoint 
+      		On Error GoTo ErrorTrap 
+      		
+      		Dim tag$ 
+      
+      		ForAll element In source.content_
+      			tag$ = ListTag(element) 
+      			me.content_(tag$) = element 
+      		End ForAll
+      		
+      	ExitPoint: 
+      		Exit Sub
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, |tag: | & tag$
+      		Resume ExitPoint 
+      	End Sub
+      	
+      	
+      	
+      	Function getValue(key$) As Double
+      		Dim result As Double  
+      		On Error GoTo ErrorTrap 
+      		
+      		result = 0
+      		If isBlankString(key$) Then GoTo ExitPoint 
+      		
+      		If IsElement(me.content_(key$)) Then 
+      			result = me.content_(key$)
+      		Else 
+      			ForAll element In me.content_ 
+      				If (0 = StrCompare(key$, ListTag(element), 5)) Then 
+      					result = element 
+      					Exit ForAll   
+      				End If
+      			End ForAll
+      		End If
+      		
+      	ExitPoint: 
+      		getValue = result 
+      		Exit Function
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, |key: | & key$
+      		Resume ExitPoint 
+      	End Function
+      	
+      	
+      	Sub setElementValue(key$, value As Variant)
+      		me.content_(key$) = CDbl(value)  
+      	End Sub
+      	
+      	
+      	Sub removeElement(key$) 
+      		Erase me.content_(key$)
+      	End Sub
+      	
+      	Sub clear() 
+      		Erase me.content_
+      	End Sub	
+      	
+      	
+      End Class
+      
+      
+      %REM
+      	Class CurrencyList 
+      	Wrapper for a List As Currency object, with extended functionality through the various properties and methods. 
+      %END REM
+      Public Class CurrencyList As azlwListCarrier 
+      	Private content_ List As Currency
+      
+      	Public Sub New()
+      	End Sub
+      
+      	Public Sub Delete()
+      		Erase me.content_
+      	End Sub
+      	
+      	Private Property Get CLASS_NAME As String 
+      		CLASS_NAME = |CurrencyList|
+      	End Property
+      
+      
+      
+      	%REM
+      		Function getContent
+      		Gets the content list for the object
+      	%END REM
+      	Public Function getContent() As Variant 	
+      		getContent = me.content_ 	
+      	End Function
+      
+      	
+      
+      	Sub addAll(source As CurrencyList) 	
+      		If (source Is Nothing) Then GoTo ExitPoint 
+      		On Error GoTo ErrorTrap 
+      		
+      		Dim tag$ 
+      
+      		ForAll element In source.content_
+      			tag$ = ListTag(element) 
+      			me.content_(tag$) = element 
+      		End ForAll
+      		
+      	ExitPoint: 
+      		Exit Sub
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, |tag: | & tag$
+      		Resume ExitPoint 
+      	End Sub
+      	
+      	
+      	Function getValue(key$) As Currency
+      		Dim result As Currency  
+      		On Error GoTo ErrorTrap 
+      		
+      		result = 0
+      		If isBlankString(key$) Then GoTo ExitPoint 
+      		
+      		If IsElement(me.content_(key$)) Then 
+      			result = me.content_(key$)
+      		Else 
+      			ForAll element In me.content_ 
+      				If (0 = StrCompare(key$, ListTag(element), 5)) Then 
+      					result = element 
+      					Exit ForAll   
+      				End If
+      			End ForAll
+      		End If
+      		
+      	ExitPoint: 
+      		getValue = result 
+      		Exit Function
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, |key: | & key$
+      		Resume ExitPoint 
+      	End Function
+      	
+      	
+      	
+      	Sub setElementValue(key$, value As Variant)
+      		me.content_(key$) = CCur(value)  
+      	End Sub
+      	
+      	
+      	Sub removeElement(key$) 
+      		Erase me.content_(key$)
+      	End Sub
+      	
+      	Sub clear() 
+      		Erase me.content_
+      	End Sub	
+      	
+      End Class
+      
+      
+      %REM
+      	Class KeyedStringList 
+      	Wrapper for a List As KeyedString object, with extended functionality through the various properties and methods. 
+      %END REM
+      Class KeyedStringList As azlwListCarrier 
+      	Private content_ List As KeyedString
+      
+      	Public Sub New()
+      	End Sub
+      
+      	Public Sub Delete()
+      		Erase me.content_
+      	End Sub
+      	
+      	Private Property Get CLASS_NAME As String 
+      		CLASS_NAME = |KeyedStringList|
+      	End Property
+      
+      
+      
+      	%REM
+      		Function getContent
+      		Gets the content list for the object
+      	%END REM
+      	Public Function getContent() As Variant 	
+      		getContent = me.content_ 	
+      	End Function
+      
+      	
+      
+      	
+      	Sub addAll(source As KeyedStringList) 	
+      		If (source Is Nothing) Then GoTo ExitPoint 
+      		On Error GoTo ErrorTrap 
+      		
+      		Dim tag$ 
+      
+      		ForAll element In source.content_
+      			tag$ = ListTag(element) 
+      			Set me.content_(tag$) = element 
+      		End ForAll
+      		
+      	ExitPoint: 
+      		Exit Sub
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, |tag: | & tag$
+      		Resume ExitPoint 
+      	End Sub
+      	
+      	
+      	
+      	
+      	Function getValue(key$) As KeyedString
+      		Dim result As KeyedString 
+      		On Error GoTo ErrorTrap 
+      		
+      		Set result = Nothing 
+      		If isBlankString(key$) Then GoTo ExitPoint 
+      		
+      		If IsElement(me.content_(key$)) Then 
+      			Set result = me.content_(key$) 
+      		Else 
+      			ForAll element In me.content_ 
+      				If (0 = StrCompare(key$, ListTag(element), 5)) Then 
+      					Set result = element 
+      					Exit ForAll   
+      				End If
+      			End ForAll
+      		End If
+      		
+      	ExitPoint: 
+      		Set getValue = result 
+      		Exit Function
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, |key: | & key$
+      		Resume ExitPoint 
+      	End Function
+      	
+      	Sub setElementValue(key$, value As Variant)
+      		Dim ks As KeyedString
+      		Set ks = value 
+      		Set me.content_(key$) = ks  
+      	End Sub
+      	
+      	
+      	Sub removeElement(key$) 
+      		Erase me.content_(key$)
+      	End Sub
+      	
+      	Sub clear() 
+      		Erase me.content_
+      	End Sub	
+      	
+      	
+      End Class
+      
+      
+      %REM
+      	Class IntegerPairList 
+      	Wrapper for a List As IntegerPair object, with extended functionality through the various properties and methods. 
+      %END REM
+      Class IntegerPairList As azlwListCarrier 
+      	Private content_ List As IntegerPair
+      
+      	Public Sub New()
+      	End Sub
+      
+      	Public Sub Delete()
+      		Erase me.content_
+      	End Sub
+      	
+      	Private Property Get CLASS_NAME As String 
+      		CLASS_NAME = |IntegerPairList|
+      	End Property
+      
+      
+      
+      	%REM
+      		Function getContent
+      		Gets the content list for the object
+      	%END REM
+      	Public Function getContent() As Variant 	
+      		getContent = me.content_ 	
+      	End Function
+      
+      	
+      	Sub addAll(source As IntegerPairList) 	
+      		If (source Is Nothing) Then GoTo ExitPoint 
+      		On Error GoTo ErrorTrap 
+      		
+      		Dim tag$ 
+      
+      		ForAll element In source.content_
+      			tag$ = ListTag(element) 
+      			Set me.content_(tag$) = element 
+      		End ForAll
+      		
+      	ExitPoint: 
+      		Exit Sub
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, |tag: | & tag$
+      		Resume ExitPoint 
+      	End Sub
+      	
+      	
+      	
+      	
+      	Function getValue(key$) As IntegerPair
+      		Dim result As IntegerPair 
+      		On Error GoTo ErrorTrap 
+      		
+      		Set result = Nothing 
+      		If isBlankString(key$) Then GoTo ExitPoint 
+      		
+      		If IsElement(me.content_(key$)) Then 
+      			Set result = me.content_(key$) 
+      		Else 
+      			ForAll element In me.content_ 
+      				If (0 = StrCompare(key$, ListTag(element), 5)) Then 
+      					Set result = element 
+      					Exit ForAll   
+      				End If
+      			End ForAll
+      		End If
+      		
+      	ExitPoint: 
+      		Set getValue = result 
+      		Exit Function
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, |key: | & key$
+      		Resume ExitPoint 
+      	End Function
+      	
+      	Sub setElementValue(key$, value As Variant)
+      		Dim ip As IntegerPair 
+      		Set ip = Value 
+      		Set me.content_(key$) = ip  
+      	End Sub
+      	
+      	
+      	Sub removeElement(key$) 
+      		Erase me.content_(key$)
+      	End Sub
+      	
+      	Sub clear() 
+      		Erase me.content_
+      	End Sub	
+      		
+      End Class
+      
+      
+      %REM
+      	Class KeyedVariant
+      	Carrier for a key / value pair, where the value is a Variant
+      %END REM
+      Class KeyedVariant 
+      	Public value As Variant
+      	
+      	%REM
+      		Function getValue() 
+      		Gets the Value for the object
+      		@return value for the object
+      	%END REM
+      	Function getValue() As Variant 
+      		getValue = Me.value 
+      	End Function
+      	 
+      	%REM
+      		Sub SetValue() 
+      		Sets the Value for the object
+      		
+      		@param source value to set 
+      	%END REM
+      	Sub setValue(source As Variant) 
+      		Set Me.value = source
+      	End Sub
+      End Class
+      
+      
+      %REM
+      	Class azlwKeyedValueCarrier
+      	Base Class for KeyedValue Carriers
+      %END REM
+      Public Class azlwKeyedValueCarrier 
+      	
+      	Public key As String 
+      	Private value_ As Variant 
+      	
+      
+      	Private Property Get CLASS_NAME As String 
+      		CLASS_NAME = |azlwKeyedValueCarrier|
+      	End Property
+      	
+      	Private Property Get CLASS_PREFIX As String 
+      		CLASS_PREFIX = MODULE_NAME & |.| & CLASS_NAME & |.|
+      	End Property
+      
+      	Property Get JSON As String 
+      		On Error GoTo ErrorTrap
+      		
+      		Dim result$
+      		
+      		result$ = toJSONvalue(me.getValue())
+      		
+      	ExitPoint:		
+      		JSON = result$
+      		Exit Property 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, ||
+      		result$ = |{}|
+      		Resume ExitPoint 
+      	End Property
+      	
+      
+      	Public Sub New() 
+      	End Sub
+      
+      
+      	%REM
+      		Function getValue() 
+      		Gets the Value for the object
+      		
+      		This method is designed to be overriden by child classes
+      	%END REM
+      	Function getValue() As Variant 
+      		If IsObject(Me.value_) Then
+      			Set getValue = Me.value_
+      		Else 
+      			getValue = Me.value_	
+      		End If
+      	End Function
+      
+      	%REM
+      		Sub SetValue() 
+      		Sets the Value for the object
+      		
+      		This method is designed to be overriden by child classes
+      	%END REM
+      	Sub setValue(source As Variant) 
+      		If IsObject(source) Then
+      			Set Me.value_ = source
+      		Else 
+      			Me.value_ = source	
+      		End If
+      	End Sub
+      
+      
+      	%REM
+      		Function isEqual
+      		Compares tags and values to another azlwKeyedValueCarrier 
+      		
+      		@param source 	azlwKeyedValueCarrier object to compare 
+      		
+      		@return 		Flag indicating all tags and values have equal values
+      	%END REM
+      	Function isEqual(source As azlwKeyedValueCarrier) As Boolean 	
+      		On Error GoTo ErrorTrap 
+      		
+      		Dim result As Boolean 
+      
+      		' BEGIN CODE
+      		result = False 
+      		
+      		If (source Is Nothing) Then GoTo ExitPoint 
+      		If (CLASS_PREFIX <> source.CLASS_PREFIX) Then GoTo ExitPoint ' Class Prefix must match
+      		
+      		' check keys 
+      		If Not (0 = StrComp(me.key, source.key)) Then GoTo ExitPoint ' Keys must match
+      		
+      		' check values
+      		result = equals(me.getValue(), source.getValue()) 
+      		
+      	ExitPoint:
+      		isEqual = result 
+      		Exit Function 
+      	ErrorTrap:
+      		On Error GoTo 0 
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, ||
+      		Resume ExitPoint 
+      	End Function
+      
+      End Class
+      
+      
+      %REM
+      	Class KeyedString
+      	Carrier for a key / value pair, where the value is a String
+      %END REM
+      Class KeyedString As azlwKeyedValueCarrier 
+      	Public value As String 
+      	
+      	%REM
+      		Function getValue() 
+      		Gets the Value for the object
+      		@return String value 
+      	%END REM
+      	Function getValue() As Variant 
+      		getValue = CStr(Me.value) 
+      	End Function
+      	
+      	%REM
+      		Sub SetValue() 
+      		Sets the Value for the object
+      		
+      		@param source String value to set
+      	%END REM
+      	Sub setValue(source As Variant) 
+      		Me.value = CStr(source)
+      	End Sub
+      End Class
+      
+      
+      %REM
+      	Class KeyedNotesDateTime
+      	Carrier for a key / value pair, where the value is a NotesDateTime object.
+      %END REM
+      Class KeyedNotesDateTime As azlwKeyedValueCarrier  
+      	Public value As NotesDateTime 
+      	
+      	%REM
+      		Function getValue() 
+      		@return NotesDateTime for the object
+      	%END REM
+      	Function getValue() As Variant 
+      		Set getValue = Me.value 
+      	End Function 
+      	
+      	
+      	%REM
+      		Sub setValue() 
+      		Sets the Value for the object
+      		
+      		@param source NotesDateTime object for which to set the value
+      	%END REM
+      	Sub setValue(source As Variant) 
+      		Set Me.value = source
+      	End Sub
+      	
+      End Class
+       
+      
+      %REM
+      	Class StringsCarrier
+      	Carrier class for Strings 
+      %END REM
+      Class StringsCarrier 
+      	Private content_() As String 
+      	Private hascontent_ As Boolean 
+      	
+      
+      	Private Property Get CLASS_NAME As String 
+      		CLASS_NAME = |StringsCarrier|
+      	End Property
+      	
+      	
+      	Private Property Get CLASS_PREFIX As String 
+      		CLASS_PREFIX = MODULE_NAME & |.| & CLASS_NAME & |.|
+      	End Property
+      	
+      	
+      	Public Sub New() 
+      		Call me.clear() 
+      	End Sub
+      
+      
+      	%REM
+      		Property Get hasContent
+      		Flag indicating if the object has content 
+      	%END REM
+      	Public Property Get hasContent As Boolean 
+      		hasContent = me.hascontent_ 
+      	End Property
+      	
+      
+      	%REM
+      		Property Get JSON
+      		JSON representation of the object
+      	%END REM
+      	Property Get JSON As String 
+      		
+      		Dim result$
+      		
+      		' BEGIN CODE
+      		result$ = |[]|
+      		If me.hasContent Then result$ = toJSONvalue(me.content_)  
+      
+      		JSON = result$
+      	End Property
+      
+      
+      	%REM
+      		Property Get size
+      		Number of elements in the object
+      	%END REM
+      	Property Get size As Long 
+      		If me.hasContent Then size = UBound(me.content_) - LBound(me.content_) + 1 
+      	End Property
+      
+      
+      	%REM
+      		Function contains
+      		Flag indicating if the carrier contains a value 
+      		
+      		@param source$ value for which to check
+      		 
+      		@return Flag indicating if this carrier contains a value matching source$ 
+      	%END REM
+      	Function contains(source$) As Boolean 
+      		On Error GoTo ErrorTrap
+      	
+      		' exception variables
+      		Dim extendedinfo List As String 
+      		Dim msg$
+      	
+      	
+      		Dim result As Boolean 
+      	
+      	
+      		' BEGIN CODE
+      		If me.hasContent Then 
+      			ForAll value In me.content_ 
+      				If (0 = StrComp(value, source)) Then 
+      					result = True 
+      					Exit ForAll 
+      				End If 
+      			End ForAll
+      		End If
+      	
+      	ExitPoint: 
+      		contains = result
+      		Exit Function 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		Resume ExitPoint
+      	End Function
+      
+      
+      
+      	%REM
+      		Property Get values
+      		Values carried by the object. 
+      		
+      		@return Array of Strings containing the values of the object.   
+      			If the object has no values then an array with a single empty string will be returned.  
+      	%END REM
+      	Property Get values As Variant
+      		
+      		Dim strings() As String 
+      		Dim result As Variant 
+      		
+      		Dim i% 
+      		  
+      		If me.hasContent Then
+      			ReDim strings(UBound(me.content_))
+      			For i% = LBound(me.content_) To UBound(me.content_) 
+      				strings(i%) = me.content_(i%) 
+      			Next
+      			result = strings 
+      		Else 
+      			result = Null 
+      		End If
+      		
+      	ExitPoint: 
+      		values = result
+      	End Property
+      
+      
+      	%REM
+      		Property Get unique
+      		Unique values carried by the object. 
+      		
+      		@return Array of Strings containing the values of the object.   
+      			If the object has no values then an array with a single empty string will be returned.  
+      	%END REM
+      	Property Get unique As Variant
+      		Dim previous List As Boolean 
+      		Dim strings() As String
+      		Dim result As Variant 
+      		
+      		Dim current$
+      		Dim i% 
+      		Dim j% 
+      		
+      		
+      		ReDim strings(0) As String 
+      		
+      		If me.hasContent Then 
+      			For i% = LBound(me.content_) To UBound(me.content_)
+      				current$ = me.content_(i%)
+      				If Not IsElement(previous(current$)) Then 
+      					previous(current$) = True 
+      					ReDim Preserve strings(j%) As String
+      					strings(j%) = current$ 
+      					j% = j% + 1
+      				End If
+      			Next
+      		End If
+      		
+      		result = strings
+      		
+      	ExitPoint: 
+      		unique = result
+      	End Property
+      
+      
+      	%REM
+      		Property Get first
+      		Gets the first element in the carrier 
+      	%END REM
+      	Property Get first As String 
+      		first = me.content_(0) 
+      	End Property
+      
+      
+      	%REM
+      		Property Get last
+      		Gets the last element in the carrier 
+      	%END REM
+      	Property Get last As String 
+      		last = me.content_(UBound(me.content_)) 
+      	End Property
+      
+      
+      	%REM
+      		Sub clear
+      		Clears the carrier
+      	%END REM
+      	Public Sub clear() 
+      		ReDim me.content_(0) As String 
+      		me.hascontent_ = False 
+      	End Sub
+      
+      
+      	%REM
+      		Sub push
+      		Adds a string to the top of the carrier
+      	%END REM
+      	Public Sub push(source As String)
+      		If me.hasContent Then 
+      			ReDim Preserve me.content_(UBound(me.content_) + 1) As String
+      			me.content_(UBound(me.content_)) = source
+      		Else 
+      			ReDim me.content_(0) As String 
+      			me.content_(0) = source
+      			me.hascontent_ = True 
+      		End If
+      	End Sub
+      	
+      	
+      	
+      	%REM 
+      		Function pop
+      		Gets the top (last added) object from the stack, then removes it from the stack.
+      		
+      		@return last added object from the stack, or empty string if stack is empty 
+      	%END REM
+      	Public Function pop() As String 
+      		If me.hasContent Then 
+      			pop = me.content_(UBound(me.content_)) 
+      			If (UBound(me.content_) > 0) Then 
+      				ReDim Preserve me.content_(UBound(me.content_) -1) As String
+      			Else 
+      				me.hascontent_ = False 
+      				ReDim me.content_(0) As String 
+      			End If
+      		Else 
+      			pop = || 
+      		End If
+      	End Function	
+      
+      
+      	%REM
+      		Sub load
+      		Loads the object with content from source 
+      		
+      		@param source StringsCarrier OR Array of Strings.   
+      		
+      		@throws ERR_PARAMETER_INVALID if Source is not either a StringsCarrier or an Array of Strings.
+      	%END REM
+      	Public Sub load(source As Variant)
+      		
+      		On Error GoTo InvalidParameter 
+      		
+      		Dim sc As StringsCarrier 
+      		Dim lc As azlwListCarrier  
+      		
+      		Dim values As Variant 
+      		
+      		Dim sourcetype$
+      		
+      		
+      		' BEGIN CODE 
+      		sourcetype$ = TypeName(source) 
+      		
+      		If IsObject(source) Then
+      			On Error Resume Next 
+      			
+      			Select Case sourcetype$ 
+      				Case |STRINGQUEUE|, |STRINGSTACK|, |STRINGSCARRIER|
+      					Set sc = source
+      					If sc.hasContent Then Call me.load(sc.values)
+      					
+      				Case |STRINGLIST|, |SINGLELIST|, |LONGLIST|, |INTEGERLIST|, |DOUBLELIST|, |CURRENCYLIST|, |BOOLEANLIST|
+      					Set lc = source 
+      						If lc.hasContent Then 
+      						values = lc.getContent() 
+      						ForAll s In values 
+      							me.push ListTag(s) & |: | & CStr(s) 
+      						End ForAll
+      					End If  
+      	
+      			End Select
+      			 
+      		ElseIf IsArray(source) Then 
+      			ForAll element In source
+      				Call me.push(CStr(element))  
+      			End ForAll
+      
+      		Else 
+      			Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID
+      		End If
+      		
+      	ExitPoint: 
+      		Exit Sub
+      	InvalidParameter: 
+      		 On Error GoTo 0
+      		 Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |Source is neither a StringsCarrier nor an Array of Strings.  Source Type: | _ 
+      		 	& sourcetype$ & |.  |
+      		
+      	End Sub
+      
+      
+      	%REM
+      		Function yank
+      		Removes the first found instance of a string (if it exists) from the carrier. 
+      		
+      		@return Flag indicating if the string was found and removed. 
+      	%END REM
+      	Public Function yank(source As String) As Boolean
+      		
+      		Dim i%
+      		Dim j%
+      		Dim result As Boolean 
+      		
+      		If Not (me.hasContent) Then GoTo ExitPoint
+      		
+      		For i% = LBound(me.content_) To UBound(me.content_) 
+      			If (0 = StrCompare(CStr(me.content_(i%)), source, 0)) Then ' Case sensitive, pitch sensitive 
+      				If i% < UBound(me.content_) Then 
+      					' move all subsequent values to the previous ordinal position
+      					For j% = i% + 1 To UBound(me.content_)
+      						me.content_(j% - 1) = me.content_(j%) 
+      					Next 
+      				End If
+      				
+      				If (i% = LBound(me.content_)) Then 
+      					ReDim me.content_(i%) As String 
+      					me.content_(i%) = ||
+      					me.hascontent_ = False 
+      				Else 
+      					j% = UBound(me.content_) -1
+      					ReDim Preserve me.content_(j%) As String
+      				End If
+      				
+      				result = True 
+      				GoTo ExitPoint 
+      			End If
+      		Next
+      		
+      	ExitPoint: 
+      		yank = result
+      	End Function 
+      
+      
+      	%REM
+      		Sub sort
+      		Sorts the Object's content alphanumerically 
+      	%END REM
+      	Public Sub sort() 
+      
+      		' BEGIN CODE
+      		If me.hasContent Then Call getBaliStrings().shellSortStrings(me.content_)  
+      
+      	End Sub
+      
+      	
+      	%REM
+      		Sub clearDuplicates
+      		Clears duplicate elements from the object 
+      	%END REM
+      	Public Sub clearDuplicates() 
+      	On Error GoTo ErrorTrap
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      
+      	Dim vals As Variant 	
+      	
+      	' BEGIN CODE 
+      	vals = me.unique 
+      	Call me.clear
+      	ForAll stringvalue In vals 
+      		Call me.push(CStr(stringvalue)) 
+      	End ForAll
+      	
+      	
+      	
+      ExitPoint: 
+      	Exit Sub 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      	Resume ExitPoint
+      	End Sub
+      	
+      	
+      	%REM
+       		Function joinContent
+       		Concatenates the content IN FIFO ORDER into a single string using specified delimiter. 
+       		
+       		@param delimiter$ String used to delimit the concatenated content.
+       		
+       		@return Concatenated content.
+      	%END REM
+      	Public Function joinContent(delimiter$) As String
+      
+      		Dim result$
+      		
+      		If me.hasContent Then result$ = Join(me.content_, delimiter$) 
+      		
+      		joinContent = result$
+      		
+      	End Function
+      	
+      	
+      	%REM
+      		Function writeToFile
+      		Writes Contents of Strings Carrier to a Text File. 
+      		
+      		IMPORTANT NOTE: Existing files will be OVERWRITTEN!  It is up to the calling code to pre-check for existence of file.
+      		
+      		@param target$ Filepath of file to be written. 
+      	
+      		@return Number of bytes written to the target file.   
+      	
+      		@throws ERR_PARAMETER_BLANK if target filepath is blank.
+      		@throws ERR_OPERATION_FAILED or other file system exception on failure.  
+      	%END REM
+      	Function writeToFile(target$) As Long 
+      		If isBlankString(target$) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |Target filepath is blank.  |
+      		On Error GoTo ErrorTrap 
+      
+      		Dim lines As Variant 
+      		
+      		Dim directory$
+      		Dim filepath$ 	
+      		Dim errcode%    
+      		Dim errmsg$
+      		Dim textline$ 
+      		
+      		Dim result& 
+      
+      		Dim file As Integer 
+      
+      		Dim i& 
+      	
+      
+      		Dim isOpen As Boolean 
+      
+      		
+      
+      		' BEGIN CODE
+      		directory$ = StrLeftBack(target$, DIRECTORY_DELIMITER) 
+      		If Not makeDirectory(directory$) Then GoTo ExitPoint  ' The directory does not exist and could not be created.
+      		
+      		' Check for existence 	
+      		filepath$ = Dir$(target$, 0) 
+      		If Not isBlankString(filepath$) Then Kill target$
+      		
+      		file% = FreeFile() 
+      		Open target$ For Output Access Write As #file% 
+      		isOpen = True 
+      
+      		If me.hasContent Then 
+      			lines = me.values
+      			 
+      			ForAll element In lines 
+      				textline$ = CStr(element) 
+      				Print #file%, textline$   	
+      				result& = result& + LenB(textline$)
+      				
+      				i& = i& + 1 
+      			End ForAll
+      			
+      		End If 
+      
+      
+      	ExitPoint: 
+      		If isOpen Then 
+      			isOpen = False 
+      			Close #file% 
+      		End If
+      		If (0 <> errcode%) Then Error ERR_OPERATION_FAILED, MSG_OPERATION_FAILED & |Error #| & CStr(errcode%) &  |: | & errmsg$
+      		writeToFile = result&
+      		Exit Function 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		errcode% = Err() 
+      		errmsg$ = Error$()
+      		Resume ExitPoint
+      	End Function
+      
+      End Class
+      
+      
+      %REM
+      	Class StringQueue
+      	Stack implementation for Strings 
+      %END REM
+      Class StringQueue As StringsCarrier
+      	
+      	Private Property Get CLASS_NAME As String 
+      		CLASS_NAME = |StringQueue|
+      	End Property
+      
+       
+      	%REM 
+      		Function pop
+      		Gets the first (first added) object from the queue, then removes it from the queue.
+      		
+      		@return first added object from the queue, or empty string if queue is empty 
+      
+      		@overrides StringsCarrier.pop()
+      	 %END REM
+      	Public Function pop() As String 
+      		Dim i As Integer 
+      	 	If me.hasContent Then 
+      		 	pop = me.content_(0) 
+      		 	me.content_(0) = || 
+      	 	If (UBound(me.content_) > 0) Then 
+      	 		For i = 1 To UBound(me.content_) 
+      	 			me.content_(i -1) = me.content_(i)
+      	 		Next
+      		 	ReDim Preserve me.content_(UBound(me.content_) -1) As String
+      	 	Else 
+      		 	me.hasContent_ = False 
+      		 	ReDim me.content_(0) As String 
+      	 	End If
+      	Else 
+      		 pop = || 
+      	 	End If
+      	End Function
+       	 
+      End Class
+      
+      
+      %REM
+      	Class StringStack
+      	Stack implementation for Strings 
+      %END REM
+      Class StringStack As StringsCarrier
+      
+      
+      	Private Property Get CLASS_NAME As String 
+      		CLASS_NAME = |StringStack|
+      	End Property
+      	
+      	
+      
+      	
+      	%REM
+       		Function joinContent
+       		Concatenates the content IN FILO ORDER into a single string using specified delimiter. 
+       		
+       		@param delimiter$ String used to delimit the concatenated content.
+       		
+       		@return Concatenated content.
+      	%END REM
+      	Public Function joinContent(delimiter As String) As String
+      
+      		Dim result$
+      		Dim i As Integer 
+      		
+      		If me.hasContent Then 
+      			For i = UBound(me.content_) To 0 Step -1
+      				result$ = result$ & me.content_(i)  
+      				If (i > 0) Then result$ = result$ & delimiter$
+      			Next
+      		End If 
+      		
+      		joinContent = result$
+      	End Function
+      	
+      	
+      	
+      	%REM
+      		Property Get values
+      		Values carried by the object. 
+      		
+      		@return Array of Strings containing the values of the object.   
+      			If the object has no values then an array with a single empty string will be returned.  
+      	%END REM
+      	Property Get values As Variant
+      		
+      		Dim result() As String 
+      		
+      		Dim i% 
+      		If me.hasContent Then
+      			ReDim result(UBound(me.content_))
+      			For i% = LBound(me.content_) To UBound(me.content_) 
+      				result(UBound(result) - i%) = me.content_(i%) 
+      			Next
+      		Else 
+      			ReDim result(0) 
+      		End If
+      		
+      	ExitPoint: 
+      		values = result
+      	End Property
+      	
+      	
+      End Class
+      
+      
+      %REM
+      	Class StringsCarrierList 
+      	Wrapper for a List As StringsCarrier object, with extended functionality through the various properties and methods. 
+      %END REM
+      Public Class StringsCarrierList As azlwListCarrier 
+      	Private content_ List As StringsCarrier 
+      
+      	Public Sub New()
+      	End Sub
+      
+      	Public Sub Delete()
+      		Erase me.content_
+      	End Sub
+      	
+      	Private Property Get CLASS_NAME As String 
+      		CLASS_NAME = |StringsCarrierList|
+      	End Property
+      
+      
+      	%REM
+      		Function getContent
+      		Gets the content list for the object
+      	%END REM
+      	Public Function getContent() As Variant 	
+      		getContent = me.content_ 	
+      	End Function
+      
+      
+      	
+      	Sub addAll(source As StringsCarrierList) 	
+      		If (source Is Nothing) Then GoTo ExitPoint 
+      		On Error GoTo ErrorTrap 
+      		
+      		Dim tag$ 
+      
+      		ForAll element In source.content_
+      			tag$ = ListTag(element) 
+      			Set me.content_(tag$) = element 
+      		End ForAll
+      		
+      	ExitPoint: 
+      		Exit Sub
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, |tag: | & tag$
+      		Resume ExitPoint 
+      	End Sub
+      	
+      	
+      	
+      	Function getValue(key$) As StringsCarrier
+      		Dim result As StringsCarrier  
+      		On Error GoTo ErrorTrap 
+      		
+      		Set result = Nothing 
+      		If isBlankString(key$) Then GoTo ExitPoint 
+      		
+      		If IsElement(me.content_(key$)) Then 
+      			Set result = me.content_(key$)
+      		Else 
+      			ForAll element In me.content_ 
+      				If (0 = StrCompare(key$, ListTag(element), 5)) Then 
+      					Set result = element 
+      					Exit ForAll   
+      				End If
+      			End ForAll
+      		End If
+      
+      	ExitPoint: 
+      		Set getValue = result 
+      		Exit Function
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, |key: | & key$
+      		Resume ExitPoint 
+      	End Function
+      	
+      	
+      	
+      	Sub setElementValue(key$, value As Variant)
+      		Dim sc As StringsCarrier
+      		Set sc = value 
+      		Set me.content_(key$) = sc  
+      	End Sub
+      	
+      	
+      	Sub removeElement(key$) 
+      		Erase me.content_(key$)
+      	End Sub
+      	
+      	Sub clear() 
+      		Erase me.content_
+      	End Sub	
+      	
+      End Class
+      
+      
+      %REM
+      	Class IntegersCarrier
+      	Carrier class for Integers 
+      %END REM
+      Class IntegersCarrier 
+      	Private content_() As Integer 
+      	Private hascontent_ As Boolean 
+      	
+      
+      	Private Property Get CLASS_NAME As String 
+      		CLASS_NAME = |IntegersCarrier|
+      	End Property
+      	
+      	
+      	Private Property Get CLASS_PREFIX As String 
+      		CLASS_PREFIX = MODULE_NAME & |.| & CLASS_NAME & |.|
+      	End Property
+      	
+      	
+      	Public Sub New() 
+      		Call me.clear() 
+      	End Sub
+      
+      
+      	%REM
+      		Property Get hasContent
+      		Flag indicating if the object has content 
+      	%END REM
+      	Public Property Get hasContent As Boolean 
+      		hasContent = me.hascontent_ 
+      	End Property
+      	
+      
+      	%REM
+      		Property Get JSON
+      		JSON representation of the object
+      	%END REM
+      	Property Get JSON As String 
+      		
+      		Dim result$
+      		
+      		' BEGIN CODE
+      		result$ = |[| & me.joinContent(|,|) & |]|
+      
+      		JSON = result$
+      	End Property
+      
+      
+      	%REM
+      		Property Get size
+      		Number of elements in the object
+      	%END REM
+      	Property Get size As Long 
+      		If me.hasContent Then size = UBound(me.content_) - LBound(me.content_) + 1 
+      	End Property
+      
+      
+      	%REM
+      		Function contains
+      		Flag indicating if the carrier contains a value 
+      		
+      		@param source% value for which to check
+      		 
+      		@return Flag indicating if this carrier contains a value matching source$ 
+      	%END REM
+      	Function contains(source%) As Boolean 
+      		On Error GoTo ErrorTrap
+      	
+      		' exception variables
+      		Dim extendedinfo List As Integer 
+      		Dim msg$
+      	
+      	
+      		Dim result As Boolean 
+      	
+      	
+      		' BEGIN CODE
+      		If me.hasContent Then 
+      			ForAll value In me.content_
+      				If (source% = value) Then  
+      					result = True 
+      					Exit ForAll 
+      				End If 
+      			End ForAll
+      		End If
+      	
+      	ExitPoint: 
+      		contains = result
+      		Exit Function 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		Resume ExitPoint
+      	End Function
+      
+      
+      
+      	%REM
+      		Property Get values
+      		Values carried by the object. 
+      		
+      		@return Array of Integers containing the values of the object.   
+      			If the object has no values then an array with a single empty Integer will be returned.  
+      	%END REM
+      	Property Get values As Variant
+      		
+      		Dim integers() As Integer 
+      		Dim result As Variant 
+      		
+      		Dim i% 
+      		  
+      		If me.hasContent Then
+      			ReDim integers(UBound(me.content_))
+      			For i% = LBound(me.content_) To UBound(me.content_) 
+      				integers(i%) = me.content_(i%) 
+      			Next
+      			result = integers 
+      		Else 
+      			result = Null 
+      		End If
+      		
+      	ExitPoint: 
+      		values = result
+      	End Property
+      
+      
+      	%REM
+      		Property Get unique
+      		Unique values carried by the object. 
+      		
+      		@return Array of Integers containing the values of the object.   
+      			If the object has no values then an array with a single empty Integer will be returned.  
+      	%END REM
+      	Property Get unique As Variant
+      		Dim previous List As Boolean 
+      		Dim integers() As Integer
+      		Dim result As Variant 
+      		
+      		Dim current$
+      		Dim i% 
+      		Dim j% 
+      		
+      		
+      		ReDim integers(0) As Integer 
+      		
+      		If me.hasContent Then 
+      			For i% = LBound(me.content_) To UBound(me.content_)
+      				current$ = CStr(me.content_(i%))
+      				If Not IsElement(previous(current$)) Then 
+      					previous(current$) = True 
+      					ReDim Preserve integers(j%) As Integer
+      					integers(j%) = me.content_(i%) 
+      					j% = j% + 1
+      				End If
+      			Next
+      		End If
+      		
+      		result = integers
+      		
+      	ExitPoint: 
+      		unique = result
+      	End Property
+      
+      
+      	%REM
+      		Property Get first
+      		Gets the first element in the carrier 
+      	%END REM
+      	Property Get first As Integer 
+      		first = me.content_(0) 
+      	End Property
+      
+      
+      	%REM
+      		Property Get last
+      		Gets the last element in the carrier 
+      	%END REM
+      	Property Get last As Integer 
+      		last = me.content_(UBound(me.content_)) 
+      	End Property
+      
+      
+      	%REM
+      		Sub clear
+      		Clears the carrier
+      	%END REM
+      	Public Sub clear() 
+      		ReDim me.content_(0) As Integer 
+      		me.content_(0) = 0 
+      		me.hascontent_ = False 
+      	End Sub
+      
+      
+      	%REM
+      		Sub push
+      		Adds a Integer to the top of the carrier
+      	%END REM
+      	Public Sub push(source As Integer)
+      		If me.hasContent Then 
+      			ReDim Preserve me.content_(UBound(me.content_) + 1) As Integer
+      			me.content_(UBound(me.content_)) = source
+      		Else 
+      			ReDim me.content_(0) As Integer 
+      			me.content_(0) = source
+      			me.hascontent_ = True 
+      		End If
+      	End Sub
+      	
+      	
+      	
+      	%REM 
+      		Function pop
+      		Gets the top (last added) object from the stack, then removes it from the stack.
+      		
+      		@return last added object from the stack, or throws exception if stack is empty 
+      		
+      		@throws ERR_OPERATION_PROHIBITED if called when the Carrier has no content
+      	%END REM
+      	Public Function pop() As Integer 
+      		If Not me.hasContent Then Error ERR_OPERATION_PROHIBITED, MSG_OPERATION_PROHIBITED & |Carrier has no content.  |
+      		
+      		pop = me.content_(UBound(me.content_)) 
+      		If (UBound(me.content_) > 0) Then 
+      			ReDim Preserve me.content_(UBound(me.content_) -1) As Integer
+      		Else 
+      			Call me.clear()
+      		End If
+      	End Function	
+      
+      
+      	%REM
+      		Sub load
+      		Loads the object with content from source 
+      		
+      		@param source IntegersCarrier OR Array of Integers.   
+      		
+      		@throws ERR_PARAMETER_INVALID if Source is not either a IntegersCarrier or an Array of Integers.
+      	%END REM
+      	Public Sub load(source As Variant)
+      		
+      		On Error GoTo InvalidParameter 
+      		
+      		Dim sc As IntegersCarrier 
+      		Dim lc As azlwListCarrier  
+      		
+      		Dim values As Variant 
+      		
+      		Dim sourcetype$
+      		
+      		
+      		' BEGIN CODE 
+      		sourcetype$ = UCase$(TypeName(source)) 
+      		
+      		If IsObject(source) Then
+      			On Error Resume Next 
+      			
+      			Select Case sourcetype$ 
+      				Case |INTEGERQUEUE|, |INTEGERSTACK|, |INTEGERSCARRIER|
+      					Set sc = source
+      					If sc.hasContent Then Call me.load(sc.values)
+      					
+      				Case |INTEGERLIST|, |SINGLELIST|, |LONGLIST|, |DOUBLELIST|, |CURRENCYLIST|, |BOOLEANLIST|
+      					Set lc = source 
+      						If lc.hasContent Then 
+      						values = lc.getContent() 
+      						ForAll s In values 
+      							me.push Cint(s) 
+      						End ForAll
+      					End If  
+      	
+      			End Select
+      			 
+      		ElseIf IsArray(source) Then 
+      			ForAll element In source
+      				Call me.push(Cint(element))  
+      			End ForAll
+      
+      		Else 
+      			Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID
+      		End If
+      		
+      	ExitPoint: 
+      		Exit Sub
+      	InvalidParameter: 
+      		 On Error GoTo 0
+      		 Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |Source is neither a IntegersCarrier nor an Array of Integers.  Source Type: | _ 
+      		 	& sourcetype$ & |.  |
+      		
+      	End Sub
+      
+      
+      	%REM
+      		Function yank
+      		Removes the first found instnace of an Integer (if it exists) from the carrier. 
+      		
+      		@return Flag indicating if the Integer was found and removed. 
+      	%END REM
+      	Public Function yank(source As Integer) As Boolean
+      		
+      		Dim i%
+      		Dim j%
+      		Dim result As Boolean 
+      		
+      		If Not (me.hasContent) Then GoTo ExitPoint
+      		
+      		For i% = LBound(me.content_) To UBound(me.content_) 
+      			If (source = (me.content_(i%))) Then  
+      				If i% < UBound(me.content_) Then 
+      					' move all subsequent values to the previous ordinal position
+      					For j% = i% + 1 To UBound(me.content_)
+      						me.content_(j% - 1) = me.content_(j%) 
+      					Next 
+      				End If
+      				
+      				If (i% = LBound(me.content_)) Then 
+      					ReDim me.content_(i%) As Integer 
+      					me.content_(i%) = 0
+      					me.hascontent_ = False 
+      				Else 
+      					j% = UBound(me.content_) -1
+      					ReDim Preserve me.content_(j%) As Integer
+      				End If
+      				
+      				result = True 
+      				GoTo ExitPoint 
+      			End If
+      		Next
+      		
+      	ExitPoint: 
+      		yank = result
+      	End Function 
+      
+      
+      	%REM
+      		Sub sort
+      		Sorts the Object's content alphanumerically 
+      	%END REM
+      	Public Sub sort() 
+      
+      		' BEGIN CODE
+      		If me.hasContent Then Call shellSortIntegers(me.content_)  
+      
+      	End Sub
+      
+      	
+      	%REM
+      		Sub clearDuplicates
+      		Clears duplicate elements from the object 
+      	%END REM
+      	Public Sub clearDuplicates() 
+      		On Error GoTo ErrorTrap
+      		
+      		' exception variables
+      		Dim extendedinfo List As Integer 
+      	
+      		Dim vals As Variant 	
+      		
+      		' BEGIN CODE 
+      		vals = me.unique 
+      		Call me.clear
+      		ForAll integerValue In vals 
+      			Call me.push(CStr(integerValue)) 
+      		End ForAll
+      		
+      	ExitPoint: 
+      		Exit Sub 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		Resume ExitPoint
+      	End Sub
+      	
+      	
+      	%REM
+       		Function joinContent
+       		Concatenates the content IN FIFO ORDER into a single Integer using specified delimiter. 
+       		
+       		@param delimiter$ delimiter to use for the concatenated content.
+       		
+       		@return Concatenated content.
+      	%END REM
+      	Public Function joinContent(delimiter$) As String
+      
+      		Dim result$
+      		Dim i As Integer 
+      		
+      		If me.hasContent Then 
+      			For i = LBound(me.content_) To UBound(me.content_) 
+      				result$ = result$ & me.content_(i)  
+      				If (i < UBound(me.content_)) Then result$ = result$ & delimiter$
+      			Next
+      		End If 
+      		
+      		joinContent = result$		
+      	End Function
+      	
+      	
+      	%REM
+      		Function writeToFile
+      		Writes Contents of Integers Carrier to a Text File. 
+      		
+      		IMPORTANT NOTE: Existing files will be OVERWRITTEN!  It is up to the calling code to pre-check for existence of file.
+      		
+      		@param target$ Filepath of file to be written. 
+      	
+      		@return Number of bytes written to the target file.   
+      	
+      		@throws ERR_PARAMETER_BLANK if target filepath is blank.
+      		@throws ERR_OPERATION_FAILED or other file system exception on failure.  
+      	%END REM
+      	Function writeToFile(target$) As Long 
+      		If isBlankString(target$) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |Target filepath is blank.  |
+      		On Error GoTo ErrorTrap 
+      
+      		Dim lines As Variant 
+      		
+      		Dim directory$
+      		Dim filepath$ 	
+      		Dim errcode%    
+      		Dim errmsg$
+      		Dim textline$ 
+      		
+      		Dim result& 
+      
+      		Dim file As Integer 
+      
+      		Dim i& 
+      	
+      
+      		Dim isOpen As Boolean 
+      
+      		
+      
+      		' BEGIN CODE
+      		directory$ = StrLeftBack(target$, DIRECTORY_DELIMITER) 
+      		If Not makeDirectory(directory$) Then GoTo ExitPoint  ' The directory does not exist and could not be created.
+      		
+      		' Check for existence 	
+      		filepath$ = Dir$(target$, 0) 
+      		If Not isBlankString(filepath$) Then Kill target$
+      		
+      		file% = FreeFile() 
+      		Open target$ For Output Access Write As #file% 
+      		isOpen = True 
+      
+      		If me.hasContent Then 
+      			lines = me.values
+      			 
+      			ForAll element In lines 
+      				textline$ = CStr(element) 
+      				Print #file%, textline$   	
+      				result& = result& + LenB(textline$)
+      				
+      				i& = i& + 1 
+      			End ForAll
+      		End If 
+      
+      	ExitPoint: 
+      		If isOpen Then 
+      			isOpen = False 
+      			Close #file% 
+      		End If
+      		If (0 <> errcode%) Then Error ERR_OPERATION_FAILED, MSG_OPERATION_FAILED & |Error #| & CStr(errcode%) &  |: | & errmsg$
+      		writeToFile = result&
+      		Exit Function 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		errcode% = Err() 
+      		errmsg$ = Error$()
+      		Resume ExitPoint
+      	End Function
+      
+      End Class
+      
+      
+      %REM
+      	Class IntegerStack
+      	Stack implementation for Integers 
+      %END REM
+      Class IntegerStack As IntegersCarrier
+      
+      
+      	Private Property Get CLASS_NAME As String 
+      		CLASS_NAME = |IntegerStack|
+      	End Property
+      	
+      	
+      
+      	
+      	%REM
+       		Function joinContent
+       		Concatenates the content IN FILO ORDER into a single Integer using specified delimiter. 
+       		
+       		@param delimiter$ Integer used to delimit the concatenated content.
+       		
+       		@return Concatenated content.
+      	%END REM
+      	Public Function joinContent(delimiter$) As String
+      
+      		Dim result$
+      		Dim i As Integer 
+      		
+      		If me.hasContent Then 
+      			For i = UBound(me.content_) To 0 Step -1
+      				result$ = result$ & CStr(me.content_(i))
+      				If (i > 0) Then result$ = result$ & delimiter$
+      			Next
+      		End If 
+      		
+      		joinContent = result$
+      	End Function
+      	
+      	
+      	
+      	%REM
+      		Property Get values
+      		Values carried by the object. 
+      		
+      		@return Array of Integers containing the values of the object.   
+      			If the object has no values then an array with a single empty Integer will be returned.  
+      	%END REM
+      	Property Get values As Variant
+      		
+      		Dim result() As Integer 
+      		
+      		Dim i% 
+      		If me.hasContent Then
+      			ReDim result(UBound(me.content_))
+      			For i% = LBound(me.content_) To UBound(me.content_) 
+      				result(UBound(result) - i%) = me.content_(i%) 
+      			Next
+      		Else 
+      			ReDim result(0) 
+      		End If
+      		
+      	ExitPoint: 
+      		values = result
+      	End Property
+      	
+      	
+      End Class
+      
+      
+      %REM
+      	Class IntegerQueue
+      	Queue implementation for Integers 
+      %END REM
+      Class IntegerQueue As IntegersCarrier
+      	
+      	Private Property Get CLASS_NAME As String 
+      		CLASS_NAME = |IntegerQueue|
+      	End Property
+      
+       
+      	%REM 
+      		Function pop
+      		Gets the first (first added) object from the queue, then removes it from the queue.
+      		
+      		@return first added object from the queue, or throws exception if stack is empty 
+      		
+      		@throws ERR_OPERATION_PROHIBITED if called when the Carrier has no content
+      
+      		@overrides IntegersCarrier.pop()
+      	 %END REM
+      	Public Function pop() As Integer 
+      		If Not me.hasContent Then Error ERR_OPERATION_PROHIBITED, MSG_OPERATION_PROHIBITED & |Carrier has no content.  |
+      	
+      		Dim i As Integer 
+      		
+      	 	pop = me.content_(0) 
+      	 	me.content_(0) = 0  
+      	 	If (UBound(me.content_) > 0) Then 
+      	 		For i = 1 To UBound(me.content_) 
+      	 			me.content_(i -1) = me.content_(i)
+      	 		Next
+      		 	ReDim Preserve me.content_(UBound(me.content_) -1) As Integer
+      	 	Else 
+      		 	Call me.clear() 
+      	 	End If
+      	End Function
+       	 
+      End Class
+      '++LotusScript Development Environment:2:2:Initialize:3:10
+      
+      
+      Sub Initialize
+      End Sub
+      
+      '++LotusScript Development Environment:2:1:getSortedListTags:8:8
+      
+      %REM
+      	Function getSortedListTags
+      	Gets the Sorted listTags for a list 
+      	@param source: List object from which to get the list tags 
+      	@return sorted array of listTags from the list.  
+      %END REM
+      Public Function getSortedListTags(source As Variant) As Variant 
+      	On Error GoTo ErrorTrap 
+      
+      	Dim result As Variant 
+      
+      	If IsList(source) Then 
+      		result = getListTags(source) 
+      		If IsNull(result) Then GoTo ExitPoint 
+      		getBaliStrings().shellSortStrings result 
+      	End If 
+      	
+      ExitPoint: 
+      	getSortedListTags = result 
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, ||
+      	Resume ExitPoint 
+      End Function
+      
+      
+      '++LotusScript Development Environment:2:1:jsonArrayToStringList:13:8
+      
+      %REM
+      	Function jsonArrayToStringList
+      	Converts a NotesJSONArray to a StringList 
+      	
+      	Empty strings, null, zero, and false values are not included in the result. 
+      	
+      	Note: StringLists are single level lists.  Array elements in JSON string will be flattened such that the last named element entry appears in the result. 
+      	
+      	@param source NotesJSONArray from which to construct the StringList 
+      	@return StringList object constructed from the JSON source 
+      %END REM
+      Function jsonArrayToStringList(source As NotesJSONArray) As StringList 
+      	On Error GoTo ErrorTrap
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	Dim msg$
+      	
+      	
+      	Dim result As New StringList()
+      	Dim ss As StringList 
+      	
+      	Dim element As NotesJSONElement 
+      	
+      	
+      	' BEGIN CODE
+      	If (source Is Nothing) Then GoTo ExitPoint 
+      	
+      	
+      	extendedinfo(|Source Size|) = CStr(source.Size) 
+      	Set element = source.getFirstElement()
+      	While Not element Is Nothing
+      		extendedinfo(|Element Name|) = element.Name
+      		extendedinfo(|Element Type|) = CStr(element.Type) 
+      		extendedinfo(|Element Type Name|) = getJSONelementTypeName(element.Type) 		
+      
+      		Set ss = jsonElementToStringList(element) 
+      		If ss.hasContent Then result.addAll ss
+      		Set element = source.getNextElement()
+      	Wend
+      
+      ExitPoint: 
+      	Set jsonArrayToStringList = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	ForAll s In extendedinfo
+      		If isBlankString(msg$) Then 
+      			msg$ = ListTag(s) & |: | & s
+      		Else 
+      			msg$ = msg$ & |, | & Chr(10) & ListTag(s) & |: | & s
+      		End If
+      	End ForAll
+      	pushExceptionCarrier MODULE_NAME, ||, msg$
+      	Resume ExitPoint
+      End Function
+      
+      
+      '++LotusScript Development Environment:2:1:at_urlEncode:5:8
+      %REM 
+      	Function at_urlEncode 
+      	LotusScript implementation of @URLencode method
+      %END REM
+      Public Function at_urlEncode(source$) As String
+      	On Error GoTo ErrorTrap 
+      
+      	Dim result$ 
+      	
+      	result$ = getBaliStrings().getScalarString(Evaluate(|@URLencode("Domino" ; "| & source$ & |")|)) 
+      
+      ExitPoint: 
+      	at_urlEncode = result$
+      	Exit Function
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, |Source: | & source
+      	Resume ExitPoint		
+      End Function
+      
+      
+      '++LotusScript Development Environment:2:1:getJSONelementTypeName:11:8
+      
+      %REM
+      	Function getJSONelementTypeName
+      	Gets the appropriate name for a given JSON Element Type
+      	
+      	@param source% Integer value for a JSON Element type
+      	@return JSON Element Type Name 
+      	
+      	@throws ERR_PARAMETER_INVALID if source% is not an appropriate JSON Element Type
+      %END REM
+      Function getJSONelementTypeName(source%) As String  
+      	On Error GoTo ErrorTrap
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	Dim msg$
+      	
+      	Dim result$
+      	Dim errcode%
+      	Dim errmsg$ 
+      	
+      	' BEGIN CODE
+      	
+      	extendedinfo(|source|) = CStr(source%) 
+      	
+      	Select Case source%
+      		Case Jsonelem_type_array: 
+      			result$ = |Jsonelem_type_array|
+      			
+      		Case Jsonelem_type_boolean: 
+      			result$ = |Jsonelem_type_boolean|
+      			
+      		Case Jsonelem_type_empty: 
+      			result$ = |Jsonelem_type_empty|
+      			
+      		Case Jsonelem_type_number: 
+      			result$ = |Jsonelem_type_number|
+      			
+      		Case Jsonelem_type_object: 
+      			result$ = |Jsonelem_type_object|
+      			
+      		Case Jsonelem_type_string: 
+      			result$ = |Jsonelem_type_string|
+      			
+      		Case Else 
+      			Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |Source: | & CStr(source%) 
+      	End Select
+      	
+      	
+      ExitPoint: 
+      	If (ERR_PARAMETER_INVALID = errcode%) Then Error errcode%, errmsg$ 
+      	getJSONelementTypeName = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	errcode% = Err() 
+      	errmsg$ = Error$() 
+      	ForAll s In extendedinfo
+      		If isBlankString(msg$) Then 
+      			msg$ = ListTag(s) & |: | & s
+      		Else 
+      			msg$ = msg$ & |, | & Chr(10) & ListTag(s) & |: | & s
+      		End If
+      	End ForAll
+      	pushExceptionCarrier MODULE_NAME, ||, msg$
+      	Resume ExitPoint
+      End Function
+      
+      
+      '++LotusScript Development Environment:2:1:jsonObjectToStringList:13:8
+      
+      %REM
+      	Function jsonObjectToStringList
+      	Converts a NotesJSONObject  to a StringList 
+      	
+      	Empty strings, null, zero, and false values are not included in the result. 
+      	
+      	Note: StringLists are single level lists.  Array elements in JSON string will be flattened such that the last named element entry appears in the result. 
+      	
+      	@param source NotesJSONObject from which to construct the StringList 
+      	@return StringList object constructed from the JSON source 
+      %END REM
+      Function jsonObjectToStringList(source As NotesJSONObject) As StringList 
+      	On Error GoTo ErrorTrap
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	Dim msg$
+      	
+      	Dim result As New StringList()
+      	Dim ss As StringList 
+      	
+      	Dim element As NotesJSONElement 
+      	
+      
+      	' BEGIN CODE
+      	If (source Is Nothing) Then GoTo ExitPoint 
+      
+      	extendedinfo(|Source Size|) = CStr(source.Size) 
+      	Set element = source.getFirstElement()
+      	While Not element Is Nothing
+      		extendedinfo(|Element Name|) = element.Name
+      		extendedinfo(|Element Type|) = CStr(element.Type) 
+      		extendedinfo(|Element Type Name|) = getJSONelementTypeName(element.Type) 
+      
+      		Set ss = jsonElementToStringList(element) 
+      		If ss.hasContent Then result.addAll ss	
+      		Set element = source.getNextElement()
+      	Wend
+      
+      		
+      ExitPoint: 
+      	Set jsonObjectToStringList = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	ForAll s In extendedinfo
+      		If isBlankString(msg$) Then 
+      			msg$ = ListTag(s) & |: | & s
+      		Else 
+      			msg$ = msg$ & |, | & Chr(10) & ListTag(s) & |: | & s
+      		End If
+      	End ForAll
+      	pushExceptionCarrier MODULE_NAME, ||, msg$
+      	Resume ExitPoint
+      End Function
+      
+      
+      '++LotusScript Development Environment:2:1:jsonArrayToJSON:11:8
+      
+      %REM
+      	Function jsonArrayToJSON
+       	Converts a NotesJSONArray to JSON  
+      	
+      	Empty strings, null, zero, and false values are not included in the result. 
+      	
+      	@param source NotesJSONArray from which to construct the JSON
+      	@return JSON constructed from the NotesJSONArray 
+      %END REM
+      Function jsonArrayToJSON(source As NotesJSONArray) As String 
+      	On Error GoTo ErrorTrap
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	Dim msg$
+      	
+      	
+      	Dim njelem As NotesJSONElement
+      	Dim array_variant() As Variant 	
+      	Dim idx% 
+      	
+      	Dim result$ 
+      	
+      	
+      	' BEGIN CODE
+      	If (source Is Nothing) Then GoTo ExitPoint 
+      	
+      	ReDim array_variant(0) As Variant 
+      	
+      	Set njelem = source.getFirstElement() 
+      	
+      	While Not (njelem Is Nothing) 
+      		ReDim Preserve array_variant(idx%) As Variant 
+      		Set array_variant(idx%) = njelem
+      		idx% = idx% + 1
+      		Set njelem = source.getNextElement() 
+      	Wend
+      	
+      	result$ = toJSONvalue(array_variant)
+      
+      ExitPoint: 
+      	jsonArrayToJSON = result$
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	ForAll s In extendedinfo
+      		If isBlankString(msg$) Then 
+      			msg$ = ListTag(s) & |: | & s
+      		Else 
+      			msg$ = msg$ & |, | & Chr(10) & ListTag(s) & |: | & s
+      		End If
+      	End ForAll
+      	pushExceptionCarrier MODULE_NAME, ||, msg$
+      	Resume ExitPoint
+      End Function
+      
+      
+      '++LotusScript Development Environment:2:1:jsonElementToJSON:11:8
+      
+      %REM
+      	Function jsonElementToJSON
+      	Generates JSON for a NotesJSONelement object  
+      	
+      	Empty strings, null, zero, and false values are not included in the result. 
+      	
+      	@param source NotesJSONelement from which to construct the JSON
+      	@return JSON constructed from the NotesJSONelement  
+      %END REM
+      Public Function jsonElementToJSON(source As NotesJSONElement) As String 
+      	On Error GoTo ErrorTrap
+      	
+      	
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	Dim msg$
+      	
+      	Dim sl As StringList 
+      	
+      	Dim njnav As NotesJSONNavigator 
+      	Dim njobj As NotesJSONObject 
+      	Dim njary As NotesJSONArray 
+      	
+      	Dim result$
+      	
+      	Dim elName$
+      	Dim stringValue$
+      	
+      	Dim numbervalue As Variant 
+      	
+      	Dim intVal% 
+      	Dim lngVal& 
+      	Dim sngVal! 
+      	Dim dblVal#
+      	Dim curVal@
+      	
+      	Dim booleanValue As Boolean 
+      	Dim include As Boolean 
+      	
+      	
+      	' BEGIN CODE
+      	If source Is Nothing Then GoTo ExitPoint 
+      
+      	%REM JSON Element Types 		
+      		Jsonelem_type_array
+      		Jsonelem_type_boolean
+      		Jsonelem_type_empty
+      		Jsonelem_type_number
+      		Jsonelem_type_object
+      		Jsonelem_type_string
+      	%END REM 		
+      		
+      		include = False 
+      		stringValue = ||
+      		extendedinfo(|element name|) = source.Name 
+      		extendedinfo(|element type|) = CStr(source.Type) 
+      		
+      		Select Case source.type
+      		Case Jsonelem_type_number: 
+      			numbervalue = source.value 
+      
+      			Select Case DataType(numbervalue) 
+      			Case V_INTEGER:
+      				intVal% = CInt(numbervalue) 
+      				If (intVal% <> 0%) Then 
+      					stringValue$ = CStr(intVal%)
+      					include = True 
+      				End If
+      				
+      			Case V_LONG:
+      				lngVal& = CLng(numbervalue)
+      				If (lngVal& <> 0&) Then 
+      					stringValue$ = CStr(lngVal&)
+      					include = True 
+      				End If
+      				
+      			Case V_SINGLE:
+      				sngVal! = CSng(numbervalue)
+      				If (sngVal! <> 0!) Then 
+      					stringValue$ = CStr(sngVal!)
+      					include = True 
+      				End If		
+      				
+      			Case V_DOUBLE:
+      				dblVal# = CDbl(numbervalue)
+      				If (dblVal# <> 0#) Then 
+      					stringValue$ = CStr(dblVal#)
+      					include = True 
+      				End If
+      				
+      			Case V_CURRENCY:
+      				curVal@ = CCur(numbervalue)
+      				If (curVal@ <> 0@) Then 
+      					stringValue$ = CStr(curVal@)
+      					include = True 
+      				End If
+      				
+      			Case Else 
+      				' do nothing 
+      		End Select
+      			
+      
+      		Case Jsonelem_type_array: 
+      			Set njary = source.Value 
+      			Set sl = jsonArrayToStringList(njary)
+      			If sl.hasContent Then result$ = sl.json  
+      			
+      			
+      		Case Jsonelem_type_boolean: 
+      			booleanValue = CBool(source.value) 
+      			If (booleanValue) Then 
+      				stringValue$ = |true|
+      				include = True 
+      			End If  
+      			
+      			
+      		Case Jsonelem_type_object: 
+      			Set njobj = source.Value
+      			result$ = jsonObjectToJSON(njobj)  
+      			
+      			
+      		Case Jsonelem_type_string: 
+      			stringValue$ = CStr(source.value) 
+      			If Not isBlankString(stringValue$) Then
+      				include = True 
+      				stringValue$ = |"| & getBaliStrings().ampersandDecode(stringValue$) & |"| 					
+      			End If 
+      	End Select
+      		
+      		
+      		If include Then 
+      			If isBlankString(source.Name) Then 
+      				result$ = stringValue$
+      			Else 
+      				result$ = |"| & source.Name & |":| & stringValue$ 
+      			End If
+      		End If  
+      		
+      ExitPoint: 
+      		jsonElementToJSON = result$
+      		Exit Function 
+      ErrorTrap:
+      		On Error GoTo 0
+      		ForAll s In extendedinfo
+      			If isBlankString(msg$) Then 
+      				msg$ = ListTag(s) & |: | & s
+      			Else 
+      				msg$ = msg$ & |, | & Chr(10) & ListTag(s) & |: | & s
+      			End If
+      		End ForAll
+      		pushExceptionCarrier MODULE_NAME, ||, msg$
+      		Resume ExitPoint
+      End Function
+      
+      
+      '++LotusScript Development Environment:2:1:jsonElementToStringList:13:8
+      
+      %REM
+      	Function jsonElementToStringList
+      	Converts a NotesJSONElement to a StringList object. 
+      	
+      	Empty strings, null, zero, and false values are not included in the result. 
+      	
+      	Note: StringLists are single level lists.  Array elements in JSON string will be flattened such that the last named element entry appears in the result. 
+      	
+      	@param source NotesJSONElement from which to construct the StringList 
+      	@return StringList object constructed from the JSON source 
+      %END REM
+      Public Function jsonElementToStringList(source As NotesJSONElement) As StringList 
+      	On Error GoTo ErrorTrap
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	Dim msg$
+      	
+      	
+      	Dim result As New StringList()
+      	Dim nav As NotesJSONNavigator 
+      	Dim obj As NotesJSONObject 
+      	Dim ary As NotesJSONArray 
+      	
+      	
+      	
+      	Dim elName$
+      	Dim stringValue$
+      	
+      	Dim numbervalue As Variant 
+      	
+      	
+      	Dim intVal% 
+      	Dim lngVal& 
+      	Dim sngVal! 
+      	Dim dblVal#
+      	Dim curVal@
+      	
+      	
+      	
+      	Dim booleanValue As Boolean 
+      	Dim include As Boolean 
+      	
+      	
+      	' BEGIN CODE
+      	If source Is Nothing Then GoTo ExitPoint 
+      
+      	%REM JSON Element Types 		
+      		Jsonelem_type_array
+      		Jsonelem_type_boolean
+      		Jsonelem_type_empty
+      		Jsonelem_type_number
+      		Jsonelem_type_object
+      		Jsonelem_type_string
+      	%END REM 		
+      		
+      		include = False 
+      		stringValue = ||
+      		extendedinfo(|element name|) = source.name 
+      		extendedinfo(|element type|) = CStr(source.type) 
+      		
+      		Select Case source.type
+      			Case Jsonelem_type_number: 
+      				numbervalue = source.value 
+      	
+      				Select Case DataType(numbervalue) 
+      					Case V_INTEGER:
+      						intVal% = CInt(numbervalue) 
+      						If (intVal% <> 0%) Then 
+      							stringValue$ = CStr(intVal%)
+      							include = True 
+      						End If
+      						
+      					Case V_LONG:
+      						lngVal& = CLng(numbervalue)
+      						If (lngVal& <> 0&) Then 
+      							stringValue$ = CStr(lngVal&)
+      							include = True 
+      						End If
+      						
+      					Case V_SINGLE:
+      						sngVal! = CSng(numbervalue)
+      						If (sngVal! <> 0!) Then 
+      							stringValue$ = CStr(sngVal!)
+      							include = True 
+      						End If		
+      						
+      					Case V_DOUBLE:
+      						dblVal# = CDbl(numbervalue)
+      						If (dblVal# <> 0#) Then 
+      							stringValue$ = CStr(dblVal#)
+      							include = True 
+      						End If
+      						
+      					Case V_CURRENCY:
+      						curVal@ = CCur(numbervalue)
+      						If (curVal@ <> 0@) Then 
+      							stringValue$ = CStr(curVal@)
+      							include = True 
+      						End If
+      						
+      					Case Else 
+      						' do nothing 
+      				End Select
+      				
+      	
+      			Case Jsonelem_type_array: 
+      				Set ary = source.Value 
+      				result.addAll jsonArrayToStringList(ary) 
+      				
+      				
+      			Case Jsonelem_type_boolean: 
+      				booleanValue = CBool(source.value) 
+      				If (booleanValue) Then 
+      					stringValue$ = |true|
+      					include = True 
+      				End If  
+      				
+      				
+      			Case Jsonelem_type_object: 
+      				Set obj = source.Value 
+      				result.addAll jsonObjectToStringList(obj) 
+      				
+      				
+      			Case Jsonelem_type_string: 
+      				stringValue$ = CStr(source.value) 
+      				If Not isBlankString(stringValue$) Then
+      					include = True 
+      					stringValue$ = getBaliStrings().ampersandDecode(stringValue$) 					
+      				End If 
+      				
+      		End Select
+      		
+      		If include Then result.setElementValue source.Name, stringValue$ 
+      		
+      		
+      ExitPoint: 
+      		Set jsonElementToStringList = result
+      		Exit Function 
+      ErrorTrap:
+      		On Error GoTo 0
+      		ForAll s In extendedinfo
+      			If isBlankString(msg$) Then 
+      				msg$ = ListTag(s) & |: | & s
+      			Else 
+      				msg$ = msg$ & |, | & Chr(10) & ListTag(s) & |: | & s
+      			End If
+      		End ForAll
+      		pushExceptionCarrier MODULE_NAME, ||, msg$
+      		Resume ExitPoint
+      End Function
+      
+      
+      '++LotusScript Development Environment:2:1:StringToStringsCarrier:10:8
+      
+      %REM
+      	Function StringToStringsCarrier
+      	Generates a single-element StringsCarrier containing a given string
+      	
+      	@param source String to be added to the new StringsCarrier 
+      	
+      	@return new StringsCarrier object contining source$ as it's only element 
+      %END REM
+      Function StringToStringsCarrier(source$) As StringsCarrier  
+      	On Error GoTo ErrorTrap
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	
+      	Dim result As New StringsCarrier() 
+      	
+      	
+      	' BEGIN CODE
+      	extendedinfo(|source|) = source$
+      	result.push source$ 
+      	
+      ExitPoint: 
+      	Set StringToStringsCarrier = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      
+      '++LotusScript Development Environment:2:1:equals:6:8
+      
+      %REM
+      	Function equals
+      	Compares two variables to determine if they are equal
+      %END REM
+      Private Function equals(var1 As Variant, var2 As Variant) As Boolean 
+      	On Error GoTo ErrorTrap
+      
+      	Dim azlwListCarrier_1 As azlwListCarrier 
+      	Dim azlwListCarrier_2 As azlwListCarrier 
+      	Dim azlwKeyedValueCarrier_1 As azlwKeyedValueCarrier 
+      	Dim azlwKeyedValueCarrier_2 As azlwKeyedValueCarrier 
+      	Dim NotesDateTime_1 As NotesDateTime 
+      	Dim NotesDateTime_2 As NotesDateTime 
+      	
+      	Dim azlwListCarrier_obj As azlwListCarrier 
+      	Dim BooleanList_obj As BooleanList 
+      	Dim CurrencyList_obj As CurrencyList 
+      	Dim DoubleList_obj As DoubleList 
+      	Dim IntegerList_obj As IntegerList 
+      	Dim LongList_obj As LongList 
+      	Dim SingleList_obj As SingleList 
+      	Dim StringList_obj As StringList 
+      	Dim VariantList_obj As VariantList 
+      	Dim azlwKeyedValueCarrier_obj As azlwKeyedValueCarrier 
+      	Dim KeyedNotesDateTime_obj As KeyedNotesDateTime 
+      	Dim KeyedString_obj As KeyedString 
+      	Dim KeyedVariant_obj As KeyedVariant  
+      	Dim NotesDateTime_obj As NotesDateTime 
+      	
+      	Dim typename_var1$
+      	Dim typename_var2$ 
+      	Dim tag$
+      
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	Dim msg$
+      	
+      	
+      	Dim idx&
+      	Dim result As Boolean 
+      	
+      	' BEGIN CODE
+      	result = False 
+      	
+      
+      	' check typenames
+      	typename_var1$ = TypeName(var1) 
+      	typename_var2$ = TypeName(var2) 
+      	extendedinfo(|var1 TypeName|) = typename_var1$
+      	extendedinfo(|var2 TypeName|) = typename_var2$
+      	If Not (0 = StrComp(typename_var1$, typename_var1$)) Then GoTo ExitPoint ' Typenames must match
+      	
+      	Select Case LCase(typename_var1$) 
+      		Case |boolean|:
+      			result = (var1 And var2)
+      
+      		Case |date|, |time|
+      			result = (0 = StrComp(CStr(var1), CStr(var2)))
+      
+      		Case |azlwlistcarrier|, _ 
+      		|booleanlist|, _ 
+      		|currencylist|, _ 
+      		|datelist|, _ 
+      		|doublelist|, _ 
+      		|integerlist|, _ 
+      		|longlist|, _ 
+      		|singlelist|, _ 
+      		|stringlist|, _ 
+      		|variantlist|:
+      			Set azlwListCarrier_1 = var1
+      			Set azlwListCarrier_2 = var2 
+      			result = azlwListCarrier_1.isEqual(azlwListCarrier_2) 
+      			
+      		Case |azlwkeyedvaluecarrier|, _ 
+      		|keyednotesdatetime|, _ 
+      		|keyedstring|, _ 
+      		|keyedvariant|:
+      			Set azlwKeyedValueCarrier_1 = var1
+      			Set azlwKeyedValueCarrier_2 = var2 
+      			result = azlwKeyedValueCarrier_1.isEqual(azlwKeyedValueCarrier_2) 
+      						
+      		Case |notesdatetime|: 
+      			Set NotesDateTime_1 = var1
+      			Set NotesDateTime_2 = var2 
+      			result = (0 = NotesDateTime_1.TimeDifferenceDouble(NotesDateTime_2)) 
+      			
+      		Case |string| 
+      			result = (0 = StrCompare(var1, var2)) 
+      			
+      		Case Else: 
+      			If IsArray(var1) Then
+      				If Not IsArray(var2) Then GoTo ExitPoint  
+      				
+      				extendedinfo(|Variables Type|) = |Array|
+      
+      				If (LBound(var1) <> LBound(var2)) Then GoTo ExitPoint 
+      				If (UBound(var1) <> UBound(var2)) Then GoTo ExitPoint
+      				
+      				For idx& = LBound(var1) To UBound(var1) 
+      					extendedinfo(|Index|) = CStr(idx&)
+      					If Not equals(var1(idx&), var2(idx&)) Then GoTo ExitPoint 
+      				Next
+      				
+      				result = True
+      				
+      			ElseIf IsList(var1) Then 
+      				If Not IsList(var2) Then GoTo ExitPoint 
+      				
+      				extendedinfo(|Variables Type|) = |List|
+      				ForAll element In var1 
+      					tag$ = ListTag(element) 
+      					extendedinfo(|Tag|) = tag$ 
+      
+      					If Not IsElement(var2(tag$)) Then GoTo ExitPoint 
+      					If Not equals(var1(tag$), var2(tag$)) Then GoTo ExitPoint 
+      				End ForAll
+      
+      				result = True
+      
+      			ElseIf IsObject(var1) Then
+      				' General Object conversion not yet completed  
+      				MessageBox MODULE_NAME, |Object Code not yet completed for | & typename_var1$ 
+      				GoTo ExitPoint 
+      				
+      			Else 
+      				If IsNumeric(var1) Then
+      					If Not IsNumeric(var2) Then GoTo ExitPoint
+      					result = Not (var1 <> var2)    
+      				Else 
+      					result = equals(CStr(var1), CStr(var2)) 
+      				End If
+      			End If	
+      	End Select		
+      	
+      ExitPoint: 
+      	equals = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	ForAll s In extendedinfo
+      		If isBlankString(msg$) Then 
+      			msg$ = ListTag(s) & |: | & s
+      		Else 
+      			msg$ = msg$ & |, | & Chr(20) & ListTag(s) & |: | & s
+      		End If
+      	End ForAll
+      	pushExceptionCarrier MODULE_NAME, ||, msg$
+      	Resume ExitPoint
+      End Function 
+      
+      
+      '++LotusScript Development Environment:2:1:jsonObjectToJSON:11:8
+      
+      %REM
+      	Function jsonObjectToJSON
+      	Converts a NotesJSONObject JSON
+      	
+      	Empty strings, null, zero, and false values are not included in the result. 
+      	
+      	@param source NotesJSONobject from which to construct the JSON
+      	@return JSON constructed from the NotesJSONelement   
+      %END REM
+      Function jsonObjectToJSON(source As NotesJSONObject) As String 
+      	On Error GoTo ErrorTrap
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	Dim msg$
+      
+      
+      	Dim array_string() As String 
+      	Dim idx%
+      
+      	Dim result$
+      	
+      	Dim njelem As NotesJSONElement 
+      	
+      
+      	' BEGIN CODE
+      	If (source Is Nothing) Then GoTo ExitPoint 
+      
+      	extendedinfo(|Source Size|) = CStr(source.Size) 
+      	Set njelem = source.getFirstElement()
+      	If (njelem Is Nothing) Then GoTo ExitPoint 
+      	While Not njelem Is Nothing
+      		extendedinfo(|Element Name|) = njelem.Name
+      		extendedinfo(|Element Type|) = CStr(njelem.Type) 
+      		extendedinfo(|Element Type Name|) = getJSONelementTypeName(njelem.Type)
+      
+      		ReDim Preserve array_string(idx%) As String 
+      		If isBlankString(njelem.Name) Then 
+      			array_string(idx%) = toJSONvalue(njelem) 
+      		Else 
+      			array_string(idx%) = |"| & njelem.Name & |":| & toJSONvalue(njelem) 
+      		End If
+      	
+      		Set njelem = source.getNextElement()
+      		idx% = idx% + 1
+      	Wend
+      
+      	result$ = Join(array_string, |,|) 
+      		
+      ExitPoint: 
+      	jsonObjectToJSON = result$
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	ForAll s In extendedinfo
+      		If isBlankString(msg$) Then 
+      			msg$ = ListTag(s) & |: | & s
+      		Else 
+      			msg$ = msg$ & |, | & Chr(10) & ListTag(s) & |: | & s
+      		End If
+      	End ForAll
+      	pushExceptionCarrier MODULE_NAME, ||, msg$
+      	Resume ExitPoint
+      End Function
+      
+      
+      '++LotusScript Development Environment:2:1:toJSONvalue:10:8
+      
+      %REM
+      	Function toJSONvalue
+      	Converts a value to a JSON string representation. 
+      	
+      	@param source value to convert
+      	
+      	@return JSON string representation of source value
+      %END REM
+      Public Function toJSONvalue(source As Variant) As String 
+      	On Error GoTo ErrorTrap
+      	
+      	Dim njary As NotesJSONArray 
+      	Dim njelem As NotesJSONElement
+      	Dim njobj As NotesJSONObject 
+      
+      	Dim pair(1) As String 
+      	Dim array_string() As String 
+      
+      	Dim extendedinfo List As String 
+      	Dim msg$
+      
+      	Dim sourcetype$
+      	Dim lstr$
+      	Dim result$
+      	Dim json$ 
+      	Dim tag$ 
+      
+      	Dim idx%
+      	
+      	
+      	' BEGIN CODE
+      	sourcetype$ = TypeName(source) 
+      	extendedinfo(|SourceType|) = sourcetype$ 
+      	
+      	
+      	' Consider adding additional case options (as appropriate) for standard Notes product objects (Document, ViewEntry, Item, etc). 
+      	Select Case LCase(sourcetype$) 
+      		Case |boolean|:
+      			If (source) Then 
+      				result$ = |true|
+      			Else 
+      				result$ = |false|
+      			End If
+      
+      		Case |date|, |time|
+      			result$ = |"| & CStr(source) & |"| 
+      
+      		Case |azlwlistcarrier|:
+      			result$ = toJSONvalue(source.getContent()) 	
+      			
+      		Case |azlwlistcarrier|, _ 
+      		|booleanlist|, _ 
+      		|currencylist|, _ 
+      		|datelist|, _ 
+      		|doublelist|, _ 
+      		|integerlist|, _ 
+      		|longlist|, _ 
+      		|singlelist|, _ 
+      		|stringlist|, _ 
+      		|variantlist|: 
+      			result$ = toJSONvalue(source.getContent()) 		
+      			
+      		Case |azlwkeyedvaluecarrier|, _ 
+      		|keyednotesdatetime|, _
+      		|keyedstring|, _ 
+      		|keyedvariant|: 
+      			result$ = toJSONvalue(source.getValue()) 
+      			
+      		Case |notesjsonarray|:
+      			Set njary = source 
+      			result$ = jsonArrayToJSON(njary)
+      			
+      		Case |notesjsonelement|:
+      			Set njelem = source
+      			result$ = jsonElementToJSON(njelem) 
+      			 
+      			 
+      		Case |notesjsonobject|: 
+      			Set njobj = source
+      			result$ = jsonObjectToJSON(njobj)  
+      			
+      			
+      		Case Else: 
+      			If IsArray(source) Then 
+      				ForAll element In source 
+      					If isBlankString(result$) Then 
+      						result$ = toJSONvalue(element) 
+      					Else 
+      						result$ = result$ & |,| & toJSONvalue(element) 
+      					End If
+      				End ForAll
+      				
+      				result$ = |[| & result$ & |]|
+      				
+      			ElseIf IsList(source) Then 
+      				ReDim array_string(0) As String 
+      				ForAll element In source
+      					ReDim Preserve array_string(idx%) As String 
+      					tag$ = LCase(ListTag(element))
+      					json$ = toJSONvalue(element) 
+      					
+      					If isBlankString(tag$) Then
+      						array_string(idx%) = json$ 
+      					Else 
+      						pair(0) = |"| & getBaliStrings().ampersandEncode(tag$) & |"|
+      						pair(1) = json$
+      						array_string(idx%) = Join(pair, |:|)					
+      					End If
+      
+      					idx% = idx% + 1
+      				End ForAll
+      				
+      				result$ = |{| & Join(array_string, |,|) & |}|
+      
+      			ElseIf IsObject(source) Then
+      				' General Object conversion not yet completed  
+      				MessageBox |Object Code not yet completed for | & sourcetype$ 
+      				result = |{}|
+      				
+      			Else
+      				' escape single backslashes
+      				result$ = getBaliStrings().escapeSingleBackslashes(CStr(source))
+      				
+      				' replace tabs, carriage returns and line feeds
+      				result$ = getBaliStrings().replaceHT(result$, |\t|)
+      				result$ = getBaliStrings().replaceCRLF(result$, |\n|)
+      				
+      				If IsNumeric(source) Then 
+      					result$ = LCase$(result$) ' Converts Boolean True to "true" and False to "false" 
+      					If (source < 1) Then 
+      						If ("" = result$) Or (0 = StrCompare(".", Left$(result$, 1), 5)) Then result$ = "0" & result$
+      					End If 
+      				Else 
+      					lstr$ = LCase(result$) 
+      					Select Case lstr$
+      						Case |true|, |false|: 
+      							result$ = lstr$  ' string representations of boolean value
+      							
+      						Case Else: 
+      						result$ = |"| & getBaliStrings().ampersandEncode(result$) & |"|
+      					End Select
+      				End If
+      			End If	
+      	End Select
+      	
+      ExitPoint:		
+      	toJSONvalue = result$
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	ForAll s In extendedinfo 
+      		If isBlankString(msg$) Then 
+      			msg$ = ListTag(s) & |: | & s
+      		Else 
+      			msg$ = msg$ & Chr(10) & ListTag(s) & |: | & s
+      		End If
+      	End ForAll
+      	pushExceptionCarrier MODULE_NAME, ||, msg$
+      	result$ = |{}|
+      	Resume ExitPoint 
+      End Function
+      
+      
+      '++LotusScript Development Environment:2:1:write_StringQueueToFile:22:8
+      
+      
+      
+      %REM
+      	Function write_StringQueueToFile
+      	Writes content from a StringQueue to a text file, line by line, until the StringQueue contains no more content. 
+      	
+      	THIS METHOD WILL EMPTY THE StringQueue
+      
+      	IMPORTANT NOTE: Existing files will be OVERWRITTEN!  It is up to the calling code to pre-check for existence of file.
+      
+      				
+      	@param source StringQueue whose content should be written to the file
+      	@param target$ Filepath of file to be written. 
+      	
+      	@return Number of bytes written to the target file.   
+      
+      	@throws ERR_PARAMETER_BLANK if the StringQueue is Nothing. 
+      	@throws ERR_PARAMETER_BLANK if target filepath is blank.
+      	@throws ERR_OPERATION_FAILED or other file system exception on failure.  
+      %END REM
+      Function write_StringQueueToFile(source As StringQueue, target$) As Long 
+      	If source Is Nothing Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |Source StringQuque is Nothing.  |
+      	If isBlankString(target$) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |Target filepath is blank.  |
+      	On Error GoTo ErrorTrap
+      
+      	Dim folders As Variant 	
+      	
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      
+      	Dim directory$
+      	Dim filepath$ 	
+      	Dim textline$
+      	Dim errmsg$
+      	Dim errcode%
+      
+      	Dim file As Integer 
+      	
+      	Dim i%
+      
+      	Dim result& 
+      
+      	Dim isOpen As Boolean 
+      
+      	
+      	' BEGIN CODE
+      	
+      	extendedinfo(|Target Filepath|) = target$
+      	If isBlankString(target$) Then GoTo ExitPoint 
+      	
+      	directory$ = StrLeftBack(target$, DIRECTORY_DELIMITER) 
+      	If Not makeDirectory(directory$) Then GoTo ExitPoint  ' The directory does not exist and could not be created.
+      	
+      	' Check for existence 	
+      	filepath$ = Dir$(target$, 0) 
+      	If Not isBlankString(filepath$) Then Kill target$
+      	
+      	file% = FreeFile() 
+      	Open target$ For Output Access Write As #file% 
+      	isOpen = True 
+      	
+      
+      	While source.hasContent
+      		textline$ = source.pop() 
+      		result& = result& + LenB(textline$) 
+      		Print #file%, textline$
+      	Wend	
+      	
+      	
+      ExitPoint: 
+      	If isOpen Then 
+      		isOpen = False 
+      		Close #file% 
+      	End If
+      	If (0 <> errcode%) Then Error ERR_OPERATION_FAILED, MSG_OPERATION_FAILED & |Error #| & CStr(errcode%) &  |: | & errmsg$
+      	write_StringQueueToFile = result&
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	errcode% = Err() 
+      	errmsg$ = Error$()
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo$
+      	Resume ExitPoint
+      End Function
+    signed: true
+    nonsummary: true
+  - name: $TITLE
+    type: text
+    data: baliListsCollections
+    signed: true
+remaining: []

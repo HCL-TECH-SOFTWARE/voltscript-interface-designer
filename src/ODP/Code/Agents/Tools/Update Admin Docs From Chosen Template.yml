@@ -1,0 +1,258 @@
+---
+class: 512
+flags: 0x0000
+unid: OF10DA908F9A4DDB6E-ON006A82C085258A43
+items:
+  - name: $AssistAction
+    type: action
+    code_type: 65413
+    data: |
+      '++LotusScript Development Environment:2:5:(Options):0:74
+      %REM
+      	Agent Tools\Update Admin Docs From Chosen Template
+      	Created Oct 9, 2023 by Rocky Oliver/USA/PNPHCL
+      	Updates administration documents
+      %END REM
+      %REM
+      	**********************************************************************
+      	**********************************************************************
+      		
+          Copyright HCL America, Inc. 1999, 2023
+      
+         	Licensed under the Apache License, Version 2.0 (the "License");
+          you may not use this file except in compliance with the License.
+          You may obtain a copy of the License at
+      
+              http://www.apache.org/licenses/LICENSE-2.0
+      
+          Unless required by applicable law or agreed to in writing, software
+          distributed under the License is distributed on an "AS IS" BASIS,
+          WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+          See the License for the specific language governing permissions and
+         	limitations under the License.
+      
+      	**********************************************************************
+      	**********************************************************************
+      %END REM
+      Option Public
+      Option Declare
+      
+      Use "enhLogClassLite"
+      Use "baliCoreUtils"
+      
+      
+      '++LotusScript Development Environment:2:5:(Forward):0:1
+      Declare Sub Initialize
+      
+      '++LotusScript Development Environment:2:5:(Declarations):0:10
+      %REM
+      	Type adminDocInfo
+      	Description: Used in a list to store basic metadata about admin docs
+      %END REM
+      Type adminDocInfo
+      	key As String
+      	unid As String
+      	createdDate As Variant  ' should be a NDT
+      	modifiedDate As Variant   ' should be a NDT	
+      End Type
+      
+      '++LotusScript Development Environment:2:2:Initialize:1:10
+      Sub Initialize
+      	Dim s As New NotesSession, ws As New NotesUIWorkspace
+      	Dim thisDb As NotesDatabase, tplDb As NotesDatabase
+      	Dim tplview As NotesView, tgtview As NotesView
+      	Dim tplDoc As NotesDocument, tgtDoc As NotesDocument
+      	Dim dname As String, dcreated As Variant, dmodified As Variant, dunid As String
+      	Dim admindocs List As adminDocInfo, targetdocs List As adminDocInfo
+      	Dim datapath As String, adminviews(3) As String
+      	Dim helpIDs(1) As String
+      	Dim errtxt As String
+      	Dim rvar As Variant, emptyvar As Variant
+      	
+      	Set thisDb = s.Currentdatabase
+      	datapath = s.Getenvironmentstring("directory", True)
+      	rvar = ws.Openfiledialog(False, "Select VSID Template", "Notes Templates|*.ntf", datapath, "vsid.ntf")
+      	
+      	If Not Isarray(rvar) Then Error 1000, "You must select a valid VSID template"
+      	If Cstr(rvar(0)) = "" Then Error 1000, "You must select a valid VSID template"
+      	
+      	Set tplDb = s.Getdatabase("", Cstr(rvar(0)), False)
+      	If tplDb Is Nothing Then Error 1001, "Unable to open template/database located at: " & Cstr(rvar(0))
+      	
+      	adminviews(0) = "dataTypesByName"
+      	adminviews(1) = "keywords"
+      	adminviews(2) = "skeletonsByName"
+      	adminviews(3) = "fileResourcesByName"
+      	
+      	Forall av In adminviews
+      		Set tgtview = thisDb.getView(av)
+      		If tgtview Is Nothing Then Error 1002, "Unable to open Admin View (" & av & ") in this database"
+      		tgtview.Autoupdate = False
+      		Set tplview = tpldb.Getview(av)
+      		If tplview Is Nothing Then Error 1002, "Unable to open Admin View (" & av & ") in template db (" & tplDb.Filepath & ")"
+      		tplview.Autoupdate = False
+      		
+      		' get tpl docs, put info in list
+      		Set tplDoc = tplView.Getfirstdocument()
+      		Do While Not(tplDoc Is Nothing)
+      			dname = columnValStr(tplDoc, 0)  ' from baliCoreUtils
+      			dcreated = tplDoc.Created
+      			dmodified = tplDoc.Lastmodified
+      			dunid = tplDoc.Universalid
+      			
+      			admindocs(dname).key = dname
+      			admindocs(dname).unid = dunid
+      			admindocs(dname).createdDate = dcreated
+      			admindocs(dname).modifiedDate = dmodified
+      			
+      			Set tplDoc = tplView.Getnextdocument(tplDoc)
+      		Loop
+      		
+      		' get tgt docs, put info in list
+      		Set tgtDoc = tgtView.Getfirstdocument()
+      		Do While Not(tgtDoc Is Nothing)
+      			dname = columnValStr(tgtDoc, 0)  ' from baliCoreUtils
+      			dcreated = tgtDoc.Created
+      			dmodified = tgtDoc.Lastmodified
+      			dunid = tgtDoc.Universalid
+      			
+      			targetdocs(dname).key = dname
+      			targetdocs(dname).unid = dunid
+      			targetdocs(dname).createdDate = dcreated
+      			targetdocs(dname).modifiedDate = dmodified
+      			
+      			Set tgtDoc = tgtView.Getnextdocument(tgtDoc)
+      		Loop
+      		
+      		' now compare the lastmod dates between the two;
+      		' if the tpldoc is newer, nuke the tgtdoc and replace it
+      		Forall tpld In admindocs
+      			If Iselement(targetdocs(tpld.key)) Then
+      				If Cdat(targetdocs(tpld.key).modifiedDate) < Cdat(tpld.modifiedDate) Then
+      					Set tgtDoc = thisDb.Getdocumentbyunid(targetdocs(tpld.key).unid)
+      					Set tplDoc = tpldb.Getdocumentbyunid(tpld.unid)
+      					
+      					Call tgtdoc.Remove(True)
+      					Call tplDoc.copyToDatabase(thisDb)
+      				End If
+      			Else
+      				' if the tpldoc isn't in the target db, copy it over
+      				Set tplDoc = tpldb.Getdocumentbyunid(tpld.unid)
+      				Call tplDoc.copyToDatabase(thisDb)
+      			End If
+      		End Forall
+      		
+      		' reset for next loop
+      		Erase admindocs
+      		Erase targetdocs
+      	End Forall
+      	
+      	' now update the About and Using docs
+      	helpIDs(0) = "FFFF0100"   ' using doc
+      	helpIDs(1) = "FFFF0002"   ' about doc
+      
+      	Set tgtdoc = nothing
+      	ForAll id In helpIDs
+      		Set tgtdoc = thisdb.Getdocumentbyid(id)
+      		If Not(tgtdoc Is Nothing) Then
+      			Call tgtdoc.ReplaceItemValue("$Flags", "R")
+      			Call tgtdoc.Save(True, False, True)
+      		End If	
+      	End ForAll
+      	
+      	
+      Msgbox "VSID Admin Docs have been updated.",, "Success!"
+      getOut:
+      	Exit Sub
+      	
+      errHandler:
+      	Select Case Err
+      		Case 1000
+      			errtxt = Error$
+      		Case 1001 To 1050
+      			errtxt = Error$ & " (L: " & Erl & ")"
+      		Case Else
+      			errtxt = Error$ & " (E: " & Err & ", L: " & Erl & ")"
+      	End Select
+      	Msgbox errtxt,, "ERROR"
+      	enhLogException ||, ||
+      	Resume getOut
+      End Sub
+    dwFlags: 0x00000000
+    signed: true
+    nonsummary: true
+  - name: $AssistDocCount
+    type: number
+    data: 0
+    signed: true
+  - name: $AssistFlags
+    type: text
+    data: Es
+    signed: true
+  - name: $AssistInfo
+    type_num: 17
+    type: opaque
+    opaque: |
+      AQAEAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    signed: true
+    nonsummary: true
+  - name: $AssistLastRun
+    type: time
+    signed: true
+  - name: $AssistQuery
+    type_num: 15
+    type: opaque
+    opaque: gQYAAAAA
+    signed: true
+    nonsummary: true
+  - name: $AssistRunInfo
+    type: object
+    obj_type: 0x0008
+    obj_class: 0x0001
+    obj_privs: 0x0000
+    opaque: |
+      AAAAAAUAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      mWVLAAuLJYVQYlwA+4olAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      AAAAAAAAAAAAAAAA
+  - name: $AssistTrigger
+    type: text
+    data: "4"
+  - name: $AssistType
+    type: number
+    data: 65413
+    signed: true
+  - name: $DesignerVersion
+    type: text
+    data: 8.5.3
+  - name: $Flags
+    type: text
+    data: 3fL
+  - name: $FlagsExt
+    type: text
+    data: ""
+    signed: true
+  - name: $Restricted
+    type: number
+    data: 1
+    signed: true
+  - name: $TITLE
+    type: text
+    data: "Tools\\Update Admin Docs From Chosen Template|ui-updateAdminDocsFromTPL"
+    signed: true
+remaining: []

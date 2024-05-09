@@ -1,0 +1,7 @@
+nav:
+  - index.md
+  - whatsnew.md 
+  - vsid.md
+  - VSID user interface: mainscreen.md
+  - API documentation: apidoc/index.html
+  - Support: references/index.html#support 

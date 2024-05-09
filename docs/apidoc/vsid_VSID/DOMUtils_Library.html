@@ -1,0 +1,209 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<!-- {{vsidgenerated}} -->
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Library: DOMUtils</title>
+	<meta name="date" content="2024-03-20">
+	<meta name="keywords" content="DU_GetChildNamed()"><meta name="keywords" content="DU_GetChildOfType()"><meta name="keywords" content="DU_GetChildWithAttr()"><meta name="keywords" content="DU_GetDocNode()"><meta name="keywords" content="DU_GetNextElement()"><meta name="keywords" content="DU_GetTextChild()"><meta name="keywords" content="DU_GetTextFromNode()"><meta name="keywords" content="StreamToBase64()"><meta name="keywords" content="StreamToText()"><meta name="keywords" content="TextToStream()"><meta name="keywords" content="Base64ToBinary()"><meta name="keywords" content="VSID.DOMUtils Library">
+	<link rel="stylesheet" type="text/css" href="..\resources/vsid.css" title="balistyle">
+	<script type="text/javascript" src="..\resources/vsid.js"></script>
+</head>
+<body>
+<script type="text/javascript"></script>
+<noscript><div>JavaScript is disabled on your browser.</div></noscript>
+
+
+<header id="masterHeader" class="dark master-header dark-master">
+	<div id="header-topbar" class="header-topbar">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-6 text-left">
+					<a href="https://www.hcltechsw.com/" target="_blank" class="logo-hcl" rel="nofollow"><img src="..\resources/hcl-white.png" class="img-responsive"></a>
+				</div>
+				<div class="col-xs-6 text-right">
+					<a href="https://www.hcltechsw.com/" target="_blank" class="logo-hcl-tech" rel="nofollow">HCL Software</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+<!-- ========= START OF TOP NAVBAR ======= -->
+<div class="topNav">
+	<a name="navbar.top">
+	<!--   -->
+	</a>
+	<div class="skipNav"><a href="#skip.navbar.top" title="Skip navigation links">Skip navigation links</a></div>
+	<a name="navbar.top.firstrow">
+	<!--   -->
+	</a>	
+	<ul class="navList" title="Navigation">
+		<!-- -->
+		<li><a href="VSID_VSID.html" title="Navigate to VSID">VSID</a></li> 
+		<li class="navBarCell1Rev">DOMUtils</li>
+	</ul>
+</div>
+
+<div class="subNav">
+	<ul class="navList">
+	<!-- --> 
+	</ul>
+	<div><!--  -->
+		<script type="text/javascript"><!--
+		navcontentLink = document.getElementById("navcontent_navbar_top");
+		if (!!navcontentLink) {
+		  if(window==top) {
+			navcontentLink.style.display = "block";
+		  }
+		  else {
+			navcontentLink.style.display = "none";
+		  }
+		}
+		  //-->
+		</script>
+	</div>
+	<div>
+		<ul class="subNavList">
+			
+		</ul>
+	</div>
+	<a name="skip.navbar.top">
+	<!--   -->
+	</a>
+</div>
+<!-- ========= END OF TOP NAVBAR ========= -->
+
+<!-- LIBRARY -->
+<!-- ======== START OF LIBRARY DATA ======== -->
+<div class="header">
+	<h1 title="Library {{libraryname}}" class="title">Library DOMUtils</h1>
+</div>
+
+<div class="contentContainer">
+	<ul class="inheritance">
+		<!-- --> 
+
+		<ul class="inheritance">
+		<!-- --> 
+
+			<ul class="inheritance">
+				<li><h2>VSID.DOMUtils</h2></li>
+			</ul>
+		</ul>
+	</ul>
+
+	<hr />
+
+	<div class="description">
+		<ul class="blockList">
+			<li class="blockList">
+				<div class="comments"><!-- summary --><pre>Created Mar 8, 2010 by Andre Guirard/Cambridge/IBM
+ 
+Various useful functions for working with the built-in DOM parser of LotusScript. Function names all start with DU_ to help in context assist</pre></div>
+				<div class="comments"><!-- description --><pre></pre></div>
+				<hr />
+			</li>
+		</ul>
+	</div>
+
+	<ul class="blockList">	<li class="blockList">		<a name="library.summary"><!--   --></a>		<h3>Library Summary</h3>		<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Library Summary Table">			<thead>						</thead>			<tbody>			<tr class="altColor"><td class="colFirst"><span class="memberNameLabel" title="{{fqn}}">Script Creator</span></td><td class="colLast">Devin Olson</td></tr>			</tbody>		</table>	</li></ul> 
+	
+	<div class="summary">
+		<ul class="blockList">
+			<li class="blockList">
+				
+				 
+				
+				  
+				
+				<ul class="blockList">	<li class="blockList">		<a name="methods.summary"><!--   --></a>		<h3>Method Summaries</h3>		<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Method Summary table, listing methods and comments">			<thead>						</thead>			<tbody>			<tr class="rowColor"><td class="colFirst"><code><span class="memberNameLink"><a href="#VSID.DOMUtils.DUGetChildNamed-">DU_GetChildNamed</a></span>(target As String, dome As NotesDOMElementNode) As NotesDOMElementNode</code></td></tr><tr class="altColor"><td class="colFirst"><code><span class="memberNameLink"><a href="#VSID.DOMUtils.DUGetChildOfType-">DU_GetChildOfType</a></span>(elParent As NotesDOMElementNode, seekType As Long) As NotesDOMNode</code></td></tr><tr class="rowColor"><td class="colFirst"><code><span class="memberNameLink"><a href="#VSID.DOMUtils.DUGetChildWithAttr-">DU_GetChildWithAttr</a></span>(elParent As NotesDOMDocumentNode, targetElement As String, attrName As String, attrValue As String, flags As Long) As NotesDOMElementNode</code></td></tr><tr class="altColor"><td class="colFirst"><code><span class="memberNameLink"><a href="#VSID.DOMUtils.DUGetDocNode-">DU_GetDocNode</a></span>(node As NotesDOMNode) As NotesDOMDocumentNode</code></td></tr><tr class="rowColor"><td class="colFirst"><code><span class="memberNameLink"><a href="#VSID.DOMUtils.DUGetNextElement-">DU_GetNextElement</a></span>(elCur As NotesDOMElementNode) As NotesDOMElementNode</code></td></tr><tr class="altColor"><td class="colFirst"><code><span class="memberNameLink"><a href="#VSID.DOMUtils.DUGetTextChild-">DU_GetTextChild</a></span>(el As NotesDOMElementNode) As NotesDOMTextNode</code></td></tr><tr class="rowColor"><td class="colFirst"><code><span class="memberNameLink"><a href="#VSID.DOMUtils.DUGetTextFromNode-">DU_GetTextFromNode</a></span>(dome As NotesDOMElementNode) As String</code></td></tr><tr class="altColor"><td class="colFirst"><code><span class="memberNameLink"><a href="#VSID.DOMUtils.StreamToBase64-">StreamToBase64</a></span>(streamIn As NotesStream) As String</code></td></tr><tr class="rowColor"><td class="colFirst"><code><span class="memberNameLink"><a href="#VSID.DOMUtils.StreamToText-">StreamToText</a></span>(streamIn As NotesStream, chrset As String) As String</code></td></tr><tr class="altColor"><td class="colFirst"><code><span class="memberNameLink"><a href="#VSID.DOMUtils.TextToStream-">TextToStream</a></span>(szText As String, chrset As String) As NotesStream</code></td></tr><tr class="rowColor"><td class="colFirst"><code><span class="memberNameLink"><a href="#VSID.DOMUtils.Base64ToBinary-">Base64ToBinary</a></span>(strBase64 As String, streamOut As NotesStream)</code></td></tr>			</tbody>		</table>	</li></ul> 
+			</li>
+		</ul>
+	</div>
+
+	<div class="details">
+		<ul class="blockList">
+			<li class="blockList">
+				
+				
+				
+				<!-- ============ METHOD DETAIL ========== --><ul class="blockList">	<li class="blockList">		<a name="method.detail"><!--   --></a>		<h3>Methods Detail</h3>		<!-- Method Detail Element --><a name="VSID.DOMUtils.DUGetChildNamed-"><!--  --></a><ul class="blockList">	<li class="blockList">		<a name="VSID.DOMUtils.DUGetChildNamed"><!--   --></a>		<h4>DU_GetChildNamed</h4>		<table class="methoddetail" border="0" cellpadding="3" cellspacing="0" summary="DU_GetChildNamed method detail table">			<thead>				<tr><th class="colFirst" scope="col" colspan="5"><pre>Public Function DU_GetChildNamed<em>(target As String, dome As NotesDOMElementNode)</em> As NotesDOMElementNode</pre></th></tr>			</thead>			<tbody>	<tr class="altColor"><td class="colFirst" colspan="5"><a name="VSID.DOMUtils.DUGetChildNamed.comments"><!--   --></a>Given a name and an element, find the first child of that element with the given tag name.</td></tr>	<tr>	<th class="colFirst min" scope="col">idx</th>	<th class="colOne" scope="col"><a name="VSID.DOMUtils.DUGetChildNamed.arguments"><!--   --></a>Argument</th>	<th class="colOne" scope="col">Data Type</th>	<th class="colOne attributes" scope="col">Attributes</th>	<th class="colLast comment" scope="col">Comments</th></tr><tr class="altColor"><td class="colFirst min">1</strong></td><td class="colOne"><strong>target</strong></td><td class="colOne">String</td><td class="colOne attributes">ByVal</td><td class="colLast comment"><em>Name of the element to retrieve&nbsp;</em></td></tr><tr class="altColor"><td class="colFirst min">2</strong></td><td class="colOne"><strong>dome</strong></td><td class="colOne">NotesDOMElementNode</td><td class="colOne attributes"></td><td class="colLast comment"><em>Node within which to search for the target child node. &nbsp;</em></td></tr>			</tbody>		</table>			</li></ul><!-- Method Detail Element --><a name="VSID.DOMUtils.DUGetChildOfType-"><!--  --></a><ul class="blockList">	<li class="blockList">		<a name="VSID.DOMUtils.DUGetChildOfType"><!--   --></a>		<h4>DU_GetChildOfType</h4>		<table class="methoddetail" border="0" cellpadding="3" cellspacing="0" summary="DU_GetChildOfType method detail table">			<thead>				<tr><th class="colFirst" scope="col" colspan="5"><pre>Public Function DU_GetChildOfType<em>(elParent As NotesDOMElementNode, seekType As Long)</em> As NotesDOMNode</pre></th></tr>			</thead>			<tbody>	<tr class="altColor"><td class="colFirst" colspan="5"><a name="VSID.DOMUtils.DUGetChildOfType.comments"><!--   --></a>Get the first child of an element node that has a particular type.</td></tr>	<tr>	<th class="colFirst min" scope="col">idx</th>	<th class="colOne" scope="col"><a name="VSID.DOMUtils.DUGetChildOfType.arguments"><!--   --></a>Argument</th>	<th class="colOne" scope="col">Data Type</th>	<th class="colOne attributes" scope="col">Attributes</th>	<th class="colLast comment" scope="col">Comments</th></tr><tr class="altColor"><td class="colFirst min">1</strong></td><td class="colOne"><strong>elParent</strong></td><td class="colOne">NotesDOMElementNode</td><td class="colOne attributes"></td><td class="colLast comment"><em>node whose child we seek.&nbsp;</em></td></tr><tr class="altColor"><td class="colFirst min">2</strong></td><td class="colOne"><strong>seekType</strong></td><td class="colOne">Long</td><td class="colOne attributes"></td><td class="colLast comment"><em>the node type we want. Legal values:<br />			DOMNODETYPE_ELEMENT_NODE (1) <br />			DOMNODETYPE_TEXT_NODE (3) <br />			DOMNODETYPE_CDATASECTION_NODE (4) <br />			DOMNODETYPE_COMMENT_NODE (8) <br />			...and others but you&apos;re unlikely to use them.&nbsp;</em></td></tr>			</tbody>		</table>			</li></ul><!-- Method Detail Element --><a name="VSID.DOMUtils.DUGetChildWithAttr-"><!--  --></a><ul class="blockList">	<li class="blockList">		<a name="VSID.DOMUtils.DUGetChildWithAttr"><!--   --></a>		<h4>DU_GetChildWithAttr</h4>		<table class="methoddetail" border="0" cellpadding="3" cellspacing="0" summary="DU_GetChildWithAttr method detail table">			<thead>				<tr><th class="colFirst" scope="col" colspan="5"><pre>Public Function DU_GetChildWithAttr<em>(elParent As NotesDOMDocumentNode, targetElement As String, attrName As String, attrValue As String, flags As Long)</em> As NotesDOMElementNode</pre></th></tr>			</thead>			<tbody>	<tr class="altColor"><td class="colFirst" colspan="5"><a name="VSID.DOMUtils.DUGetChildWithAttr.comments"><!--   --></a>Find a child DOM node with an attribute that has a particular value.<br />		<br />Does not recurse into the tree; looking only for immediate descendants. </td></tr>	<tr>	<th class="colFirst min" scope="col">idx</th>	<th class="colOne" scope="col"><a name="VSID.DOMUtils.DUGetChildWithAttr.arguments"><!--   --></a>Argument</th>	<th class="colOne" scope="col">Data Type</th>	<th class="colOne attributes" scope="col">Attributes</th>	<th class="colLast comment" scope="col">Comments</th></tr><tr class="altColor"><td class="colFirst min">1</strong></td><td class="colOne"><strong>elParent</strong></td><td class="colOne">NotesDOMDocumentNode</td><td class="colOne attributes"></td><td class="colLast comment"><em>node whose children you want to search.&nbsp;</em></td></tr><tr class="altColor"><td class="colFirst min">2</strong></td><td class="colOne"><strong>targetElement</strong></td><td class="colOne">String</td><td class="colOne attributes">ByVal</td><td class="colLast comment"><em>element name of desired child node.&nbsp;</em></td></tr><tr class="altColor"><td class="colFirst min">3</strong></td><td class="colOne"><strong>attrName</strong></td><td class="colOne">String</td><td class="colOne attributes">ByVal</td><td class="colLast comment"><em>attribute name you want to check.&nbsp;</em></td></tr><tr class="altColor"><td class="colFirst min">4</strong></td><td class="colOne"><strong>attrValue</strong></td><td class="colOne">String</td><td class="colOne attributes">ByVal</td><td class="colLast comment"><em>attribute value of element you&apos;re looking for.&nbsp;</em></td></tr><tr class="altColor"><td class="colFirst min">5</strong></td><td class="colOne"><strong>flags</strong></td><td class="colOne">Long</td><td class="colOne attributes">ByVal</td><td class="colLast comment"><em>string-matching flags to compare attribute, e.g. 1 for case insensitive.&nbsp;</em></td></tr>	<tr><td>&nbsp;</td></tr><tr><th class="colFirst" scope="col" colspan="5">Code Sample</th></tr><tr class="altColor"><td class="colFirst" colspan="5" style="padding-top:0;"><a name="VSID.DOMUtils.DUGetChildWithAttr.codesample"><!--   --></a><pre class="codesample">Set titleItem = DU_GetChildWithAttr(elView, &quot;item&quot;, &quot;name&quot;, &quot;$title&quot;, 1)<br />		&apos; finds the first &quot;item&quot; element where name=&apos;$title&apos; (case insensitive). </pre></td></tr>		</tbody>		</table>			</li></ul><!-- Method Detail Element --><a name="VSID.DOMUtils.DUGetDocNode-"><!--  --></a><ul class="blockList">	<li class="blockList">		<a name="VSID.DOMUtils.DUGetDocNode"><!--   --></a>		<h4>DU_GetDocNode</h4>		<table class="methoddetail" border="0" cellpadding="3" cellspacing="0" summary="DU_GetDocNode method detail table">			<thead>				<tr><th class="colFirst" scope="col" colspan="5"><pre>Public Function DU_GetDocNode<em>(node As NotesDOMNode)</em> As NotesDOMDocumentNode</pre></th></tr>			</thead>			<tbody>	<tr class="altColor"><td class="colFirst" colspan="5"><a name="VSID.DOMUtils.DUGetDocNode.comments"><!--   --></a>Find the DOM &quot;document&quot; node from which a given node was derived.<br />		<br />The doc node is needed to create new nodes.</td></tr>	<tr>	<th class="colFirst min" scope="col">idx</th>	<th class="colOne" scope="col"><a name="VSID.DOMUtils.DUGetDocNode.arguments"><!--   --></a>Argument</th>	<th class="colOne" scope="col">Data Type</th>	<th class="colOne attributes" scope="col">Attributes</th>	<th class="colLast comment" scope="col">Comments</th></tr><tr class="altColor"><td class="colFirst min">1</strong></td><td class="colOne"><strong>node</strong></td><td class="colOne">NotesDOMNode</td><td class="colOne attributes"></td><td class="colLast comment"><em>Node for which to find the Document node. &nbsp;</em></td></tr>			</tbody>		</table>			</li></ul><!-- Method Detail Element --><a name="VSID.DOMUtils.DUGetNextElement-"><!--  --></a><ul class="blockList">	<li class="blockList">		<a name="VSID.DOMUtils.DUGetNextElement"><!--   --></a>		<h4>DU_GetNextElement</h4>		<table class="methoddetail" border="0" cellpadding="3" cellspacing="0" summary="DU_GetNextElement method detail table">			<thead>				<tr><th class="colFirst" scope="col" colspan="5"><pre>Public Function DU_GetNextElement<em>(elCur As NotesDOMElementNode)</em> As NotesDOMElementNode</pre></th></tr>			</thead>			<tbody>	<tr class="altColor"><td class="colFirst" colspan="5"><a name="VSID.DOMUtils.DUGetNextElement.comments"><!--   --></a>Given a DOM element, find its next sibling that&apos;s an element<br />		<br />(in other words, skip over text and other nodes).</td></tr>	<tr>	<th class="colFirst min" scope="col">idx</th>	<th class="colOne" scope="col"><a name="VSID.DOMUtils.DUGetNextElement.arguments"><!--   --></a>Argument</th>	<th class="colOne" scope="col">Data Type</th>	<th class="colOne attributes" scope="col">Attributes</th>	<th class="colLast comment" scope="col">Comments</th></tr><tr class="altColor"><td class="colFirst min">1</strong></td><td class="colOne"><strong>elCur</strong></td><td class="colOne">NotesDOMElementNode</td><td class="colOne attributes"></td><td class="colLast comment"><em>Node for which to find the next sibling. &nbsp;</em></td></tr>			</tbody>		</table>			</li></ul><!-- Method Detail Element --><a name="VSID.DOMUtils.DUGetTextChild-"><!--  --></a><ul class="blockList">	<li class="blockList">		<a name="VSID.DOMUtils.DUGetTextChild"><!--   --></a>		<h4>DU_GetTextChild</h4>		<table class="methoddetail" border="0" cellpadding="3" cellspacing="0" summary="DU_GetTextChild method detail table">			<thead>				<tr><th class="colFirst" scope="col" colspan="5"><pre>Public Function DU_GetTextChild<em>(el As NotesDOMElementNode)</em> As NotesDOMTextNode</pre></th></tr>			</thead>			<tbody>	<tr class="altColor"><td class="colFirst" colspan="5"><a name="VSID.DOMUtils.DUGetTextChild.comments"><!--   --></a>Return the first DOM text node which is a child of the specified node.</td></tr>	<tr>	<th class="colFirst min" scope="col">idx</th>	<th class="colOne" scope="col"><a name="VSID.DOMUtils.DUGetTextChild.arguments"><!--   --></a>Argument</th>	<th class="colOne" scope="col">Data Type</th>	<th class="colOne attributes" scope="col">Attributes</th>	<th class="colLast comment" scope="col">Comments</th></tr><tr class="altColor"><td class="colFirst min">1</strong></td><td class="colOne"><strong>el</strong></td><td class="colOne">NotesDOMElementNode</td><td class="colOne attributes"></td><td class="colLast comment"><em>Note from which to retrieve for the child node. &nbsp;</em></td></tr>			</tbody>		</table>			</li></ul><!-- Method Detail Element --><a name="VSID.DOMUtils.DUGetTextFromNode-"><!--  --></a><ul class="blockList">	<li class="blockList">		<a name="VSID.DOMUtils.DUGetTextFromNode"><!--   --></a>		<h4>DU_GetTextFromNode</h4>		<table class="methoddetail" border="0" cellpadding="3" cellspacing="0" summary="DU_GetTextFromNode method detail table">			<thead>				<tr><th class="colFirst" scope="col" colspan="5"><pre>Public Function DU_GetTextFromNode<em>(dome As NotesDOMElementNode)</em> As String</pre></th></tr>			</thead>			<tbody>	<tr class="altColor"><td class="colFirst" colspan="5"><a name="VSID.DOMUtils.DUGetTextFromNode.comments"><!--   --></a>Passed a DOM element node that has a text node as one of its children, return the text from that node.</td></tr>	<tr>	<th class="colFirst min" scope="col">idx</th>	<th class="colOne" scope="col"><a name="VSID.DOMUtils.DUGetTextFromNode.arguments"><!--   --></a>Argument</th>	<th class="colOne" scope="col">Data Type</th>	<th class="colOne attributes" scope="col">Attributes</th>	<th class="colLast comment" scope="col">Comments</th></tr><tr class="altColor"><td class="colFirst min">1</strong></td><td class="colOne"><strong>dome</strong></td><td class="colOne">NotesDOMElementNode</td><td class="colOne attributes"></td><td class="colLast comment"><em>Node for which to retrieve the text of the child node. &nbsp;</em></td></tr>			</tbody>		</table>			</li></ul><!-- Method Detail Element --><a name="VSID.DOMUtils.StreamToBase64-"><!--  --></a><ul class="blockList">	<li class="blockList">		<a name="VSID.DOMUtils.StreamToBase64"><!--   --></a>		<h4>StreamToBase64</h4>		<table class="methoddetail" border="0" cellpadding="3" cellspacing="0" summary="StreamToBase64 method detail table">			<thead>				<tr><th class="colFirst" scope="col" colspan="5"><pre>Public Function StreamToBase64<em>(streamIn As NotesStream)</em> As String</pre></th></tr>			</thead>			<tbody>	<tr class="altColor"><td class="colFirst" colspan="5"><a name="VSID.DOMUtils.StreamToBase64.comments"><!--   --></a>Convert a binary NotesStream to a string of Base64 data.<br />		<br />The output can be used as part of DXL data for importing.</td></tr>	<tr>	<th class="colFirst min" scope="col">idx</th>	<th class="colOne" scope="col"><a name="VSID.DOMUtils.StreamToBase64.arguments"><!--   --></a>Argument</th>	<th class="colOne" scope="col">Data Type</th>	<th class="colOne attributes" scope="col">Attributes</th>	<th class="colLast comment" scope="col">Comments</th></tr><tr class="altColor"><td class="colFirst min">1</strong></td><td class="colOne"><strong>streamIn</strong></td><td class="colOne">NotesStream</td><td class="colOne attributes"></td><td class="colLast comment"><em>Binary strem from which to get the base64 encoded data&nbsp;</em></td></tr>			</tbody>		</table>			</li></ul><!-- Method Detail Element --><a name="VSID.DOMUtils.StreamToText-"><!--  --></a><ul class="blockList">	<li class="blockList">		<a name="VSID.DOMUtils.StreamToText"><!--   --></a>		<h4>StreamToText</h4>		<table class="methoddetail" border="0" cellpadding="3" cellspacing="0" summary="StreamToText method detail table">			<thead>				<tr><th class="colFirst" scope="col" colspan="5"><pre>Public Function StreamToText<em>(streamIn As NotesStream, chrset As String)</em> As String</pre></th></tr>			</thead>			<tbody>	<tr class="altColor"><td class="colFirst" colspan="5"><a name="VSID.DOMUtils.StreamToText.comments"><!--   --></a>Convert a NotesStream to text in a specified character set.<br />		<br />The default is to interpret NotesStreams as Unicode unless they are attached to a file; this lets you override that. </td></tr>	<tr>	<th class="colFirst min" scope="col">idx</th>	<th class="colOne" scope="col"><a name="VSID.DOMUtils.StreamToText.arguments"><!--   --></a>Argument</th>	<th class="colOne" scope="col">Data Type</th>	<th class="colOne attributes" scope="col">Attributes</th>	<th class="colLast comment" scope="col">Comments</th></tr><tr class="altColor"><td class="colFirst min">1</strong></td><td class="colOne"><strong>streamIn</strong></td><td class="colOne">NotesStream</td><td class="colOne attributes"></td><td class="colLast comment"><em>Stream to be converted to text. &nbsp;</em></td></tr><tr class="altColor"><td class="colFirst min">2</strong></td><td class="colOne"><strong>chrset</strong></td><td class="colOne">String</td><td class="colOne attributes">ByVal</td><td class="colLast comment"><em>Character set to use for the conversion. &nbsp;</em></td></tr>			</tbody>		</table>			</li></ul><!-- Method Detail Element --><a name="VSID.DOMUtils.TextToStream-"><!--  --></a><ul class="blockList">	<li class="blockList">		<a name="VSID.DOMUtils.TextToStream"><!--   --></a>		<h4>TextToStream</h4>		<table class="methoddetail" border="0" cellpadding="3" cellspacing="0" summary="TextToStream method detail table">			<thead>				<tr><th class="colFirst" scope="col" colspan="5"><pre>Public Function TextToStream<em>(szText As String, chrset As String)</em> As NotesStream</pre></th></tr>			</thead>			<tbody>	<tr class="altColor"><td class="colFirst" colspan="5"><a name="VSID.DOMUtils.TextToStream.comments"><!--   --></a>Produce a stream in a specified character set without opening a file.<br />		<br />Unfortunately the NotesStream.charset attribute will still be the default Unicode, but the bytes in the stream will be correct. <br />		<br />At some point we may be able to correcte this by assigning the Charset property and then adding text, but not yet.</td></tr>	<tr>	<th class="colFirst min" scope="col">idx</th>	<th class="colOne" scope="col"><a name="VSID.DOMUtils.TextToStream.arguments"><!--   --></a>Argument</th>	<th class="colOne" scope="col">Data Type</th>	<th class="colOne attributes" scope="col">Attributes</th>	<th class="colLast comment" scope="col">Comments</th></tr><tr class="altColor"><td class="colFirst min">1</strong></td><td class="colOne"><strong>szText</strong></td><td class="colOne">String</td><td class="colOne attributes"></td><td class="colLast comment"><em>Text to be converted to a stream&nbsp;</em></td></tr><tr class="altColor"><td class="colFirst min">2</strong></td><td class="colOne"><strong>chrset</strong></td><td class="colOne">String</td><td class="colOne attributes">ByVal</td><td class="colLast comment"><em>Character set to use&nbsp;</em></td></tr>			</tbody>		</table>			</li></ul><!-- Method Detail Element --><a name="VSID.DOMUtils.Base64ToBinary-"><!--  --></a><ul class="blockList">	<li class="blockList">		<a name="VSID.DOMUtils.Base64ToBinary"><!--   --></a>		<h4>Base64ToBinary</h4>		<table class="methoddetail" border="0" cellpadding="3" cellspacing="0" summary="Base64ToBinary method detail table">			<thead>				<tr><th class="colFirst" scope="col" colspan="5"><pre>Public Sub Base64ToBinary<em>(strBase64 As String, streamOut As NotesStream)</em></pre></th></tr>			</thead>			<tbody>	<tr class="altColor"><td class="colFirst" colspan="5"><a name="VSID.DOMUtils.Base64ToBinary.comments"><!--   --></a>Given a string of base64-encoded data, write into a binary stream we are passed.<br />		<br />This is done rather than creating the stream here and returning it, so that you can stream directly into a file if you choose.</td></tr>	<tr>	<th class="colFirst min" scope="col">idx</th>	<th class="colOne" scope="col"><a name="VSID.DOMUtils.Base64ToBinary.arguments"><!--   --></a>Argument</th>	<th class="colOne" scope="col">Data Type</th>	<th class="colOne attributes" scope="col">Attributes</th>	<th class="colLast comment" scope="col">Comments</th></tr><tr class="altColor"><td class="colFirst min">1</strong></td><td class="colOne"><strong>strBase64</strong></td><td class="colOne">String</td><td class="colOne attributes"></td><td class="colLast comment"><em>Base64 encoded data string to be written to streamOut&nbsp;</em></td></tr><tr class="altColor"><td class="colFirst min">2</strong></td><td class="colOne"><strong>streamOut</strong></td><td class="colOne">NotesStream</td><td class="colOne attributes"></td><td class="colLast comment"><em>target stream to be written to&nbsp;</em></td></tr>			</tbody>		</table>			</li></ul>	</li></ul>
+			</li>
+		</ul>
+	</div> 
+	
+</div>
+<!-- ========= END OF LIBRARY DATA ========= -->
+
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<div class="bottomNav">
+	<a name="navbar.bottom"><!--   --></a>
+	<div class="skipNav"><a href="#skip.navbar.bottom" title="Skip navigation links">Skip navigation links</a></div>
+	
+	<a name="navbar.bottom.firstrow"><!--   --></a>
+	<ul class="navList" title="Navigation">
+		<!--  -->
+	</ul>
+</div>
+
+<div class="subNav">
+	<ul class="navList">
+		<!-- 
+		<li><a href="prevelement (class or package)url.html" title="previous element (class or package) fqn in parent/package"><span element (class or package)="typeNameLink">Previous element (class or package) Name</span></a></li>
+		{{link_prevelement}}
+		-->
+
+		<!-- 
+		<li><a href="nextelement (class or package)url.html" title="next element (class or package) fqn in parent/package"><span element (class or package)="typeNameLink">Next element (class or package) Name</span></a></li>
+		{{link_nextelement}}
+		-->
+	</ul>
+	<ul class="navList">
+	<!-- 
+		<li><a href="../../../../index.html?url for frames" target="_top">Frames</a></li>
+		<li><a href="{{elementurl}}" target="_top">No&nbsp;Frames</a></li>
+	-->
+	</ul>
+	<ul class="navList" id="navcontent_navbar_bottom">
+	<!-- 
+		<li><a href="../../../nav-content-noframe.html">All&nbsp;Classes</a></li>
+	 -->
+	</ul>
+	
+	<div>
+		<script type="text/javascript"><!--
+		  navcontentLink = document.getElementById("navcontent_navbar_bottom");
+		  if(window==top) {
+			navcontentLink.style.display = "block";
+		  }
+		  else {
+			navcontentLink.style.display = "none";
+		  }
+		  //-->
+		</script>
+	</div>
+	
+	<div>
+		<ul class="subNavList">
+		<!-- 
+			<li>Summary:&nbsp;</li>
+			<li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
+			<li><a href="#method.summary">Method</a></li>
+		 -->
+		</ul>
+		<ul class="subNavList">
+		<!-- 
+			<li>Detail:&nbsp;</li>
+			<li>Field&nbsp;|&nbsp;</li>
+			<li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
+			<li><a href="#method.detail">Method</a></li>
+		 -->
+		</ul>
+	</div>
+	
+	<a name="skip.navbar.bottom"><!--   --></a>
+</div>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+<p class="legalCopy"><small>Copyright &#169; <a href="https://www.hcltechsw.com/">HCL America, Inc.</a> 1999, 2023. All Rights Reserved.</small></p>
+</body>
+</html>

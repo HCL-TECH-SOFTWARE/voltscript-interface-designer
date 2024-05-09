@@ -1,0 +1,689 @@
+---
+class: 512
+flags: 0x2000
+unid: OF7B87679FA901EDA8-ON003763B1862588C6
+items:
+  - name: $Comment
+    type: text
+    data: Class to manipulate filedata elements via DXL
+  - name: $Flags
+    type: text
+    data: s34Q
+  - name: $PublicAccess
+    type: text
+    data: "1"
+    signed: true
+  - name: $ScriptLib
+    type: text
+    data: |
+      '++LotusScript Development Environment:2:5:(Options):0:74
+      %REM
+      	Library FileResource
+      	Created Mar 8, 2010 by Andre Guirard/Cambridge/IBM
+      	Description: A library containing functions to read and write data from file
+      		resources and related design elements (images, xpages, ...).
+      %END REM
+      %REM
+      	**********************************************************************
+      	**********************************************************************
+      		
+          Copyright 2010 IBM Corporation
+      
+          Licensed under the Apache License, Version 2.0 (the "License");
+          you may not use this file except in compliance with the License.
+          You may obtain a copy of the License at
+      
+           http://www.apache.org/licenses/LICENSE-2.0
+      
+          Unless required by applicable law or agreed to in writing, software
+          distributed under the License is distributed on an "AS IS" BASIS,
+          WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+          See the License for the specific language governing permissions and
+          limitations under the License.
+      
+      	**********************************************************************
+      	**********************************************************************
+      %END REM
+      Option Public
+      Option Declare
+      
+      Use "DesignUtils"
+      Use "DOMUtils"
+      
+      
+      '++LotusScript Development Environment:2:5:(Forward):0:1
+      Declare Class FileResource
+      Declare Class FileItem
+      Declare Function MakeFileResource(docDes As NotesDocument) As FileResource
+      Declare Function FindFileResource(db As NotesDatabase, ByVal resType$, ByVal resName$) As FileResource
+      
+      '++LotusScript Development Environment:2:5:(Declarations):0:10
+      Private Const FILE_SEGSIZE = 10240
+      Private Const ITEMSIZE = 25000
+      Private Const NL = {
+      }
+      
+      
+      %REM
+      	Class FileResource
+      	Description: Represents a design element of the file-resource type or a relative,
+      		such as stylesheet or xpage. The data are manipulated internally using DXL
+      		and DOM.
+      		This class has no objection if you want to also manipulate the other items of the
+      		document, e.g. by using the DOMElement property to get the node representing the
+      		design element, then using the DOM to locate other items and attributes.
+      		However, please use this class and FileItem for manipulation of base-64 encoded
+      		file data items. 
+      %END REM
+      Class FileResource
+      	m_db As NotesDatabase
+      	m_elElRoot As NotesDOMElementNode
+      	m_elFD As NotesDOMElementNode
+      	m_iMode As Integer
+      	m_fileItem As FileItem
+      	m_domp As NotesDOMParser
+      	
+      	Public Log As String
+      
+      	m_fItems List As FileItem ' list of FileItems we've created and returned to caller.
+      	
+      	%REM
+      		Sub New
+      		Description: Create a new FileResource.
+      		Arguments:
+      			db: the database containing the design element.
+      			elElement: the DOM element corresponding to the design note (e.g. the <note>
+      				element).
+      			domp: The DOM parser object containing elElement.
+      	%END REM
+      	Sub New(db As NotesDatabase, elElement As NotesDOMElementNode, domp As NotesDOMParser)
+      		Set m_db = db
+      		Set m_elElRoot = elElement
+      		Set m_domp = domp
+      	End Sub
+      
+      	%REM
+      		Property Get DOMElement
+      		Description: Return the element node representing the design element.
+      	%END REM
+      	Public Property Get DOMElement As NotesDOMElementNode
+      		Set DOMElement = m_elElRoot
+      	End Property
+      	
+      	%REM
+      		Property Get DOMParser
+      		Description: The DOM parser containing this design element description.
+      	%END REM
+      	Public Property Get DOMParser As NotesDOMParser
+      		Set DOMParser = m_domp
+      	End Property
+      	
+      	%REM
+      		Sub findFileItem
+      		Description: Determine whether the $filedata item in this object is
+      			encoded as a <filedata> element or an <item> element.
+      	%END REM
+      	Private Sub findFileItem
+      		Dim sNames
+      		If m_elElRoot.Nodename = "imageresource" Then
+      			sNames = Split("gif,jpeg,png", ",")
+      		Else
+      			sNames = Split("filedata",",")
+      		End If
+      		If m_iMode = 0 Then
+      			m_iMode = 1
+      			ForAll aName In sNames
+      				Set m_elFD = DU_GetChildNamed(aName, m_elElRoot)
+      				If Not (m_elFD Is Nothing) Then Exit sub
+      			End ForAll
+      			
+      			' failed to find an element containing file data without CD records.
+      			' Darn! As a backup, look for an <item> element.
+      			m_iMode = 2
+      			Set m_fileitem = New FileItem(Me, m_elElRoot, "$filedata")
+      		End If
+      	End Sub
+      	
+      	%REM
+      		Function GetFileItem
+      		Description: Retrieve the FileItem object associated with a CD-record item.
+      			An object will be returned even if the item doesn't exist, which you can
+      			use to create the item via UpdateFile method. Use this only for items other
+      			than the default $FileData item, which you can handle via ReadFileData and
+      			UpdateFileData methods.
+      	%END REM
+      	Function GetFileItem(ByVal itemName$) As FileItem
+      		If StrComp(itemName, "$filedata", 1) = 0 Then
+      			Error 26557, "Do not use FileResource.GetFileItem for the $FileData item."
+      		End If
+      		Set GetFileItem = New FileItem(Me, m_elElRoot, itemName)
+      	End Function
+      	
+      	%REM
+      		Function HasItem
+      		Description: Determine whether there's an item element in the note DXL with a
+      			given item name.
+      			Note that the presence of an item doesn't guarantee it's formatted as a file
+      			CD record.
+      	%END REM
+      	Function HasItem(ByVal itemName$) As Boolean
+      		HasItem = Not (DU_GetChildWithAttr(m_elElRoot, "item", "name", itemName, 1) Is Nothing)
+      	End Function
+      	
+      	%REM
+      		Sub ReadFileData
+      		Description: Read the file data from the design note. The caller provides a stream
+      			to read into, for ease of streaming directly into a disk file (since you have to
+      			open the file before writing to the stream).
+      	%END REM
+      	Sub ReadFileData(stream As NotesStream)
+      		findFileItem
+      		If m_iMode = 1 then
+      			Dim strFileDat$
+      			strFileDat = DU_GetTextFromNode(m_elFD)
+      			Base64ToBinary strFileDat, stream
+      		Else ' note format!
+      			Set m_fileItem.Stream = stream
+      			m_fileItem.Load
+      		End if
+      	End Sub
+      	
+      	%REM
+      		Sub UpdateFileData
+      		Description: Take a binary data stream (it may contain text but we don't care)
+      			and update the DOM representation of the note to store that as the filedata.
+      			The data ends up stored in the $FileData item, whether this is
+      			represented via descriptive format with a <filedata> element, or in note
+      			format with an <item> element. We take our cue from whatever was in the DXL
+      			when we loaded it.
+      	%END REM
+      	Sub UpdateFileData(stream As NotesStream)
+      		findFileItem
+      		If m_iMode = 1 Then
+      			Dim strFileDat$
+      			strFileDat = NL & StreamToBase64(stream)
+      			Dim node As NotesDOMNode
+      			Set node = DU_GetTextChild(m_elFD)
+      			If node Is Nothing Then
+      				Set node = m_domp.Document.Createtextnode(strFileDat)
+      				m_elFD.Appendchild node
+      			Else
+      				node.Nodevalue = strFileDat
+      			End If
+      		Else ' note format!
+      			m_fileItem.UpdateFile stream
+      		End If
+      	End Sub
+      	
+      	%REM
+      		Function Save
+      		Description: Save changes to disk by importing the (presumably modified) DOM tree.
+      	%END REM
+      	Function Save As Boolean
+      		Dim session As New NotesSession, dxli As NotesDXLImporter, stream As NotesStream
+      		Set stream = session.Createstream
+      		m_domp.Setoutput stream
+      		Set dxli = session.Createdxlimporter(stream, m_db)
+      		dxli.Designimportoption = DXLIMPORTOPTION_REPLACE_ELSE_CREATE
+      		dxli.Inputvalidationoption = VALIDATE_NEVER
+      		dxli.Exitonfirstfatalerror = False
+      		m_domp.Serialize
+      		On Error GoTo oops
+      		Save = True
+      		dxli.Process
+      		If dxli.Importednotecount Then
+      			Dim doc As NotesDocument
+      			Set doc = m_db.Getdocumentbyid(dxli.Getfirstimportednoteid)
+      			doc.Sign
+      			doc.Save true, false, true
+      		End If
+      resumeHere:
+      		me.Log = dxli.log
+      		Exit Function
+      oops:
+      		Save = False
+      		Resume resumeHere
+      	End Function
+      	
+      	%REM
+      		Sub DeleteItem
+      		Description: Delete an item with a specified name from the note data.
+      	%END REM
+      	Sub DeleteItem(ByVal itemName$)
+      		Dim elItem As NotesDOMElementNode, elNext As NotesDOMElementNode
+      		Set elItem = DU_GetChildWithAttr(m_elElRoot, "item", "name", itemName, 1)
+      		If Not (elItem Is Nothing) Then
+      			Do
+      				Set elNext = elItem.Nextsibling
+      				m_elElRoot.Removechild elItem
+      				If elNext.Nodetype = DOMNODETYPE_ELEMENT_NODE Then
+      					If elNext.Nodename <> "item" Then Exit Do
+      					if StrComp(elNext.Getattribute("name"), itemName, 1) Then Exit Do
+      				End If
+      				Delete elItem
+      				Set elItem = elNext
+      			Loop Until elNext.Isnull
+      		End If
+      		On Error GoTo nevermind
+      		Dim fi As FileItem
+      		Set fi = m_fItems(LCase(itemName))
+      		Erase m_fItems(LCase(itemName))
+      		Delete fi ' because we don't trust LS memory mgmt.
+      nevermind:
+      		Exit sub
+      	End Sub
+      	
+      	Sub Delete
+      		On Error Resume Next
+      		ForAll thing In m_fItems
+      			Delete thing
+      		End ForAll
+      	End Sub
+      	
+      	%REM
+      		Function RegisterFileItem
+      		Description: For internal use -- lets the FileItem class notify us that it's
+      			referencing our DOM tree so that we can delete the object if we erase the
+      			corresponding item element.
+      	%END REM
+      	Sub RegisterFileItem(x As FileItem)
+      		Set m_fItems(LCase(x.itemName)) = x
+      	End Sub
+      	
+      	%REM
+      		Property Get MimeCharSet
+      		Description: se this to read the $MimeCharSet item and discover what character set
+      			was used to encode the text file data (if it is text). Note some design elements
+      			don't have this because it's assumed based on the design element type.
+      	%END REM
+      	Property Get MimeCharSet As String
+      		Dim tmp$
+      		tmp = m_elElRoot.Getattribute("charset") ' sometimes it is this easy...
+      		If tmp = "" then
+      			Dim elItem As NotesDOMElementNode
+      			Set elItem = DU_GetChildWithAttr(m_elElRoot, "item", "name", "$MimeCharSet", 1)
+      			If Not (elItem Is Nothing) Then
+      				Dim elText As NotesDOMElementNode
+      				Set elText = DU_GetChildNamed("text", elItem)
+      				If Not (elText Is Nothing) Then
+      					tmp = DU_GetTextFromNode(elText)
+      				End If
+      			End If
+      		End If
+      		MimeCharSet = tmp
+      	End Property
+      End Class
+      
+      
+      %REM
+      	Class FileItem
+      	Description: Represents a Notes item containing file data encoded as CD records
+      		in base64 format. This is the representation used in "note format" DXL (which is
+      		also the fallback for design elements without a descriptive representation).
+      %END REM
+      Class FileItem
+      	a_ItemName As String
+      	Public Stream As NotesStream	' the decoded file data
+      	m_fileext As Variant ' array of bytes
+      	m_segCount As Long
+      	m_segsLoaded As Long
+      	m_fileLen As Long
+      	m_elItem As NotesDOMElementNode
+      	m_elNote As NotesDOMElementNode
+      	m_domd As NotesDOMDocumentNode
+      	
+      	%REM
+      		Sub New
+      		Description: Arguments are the parsed DOM node of the element representing a
+      			design element, and the name of the composite item you would like to read,
+      			modify or create.
+      	%END REM
+      	Sub New(parent As FileResource, elNote As NotesDOMElementNode, ByVal itemName$)
+      		Set m_elNote = elNote
+      		Set m_elItem = DU_GetChildWithAttr(elNote, "item", "name", itemName, 1)
+      		If Not (m_elItem Is Nothing) Then
+      			a_itemName = m_elItem.Getattribute("name")
+      		Else
+      			a_itemName = itemName
+      		End If
+      		Dim node As NotesDOMNode
+      		Set node = m_elNote.Parentnode
+      		While node.Nodetype <> DOMNODETYPE_DOCUMENT_NODE
+      			Set node = node.Parentnode
+      		Wend
+      		Set m_domd = node
+      		parent.RegisterFileItem Me ' make sure the design element knows about us.
+      			' (in case someone gets smart and invokes the constructor directly
+      			' instead of using the nice methods we've provided).
+      	End Sub
+      		
+      	%REM
+      		Sub Load
+      		Description: Populate the Stream object with the decoded contents of the file.
+      			Note you can assign Stream first with your own object, if you want to store
+      			the result in a file. Note that nothing is said here about character set;
+      			you data are treated as binary. If you supply a stream that's attached to a
+      			file, you can specify the character set when you open the file. Otherwise,
+      			if you need to read the contents as character data, see StreamToText function
+      			(not method!).
+      			If you supply a stream, it will be truncated.
+      	%END REM
+      	Sub Load
+      		If Stream Is Nothing Then
+      			Dim session As New NotesSession
+      			Set stream = session.createstream
+      		Else
+      			stream.Truncate
+      		End If
+      		If m_elItem Is Nothing Then Exit Sub ' no item, leave stream empty.
+      		Dim elRaw As NotesDOMElementNode, elItem As NotesDOMElementNode
+      		Set elRaw = DU_getChildNamed("rawitemdata", m_elItem)
+      		Dim streamRecs As NotesStream
+      		Set elItem = m_elItem
+      		
+      		Set streamRecs = getStream(elRaw)
+      		LoadHeader StreamRecs
+      		Do While m_segsLoaded < m_segCount
+      			If streamRecs.Iseos Then
+      				Set elItem = DU_GetNextElement(elItem)
+      				If elItem.Nodename <> "item" Or elItem.Getattribute("name") <> a_itemname Then
+      					Error 17665, "File data incomplete in FileItem.Load"
+      				End If
+      				Set elRaw = DU_GetChildNamed("rawitemdata", elItem)
+      				Set streamRecs = getStream(elRaw)
+      			End If
+      			LoadSegment streamRecs
+      		Loop
+      	End Sub
+      	
+      	%REM
+      		Function getStream
+      		Description: Get a stream by decoding the base64 data in a <rawitemdata>.
+      	%END REM
+      	Private Function getStream(elRaw As NotesDOMElementNode) As NotesStream
+      		Dim session As New NotesSession
+      		Set getstream = session.Createstream
+      		Dim szBase64 As String
+      		szBase64 = DU_GetTextFromNode(elRaw)
+      		Call Base64ToBinary(szBase64, getstream)
+      		getstream.Position = 0
+      	End Function
+      	
+      	%REM
+      		Sub loadHeader
+      		Description: internal function to read the first CD record in the file data,
+      			which contains the number of file segments to follow and the total file size.
+      			This also sets the m_fileExt property, preserving any file suffix stored with
+      			the file data.
+      	%END REM
+      	Private Sub LoadHeader(streamIn As NotesStream)
+      		Dim bytes
+      		bytes = streamIn.Read(24)
+      		Dim sufxLen%
+      		sufxLen = readword(bytes, 6)
+      		m_fileLen = readDWord(bytes, 8)
+      		m_segCount = readDWord(bytes, 12)
+      		If sufxLen Then
+      			m_fileExt = streamIn.Read(sufxLen)
+      			If sufxLen And 1 Then
+      				streamIn.Position = streamIn.Position + 1
+      			End If
+      		End If
+      	End Sub
+      	
+      	%REM
+      		Sub LoadSegment
+      		Description: Load a record of file data. The buffer position is at the
+      			beginning of the record header.
+      	%END REM
+      	Private Sub LoadSegment(streamIn As NotesStream)
+      		Dim bytes
+      		bytes = streamIn.Read(18) ' read the entire record header
+      		Dim dataSize As Long
+      		Dim segSize As Long
+      		dataSize = readword(bytes, 6) ' number of bytes of file data in the record.
+      		segSize = readWord(bytes, 8) ' dataSize + any fill we have to skip.
+      		bytes = streamIn.Read(dataSize)
+      		Stream.Write bytes
+      		If segSize > dataSize Then ' skip fill bytes
+      			streamIn.Position = streamIn.Position + (segSize-dataSize)
+      		End If
+      		m_segsLoaded = m_segsLoaded + 1
+      	End Sub
+      	
+      	%REM
+      		Function readword, readDWord
+      		Description: Read an integer from a byte array (low byte first)
+      		Arguments:
+      			bytes: array to read from.
+      			pos: array index of low-order byte.
+      	%END REM
+      	Private Function readword(bytes, ByVal pos%) As Integer
+      		readword = bytes(pos) + 256*bytes(pos+1)
+      	End Function
+      	
+      	Private Function readDWord(bytes, ByVal pos%) As Long
+      		readDWord = (((bytes(pos+3) * 256& + bytes(pos+2)) * 256&) + bytes(pos+1)) * 256& + bytes(pos)
+      	End Function
+      	
+      	%REM
+      		Function writeWord, writeDWord
+      		Description: store an integer value into a byte array in ODS order (low byte first)
+      		Arguments:
+      			bytes: byte array into which to write.
+      			pos: array index to place first byte of number.
+      			valu: number to write.
+      	%END REM
+      	Private Sub writeWord(bytes, ByVal pos%, ByVal valu As Integer)
+      		bytes(pos) = valu and 255
+      		bytes(pos+1) = valu \ 256
+      	End Sub
+      
+      	Private Sub writeDWord(bytes, ByVal pos%, ByVal valu As Long)
+      		bytes(pos) = valu and 255
+      		Dim i%
+      		For i = 1 To 3
+      			valu = valu \ 256
+      			bytes(pos+i) = valu And 255
+      		Next
+      	End Sub
+      	
+      	%REM
+      		Sub WriteHeader
+      		Description: Create the ODS structure for a filedata header.
+      		Arguments:
+      			streamOut: output buffer
+      			fiLen: File length in bytes.
+      			fileExt: EMPTY if there is no file extension to store, else a byte array
+      				with the file extension in LMBCS.
+      	%END REM
+      	Private Sub WriteHeader(streamOut As NotesStream, ByVal FiLen As Long, fileExt)
+      		m_segCount = (FiLen+FILE_SEGSIZE-1) \ FILE_SEGSIZE
+      		Dim sfLen%, recLen%
+      		If Not IsEmpty(fileExt) Then
+      			sfLen = UBound(fileExt) + 1
+      		End if
+      		recLen = sfLen + (sfLen And 1) + 24
+      		reDim bytes(reclen-1) As Byte
+      		bytes(0) = &h61
+      		bytes(1) = 0
+      		writeDWord bytes, 2, recLen
+      		writeWord bytes, 6, sfLen
+      		writeDWord bytes, 8, fiLen
+      		writeDWord bytes, 12, m_segCount
+      		If sfLen Then ' there is a file extension (unusual).
+      			Dim i%
+      			For i = 0 To UBound(fileExt)
+      				bytes(i+24) = fileExt(i)
+      			Next
+      		End If
+      		streamOut.Write bytes
+      	End Sub
+      	
+      	%REM
+      		Sub WriteSegment
+      		Description: Stream out to buffer a "file segment" CD record, with a 18 byte
+      			record header followed by file data and maybe a fill byte for alignment.
+      	%END REM
+      	Private Sub WriteSegment(streamOut As NotesStream, streamIn As NotesStream)
+      		Dim bytes, cbytes%
+      		bytes = streamIn.Read(FILE_SEGSIZE)
+      		cBytes = 1+UBound(bytes)
+      		Dim header(17) As Byte
+      		header(0) = &h60
+      		header(1) = 0
+      		writeDword header, 2, cBytes + 18
+      		writeWord header, 6, cBytes
+      		writeWord header, 8, cBytes + (cBytes And 1)
+      		streamOut.write header
+      		streamOut.write bytes
+      		If cbytes And 1 Then ' alignment filler
+      			Dim aByte(0) As Byte
+      			streamOut.write aByte
+      		End If
+      	End Sub
+      	
+      	%REM
+      		Sub UpdateFile
+      		Description: Take binary file data as input, and create or update the <item>
+      			element to store that data as CD records. The streamIn buffer must contain only
+      			the data to be written (current position in the stream is ignored).
+      	%END REM
+      	Sub UpdateFile(streamIn As NotesStream)
+      		Dim elNextSib As NotesDOMElementNode, elTmp As NotesDOMElementNode
+      		Dim session As New NotesSession
+      		
+      		' delete all items with the same name
+      		If Not (m_elItem Is Nothing) Then
+      			Set elTmp = DU_GetNextElement(m_elItem)
+      			While elTmp.Nodename = "item" And elTmp.Getattribute("name") = a_itemName
+      				Set elNextSib = DU_Getnextelement(elTmp)
+      				m_elNote.Removechild elTmp
+      				Delete elTmp
+      				Set elTmp = elNextSib
+      			Wend
+      		End If
+      		
+      		Set Stream = streamIn
+      		streamIn.Position = 0
+      		Dim streamOut As NotesStream, txB64 As NotesDOMTextNode, frag As NotesDOMDocumentFragmentNode
+      		Dim segLength&
+      		Set streamOut = session.Createstream
+      		WriteHeader Streamout, streamIn.Bytes, m_fileext
+      		
+      		While Not streamIn.Iseos
+      			' is there room for the remaining bytes in the current item?
+      			segLength = streamIn.bytes-streamIn.Position
+      			If segLength > FILE_SEGSIZE+18 Then
+      				segLength = FILE_SEGSIZE+18
+      			End If
+      			If streamOut.bytes + segLength > ITEMSIZE Then
+      				' can't fit this segment in; save what we have so far and start again
+      				If frag Is Nothing Then
+      					Set frag = m_domd.Createdocumentfragmentnode
+      				End if
+      				AddItem frag, streamOut
+      				streamOut.Truncate ' make room for more segments.
+      			End If
+      			WriteSegment streamOut, streamIn
+      		Wend
+      		If frag Is Nothing And Not (m_elItem Is Nothing) Then
+      			' this can be written in a single segment
+      			Dim elRaw As NotesDOMElementNode
+      			Set elRaw = DU_GetChildNamed("rawitemdata", m_elItem)
+      			Set txB64 = DU_GetTextChild(elRaw)
+      			streamOut.Position = 0
+      			txB64.Nodevalue = NL & StreamToBase64(streamOut)
+      		Else
+      			If frag Is Nothing Then
+      				Set frag = m_domd.Createdocumentfragmentnode
+      			End If
+      			AddItem frag, streamOut
+      			Set elTmp = frag.Firstchild
+      			If m_elItem Is Nothing Then
+      				m_elNote.AppendChild frag
+      			Else
+      				m_elNote.Replacechild frag, m_elItem
+      			End If
+      			Set m_elItem = elTmp
+      		End If
+      	End Sub
+      	
+      	%REM
+      		Sub AddItem
+      		Description: Take the stream buffer containing CD records, convert it to
+      			base64 notation, and create a new item element containing that data.
+      			Add it to the document fragment which contains possibly
+      			multiples of these item elements with the same name.
+      	%END REM
+      	Private Sub AddItem(frag As NotesDOMDocumentFragmentNode, streamIn As NotesStream)
+      		Dim elItem As NotesDOMElementNode, elRaw As NotesDOMElementNode
+      		Set elItem = m_domd.Createelementnode("item")
+      		elItem.Setattribute "name", a_ItemName
+      		elItem.Setattribute "sign", "true"
+      		Set elRaw = m_domd.Createelementnode("rawitemdata")
+      		elRaw.Setattribute "type", "1"
+      		Call elRaw.Appendchild(m_domd.Createtextnode(NL & StreamToBase64(streamIn)))
+      		Call elItem.Appendchild(elRaw)
+      		frag.Appendchild elItem
+      	End Sub
+      	
+      	Public Property Get ItemName As String
+      		ItemName = a_ItemName
+      	End Property
+      End Class
+      '++LotusScript Development Environment:2:1:MakeFileResource:8:8
+      %REM
+      	Function MakeFileResource
+      	Description: Given the NotesDocument handle of a design element (which you've
+      		probably found using NotesNoteCollection), creates a FileResource object
+      		representing that design element. Note this is only suitable for use with
+      		design elements of the "file resource" type.
+      %END REM
+      Function MakeFileResource(docDes As NotesDocument) As FileResource
+      	Dim session As New NotesSession
+      	Dim dxle As NotesDXLExporter, domp As NotesDOMParser
+      	Set dxle = session.Createdxlexporter(docDes)
+      	Set domp = session.Createdomparser(dxle)
+      	dxle.Outputdoctype = False
+      	dxle.Process
+      	Dim domd As NotesDOMDocumentNode
+      	Set domd = domp.Document
+      	Set MakeFileResource = New FileResource(docDes.Parentdatabase, domd.Documentelement, domp)
+      End Function
+      
+      
+      
+      
+      '++LotusScript Development Environment:2:1:FindFileResource:13:8
+      %REM
+      	Function FindFileResource
+      	Description: Search a database for a design element of a given name and type
+      		(type being, for instance, "xpage" or "stylesheet"). This is only suitable
+      		for design elements of the type that contain binary-encoded file data,
+      		which is usually but not always in an item named $FileData.
+      		NOTE: This has the same drawback as NotesDatabase.GetView and the
+      		like, in that if there are multiple design elements with the same
+      		name you will only find one of them. It may be better to use
+      		NotesNoteCollection to locate the design elements yourself and
+      		call MakeFileResource instead.
+      %END REM
+      Function FindFileResource(db As NotesDatabase, ByVal resType$, ByVal resName$) As FileResource
+      	Dim nnc As NotesNoteCollection, session As New NotesSession
+      	Set nnc = db.Createnotecollection(false)
+      	SetSelectionExt nnc, resType, "*" & resName, 1
+      	nnc.Buildcollection
+      	If nnc.Count Then
+      		Dim docDes As NotesDocument
+      		Set docDes = db.Getdocumentbyid(nnc.Getfirstnoteid)
+      		Set FindFileResource = MakeFileResource(docDes)
+      		Delete docDes
+      	End If
+      End Function
+    signed: true
+    nonsummary: true
+  - name: $TITLE
+    type: text
+    data: FileResource
+    signed: true
+remaining: []

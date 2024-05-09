@@ -1,0 +1,912 @@
+---
+class: 512
+flags: 0x2000
+unid: OFDFB42F6F6EC5E5FA-ON0050844E85258951
+items:
+  - name: $Comment
+    type: text
+    data: Notes/Domino Back-End specific Utilities
+  - name: $DesignerVersion
+    type: text
+    data: 8.5.3
+    signed: true
+  - name: $Flags
+    type: text
+    data: s34Q
+  - name: $PublicAccess
+    type: text
+    data: "1"
+    signed: true
+  - name: $ScriptLib
+    type: text
+    data: |
+      '++LotusScript Development Environment:2:5:(Options):0:74
+      %REM
+      	Library baliUtils_nlsxbe
+      	Created Sep 2022 by Devin Olson/USA/PNPHCL
+      	Bali Notes Utilities for Notes / Domino clients
+      %END REM
+      %REM
+      	**********************************************************************
+      	**********************************************************************
+      		
+          Copyright HCL America, Inc. 1999, 2023
+      
+         	Licensed under the Apache License, Version 2.0 (the "License");
+          you may not use this file except in compliance with the License.
+          You may obtain a copy of the License at
+      
+              http://www.apache.org/licenses/LICENSE-2.0
+      
+          Unless required by applicable law or agreed to in writing, software
+          distributed under the License is distributed on an "AS IS" BASIS,
+          WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+          See the License for the specific language governing permissions and
+         	limitations under the License.
+      
+      	**********************************************************************
+      	**********************************************************************
+      %END REM
+      Option Public
+      Option Declare
+      Use "baliListsCollections"
+      
+      '++LotusScript Development Environment:2:5:(Forward):0:1
+      Declare Public Function getHashedValue(source$, clearCache As Boolean) As String
+      Declare Function getViewUNIDs(source As NotesView) As StringQueue
+      Declare Public Function getDbConfigDoc(ByVal source$, clearCache As Boolean) As NotesDocument
+      Declare Function getAncestorByForm(source As NotesDocument, form As String, allowself As Boolean) As NotesDocument 
+      Declare Function getEnvarName(source$, clearCache As Boolean) As String
+      Declare Function copyDocumentHierarchyToDatabase(source As NotesDocument, target As NotesDatabase, newdoc As NotesDocument) As StringQueue 
+      Declare Public Function getACLlevel(acl%) As String 
+      Declare Public Function safeEvaluate(ByVal formula$, context As Variant, failValue As Variant) As Variant
+      Declare Public Function getDocumentByUNID(ByVal universalID$) As NotesDocument 	
+      Declare Public Function getEmptyDocumentCollection (source As NotesDatabase) As NotesDocumentCollection
+      Declare Function getCollectionUNIDs(col As NotesDocumentCollection) As StringQueue
+      Declare Function isPlatformWindows() As Boolean 
+      Declare Static Public Function getCurrentSession() As NotesSession
+      Declare Public Function getOpenDatabase(server$, filepath$) As NotesDatabase
+      Declare Function getParentDocument(source As NotesDocument) As NotesDocument
+      Declare Public Function getConfigUNID(ByVal source$, clearCache As Boolean) As String
+      Declare Static Public Function getCurrentDb() As NotesDatabase
+      Declare Function getItemValueText(source As NotesDocument, itemname$, delimiter$, htreplace$) As String 
+      
+      '++LotusScript Development Environment:2:5:(Declarations):0:10
+      
+      
+      
+      Private Const MODULE_NAME = |baliUtils_nlsxbe|  
+      Private Const UNID_PREFIX = |UNID_|
+      Private Const VIEWNAME_DBCONFIG = |DbConfig|
+      
+      
+      
+      
+      '++LotusScript Development Environment:2:1:getHashedValue:18:8
+      
+      
+      
+      
+      
+      
+      %REM
+      	Function getHashedValue
+      	Hashes a source String.
+      	
+      	Uses the @Password function to perform the hash
+      	
+      	@param source$: String to Hash.
+      	@param clearCache: Flag indicating if cached information should be cleared.
+      	
+      	@return	Hashed result.  Blank on Error.	
+      %END REM
+      Public Function getHashedValue(source$, clearCache As Boolean) As String
+      	On Error GoTo ErrorTrap
+      	
+      	Static cache List As String
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	Dim msg$
+      	
+      	
+      	Dim result$
+      	Dim argument$ 
+      	Dim valuetohash$ 
+      	
+      	extendedinfo(|Source|) = source$
+      	extendedinfo(|ClearCache|) = CStr(clearCache) 
+      
+      	If isBlankString(source$) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK
+      	If clearCache Then Erase cache
+      	
+      	valuetohash$ = getBaliStrings().alphanumericOnly(source$) 
+      	extendedinfo(|Value to Hash|) = valuetohash$ 
+      	If isBlankString(valuetohash$) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK
+      	
+      	If IsElement(cache(valuetohash$)) Then
+      		result$ = cache(valuetohash$)
+      	Else
+      		argument$ = |@Text(@Password("| & valuetohash$ & |"))|
+      		extendedinfo(|argument|) = argument$ 
+      		result$ = Trim$(CStr(getScalar(safeEvaluate(argument$, Nothing, ||))))
+      		If (Len(result$) > 0) Then 
+      			result$ = Mid$(result$, 2, Len(result$) -2)
+      			If Not clearCache Then cache(valuetohash$) = result$
+      		End If 
+      	End If 
+      	
+      ExitPoint:
+      	getHashedValue = result$
+      	Exit Function
+      ErrorTrap:
+      	On Error GoTo 0
+      	result$ = ||
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function 
+      
+      '++LotusScript Development Environment:2:1:getViewUNIDs:13:8
+      %REM
+      	Function getViewUNIDs
+      	Gets the UniversalIDs of all documents in a view, in view order.
+      	
+      	NOTE: If a document appears in a view multiple times then it's associated UniversalID will be in the result multiple times as well.  
+      	
+      	@param source View from which to get all document UniversalIDs 
+      	
+      	@return UniversalIDs of all documents in a view. 
+      	
+      	@throws ERR_PARAMETER_BLANK if source view is Nothing
+      %END REM
+      Function getViewUNIDs(source As NotesView) As StringQueue
+      	If (source Is Nothing) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |Source view is Nothing.  |  
+      	On Error GoTo ErrorTrap
+      	
+      	Dim nav As NotesViewNavigator
+      	Dim nvent As NotesViewEntry 
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	
+      	
+      	Dim result As New StringQueue()
+      	
+      	
+      	' BEGIN CODE
+      	Set nav = source.createViewNav() 
+      	Set nvent = nav.getFirstDocument() 
+      	While Not (nvent Is Nothing) 
+      		result.push nvent.UniversalID 
+      		Set nvent = nav.getNextDocument(nvent)
+      	Wend
+      	
+      	
+      ExitPoint: 
+      	Set getViewUNIDs = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:getDbConfigDoc:14:8
+      
+      
+      %REM
+      	Function getDbConfigDoc
+      	Gets the DbConfig document for the specified Form.
+      	
+      	Only 1 DbConfig document may exist for a specified form.
+      	
+      	@param source$ Form for the specified DbConfig document.
+      	@param clearCache Flag indicating if the cached information should be cleared.
+      	
+      	@return NotesDocument for the specified key.  Returns Nothing if no document found.	
+      %END REM
+      Public Function getDbConfigDoc(ByVal source$, clearCache As Boolean) As NotesDocument
+      	On Error GoTo ErrorTrap
+      
+      
+      	Static cache List As NotesDocument 
+      	
+      
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	
+      	Dim nvw As NotesView
+      	Dim column As NotesViewColumn
+      	Dim killdoc As NotesDocument
+      	
+      	Dim result As NotesDocument 
+      
+      	Dim nitm As NotesItem
+      	Dim unid As String
+      	Dim oldunid As String
+      	Dim form As String 
+      	Dim docform As String
+      	
+      	Dim isCreated As Boolean
+      	
+      	trimString source$
+      	
+      	extendedinfo(|source|) = source$
+      	extendedinfo(|clearCache|) = CStr(clearCache)
+      	
+      	form$ = UCase$(source$)
+      	extendedinfo(|Form|) = source$
+      
+      	If (Len(form$) < 1) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK
+      	
+      	If clearCache Then
+      		Erase cache
+      	ElseIf IsElement(cache(form$)) Then 
+      		Set result = cache(form$)
+      		GoTo ExitPoint
+      	End If 
+      	
+      	unid$ = getConfigUNID(form$, clearCache) 
+      	extendedinfo(|Form|) = form$
+      	extendedinfo(|UNID|) = unid$
+      	
+      	
+      	Set result = getDocumentByUNID(unid$) 
+      	If (result Is Nothing) Then 
+      		' get from view  (create if necessary)
+      		extendedinfo(|View|) = VIEWNAME_DBCONFIG 
+      		Set nvw = getCurrentDb().GetView (VIEWNAME_DBCONFIG) 
+      		If (nvw Is Nothing) Then 
+      			' create temporary view 
+      			Set nvw = getCurrentDb().CreateView(VIEWNAME_DBCONFIG, |SELECT @Contains ( Form; "Config" )|)
+      			Set column = nvw.CreateColumn(1, |Form|, |@UpperCase(Form)|)
+      			column.isSorted = True
+      			Set column = nvw.CreateColumn(2, |Modified|, |@Modified|)
+      			column.isSorted = True
+      			Call nvw.Refresh()
+      			isCreated = True
+      		End If 
+      		
+      		Set result = nvw.GetDocumentByKey(form$, True)
+      		If isCreated Then 
+      			' delete the temporary view
+      			Call nvw.Remove() 
+      		End If 
+      		
+      		If (Not (result Is Nothing)) Then 
+      			' change the unid 
+      			oldunid$ = result.UniversalID
+      			extendedinfo(|Old UNID|) = oldunid$
+      			result.UniversalID = unid$
+      			If (Not result.Save(True, False)) Then Error ERR_DOC_NOT_SAVED, MSG_DOC_NOT_SAVED
+      			Set killdoc = getDocumentByUNID(oldunid$)
+      			Call killdoc.Remove(True)
+      		End If	
+      	End If 
+      	
+      	If (result Is Nothing) Then
+      		' create a new document 
+      		Set result = New NotesDocument(getCurrentDb())
+      		result.UniversalID = getConfigUNID(unid$, False)
+      		Set nitm = result.ReplaceItemValue(|Form|, source$)
+      		nitm.IsSummary = True		
+      	End If 
+      	
+      	docform$ = UCase$(Trim$(getItemValueText(result, |Form|, ||, ||)))	
+      	If (docform$ <> form$) Then 
+      		' change the form
+      		Set nitm = result.ReplaceItemValue(|Form|, form$)
+      		nitm.IsSummary = True		
+      	End If 
+      	
+      ExitPoint:
+      	Set cache(form$) = result
+      	Set getDbConfigDoc = result
+      	Exit Function
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Set result = Nothing
+      	Resume ExitPoint
+      End Function  
+      
+      '++LotusScript Development Environment:2:1:getAncestorByForm:16:8
+      %REM
+      	Function getAncestorByForm
+      	Gets an Ancestor document matching the specified form. 
+      	
+      	Conditionally walks a document's ancestry to find a document matching the requested form.
+      	
+      	@param source NotesDocument object for which to retrieve the ancestor document.
+      	@param form Name of the form for which to search in the document's ancestry
+      	@param allowself Flag indicating the source document should be returned if it matches the form. 
+      	
+      	@return Ancestor document matching the form, if found.  Nothing if not found.
+      	
+      	@throws ERR_PARAMETER_BLANK if the source document is nothing.
+      	@throws ERR_PARAMETER_BLANK if the form is blank
+      %END REM
+      Function getAncestorByForm(source As NotesDocument, form As String, allowself As Boolean) As NotesDocument 
+      	If (source Is Nothing) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |Source document is Nothing.  |
+      	If isBlankString(form) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |Form is blank.  |
+      	On Error GoTo ErrorTrap
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	
+      	Dim ndoc As NotesDocument 
+      	
+      	Dim result As NotesDocument 
+      	
+      	
+      	' BEGIN CODE
+      	extendedinfo(|UniversalID|) = source.Universalid
+      	extendedinfo(|NoteID|) = source.Noteid
+      	extendedinfo(|Form|) =  form
+      	extendedinfo(|allowself|) = CStr(allowself) 
+      
+      	If allowself And (0 = StrComp(form, getItemValueText(source, |Form|, ||, ||), 5)) Then 
+      		Set result = source 
+      		
+      	Else
+      		Set ndoc = getParentDocument(source) 
+      		
+      		Do While Not (ndoc Is Nothing) 
+      			If (0 = StrComp(form, getItemValueText(ndoc, |Form|, ||, ||), 5)) Then 
+      				Set result = ndoc 
+      				Exit Do 
+      			End If 
+      			
+      			Set ndoc = getParentDocument(ndoc)
+      		Loop  
+      	End If
+      	
+      ExitPoint: 
+      	Set getAncestorByForm = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:getEnvarName:11:8
+      
+      %REM
+      	Function getEnvarName
+      	Constructs a valid Envirionment Variable Name from a given source string.
+      	
+      	@param source$: String from which to construct the Environment Variable Name.
+      	@param clearCache: Flag indicating if cached information should be cleared.
+      	
+      	@return	Environment Variable Name.  Blank on Error.	 
+      %END REM
+      Function getEnvarName(source$, clearCache As Boolean) As String
+      	Static cache List As String
+      	
+      	Dim extendedInfo$ 
+      	Dim result$
+      
+      	On Error GoTo ErrorTrap
+      	extendedinfo$ = |Source: | & source$ & |, ClearCache: | & CStr(clearCache)	 
+      
+      	If isBlankString(source$) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & extendedinfo$ 
+      	result$ = Trim$(source$)
+      
+      	If clearCache Then Erase cache
+      
+      	If IsElement(cache(result$)) Then 
+      		result$ = cache(result$)
+      	Else
+      		cache(result$) = UCase$(getBaliStrings().replaceSubstring(result$, | |, |_|))
+      		result$ = cache(result$) 
+      	End If 
+      	
+      ExitPoint:
+      	getEnvarName = result$
+      	Exit Function
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	result$ = ||
+      	Resume ExitPoint
+      End Function 
+      
+      '++LotusScript Development Environment:2:1:copyDocumentHierarchyToDatabase:16:8
+      %REM
+      	Function copyDocumentHierarchyToDatabase
+      	Copies a source document to a target database. 
+      	
+      	If a document has responses, the responses (and their heirarchy as well) will also be copied to the target database. 
+      	
+      	@param source 					Document to be copied to the target database. 
+      	@param target 					Database to which the document (and it's descendants) will be copied. 
+      	@param newdoc 	{!!OUTBOUND!!} 	New document in the target database
+      	
+      	@return UniversalIDs of all copied documents in the target database.  
+      	  
+      	@throws ERR_PARAMETER_BLANK if the source document is Nothing. 
+      	@throws ERR_PARAMETER_BLANK if the target database is Nothing.
+      %END REM
+      Function copyDocumentHierarchyToDatabase(source As NotesDocument, target As NotesDatabase, newdoc As NotesDocument) As StringQueue 
+      	If (source Is Nothing) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |Source document is Nothing.  |
+      	If (target Is Nothing) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |Target database is Nothing.  |
+      	On Error GoTo ErrorTrap
+      	
+      	
+      	Dim responses As NotesDocumentCollection 
+      	
+      	Dim child As NotesDocument 
+      	Dim childcopy As NotesDocument 
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	Dim errmsg$ 
+      	Dim errcode% 
+      	
+      	
+      	Dim result As New StringQueue()
+      	Dim unids As StringQueue
+      	Dim unid$  
+      	
+      
+      	' BEGIN CODE
+      	extendedinfo(|Source Form|) = getItemValueText(source, |Form|, ||, ||) 
+      	extendedinfo(|Source UNID|) = source.UniversalID 
+      	If isBlankString(target.Server) Then 
+      		extendedinfo(|Target|) = target.Title & | on Local: | & target.Filepath 
+      	Else  
+      		extendedinfo(|Target|) = target.Title & | on Local: | & target.Filepath 
+      	End If
+      	
+      	
+      	Set newdoc = source.copyToDatabase(target)
+      	result.push newdoc.UniversalID 
+      	extendedinfo(|New Doc UNID|) = newdoc.UniversalID 
+      	
+      	Set responses = source.Responses 
+      	If (responses.Count > 0) Then
+      		Set child = responses.getFirstDocument()
+      		While Not (child Is Nothing) 
+      			extendedinfo(|Child doc UNID|) = child.UniversalID 
+      			Set unids = copyDocumentHierarchyToDatabase(child, target, childcopy) 
+      			If Not (childcopy Is Nothing) Then Call childcopy.makeResponse(newdoc) 
+      			
+      			While unids.hasContent 
+      				result.push unids.pop() 
+      			Wend
+      
+      			Set child = responses.getNextDocument(child) 
+      		Wend 
+      	End If
+      	
+      	
+      ExitPoint: 
+      	If (0 <> errcode%) Then Error errcode%, errmsg$ 
+      	
+      	Set copyDocumentHierarchyToDatabase = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	errcode% = Err() 
+      	errmsg$ = Error$() 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo	
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:getACLlevel:9:8
+      %REM
+      	Function getACLlevel
+      	Gets the string representation of an ACL level integer 
+      	
+      	@param acl% ACL Level 
+      	
+      	@return ACL Level name associated with acl% 
+      %END REM
+      Public Function getACLlevel(acl%) As String 
+      	
+      	Dim result$
+      	
+      	Select Case acl%
+      		Case 0: result$ = |NO ACCESS|
+      		Case 1: result$ = |Depositor|
+      		Case 2: result$ = |Reader|
+      		Case 3: result$ = |Author|
+      		Case 4: result$ = |Editor|
+      		Case 5: result$ = |Designer|
+      		Case 6: result$ = |Manager|
+      		Case Else: result$ = |ACCESS LEVEL UNKNOWN|
+      	End Select 
+      	
+      	getACLlevel = result$
+      	
+      End Function
+      
+      '++LotusScript Development Environment:2:1:safeEvaluate:11:8
+      %REM  
+      	Function safeEvaluate 
+      	Evaluates a formula and returns the result. 
+      	
+      	@param formula$ Formula to evaluate
+      	@param context Context object for which the formula should be run
+      	@param failValue Value to return in the event of a failure.
+      	
+      	@return Result of the evaluated formula, or failValue if a failure occurs. 
+      %END REM
+      Public Function safeEvaluate(ByVal formula$, context As Variant, failValue As Variant) As Variant
+      	On Error GoTo ErrorTrap
+      
+      	Dim extendedInfo As String
+      	Dim result As Variant
+      	Dim syntax As Variant
+      
+      
+      	formula$ = getBaliStrings().replaceSubstring(getBaliStrings().replaceSubstring(Trim$(formula$), {”},{"}),{“},{"})
+      	extendedInfo$ = |Formula: | & formula$
+      	If (Len(formula$) = 0) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK
+      	
+      	syntax = Evaluate(|@CheckFormulaSyntax({| & formula$ & |})|)
+      	If (Not(syntax(0) = |1|)) Then
+      		Error ERR_FORMULA_INVALID, MSG_FORMULA_INVALID & | (| & syntax(0) & |: | & syntax(5) & |)|
+      	End If
+      	If (context Is Nothing) Then
+      		result = Evaluate(formula$)
+      	Else
+      		result = Evaluate(formula$, context)
+      	End If  
+      		
+      		
+      ExitPoint:
+      	If IsObject(result) Then 
+      		Set safeEvaluate = result
+      	Else
+      		safeEvaluate = result
+      	End If 
+      	Exit Function
+      
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedInfo 
+      
+      	If IsObject(failValue) Then 
+      		Set result = failValue
+      	Else
+      		result = failValue
+      	End If 
+      	Resume ExitPoint
+      End Function   
+      
+      '++LotusScript Development Environment:2:1:getDocumentByUNID:8:8
+      %REM
+      	Gets the document from the current database for the specified UniversalID. 
+      	
+      	@param universalID UniversalID of the target document. 
+      	
+      	@return Document for the specified UniversalID, or Nothing if not found. 
+      %END REM
+      Public Function getDocumentByUNID(ByVal universalID$) As NotesDocument 	
+      	Dim extendedInfo As String
+      	Dim result As NotesDocument
+      	On Error GoTo ErrorTrap
+      	On Error 4091 GoTo InvalidUNID  ' Error #4091 = Invalid universal id
+      	
+      	trimString universalID$
+      	extendedInfo$ = |UNID: | & universalID$
+      
+      	Set result = getCurrentDb().GetDocumentByUNID(universalID$)
+      	
+      ExitPoint:
+      	Set getDocumentByUNID = result
+      	Exit Function
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Set result = Nothing
+      	Resume ExitPoint	
+      InvalidUNID:
+      	On Error GoTo ErrorTrap
+      	Set result = Nothing
+      	Resume ExitPoint
+      End Function 
+      
+      '++LotusScript Development Environment:2:1:getEmptyDocumentCollection:8:8
+      
+      %REM This function intentionally has NO ERROR TRAPPING.  
+      	Creates an empty NotesDocumentCollection from the source database.
+      	
+      	@param source NotesDatabase from within which to create the empty document collection.
+      	@return NotesDocumentCollection containing zero documents.
+      %END REM Any raised errors should be handled by the calling code.
+      Public Function getEmptyDocumentCollection (source As NotesDatabase) As NotesDocumentCollection
+      	
+      	Dim result As NotesDocumentCollection
+      	
+      	Set result = source.GetProfileDocCollection(|*INVALID*|)
+      	While (result.Count > 0)
+      		Call result.DeleteDocument(result.GetFirstDocument())
+      	Wend 
+      	
+      	Set getEmptyDocumentCollection = result	
+      End Function  
+      
+      '++LotusScript Development Environment:2:1:getCollectionUNIDs:10:8
+      %REM
+      	Function getCollectionUNIDs
+      	Gets the UniversalIDs from a NotesDocumentCollection. 
+      	
+      	@param col NotesDocumentCollection from which to get the Universal IDs 
+      	@return StringQueue containing the Universal IDs of all documents in the collection.
+      	
+      	@throws ERR_PARAMETER_BLANK if the passed in collection is Nothing  
+      %END REM
+      Function getCollectionUNIDs(col As NotesDocumentCollection) As StringQueue
+      	If (col Is Nothing) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK 
+      	On Error GoTo ErrorTrap
+      	
+      	Dim ndoc As NotesDocument 
+      	Dim result As New StringQueue() 
+      	
+      	
+      	' BEGIN CODE
+      	Set ndoc = col.getFirstDocument() 
+      	While Not (ndoc Is Nothing) 
+      		result.push ndoc.UniversalID 
+      		Set ndoc = col.getNextDocument(ndoc) 
+      	Wend
+      	
+      ExitPoint: 
+      	Set getCollectionUNIDs = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, ||
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:isPlatformWindows:5:8
+      %REM
+      	Function isPlatformWindows
+      	Indicates if the current platform is a Windows OS. 
+      %END REM
+      Function isPlatformWindows() As Boolean 
+      	Static result As Boolean 
+      	Static isSet As Boolean 
+      	
+      	
+      	If Not isSet Then 
+      		result = (InStr(LCase$(getCurrentSession().Platform), "windows") > 0)
+      		isSet = True 
+      	End If
+      	
+      	isPlatformWindows = result 
+      End Function
+      
+      '++LotusScript Development Environment:2:1:getCurrentSession:6:8
+      
+      %REM
+      	Function getCurrentSession
+      	@return: handle to the current NotesSession
+      %END REM
+      Static Public Function getCurrentSession() As NotesSession
+      	Dim result As NotesSession 
+      
+      	If (result Is Nothing) Then Set result = New NotesSession()
+      	
+      	Set getCurrentSession = result
+      End Function 
+      
+      '++LotusScript Development Environment:2:1:getOpenDatabase:9:8
+      %REM 
+      	Attempts to open a database.  
+      	
+      	@param server$ Name of server containing the database. 
+      	@param filepath$ Filepath for the database to open. 
+      	
+      	@return An opened database object as specified by the server and filepath.  Nothing if the database cannot be found or opened.
+      %END REM
+      Public Function getOpenDatabase(server$, filepath$) As NotesDatabase
+      	Static nonDbs List As Boolean
+      
+      	Dim result As NotesDatabase
+      		
+      	Dim sfKey As String
+      	
+      	trimString server$
+      	trimString filepath$
+      	
+      	sfKey$ = LCase$(Trim$(server$ & |!!| & filepath$))
+      	
+      	Set result = Nothing
+      	If IsElement(nonDbs(sfKey$)) Then GoTo ExitPoint
+      	
+      	Set result = New NotesDatabase(server$, filepath$)
+      	If (Not result.IsOpen) Then Call result.Open(server$, filepath$)
+      	If (Not result.isOpen) Then Error ERR_DATABASE_NOTOPEN, MSG_DATABASE_NOTOPEN & |Server: | & server$ & Chr(10) & |Filepath: | & filepath$ & |  |
+      	
+      ExitPoint:
+      	If (result Is Nothing) Then nonDbs(sfKey$) = True
+      	Set getOpenDatabase = result
+      End Function 
+      
+      '++LotusScript Development Environment:2:1:getParentDocument:11:8
+      
+      %REM
+      	Function getParentDocument
+      	Gets the Parent document (if it exists) for a document. 
+      	
+      	@param source NotesDocument for which to get the Parent 
+      	@return Parent Document (if it exists), or NOTHING 
+      	
+      	@throws ERR_DOCUMENT_NOT_FOUND if the source document has a ParentDocumentUNID but the associated Parent document cannot be found. 
+      %END REM
+      Function getParentDocument(source As NotesDocument) As NotesDocument
+      	
+      	On Error GoTo ErrorTrap
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	
+      	
+      	Dim parentDocumentUNID$ 
+      	Dim result As NotesDocument
+      	
+      	' BEGIN CODE
+      	If source Is Nothing Then GoTo ExitPoint
+      	
+      	extendedinfo(|UniversalID|) = source.Universalid
+      	extendedinfo(|NoteID|) = source.Noteid
+      	extendedinfo(|Form|) =  getItemValueText(source, |Form|, ||, ||)
+      	
+      	parentDocumentUNID$ = source.Parentdocumentunid
+      	extendedinfo(|parentDocumentUNID|) = parentDocumentUNID$
+      	
+      	If Not isBlankString(parentDocumentUNID$) Then
+      		' Parent Universal ID exists   
+      		Set result = getDocumentByUNID(parentDocumentUNID$)
+      		If result Is Nothing Then Error ERR_DOCUMENT_NOT_FOUND, MSG_DOCUMENT_NOT_FOUND
+      	End If  
+      	
+      ExitPoint: 
+      	Set getParentDocument = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:getConfigUNID:13:8
+      
+      %REM
+      	Function getConfigUNID
+      	Gets the UNID of the DbConfig document for a given source form.
+      	
+      	Only 1 DbConfig document may exist for a specified form.
+      	
+      	@param source$:  Form of the specified DbConfig document.
+      	@param clearCache: Flag indicating if cached information should be cleared.
+      	
+      	@return	UNID for the Config doc.  Blank on Error.	
+      %END REM
+      Public Function getConfigUNID(ByVal source$, clearCache As Boolean) As String
+      	On Error GoTo ErrorTrap
+      	
+      	Static cache List As String
+      
+      	Dim envarName As String
+      
+      	Dim extendedinfo List As String
+      	Dim result As String
+      
+      	' BEGIN Code 
+      
+      	source$ = UCase$(Trim$(source$))
+      	extendedinfo(|source|) = source$ 
+      	extendedinfo(|clearCache|) = CStr(clearCache)
+      	
+      	envarName$ = getEnvarName(source$, clearCache)
+      	If (Len(envarName$) = 0) Then GoTo ExitPoint
+      	
+      	If clearCache Then Erase cache	
+      
+      	envarName$ = UNID_PREFIX & envarName$	
+      	extendedinfo(|envarName|) = envarName$
+      
+      	If IsElement(cache(envarName$)) Then 
+      		result$ = cache(envarName$)
+      	Else
+      		result$ = getHashedValue(source$, clearCache)
+      		If (Len(result$) = 0) Then Error ERR_OPERATION_FAILED, MSG_OPERATION_FAILED
+      	End If 
+      	
+      ExitPoint:
+      	cache(envarName$) = result$
+      	getConfigUNID = result$
+      	Exit Function
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	result$ = ||
+      	Resume ExitPoint
+      End Function 
+      
+      '++LotusScript Development Environment:2:1:getCurrentDb:6:8
+      
+      %REM
+      	Function getCurrentDb
+      	handle to current database.
+      %END REM
+      Static Public Function getCurrentDb() As NotesDatabase
+      	Dim result As NotesDatabase
+      	
+      	If (result Is Nothing) Then Set result = getCurrentSession().CurrentDatabase
+      	
+      	Set getCurrentDb = result
+      End Function 
+      
+      '++LotusScript Development Environment:2:1:getItemValueText:16:8
+      %REM
+      	Function getItemValueText
+      	Gets the Item Value Text for a Notes Item.
+      	 
+      	Multi-Value Text Items will conditionally concatenated with the specified delimiter
+      	
+      	@param source NotesDocument containing the NotesItem
+      	@param itemname$ Name of the NotesItem from which to retrieve the Text 
+      	@param delimiter$ Delimiter to use for concatenating multi-value text items.
+      	@param htreplace$ String used to replace horizontal tabs in RichText content.   
+      	 
+      	@return Text representation if the NotesItem's value.
+      	
+      	@throws ERR_PARAMETER_BLANK if source is Nothing.     
+      %END REM
+      Function getItemValueText(source As NotesDocument, itemname$, delimiter$, htreplace$) As String 
+      	
+      	Dim nitm As NotesItem
+      	Dim nrti As NotesRichTextItem 
+      	Dim values As Variant   
+      	
+      	Dim result$
+      	
+      		
+      	' BEGIN CODE
+      	If (source Is Nothing) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |Source NotesDocument is Nothing.  |
+      	
+      	If source.hasItem(itemname$) Then 
+      		
+      		Set nitm = source.getFirstItem(itemname$)
+      		
+      		Select Case nitm.Type 
+      		Case ITEMTYPE_RICHTEXT 
+      			Set nrti = nitm 
+      			If isBlankString(htreplace$) Then 
+      					result$ = nrti.getUnformattedText 
+      				Else 
+      					result$ = getBaliStrings().replaceHT(nrti.getUnFormattedText, |  |)
+      				End If
+      				
+      			Case ITEMTYPE_TEXT 
+      				result$ = nitm.Text 
+      
+      				If Not isBlankString(delimiter$) Then 
+      					values = nitm.Values 
+      					If UBound(values) > LBound(values) Then result$ = Join(values, delimiter$)			
+      				End If
+      			
+      			Case Else 
+      				result$ = nitm.Text
+      		End Select
+      	End If
+      	
+      
+      ExitPoint: 
+      	getItemValueText = result
+      	Exit Function 
+      End Function
+    signed: true
+    nonsummary: true
+  - name: $TITLE
+    type: text
+    data: baliUtils_nlsxBE
+    signed: true
+remaining: []

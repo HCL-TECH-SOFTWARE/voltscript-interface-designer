@@ -1,0 +1,103 @@
+site_name: VoltScript Interface Designer
+site_url: https://github.com/pages/HCL_TECH_SOFTWARE/voltscript-interface-designer/
+site_description: >-
+  VoltScript Interface Designer: Application for Scaffolding VoltScript Extensions and Libraries
+use_directory_urls: false
+# Theme Configuration
+theme:
+  name: material
+  logo: assets/images/VoltMXGoLogo.png
+  language: en
+  features:
+    - navigation.indexes
+    - navigation.tabs
+    - navigation.top
+    - navigation.instant
+    - search.highlight
+    - search.share
+    - search.suggest
+    - content.code.annotate
+    - content.tooltips
+  #custom_dir: theme_overrides/
+  icon:
+    repo: fontawesome/brands/github
+  font: false
+  #  text: Roboto
+  #  code: Roboto Mono
+  favicon: assets/images/favicon.png
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+  # Static files
+  static_templates:
+    - 404.html
+
+# Markdown Extensions
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - attr_list
+  - abbr
+  - footnotes
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - toc:
+     title: On this page
+
+# Copyright
+copyright: >-
+  Copyright &copy; 2024, HCL America, Inc. | <a href="https://www.hcl-software.com/legal/privacy" target="_blank">Privacy Statement</a> | <a href="https://www.hcl-software.com/legal/terms-use" target="_blank">Terms of Use</a> <br/>
+  <a href="#__consent">Change cookie settings</a>
+
+extra:
+  productversion: 1.0.0
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/HCL-TECH-SOFTWARE
+  consent:
+    title: Cookie consent
+    description: >-
+      We use cookies to recognize your repeated visits and preferences, as well
+      as to measure the effectiveness of our documentation and whether users
+      find what they're searching for. With your consent, you're helping us to
+      make our documentation better.
+    actions:
+      - accept
+      - manage
+
+# Repository
+repo_url: https://github.com/HCL-TECH-SOFTWARE/voltscript-interface-designer/
+repo_name: HCL-TECH-SOFTWARE/voltscript-interface-designer
+edit_uri: edit/main/docs
+
+use_directory_urls: false
+
+# Customization
+extra_css:
+  - ../assets/css/style.css
+
+plugins:
+  - awesome-pages
+  - search
+  - tags
+  - section-index
+  - git-revision-date-localized:
+      type: date

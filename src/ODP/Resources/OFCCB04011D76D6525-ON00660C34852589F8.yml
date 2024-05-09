@@ -1,0 +1,25 @@
+---
+class: 1
+flags: 0x0100
+unid: OFCCB04011D76D6525-ON00660C34852589F8
+items:
+  - name: Form
+    type: text
+    data: Skeleton
+  - name: FormId
+    type: number
+    data: 43
+  - name: FormName
+    type: text
+    data: GET_SET_CPP
+  - name: TheCodeAbstract
+    type: text
+    data: switch (id) %1%
+  - name: TheCode
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: |
+      hf8XAAEAAAogICBzd2l0Y2ggKGlkKQAghf8NAAEAAAogICB7ACCF/wwAAQAACiUxJQCF/xQAAQAACiAg
+      IGRlZmF1bHQ6AIX/DAABAAAKJTIlAIX/FQABAAAKICAgICAgYnJlYWs7ACCF/w0AAQAACiAgIH0AIA==
+remaining: []

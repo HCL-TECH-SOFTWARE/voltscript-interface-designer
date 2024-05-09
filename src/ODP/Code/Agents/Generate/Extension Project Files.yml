@@ -1,0 +1,215 @@
+---
+class: 512
+flags: 0x0000
+unid: OFED24CFDFFD3DF57B-ON0055A45385258979
+items:
+  - name: $AssistAction
+    type: action
+    code_type: 65413
+    data: |
+      '++LotusScript Development Environment:2:5:(Options):0:74
+      %REM
+      	Agent Generate...\Generate LSX Files
+      	Created Mar 21, 2023 by Rocky Oliver/USA/PNPHCL
+      	Generates LSX source code stub files
+      %END REM
+      %REM
+      	**********************************************************************
+      	**********************************************************************
+      		
+          Copyright HCL America, Inc. 1999, 2023
+      
+         	Licensed under the Apache License, Version 2.0 (the "License");
+          you may not use this file except in compliance with the License.
+          You may obtain a copy of the License at
+      
+              http://www.apache.org/licenses/LICENSE-2.0
+      
+          Unless required by applicable law or agreed to in writing, software
+          distributed under the License is distributed on an "AS IS" BASIS,
+          WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+          See the License for the specific language governing permissions and
+         	limitations under the License.
+      
+      	**********************************************************************
+      	**********************************************************************
+      %END REM
+      Option Declare
+      Option Base 1
+      Option Compare Nocase
+      Option Public
+      
+      
+      Use "LSXWizardUtils" 
+      Use "BSXNotesUtilsUI"
+      
+      
+      '++LotusScript Development Environment:2:5:(Forward):0:1
+      Declare Sub Initialize	
+      
+      '++LotusScript Development Environment:2:5:(Declarations):0:10
+      
+      Private Const MODULE_NAME = |Agent: Generate Extension Project Files.|
+      
+      
+      %REM ***************************************************************************
+       ************************************************************************************
+      	MessageBox CONSTANTS  
+      	MessageBox constants declared here to avoid conflicts with 
+      	other libraries using lsconst.lss; which has its own 
+      	%INCLUDE "lsprcval.lss" command.
+       ************************************************************************************
+      %END REM *********************************************************************
+      Private Const MB_OK = 0 				' OK
+      Private Const MB_OKCANCEL = 1 			' OK And Cancel 
+      Private Const MB_ABORTRETRYIGNORE = 2 	' Abort, Retry, And Ignore 
+      Private Const MB_YESNOCANCEL = 3 		' Yes, No, And Cancel
+      Private Const MB_YESNO = 4 				' Yes And No 
+      Private Const MB_RETRYCANCEL = 5		' Retry And Cancel 
+      
+      Private Const MB_ICONSTOP = 16 			' Stop sign
+      Private Const MB_ICONQUESTION = 32 		' Question mark 
+      Private Const MB_ICONEXCLAMATION = 48 	' Exclamation point
+      Private Const MB_ICONINFORMATION = 64 	' Information 
+       
+      Private Const IDOK = 1 					' OK
+      Private Const IDCANCEL = 2 				' Cancel
+      Private Const IDABORT = 3 				' Abort
+      Private Const IDRETRY = 4 				' Retry
+      Private Const IDIGNORE = 5 				' Ignore
+      Private Const IDYES = 6 				' Yes
+      Private Const IDNO = 7 					' No
+      
+      
+      '++LotusScript Development Environment:2:2:Initialize:1:10
+      Sub Initialize	
+      	Dim session As New NotesSession 
+      	Dim thisDB As NotesDatabase
+      	Dim listDoc As NotesDocumentCollection
+      	Dim currDoc As NotesDocument, projDoc As NotesDocument
+      	Dim pid As String
+      	Dim status As Integer
+      	Dim directory$
+      	
+      	On Error Goto errHandler
+      	
+      	Set thisDB = session.CurrentDatabase
+      	Set listDoc = thisDB.UnprocessedDocuments    
+      	Set currDoc = listDoc.GetFirstDocument     
+      	
+      	Select Case currDoc.Form(0)
+      		Case "Project"          
+      			Set projDoc = currDoc
+      		Case Else
+      			If currDoc.hasItem("F_ProjectID") Then
+      				pid = currDoc.getItemValue("F_ProjectID")(0)
+      				Set projDoc = thisDb.Getdocumentbyunid(pid)
+      			End If
+      	End Select
+      	
+      	If projDoc Is Nothing Then Error 1000, "Unable to locate Project document for currently selected document"
+      	
+      	directory$ = getTargetDirectory_VSE() 
+      	If isBlankString(directory$) Then
+      		enhLogWarning ||, |No output directory selected, aborting.| 
+      		MessageBox |Operation Aborted|, MB_ICONEXCLAMATION, |Aborted|
+      		Exit Sub 
+      	End If   
+      	
+      	status = GenerateLSXFiles(projDoc, directory$)   
+      
+      getOut:
+      	If (status = ADT_SUCCESS) Then  
+      		Msgbox "LSX Files were generated successfully.", WIZARD_OK, "LSX Wizard"
+      		enhLogMethodResult ||, "LSX Files were generated successfully."
+      	Else
+      		Msgbox "One or more errors occured while generating files." & CRLF & |Please check the log for additional information.|, WIZARD_ERR, "Error"
+      	End If      
+      	Exit Sub
+      errHandler:
+      	On Error Goto 0  
+      	enhLogException ||, ||
+      	Resume getOut
+      End Sub
+    dwFlags: 0x00000000
+    signed: true
+    nonsummary: true
+  - name: $AssistDocCount
+    type: number
+    data: 0
+    signed: true
+  - name: $AssistFlags
+    type: text
+    data: Es
+    signed: true
+  - name: $AssistInfo
+    type_num: 17
+    type: opaque
+    opaque: |
+      AQAEAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    signed: true
+    nonsummary: true
+  - name: $AssistLastRun
+    type: time
+    signed: true
+  - name: $AssistQuery
+    type_num: 15
+    type: opaque
+    opaque: gQYAAAAA
+    signed: true
+    nonsummary: true
+  - name: $AssistRunInfo
+    type: object
+    obj_type: 0x0008
+    obj_class: 0x0200
+    obj_privs: 0x0000
+    opaque: |
+      AAAAAAUAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      iAZ3AMiKJYXgZVsAOYolhQAAAAAAAAAAAAAAAAAAAAAAAAAAqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqq
+  - name: $AssistTrigger
+    type: text
+    data: "4"
+  - name: $AssistType
+    type: number
+    data: 65413
+    signed: true
+  - name: $Comment
+    type: text
+    data: agent used in action button in LSX Projects view; works on selected doc
+    signed: true
+  - name: $DesignerVersion
+    type: text
+    data: 8.5.3
+  - name: $Flags
+    type: text
+    data: 3fL
+  - name: $FlagsExt
+    type: text
+    data: ""
+    signed: true
+  - name: $Restricted
+    type: number
+    data: 1
+    signed: true
+  - name: $TITLE
+    type: text
+    data: "Generate...\\Extension Project Files|generateLSXFiles"
+    signed: true
+remaining: []

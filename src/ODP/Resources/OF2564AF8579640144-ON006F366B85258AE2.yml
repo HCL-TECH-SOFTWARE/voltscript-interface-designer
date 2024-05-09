@@ -1,0 +1,41 @@
+---
+class: 1
+flags: 0x0100
+unid: OF2564AF8579640144-ON006F366B85258AE2
+items:
+  - name: Authors
+    type: text
+    data:
+      - CN=Devin Olson/OU=USA/O=PNPHCL
+      - "[Admin]"
+    authors: true
+    names: true
+  - name: Category
+    type: text
+    data: "2"
+  - name: CreatedOn
+    type: time
+    data: "2024-03-16T16:14:44.27-04:00"
+    dst: true
+  - name: DataType
+    type: text
+    data: NotesDOMDocumentNode
+  - name: F_LSXCreator
+    type: text
+    data: Devin Olson
+  - name: Form
+    type: text
+    data: DataType
+  - name: LastModified
+    type: time
+    data: "2024-03-16T16:14:58.41-04:00"
+    dst: true
+  - name: ProjectType
+    type: text
+    data:
+      - "1"
+      - "2"
+  - name: keywordComments
+    type: text
+    data: NotesDOMDocumentNode
+remaining: []

@@ -1,0 +1,45 @@
+---
+class: 1
+flags: 0x0100
+unid: OFEC3611C36CFA9339-ON005F93E185258ADF
+items:
+  - name: $Revisions
+    type: time
+    data: "2024-03-13T13:24:09.20-04:00"
+    dst: true
+  - name: Authors
+    type: text
+    data:
+      - CN=Devin Olson/OU=USA/O=PNPHCL
+      - "[Admin]"
+    authors: true
+    names: true
+  - name: Category
+    type: text
+    data: "2"
+  - name: CreatedOn
+    type: time
+    data: "2024-03-13T13:23:57.77-04:00"
+    dst: true
+  - name: DataType
+    type: text
+    data: NotesJSONNavigator
+  - name: F_LSXCreator
+    type: text
+    data: Devin Olson
+  - name: Form
+    type: text
+    data: DataType
+  - name: LastModified
+    type: time
+    data: "2024-03-13T13:24:10.50-04:00"
+    dst: true
+  - name: ProjectType
+    type: text
+    data:
+      - "1"
+      - "2"
+  - name: keywordComments
+    type: text
+    data: LotusScript class used to parse JSON data.
+remaining: []

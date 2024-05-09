@@ -1,0 +1,41 @@
+---
+class: 1
+flags: 0x0100
+unid: OF38E6463FE709FBAD-ON005E409685258AE5
+items:
+  - name: Authors
+    type: text
+    data:
+      - CN=Devin Olson/OU=USA/O=PNPHCL
+      - "[Admin]"
+    authors: true
+    names: true
+  - name: Category
+    type: text
+    data: "2"
+  - name: CreatedOn
+    type: time
+    data: "2024-03-19T13:09:29.18-04:00"
+    dst: true
+  - name: DataType
+    type: text
+    data: NotesUIWorkspace
+  - name: F_LSXCreator
+    type: text
+    data: Devin Olson
+  - name: Form
+    type: text
+    data: DataType
+  - name: LastModified
+    type: time
+    data: "2024-03-19T13:09:48.08-04:00"
+    dst: true
+  - name: ProjectType
+    type: text
+    data:
+      - "1"
+      - "2"
+  - name: keywordComments
+    type: text
+    data: Represents the current Notes® workspace window.
+remaining: []

@@ -1,0 +1,1308 @@
+---
+class: 512
+flags: 0x2000
+unid: OF80912B533657C435-ON004FF9C485258B0B
+items:
+  - name: $Comment
+    type: text
+    data: Utility methods that rely upon the LSXWizard LSX
+  - name: $DesignerVersion
+    type: text
+    data: 8.5.3
+    signed: true
+  - name: $Flags
+    type: text
+    data: s34Q
+  - name: $POID
+    type: time
+    data: "2024-04-10T12:11:47.10-04:00"
+    dst: true
+  - name: $PublicAccess
+    type: text
+    data: "1"
+    signed: true
+  - name: $ScriptLib
+    type: text
+    data: |
+      '++LotusScript Development Environment:2:5:(Options):0:74
+      %REM
+      	Library LSXWizardUtils
+      	Utility methods specifically using the LSX Wizard. 
+      %END REM
+      %REM
+      	**********************************************************************
+      	**********************************************************************
+      		
+          Copyright HCL America, Inc. 1999, 2023
+      
+          Licensed under the Apache License, Version 2.0 (the "License");
+          you may not use this file except in compliance with the License.
+          You may obtain a copy of the License at
+      
+              http://www.apache.org/licenses/LICENSE-2.0
+      
+          Unless required by applicable law or agreed to in writing, software
+          distributed under the License is distributed on an "AS IS" BASIS,
+          WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+          See the License for the specific language governing permissions and
+          limitations under the License.
+      
+      	**********************************************************************
+      	**********************************************************************
+      %END REM
+      'Option Public 
+      Option Declare
+      Option Base 1
+      Option Compare NoCase
+      Use "BSXNotesUtils"
+      Use "WindowsDLLutils"
+      UseLSX "*lsxwizard"
+      
+      '++LotusScript Development Environment:2:5:(Forward):0:1
+      Declare Public Class LSXMethodList
+      Declare Public Class LSXEventList
+      Declare Public Class WizardListType
+      Declare Sub Initialize
+      Declare Function SetArgument (ADTArg As LSXArg, currProject As NotesDocument, currPME As NotesDocument, a As Integer) As Integer
+      Declare Function SetMethod (ADTMethod As LSXMethod, currProject As NotesDocument, currMethod As NotesDocument) As Integer
+      Declare Static Public Function getWizard() As Wizard 
+      Declare Function CreateProject (theWizard As Wizard,theWizardList List As WizardListType, currProject As NotesDocument) As Integer
+      Declare Sub ResetOldNames (currProject As NotesDocument) 
+      Declare Sub InitializeSkeletonUNID()
+      Declare Function ValidateProjectLSXPath(projDoc As NotesDocument, LSXPath As String) As Integer
+      Declare Function SetEvent (ADTEvent As LSXEvent, currEvent As NotesDocument) As Integer
+      Declare Sub CollectSkeletons(theWizard As Wizard)
+      Declare Sub GetPMECount ( currClass As NotesDocument, p As Integer, m As Integer , e As Integer)
+      Declare Public Function GenerateLSXFiles (currProject As NotesDocument, targetdirectory$) As Integer
+      Declare Function SetClass (ADTClass As LSXADTClass, currProject As NotesDocument, currClass As NotesDocument) As Integer
+      Declare Function SetProperty (ADTProperty As LSXProperty,  currProject As NotesDocument, currProperty As NotesDocument) As Integer
+      
+      '++LotusScript Development Environment:2:5:(Declarations):0:10
+      
+      Private Const MODULE_NAME = |LSXWizardUtils|
+      Private Const LIB_PREFIX = |Library: | & MODULE_NAME & |.| 
+      
+      
+      Public SkeletonUNID List As String ' modify InitializeSkeletonUNID() when a skeleton is added 
+      
+      Public PlatformDirectorySlash As String
+      
+      Public ADTConst List As LSXConstant
+      
+      ' Globals
+      Public LSXProjectDir As String
+      
+      
+      Public Class LSXMethodList
+      	Public ADTMeth As LSXMethod
+      	Public ADTMethArg List As LSXArg    
+      End Class
+      
+      Public Class LSXEventList
+      	Public ADTEve As LSXEvent
+      	Public ADTEventArg List As LSXArg
+      End Class
+      
+      Public Class WizardListType
+      	Public ADTClass As LSXADTClass
+      	Public ADTProp List As LSXProperty
+      	Public ADTMethod List As LSXMethodList
+      	Public ADTEvent List As LSXEventList
+      End Class
+      '++LotusScript Development Environment:2:2:Initialize:1:10
+      Sub Initialize
+      	
+           'Find out what the platform is and how it references directories
+      	
+      	If (Strcmp(getCurrentSession().Platform, "Macintosh")) Then
+      		PlatformDirectorySlash = ":"
+      	ElseIf (Strcmp(getCurrentSession().Platform, "UNIX")) Then
+      		PlatformDirectorySlash = "/"
+      	Else  'Windows or OS/2
+      		PlatformDirectorySlash = "\"
+      	End If
+      	
+      End Sub
+      
+      '++LotusScript Development Environment:2:1:SetArgument:3:8
+      
+      
+      Function SetArgument (ADTArg As LSXArg, currProject As NotesDocument, currPME As NotesDocument, a As Integer) As Integer
+      	
+      ' Sets all the wizard data for an argument.
+      	
+      	On Error GoTo ErrorTrap 
+      	
+      		' exception variables
+      	Dim extendedinfo List As String 
+      	Dim errmsg$ 
+      	Dim errcode%
+      	
+      	Dim result% 
+      
+      
+      	Dim tempDataType As String
+      	
+      	result% = ADT_FAIL
+      
+           ' Set the Name.
+      	ADTArg.Name = currPME.GetFirstItem("F_ArgName_" & CStr(a)).Text 
+      	
+           ' Get the Data Type
+      	tempDataType = currPME.GetFirstItem("F_ArgDataType_" & CStr(a)).Text 
+      	
+      	If (DATATYPE_ADT = getDataTypeCategory(tempDataType)) Then
+      		If isBlankString(getUNIDforClassName(currProject, tempDataType)) Then
+      			enhLogWarning MODULE_NAME, "Argument " & """" &  ADTArg.Name & """" & " data type " & """" & tempDataType & """" & " does not exist."
+      			GoTo ExitPoint 
+      		End If
+      	End If     
+      	
+           ' Set the Data Type
+      	ADTArg.DataType = tempDataType
+           ' If is array append []
+      	If currPME.GetFirstItem("F_ArgIsArray_" & CStr(a)).Contains("Array") Then
+      		ADTArg.DataType = ADTArg.DataType & "[]"          
+      	End If   
+      	
+           ' Is BY_VAL
+      	If currPME.GetFirstItem("F_ArgByVal_" & CStr(a)).Contains("BY_VAL") Then
+      		ADTArg.IsByVal = True
+      	Else
+      		ADTArg.IsByVal = False
+      	End If
+      	
+           ' Is ISOPTIONAL
+      	If currPME.GetFirstItem("F_IsOptional_" & CStr(a)).Contains("OPTIONAL") Then
+      		ADTArg.IsOptional = True
+      		ADTArg.OptionalDefault = currPME.GetFirstItem("F_OptionalValue_" & CStr(a)).Text 
+      	Else
+      		ADTArg.IsOptional = False
+      		ADTArg.OptionalDefault = ""
+      	End If
+      	
+           ' Is ISCONST
+      	If currPME.GetFirstItem("F_IsConst_" & CStr(a)).Contains("CONST") Then
+      		ADTArg.IsConst = True
+      	Else
+      		ADTArg.IsConst = False
+      	End If
+      	
+      	result% = ADT_SUCCESS
+      	
+      ExitPoint: 
+      	If (0 <> errcode%) Then Error errcode%, errmsg$ 
+      	SetArgument = result%
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	errcode% = Err() 
+      	errmsg$ = Error$()
+      	result% = ADT_FAIL 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	MsgBox "Error:" & Error & CRLF & " Processing argument document", WIZARD_ERR, "LSX Wizard Error"  
+      	Resume ExitPoint	
+      End Function
+      
+      
+      '++LotusScript Development Environment:2:1:SetMethod:1:8
+      Function SetMethod (ADTMethod As LSXMethod, currProject As NotesDocument, currMethod As NotesDocument) As Integer
+      ' Called by CreateProject() to transfer data from a Method document into the LSX wizard DLL to generate LSX source code.
+      	
+      ' Sets all the wizard data for a method.
+      	
+      	On Error GoTo ErrorTrap 
+      	
+      		' exception variables
+      	Dim extendedinfo List As String 
+      	Dim errmsg$ 
+      	Dim errcode%
+      	
+      	
+      	Dim methodname$ 
+      	Dim result% 
+      	
+      	result% = ADT_FAIL
+      	
+      	
+           ' Set the Name.
+          methodname$ = getItemValueText(currMethod, |F_MethName|, ||, ||) 
+      	extendedinfo(|methodname|) = methodname$
+      	ADTMethod.Name = currMethod.F_MethName(0) 
+      	
+           ' Set the old name.
+      	If (currMethod.F_GMethNameOld(0) = "") Then
+      		ADTMethod.OldName = ADTMethod.Name 
+      	Else      
+      		ADTMethod.OldName = currMethod.F_GMethNameOld(0)   
+      	End If  
+      	
+           ' Is a Sub or Function
+      	If currMethod.GetFirstItem("F_Funct_or_Sub").Contains("Sub") Then
+      		ADTMethod.ReturnType = ""
+      	Else    
+      		Dim tempDataType As String
+      		
+                'Validate the return type.
+      		tempDataType = currMethod.F_MethReturnType(0)
+      		extendedinfo(|tempDataType|) = tempDataType 
+      		If (DATATYPE_ADT = getDataTypeCategory(tempDataType)) Then
+      				If IsBlankString(getUNIDforClassName(currProject, tempDataType)) Then 
+      				enhLogWarning MODULE_NAME, "Method " & """" &  ADTMethod.Name  & """" & " return type " & """" & tempDataType & """" & " does not exist."
+      				GoTo ExitPoint
+      			End If
+      		End If  
+      		
+                ' Set the datatype and append [] if it is an array.
+      		If currMethod.GetFirstItem("F_MethReturnTypeIsArray").Contains("Array") Then
+      			ADTMethod.ReturnType = currMethod.F_MethReturnType(0) & "[]"
+      		Else
+      			ADTMethod.ReturnType = currMethod.F_MethReturnType(0) 
+      		End If          
+      	End If
+      	
+           ' Is it Hidden
+      	If currMethod.GetFirstItem("F_MethAttribute").Contains("HIDDEN") Then
+      		ADTMethod.IsHidden = True
+      	Else
+      		ADTMethod.IsHidden = False
+      	End If
+      	
+           ' Is it Const
+      	If currMethod.GetFirstItem("F_MethAttribute").Contains("CONST") Then
+      		ADTMethod.IsConst = True
+      	Else
+      		ADTMethod.IsConst = False
+      	End If
+      	
+           ' Set the Argument Count
+      	ADTMethod.NumArgs = CInt(currMethod.F_TempArgCount(0)) 
+      	
+           ' Set the pme id
+      	ADTMethod.RelativeId = CInt(getItemValueText(currMethod, ITEMNAME_METHODID_COUNTER, ||, ||)) 
+      	
+      	
+      	result% = ADT_SUCCESS
+      
+      	
+      ExitPoint: 
+      	If (0 <> errcode%) Then Error errcode%, errmsg$ 
+      	SetMethod = result%
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	errcode% = Err() 
+      	errmsg$ = Error$()
+      	result% = ADT_FAIL 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	MsgBox "Error:" & Error & CRLF & " Processing method document", WIZARD_ERR, "LSX Wizard Error"  
+      	Resume ExitPoint	
+      	
+      	
+      End Function
+      
+      '++LotusScript Development Environment:2:1:getWizard:5:8
+      %REM
+      	Function getWizard
+      	Gets an instance of the Wizard object (from *lsxwizard.dll)
+      %END REM
+      Static Public Function getWizard() As Wizard 
+      	Dim result As Wizard
+      	
+      	If (result Is Nothing) Then Set result = New Wizard() 
+      	 
+      	Set getWizard = result
+      End Function
+      
+      '++LotusScript Development Environment:2:1:CreateProject:1:8
+      Function CreateProject (theWizard As Wizard,theWizardList List As WizardListType, currProject As NotesDocument) As Integer
+      	
+      ' Set all the project wizard data.  
+      	
+      	On Error GoTo ErrorTrap
+      	
+      	Dim thisView As NotesView
+      	Dim currClass As NotesDocument 
+      	Dim currPME As NotesDocument 
+      	Dim LSXPlatform As NotesItem
+      	
+      	Dim guid As String 
+      	Dim appname As String 
+      	
+      	Dim c As Integer
+      	Dim a As Integer
+      	Dim p As Integer 
+      	Dim m As Integer
+      	Dim e As Integer
+      	Dim argCount As Integer
+      	Dim status As Integer
+      	Dim hasNewMethod As Integer
+      	Dim hasExposedNew As Integer
+      	Dim notContained As Integer
+      
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	Dim msg$
+      	
+      	
+      	Dim result% 
+      
+      	result% = ADT_FAIL
+      	status = ADT_SUCCESS 
+      	notContained  = False
+      	hasExposedNew = False
+      	
+      	Set thisView = getCurrentDb().GetView(VIEWNAME_PROJECTS_LSX)     
+      	
+      	c = 0
+      	
+      	enhLogAction LIB_PREFIX, "Generating files for project: "  & currProject.F_AppName(0) & " in " & CurDir()
+      	
+      	appname = getItemValueText(currProject, |F_AppName|, ||, ||)
+      	extendedinfo(|F_AppName|) = appname
+      	
+      	' validate / update GUID 
+      	guid = getItemValueText(currProject, |F_BaseGUID|, ||, ||)
+      	extendedinfo(|F_BaseGUID|) = guid
+      	If Not isValidGUID(guid) Then
+      		enhLogExtendedContent LIB_PREFIX, |Generating new GUID|, |AppName: | & appname 
+      		guid = CreateGUID()
+      		If Not isValidGUID(guid) Then Error ERR_OPERATION_FAILED, MSG_OPERATION_FAILED & |Cannot create / validate GUID.  | 
+      		
+      		enhLogExtendedContent ||, ||, |GUID: | & guid 
+      		Call currProject.ReplaceItemValue(|F_BaseGUID|, guid)
+      		If Not currProject.Save(True, False, True) Then Error ERR_DOC_NOT_SAVED, MSG_DOC_NOT_SAVED & |Project Document: | & appname 
+      	End If 	
+      	
+           ' Set project from project document
+      	theWizard.LSXName = appname
+      	theWizard.LSXPath = LSXProjectDir       
+      	theWizard.LSXDescription = currProject.F_AppDescription(0) 
+      	theWizard.LSXGUID = guid
+      	theWizard.BaseId = CInt(currProject.F_BaseIDValue(0))
+      	theWizard.CharSet = currProject.F_CharacterSet(0)  
+      	
+           ' Get the character set for the current platform is.  
+           ' All we care if it is a Windows, UNIX, or Mac character set
+      	If (Strcmp(getCurrentSession().Platform, "UNIX")) Then
+      		theWizard.Host = Sun
+      	Else
+      		theWizard.Host = W32
+      	End If
+      	
+           'This code has been disabled for beta...
+      	
+           'Getting the platforms
+      	Set LSXPlatform = currProject.GetFirstItem("F_LSXPlatform")
+      	If LSXPlatform.Contains("W64") Then theWizard.AddPlatform(W64)
+      	If LSXPlatform.Contains("W32") Then theWizard.AddPlatform(W32)
+      	If LSXPlatform.Contains("LINUX") Then theWizard.AddPlatform(LINUX)
+      	
+      	ForAll pc In currProject.F_Constants
+      		
+      		Dim totalLen As Integer, tokenLen As Integer, valueLen As Integer
+      		Dim projConsts As String, tokenStr As String, valueStr As String 
+      		Dim tempValue As Long
+      		
+      		projConsts = Trim(pc)
+      		
+      		totalLen = Len(projConsts)
+      		
+                ' You would not think this would be required...
+                ' However an empty item enters the for all...
+      		
+      		If (totalLen > 0) Then
+      			
+      			c = c + 1
+      			
+      			tokenLen = InStr(1,projConsts, " ") - 1
+      			valueLen = (totalLen - tokenLen) - 1
+      			
+      			tokenStr = Left$(projConsts, tokenLen) 
+      			valueStr = Right$(projConsts, valueLen) 
+      			
+      			tempValue = CLng(valueStr)
+      			If(tempValue > 32767) Then
+      				enhLogWarning LIB_PREFIX, "Constant values must be less than 32767 for this release. "
+      				enhLogExtendedContent ||, ||, |tempValue: | & CStr(tempValue)  
+      				GoTo ExitPoint                      
+      			End If
+      
+      			
+      			Set ADTConst(c) = theWizard.CreateConstant()
+      			ADTConst(c).ConstName = tokenStr
+      			ADTConst(c).ConstValue = tempValue
+      			ADTConst(c).RelativeId = CInt(getItemValueText(currProject, ITEMNAME_METHODID_COUNTER, ||, ||)) + c 
+      		End If
+      		
+      	End ForAll
+      	
+      	theWizard.NumConsts = c
+      	
+      	c = 0
+      	
+      %REM *** UPDATE 12 JUL 2023 ***
+      	We found that the view.getChild() wasn't working because the project doc that's being passed in
+      	wasn't obtained from a view, and therefore doesn't have the context of the "parent" view to get 
+      	a "child" doc from. So we've added this little bit to basically reacquire the proj doc from within
+      	the view, so it has the proper context.
+      %END REM
+      	Dim punid As String, curdoc As NotesDocument 
+      	punid = currProject.Universalid
+      	
+      	Set curDoc = thisView.Getfirstdocument()
+      	
+      	Do While Not(curDoc Is Nothing)
+      		If curDoc.Universalid = punid Then
+      			Set currProject = curDoc
+      			Exit Do
+      		End If
+      		Set curDoc = thisView.Getnextdocument(curDoc)
+      	Loop
+      ' *** End Update *** 
+      
+           ' Get the class document
+      	Set currClass = thisView.GetChild(currProject)
+      	
+           ' For each class in project
+      	While Not currClass Is Nothing 
+      		
+      		Dim currClassName As String
+      		
+      		currClassName = currClass.F_ClassName(0)
+      		extendedinfo(|currClassName|) = currClassName 
+      		
+      		c = c + 1
+      		
+      		hasNewMethod = False
+      		
+                ' Create the new class
+      		Set theWizardList(c) = New WizardListType()
+      		Set theWizardList(c).ADTClass = theWizard.CreateADT()
+      		
+                ' Set the class from the class document.
+      		status = SetClass (theWizardList(c).ADTClass, currProject, currClass)          
+      		If (status <> ADT_SUCCESS) Then Error ERR_OPERATION_FAILED, MSG_OPERATION_FAILED & |Failed to set the class.  |            
+      		
+      		If currClass.F_ClassAttribNewNotExposed(0) = "" Then
+      			hasExposedNew = True               
+      		End If
+      		
+                ' Set the class id (session class is 1)
+      		theWizardList(c).ADTClass.RelativeId = (c + 1)      
+      		
+      		p = 0
+      		m = 0
+      		e = 0
+      		
+      		Set currPME  = thisView.GetChild(currClass)         
+      		
+                ' For each property method event in current class
+      		While Not currPME Is Nothing               
+      			
+      			extendedinfo(|currPME Form|) = getItemValueText(currPME, |Form|, ||, ||) 
+      			
+                     ' Create properties methods and events.
+      			Select Case currPME.Form(0)
+      				
+      			Case "Property"
+      				p = p + 1
+      				
+                          'Create new property 
+      				Set theWizardList(c).ADTProp(p) = theWizardList(c).ADTClass.CreateProperty()
+      				
+                          ' Set the property from the property document.
+      				status = SetProperty (theWizardList(c).ADTProp(p), currProject, currPME) 
+      				If (status <> ADT_SUCCESS) Then Error ERR_OPERATION_FAILED, MSG_OPERATION_FAILED & |Failed to set the property.  |                  
+      				
+      			Case "Method"
+      				extendedinfo(|currPME F_MethName|) = getItemValueText(currPME, |F_MethName|, ||, ||) 
+      				
+      				m = m + 1  
+      				
+                          ' Get the argument count
+      				argCount = CInt(currPME.F_TempArgCount(0))     
+      				
+                          ' Set flag if method is called new
+      				If Strcmp(currPME.F_MethName(0), "new")Then
+      					hasNewMethod = True
+      					
+                               ' Make sure the return type is the class if the method is new.
+      					If (Not strcmp(currPME.F_MethReturnType(0), currClassName)) Then
+      						enhLogWarning LIB_PREFIX, "The new method must return a " & currClassName & ", selection will be ignored."    
+      					End If   
+      					
+                               ' Make sure the arguments align with the base class.
+      					If strCmp(|Derived|, getItemValueText(currClass, |F_ClassType|, ||, ||)) Then 
+      						Dim classDerivedType As String
+      						classDerivedType = getItemValueText(currClass, |F_ClassDeriveType|, ||, ||) 
+      						
+                                    ' Make sure the first argument type is the same as the derived notes class if the method is new.
+      						If(DATATYPE_NOTES = getDataTypeCategory(classDerivedType)) Then
+      							If( currPME.F_ArgDataType_1(0) <> classDerivedType ) Then 
+      								enhLogWarning LIB_PREFIX, "The first argument passed to a constructor must be a " & classDerivedType  & " object since the class " & currClassName & " is derived from a " & classDerivedType & "."
+      								GoTo ExitPoint 
+      							End If
+                                    ' Make sure the arguments are the same as the base class if the method is new.     
+      						Else   
+      							Dim baseNew As NotesDocument
+      							Dim baseNewUNID As String
+      							Dim baseArgCount As Integer
+      							
+                                         ' Get the new method of the base class.
+      							baseNewUNID = getConstructorUNIDforClassName(currProject, classDerivedType)
+      							If(baseNewUNID = "") Then Error ERR_OPERATION_FAILED, MSG_OPERATION_FAILED & |Missing base class "| & classDerivedType & |" or class does not contain a new method.  |
+      							Set baseNew = getDocumentByUNID(baseNewUNID)
+      							
+      							baseArgCount = CInt(baseNew.F_TempArgCount(0))                                    
+      							
+                                         ' For each argument in the new method.
+      							For a = 1 To baseArgCount 
+      								
+                                              ' Ignore optional arguments in the base.
+      								If Not baseNew.GetFirstItem("F_IsOptional_" & CStr(a)).Contains("OPTIONAL") Then
+      									If _
+      									currPME.GetFirstItem("F_ArgName_" & CStr(a)).Text <> _
+      									baseNew.GetFirstItem("F_ArgName_" & CStr(a)).Text Or _     
+      									currPME.GetFirstItem("F_ArgDataType_" & CStr(a)).Text <> _
+      									baseNew.GetFirstItem("F_ArgDataType_" & CStr(a)).Text Or _   
+      									currPME.GetFirstItem("F_ArgByVal_" & CStr(a)).Text <> _
+      									baseNew.GetFirstItem("F_ArgByVal_" & CStr(a)).Text Or _   
+      									currPME.GetFirstItem("F_ArgIsArray_" & CStr(a)).Text <> _
+      									baseNew.GetFirstItem("F_ArgIsArray_" & CStr(a)).Text Or _   
+      									currPME.GetFirstItem("F_IsConst_" & CStr(a)).Text <> _
+      									baseNew.GetFirstItem("F_IsConst_" & CStr(a)).Text _                                           
+      									Then 
+      										enhLogWarning LIB_PREFIX, "The derived class must have the same arguments as the base class."
+      										GoTo ExitPoint       
+      									End If 
+      								End If
+      							Next a
+      							
+      						End If
+      					End If                           
+      					
+      				End If
+      				
+                          ' Create a new method 
+      				Set theWizardList(c).ADTMethod(m) = New LSXMethodList
+      				Set theWizardList(c).ADTMethod(m).ADTMeth = theWizardList(c).ADTClass.CreateMethod()
+      				
+                          ' Set the method from the method document.
+      				status = SetMethod (theWizardList(c).ADTMethod(m).ADTMeth, currProject, currPME) 
+      				If (status <> ADT_SUCCESS) Then Error ERR_OPERATION_FAILED, MSG_OPERATION_FAILED & |Failed to set the method.  |            
+      				
+      				
+                          ' For each argument in method.
+      				For a = 1 To argCount
+      					
+                               ' Create the new argument
+      					Set theWizardList(c).ADTMethod(m).ADTMethArg(a) = theWizardList(c).ADTMethod(m).ADTMeth.CreateArg()
+      					
+                               ' Set the argument from the argument document.
+      					status = SetArgument (theWizardList(c).ADTMethod(m).ADTMethArg(a), currProject, currPME, a)          
+      					If (status <> ADT_SUCCESS) Then Error ERR_OPERATION_FAILED, MSG_OPERATION_FAILED & |Failed to set the argument.  |                   
+      					
+      				Next a
+      				
+      			Case "Event"
+      				e = e + 1
+      				
+                          ' Create new event
+      				Set theWizardList(c).ADTEvent(e) = New LSXEventList
+      				Set theWizardList(c).ADTEvent(e).ADTEve = theWizardList(c).ADTClass.CreateEvent()
+      				
+                          ' Set the event from the event document.                   
+      				status = SetEvent (theWizardList(c).ADTEvent(e).ADTEve, currPME) 
+      				If (status <> ADT_SUCCESS) Then Error ERR_OPERATION_FAILED, MSG_OPERATION_FAILED & |Failed to set the event.  |           
+      				
+                          ' Get the argument count
+      				argCount = CInt(currPME.F_TempArgCount(0))     
+      				
+                          ' For each argument in method.
+      				For a = 1 To argCount
+      					
+                               ' Create the new argument
+      					Set theWizardList(c).ADTEvent(e).ADTEventArg(a) = theWizardList(c).ADTEvent(e).ADTEve.CreateArg()
+      					
+                               ' Set the argument from the argument document.
+      					status = SetArgument (theWizardList(c).ADTEvent(e).ADTEventArg(a), currProject, currPME, a)          
+      					If (status <> ADT_SUCCESS) Then Error ERR_OPERATION_FAILED, MSG_OPERATION_FAILED & |Failed to set the argument.  |           
+      					
+      				Next a
+      				
+      			End Select
+      			
+      			Set currPME = thisView.GetNextSibling(currPME)
+      			
+      		Wend ' class
+      		
+      		If Not hasNewMethod Then Error ERR_OBJECT_CREATE_FAILED, MSG_OBJECT_CREATE_FAILED & |Class " & "| &  currClassName & |" does not contain a new method.|
+      		
+      		If currClass.GetFirstItem("F_ContainerClassType").Contains("Default") Then
+      			notContained = True
+      		End If
+      		
+      		Set currClass = thisView.GetNextSibling(currClass)
+      		
+      	Wend '
+      	
+           ' All the classes can not be contained
+      	If Not notContained Then Error ERR_OBJECT_CREATE_FAILED, MSG_OBJECT_CREATE_FAILED & |Invalid object model: All Classes can not be contained.|
+      	If Not hasExposedNew Then Error ERR_OBJECT_CREATE_FAILED, MSG_OBJECT_CREATE_FAILED & |Invalid object model: At least one classes must have new exposed.|
+      	
+      	theWizard.NumClasses = c
+      
+      	' if here then everything worked	
+      	result% = ADT_SUCCESS
+      
+      	
+      ExitPoint: 
+      	CreateProject = result% 
+      	Exit Function
+      ErrorTrap:
+      	On Error GoTo 0
+      	result% = ADT_FAIL 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	msg$ = || 
+      	ForAll s In extendedinfo
+      		If isBlankString(msg$) Then 
+      			msg$ = ListTag(s) & |: | & s 
+      		Else
+      			msg$ = msg$ & |, | & CRLF & ListTag(s) & |: | & s
+      		End If 
+      	End ForAll
+      	enhLogException LIB_PREFIX, msg$ 
+      	MsgBox "Error:" & Error & CRLF & " Processing project document", WIZARD_ERR, "LSX Wizard Error"
+      	Resume ExitPoint		
+      End Function
+      
+      '++LotusScript Development Environment:2:2:ResetOldNames:3:8
+      
+      
+      Sub ResetOldNames (currProject As NotesDocument) 
+      	
+           ' Reset the old names and the new names on code generation.
+      	
+      	Dim thisView As NotesView
+      	Dim currClass As NotesDocument
+      	Dim currPME As NotesDocument  
+      	
+      	Set thisView = getCurrentDb().getView(VIEWNAME_PROJECTS_LSX)
+      	
+      	
+           ' Get first class in project
+      	Set currClass = thisView.GetChild(currProject)
+      	
+           ' For each class in project
+      	While Not currClass Is Nothing 
+      		
+      		Set currPME  = thisView.GetChild(currClass)         
+      		
+                ' For each property method event in current class
+      		While Not currPME Is Nothing
+      			
+      			Select Case currPME.Form(0)
+      			Case "Property"
+      				currPME.F_GPropNameOld = currPME.F_PropName(0) 
+      			Case "Method"                    
+      				currPME.F_GMethNameOld = currPME.F_MethName(0)      
+      			Case "Event"                    
+      				currPME.F_GEventNameOld = currPME.F_EventName(0) 
+      			End Select                
+      			Call currPME.Save (True, True)     
+      			
+      			Set currPME = thisView.GetNextSibling(currPME)
+      		Wend
+      		
+      		currClass.F_GClassNameOld  = currClass.F_ClassName(0) 
+      		Call currClass.Save (True, True)     
+      		
+      		Set currClass = thisView.GetNextSibling(currClass)
+      	Wend          
+      	
+      End Sub
+      
+      '++LotusScript Development Environment:2:2:InitializeSkeletonUNID:1:8
+      Sub InitializeSkeletonUNID()
+      	Dim view As NotesView
+      	Dim doc As NotesDocument
+      	
+      	Set view = getCurrentDb().getView("LSX Skeletons")
+      	Set doc = view.Getfirstdocument()
+      	While Not Doc Is Nothing
+      		SkeletonUNID(doc.FormId(0)) = doc.universalID
+      		Set doc = view.Getnextdocument(doc)
+      	Wend
+      End Sub
+      
+      '++LotusScript Development Environment:2:1:ValidateProjectLSXPath:6:8
+      
+      %REM
+      	Function ValidateProjectLSXPath
+      	Description: Rewrote this function to use an old W32 C API call to make sure the directory path exists
+      %END REM
+      Function ValidateProjectLSXPath(projDoc As NotesDocument, LSXPath As String) As Integer
+      	On Error GoTo ErrorTrap 
+      	Dim cfgdoc As NotesDocument
+      	
+      	Dim LSXOS As Variant
+      	
+      	Dim subdirs(3) As String
+      	Dim osdirs(3) As String
+      
+      '	Dim LSXpath As String
+      	Dim LSXName As String
+      	Dim filename As String
+      	Dim xdir As String
+      
+      	Dim rlng As Long
+      
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	Dim errmsg$ 
+      	Dim errcode%
+      	
+      	Dim result% 
+      	
+      
+      	If (projDoc Is Nothing) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |Project Document is Nothing.  |
+      	extendedinfo(|LSXPath|) = LSXPath
+      	
+      	
+      	result% = ADT_FAIL 
+      		
+      	'Set up initial return value
+      	ValidateProjectLSXPath = ADT_SUCCESS
+      	
+      	Set cfgDoc = getToolkitConfigDoc(False) 
+      	
+      	LSXName = getItemValueText(projDoc, |F_AppName|, ||, ||)
+      	extendedInfo(|LSXName|) = LSXName 
+      
+      	LSXOS = projDoc.getItemValue(|F_LSXPlatform|) 
+      	extendedInfo(|LSXOS|) = Join(LSXOS, |, |) 
+      
+      	LSXpath = Join(Split(Trim$(LSXpath), |\\|), |\|) ' replcace double \\ with single \ 
+      	If Not getBaliStrings().endsWith(LSXpath, |\|) Then LSXpath = LSXpath & |\|
+      	extendedinfo(|LSXPath|) = LSXPath
+      	If Not makeDirectory(LSXPath) Then Error ERR_PARAMETER_INVALID, |VSE Directory Failure: Could not validate the filepath: "| & LSXPath & |".| 	
+      
+      	LSXProjectDir = LSXpath & "src\" & LSXName  ' delcared in global declarations 
+      	extendedinfo(|LSXProjectDir|) = LSXProjectDir
+      	
+      	extendedinfo(|projectDocument.F_AppName|) = LSXName 
+      	If IsScalar(LSXOS) Then 
+      		extendedinfo(|projectDocument.F_LSXPlatform|) = CStr(LSXOS)
+      	Else 
+      		extendedinfo(|projectDocument.F_LSXPlatform|) = Join(LSXOS, |, |)
+      	End If 
+      	extendedinfo(|LSXProjectDir|) = LSXProjectDir 
+      	
+      	
+      	' NOTE: For some reason this was originally written with option base 1, so all arrays are lbound == 1; 
+      	' haven't changed it because I don't want to break other things
+      	subdirs(1) = "src\common\"
+      	subdirs(2) = "src\inc\sys\"
+      	subdirs(3) = "src\" & LSXName & "\backup\"
+      	
+      	osdirs(1) = "bin\"
+      	osdirs(2) = "src\" & LSXName & "\lib\"
+      	osdirs(3) = "src\" & LSXName & "\objs\"
+      	
+      	ForAll sdir In subdirs
+      		xdir = LSXpath & sdir 
+      		extendedinfo(|xdir|) = xdir 
+      		If Not makeDirectory(xdir) Then Error ERR_OPERATION_FAILED, "Encountered a problem validating or creating the directory ( " & xdir & " )"
+      	End ForAll
+      
+      	
+      	xdir = ""
+      	ForAll odir In osdirs
+      		ForAll os In LSXOS
+      			xdir = LSXpath & odir & LCase(CStr(os)) & "\"
+      			extendedinfo(|xdir|) = xdir 
+      			If Not makeDirectory(xdir) Then Error ERR_OPERATION_FAILED, "Encountered a problem validating or creating the directory ( " & xdir & " )"
+      		End ForAll
+      	End ForAll
+      	
+      	
+      	' Backup the old files - this is from the original function, I just copied it here to preserve the functionality
+      	filename = Dir$(LSXProjectDir & "\*.?*", 6)
+      	If filename <> "" Then enhLogAction LIB_PREFIX,  "Now Backing up: " & LSXProjectDir & " to " & LSXProjectDir & "\backup"        
+      	Do While filename <> ""
+      		FileCopy LSXProjectDir & "\" & filename, LSXProjectDir & "\backup\" & filename
+      		filename = Dir$()
+      	Loop
+      	
+      	result% = ADT_SUCCESS 
+      	
+      ExitPoint: 
+      	If (0 <> errcode%) Then Error errcode%, errmsg$ 
+      	ValidateProjectLSXPath = result%
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	errcode% = Err() 
+      	errmsg$ = Error$()
+      	result% = ADT_FAIL 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	MsgBox "Error:" & Error & CRLF & " Validating LSXPath", WIZARD_ERR, "LSX Wizard Error"  
+      	Resume ExitPoint	
+      End Function
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      '++LotusScript Development Environment:2:1:SetEvent:3:8
+      
+      
+      Function SetEvent (ADTEvent As LSXEvent, currEvent As NotesDocument) As Integer
+      	
+      ' Sets all the wizard data for a method.
+      	
+      	On Error GoTo ERR_HANDLER
+      	
+      	SetEvent = ADT_FAIL
+      	
+           'Msgbox "Event: " & currEvent.F_EventName(0) 
+      	
+           ' Set the Name.
+      	ADTEvent.Name = getItemValueText(currEvent, |F_EventName|, ||, ||)      
+      	
+           ' Set the old name.
+      	If isBlankString(getItemValueText(currEvent, |F_GEventNameOld|, ||, ||)) Then
+      		ADTEvent.OldName = ADTEvent.Name 
+      	Else      
+      		ADTEvent.OldName = getItemValueText(currEvent, |F_GEventNameOld|, ||, ||)   
+      	End If  
+      	
+           ' Set the Argument Count
+      	ADTEvent.NumArgs = CInt(getItemValueText(currEvent, |F_TempArgCount|, ||, ||)) 
+      	
+           ' Set the pme id
+      	ADTEvent.RelativeId = CInt(getItemValueText(currEvent, ITEMNAME_METHODID_COUNTER, ||, ||))
+      	
+      	SetEvent = ADT_SUCCESS       
+      	Exit Function
+      	
+      ERR_HANDLER:
+      	
+           'Msgbox "Error processing Event document", WIZARD_ERR, "LSX Wizard Error" 
+      	MsgBox "Error:" & Error & Chr(13) & " Processing Event document", WIZARD_ERR, "LSX Wizard Error"    
+      	SetEvent = ADT_FAIL
+      	Exit Function
+      	
+      End Function
+      
+      '++LotusScript Development Environment:2:2:CollectSkeletons:1:8
+      Sub CollectSkeletons(theWizard As Wizard)
+      	
+      	Dim theView As NotesView
+      	Dim theDoc As NotesDocument
+      	Dim theItem As NotesRichTextItem ' Do not use NotesItem, NotesItem has a bug which truncates after column 80  Use NotesRichTextItem instead
+      	Dim theString As String
+      	Dim theLength As Long
+      	Dim countDocs As Integer
+      	
+      	Call InitializeSkeletonUNID()
+      	
+      	' Whenever we add skeletons to the database and the LSX C++ code, we need to update MaxSkeletonUNID
+      	ForAll elem In SkeletonUNID
+      		
+      		Set theDoc = getDocumentByUNID(elem)
+      		Set theItem = theDoc.GetFirstItem("TheCode")
+      		If Not (theItem Is Nothing) Then
+                     'theString = theItem.Text     'Don't use NotesItem use Notesrichtextitem instead
+      			theString = theItem.GetFormattedText(False, 200)  'I'm using 200 because VC++ dsp files can be really wide
+      			theLength = Len(theString)
+      			
+      			theWizard.PassText CInt(ListTag(elem)), theLength, theString
+      		Else
+      			MessageBox "Error with LSX Skeleton Document " & ListTag(elem) , WIZARD_ERR, "LSX Wizard Error"
+      		End If
+      		
+      	End ForAll
+      
+      End Sub
+      
+      '++LotusScript Development Environment:2:2:GetPMECount:1:8
+      Sub GetPMECount ( currClass As NotesDocument, p As Integer, m As Integer , e As Integer)
+      	
+      ' This sub will return by reference the number of properties methods and events 
+      ' associated with a given class document 
+      	
+      	Dim listPME As NotesDocumentCollection 
+      	Dim currPME As NotesDocument      
+      	Dim pme  As Integer  
+      	
+      	p = 0  
+      	m = 0 
+      	e = 0
+      	
+      	Set listPME = currClass.Responses
+      	For pme = 1 To listPME.Count
+      		Set currPME = listPME.GetNthDocument(pme)
+      		Select Case currPME.Form(0)
+      		Case "Property"
+      			p = p + 1               
+      		Case "Method"
+      			m = m + 1
+      		Case "Event"
+      			e = e + 1
+      		End Select               
+      	Next pme         
+      End Sub
+      
+      '++LotusScript Development Environment:2:1:GenerateLSXFiles:1:8
+      Public Function GenerateLSXFiles (currProject As NotesDocument, targetdirectory$) As Integer
+      	
+      ' This function is the starting point for creating the LSX.
+      	
+      	On Error GoTo ErrorTrap 
+      	
+      	
+      	Dim theWizard As New Wizard()
+      	Dim theWizardList List As WizardListType
+      	Dim projectName As String
+      	Dim VCPROJ_Path As String 
+      	Dim status As Integer
+      	
+      		' exception variables
+      	Dim extendedinfo List As String 
+      	Dim errmsg$ 
+      	Dim errcode%
+      	
+      	Dim result% 
+      	
+      	status = ADT_SUCCESS     
+      	
+           ' Get the LSX Project Name
+      	projectName = currProject.F_AppName(0) 
+      	
+           ' Validate the path exists and backup files.      
+      	status = ValidateProjectLSXPath(currProject, targetdirectory$)
+      	If (status <> ADT_SUCCESS) Then Error ERR_OPERATION_FAILED, MSG_OPERATION_FAILED & |Failed to validate the output path.  |         
+      	
+           ' Set the wizard data.
+      	status = CreateProject (theWizard, theWizardList, currProject)
+      	If (status <> ADT_SUCCESS) Then Error ERR_OPERATION_FAILED, MSG_OPERATION_FAILED & |Failed to create the project.  |         
+      	
+           ' The following variables appear to have no effect.
+           ' theWizard.XINC = "c:\lsx\inc"
+           ' theWizard.XLIB = "c:\lsx\lib"
+           ' theWizard.NumSkeletons = 52
+      	
+           ' Get code template information for the back-end LSX
+      	Call CollectSkeletons(theWizard)
+      	
+           ' Change to the directory to dump the files
+      	ChDir theWizard.LSXPath
+      	Yield
+      	
+      	' If they want us to overwrite the project files, then do so. They've been backed up by now.
+      	If currProject.F_AlwaysOverwriteProject(0) = "Yes" Then
+      		VCPROJ_Path = theWizard.LSXPath & PlatformDirectorySlash & Projectname & ".vcproj"
+      		Kill  VCPROJ_Path
+      	End If
+      	
+           ' Generate the LSX Files. 
+      	theWizard.GenerateCode
+      	Yield  
+      	
+      	Call ResetOldNames (currProject)  
+      	
+           ' Set the return value
+      	result% = ADT_SUCCESS
+      	
+      	ChDir ".."
+      	Yield  
+      	ChDir ".."
+      	Yield  
+      	
+      ExitPoint: 
+      	If (0 <> errcode%) Then Error errcode%, errmsg$ 
+      	GenerateLSXFiles = result%
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	errcode% = Err() 
+      	errmsg$ = Error$()
+      	result% = ADT_FAIL 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:SetClass:9:8
+      
+      
+      
+      
+      
+      
+      
+      
+      Function SetClass (ADTClass As LSXADTClass, currProject As NotesDocument, currClass As NotesDocument) As Integer
+      	
+      ' Set all the class members using class document     
+      	
+      	On Error GoTo ErrorTrap 
+      	
+      		' exception variables
+      	Dim extendedinfo List As String 
+      	Dim errmsg$ 
+      	Dim errcode%
+      	
+      	Dim result% 
+      	
+      		
+      	Dim p As Integer  , m As Integer , e As Integer
+      	Dim tempDataType As String
+      
+      
+      	result% = ADT_FAIL
+      	
+           ' Set the Name
+      	ADTClass.Name = currClass.F_ClassName(0)
+      	
+           ' Set the old name.
+      	If (currClass.F_GClassNameOld(0)  = "") Then
+      		ADTClass.OldName = ADTClass.Name 
+      	Else        
+      		ADTClass.OldName = currClass.F_GClassNameOld(0)
+      	End If  
+      	
+           ' Is it a Base Class     
+      	If currClass.GetFirstItem("F_ClassType").Contains("Base") Then
+      		ADTClass.IsBaseClass  = True          
+      		ADTClass.DerivedFrom  = ""
+      	Else
+      		ADTClass.IsBaseClass  = False
+      		ADTClass.DerivedFrom  = getItemValueText(currClass, |F_ClassDeriveType|, ||, ||)  
+      		
+                ' Validate the datatype type.
+      		tempDataType = getItemValueText(currClass, |F_ClassDeriveType|, ||, ||) 
+      		If (DATATYPE_ADT = getDataTypeCategory(tempDataType)) Then
+      			If IsBlankString(getUNIDforClassName(currProject, tempDataType)) Then 
+      				enhLogWarning MODULE_NAME, "Class " & """" &  ADTClass.Name & """" & " derived type " & """" & tempDataType & """" & " does not exist."
+      				GoTo ExitPoint
+      			End If
+      		End If 
+      		
+      	End If
+      	
+           ' Is the new method unexposed
+      	If currClass.GetFirstItem("F_ClassAttribNewNotExposed").Contains("UnexposedNew") Then
+      		ADTClass.NewNotExposed = True
+      	Else
+      		ADTClass.NewNotExposed = False
+      	End If
+      	
+           ' Is it an Hidden Class
+      	If currClass.GetFirstItem("F_ClassAttrib").Contains("Hidden") Then
+      		ADTClass.IsHidden = True
+      	Else
+      		ADTClass.IsHidden = False
+      	End If
+      	
+           ' Is it an Expanded Class
+      	If currClass.GetFirstItem("F_ClassAttrib").Contains("Expanded") Then
+      		ADTClass.IsExpanded = True
+      	Else
+      		ADTClass.IsExpanded = False
+      	End If
+      	
+           ' Is it a Collection Class
+      	If currClass.GetFirstItem("F_ClassAttrib").Contains("Collection") Then         
+      		ADTClass.IsCollection = True     
+      		ADTClass.CollectItem  = currClass.F_ColItemType(0)
+      		ADTClass.CollectIndex = currClass.F_ColIndexType(0)
+      		
+                ' Validate the datatype type.
+      		tempDataType = currClass.F_ColItemType(0)
+      		If (DATATYPE_ADT = getDataTypeCategory(tempDataType)) Then
+      			If IsBlankString(getUNIDforClassName(currProject, tempDataType)) Then 
+      				enhLogWarning MODULE_NAME, "Class " & """" &  ADTClass.Name & """" & " collection item type " & """" & tempDataType & """" & " does not exist."
+      				GoTo ExitPoint 
+      			End If
+      		End If 
+      	Else
+      		ADTClass.IsCollection = False
+      		ADTClass.CollectItem  = ""
+      		ADTClass.CollectIndex = ""
+      	End If
+      	
+           ' Is this class contained by another class.
+      	If currClass.GetFirstItem("F_ContainerClassType").Contains("Default") Then      
+      		ADTClass.IsContained =  False
+      		ADTClass.ContainedBy = ""
+      	Else          
+      		ADTClass.IsContained = True          
+      		ADTClass.ContainedBy = currClass.F_ContainerClassType(0) 
+      		
+                ' Validate the datatype type.
+      		tempDataType = currClass.F_ContainerClassType(0) 
+      		If (DATATYPE_ADT = getDataTypeCategory(tempDataType)) Then
+      			If IsBlankString(getUNIDforClassName(currProject, tempDataType)) Then 
+      				enhLogWarning MODULE_NAME,  "Class " & """" &  ADTClass.Name & """" & " container class " & """" & tempDataType & """" & " does not exist."
+      				GoTo ExitPoint 
+      			End If
+      		End If 
+      		
+      	End If     
+      	
+           ' Get and set the count for properties methods and events 
+      	Call GetPMECount (currClass, p, m, e)
+      	ADTClass.NumProps = p
+      	ADTClass.NumMethods = m
+      	ADTClass.NumEvents = e    
+      	
+      	result% = ADT_SUCCESS
+      	
+      ExitPoint: 
+      	If (0 <> errcode%) Then Error errcode%, errmsg$ 
+      	SetClass = result%
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	errcode% = Err() 
+      	errmsg$ = Error$()
+      	result% = ADT_FAIL 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	MsgBox "Error:" & Error & CRLF & " Processing class document", WIZARD_ERR, "LSX Wizard Error"  
+      	Resume ExitPoint	
+      End Function    
+      
+      '++LotusScript Development Environment:2:1:SetProperty:1:8
+      Function SetProperty (ADTProperty As LSXProperty,  currProject As NotesDocument, currProperty As NotesDocument) As Integer
+      	
+      ' Sets all the wizard data for a property.     
+      	
+      		On Error GoTo ErrorTrap 
+      	
+      		' exception variables
+      	Dim extendedinfo List As String 
+      	Dim errmsg$ 
+      	Dim errcode%
+      	
+      	Dim result% 
+      	
+      	
+      	result% = ADT_FAIL 
+      	
+           'Msgbox "Property: " & currProperty.F_PropName(0) 
+      	
+           ' Set the Name
+      	ADTProperty.Name = currProperty.F_PropName(0)     
+      	
+           ' Set the old name.
+      	If (currProperty.F_GPropNameOld(0) = "") Then
+      		ADTProperty.OldName = ADTProperty.Name
+      	Else      
+      		ADTProperty.OldName = currProperty.F_GPropNameOld(0)   
+      	End If  
+      	
+      	Dim tempDataType As String
+      	
+           'Validate the datatype type.
+      	tempDataType = currProperty.F_PropDataType(0)
+      	If (DATATYPE_ADT = getDataTypeCategory(tempDataType)) Then
+      		If IsBlankString(getUNIDforClassName(currProject, tempDataType)) Then 
+      			enhLogWarning MODULE_NAME, "Property " & """" &  ADTProperty.Name  & """" & " data type " & """" & tempDataType & """" & " does not exist."
+      			GoTo ExitPoint
+      		End If
+      	End If  
+      	
+           ' Set the datatype and append [] if it is an array.
+      	If currProperty.GetFirstItem("F_PropIsArray").Contains("Array") Then
+      		ADTProperty.DataType = tempDataType & "[]"
+      	Else
+      		ADTProperty.DataType = tempDataType
+      	End If
+      	
+           ' Is it Read_Only
+      	If currProperty.GetFirstItem("F_PropAttribute").Contains("READ_ONLY") Then
+      		ADTProperty.IsReadOnly = True
+      		ADTProperty.IsSetPropArgConst = False
+      	Else
+      		ADTProperty.IsReadOnly = False
+                ' Is Set Const
+      		If currProperty.GetFirstItem("F_PropSetConst").Contains("SET_CONST") Then
+      			ADTProperty.IsSetPropArgConst = True
+      		Else
+      			ADTProperty.IsSetPropArgConst = False
+      		End If
+      	End If
+      	
+           ' Is it Hidden
+      	If currProperty.GetFirstItem("F_PropAttribute").Contains("HIDDEN") Then
+      		ADTProperty.IsHidden = True
+      	Else
+      		ADTProperty.IsHidden = False
+      	End If
+      	
+           ' Is Has Side Effect
+      	If  currProperty.GetFirstItem("F_PropAttribute").Contains("SIDE_EFFECT") Then
+      		ADTProperty.HasSideEffect = True
+      	Else
+      		ADTProperty.HasSideEffect = False
+      	End If
+      	
+           ' Is Get Const
+      	If currProperty.GetFirstItem("F_PropGetConst").Contains("GET_CONST") Then
+      		ADTProperty.IsGetPropConst = True
+      	Else
+      		ADTProperty.IsGetPropConst = False
+      	End If
+      	
+      	
+           ' Set the pme id
+      	ADTProperty.RelativeId = CInt(getItemValueText(currProperty, ITEMNAME_METHODID_COUNTER, ||, ||)) 
+      	
+           ' Set the initial value
+      	ADTProperty.InitValue = currProperty.F_InitValue(0)      
+      	
+      	result% = ADT_SUCCESS 
+      
+      ExitPoint: 
+      	If (0 <> errcode%) Then Error errcode%, errmsg$ 
+      	SetProperty = result%
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	errcode% = Err() 
+      	errmsg$ = Error$()
+      	result% = ADT_FAIL 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	MsgBox "Error:" & Error & CRLF & " Processing property document", WIZARD_ERR, "LSX Wizard Error"  
+      	Resume ExitPoint	
+      End Function
+    signed: true
+    nonsummary: true
+  - name: $TITLE
+    type: text
+    data: LSXWizardUtils
+    signed: true
+remaining: []

@@ -1,0 +1,6 @@
+nav:
+    - index.md
+    - "Customer": customer.md
+    - "DataTypes": datatypes.md
+    - "LSXBEPlus": lsxbeplus.md
+    - "SystemCheck": systemcheck.md

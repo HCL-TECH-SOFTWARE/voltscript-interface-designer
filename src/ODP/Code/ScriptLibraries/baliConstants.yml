@@ -1,0 +1,263 @@
+---
+class: 512
+flags: 0x2000
+unid: OF90DFFA5A1092B261-ON0037573B862588C6
+items:
+  - name: $Comment
+    type: text
+    data: Constants Library
+  - name: $DesignerVersion
+    type: text
+    data: 8.5.3
+    signed: true
+  - name: $Flags
+    type: text
+    data: s34Q
+  - name: $PublicAccess
+    type: text
+    data: "1"
+    signed: true
+  - name: $ScriptLib
+    type: text
+    data: |
+      '++LotusScript Development Environment:2:5:(Options):0:74
+      %REM ***************************************************************************
+       ************************************************************************************
+      	bali Constants Library
+      
+      	Created May 2022 by Devin Olson/USA/PNPHCL
+      
+       ************************************************************************************
+      %END REM *********************************************************************
+      %REM
+      	**********************************************************************
+      	**********************************************************************
+      		
+          Copyright HCL America, Inc. 1999, 2023
+      
+         	Licensed under the Apache License, Version 2.0 (the "License");
+          you may not use this file except in compliance with the License.
+          You may obtain a copy of the License at
+      
+              http://www.apache.org/licenses/LICENSE-2.0
+      
+          Unless required by applicable law or agreed to in writing, software
+          distributed under the License is distributed on an "AS IS" BASIS,
+          WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+          See the License for the specific language governing permissions and
+         	limitations under the License.
+      
+      	**********************************************************************
+      	**********************************************************************
+      %END REM
+      Option Public
+      Option Explicit
+      
+      
+      '++LotusScript Development Environment:2:5:(Forward):0:1
+      Declare Sub Initialize
+      Declare Static Property Get CR As String  
+      Declare Static Property Get ESC As String  
+      Declare Static Property Get CRLF As String  
+      Declare Static Property Get NullValue As Variant 
+      Declare Static Property Get LF As String 
+      Declare Static Property Get HT As String 
+      
+      '++LotusScript Development Environment:2:5:(Declarations):0:10
+      Private Const LIB_PREFIX = |Library: baliConstants.|
+      Private Const MODULE_NAME = |baliConstants|
+      
+      %REM ***************************************************************************
+       ************************************************************************************
+      	ERROR CONSTANTS
+       ************************************************************************************
+      %END REM *********************************************************************
+      Const ERR_OPERATION_FAILED 	= 			1000
+      Const MSG_OPERATION_FAILED = 			|The requested operation could not be completed.  |
+      
+      Const ERR_OPERATION_PROHIBITED = 		1003
+      Const MSG_OPERATION_PROHIBITED = 		|The requested operation is prohibited. |
+      
+      Const ERR_USER_NOT_AUTHORIZED = 		1004
+      Const MSG_USER_NOT_AUTHORIZED = 		|User is not authorized to perform the requested operation.  |
+      
+      Const ERR_OPERATION_ONLY_CLIENT = 		1005
+      Const MSG_OPERATION_ONLY_CLIENT = 		|The requested operation is limited to local clients only. |
+      
+      Const ERR_OPERATION_ONLY_SERVER = 		1007
+      Const MSG_OPERATION_ONLY_SERVER = 		|The requested operation is limited to servers only. |
+      
+      Const ERR_AGENT_NOT_FOUND = 			1010
+      Const MSG_AGENT_NOT_FOUND = 			|Could not find the specified agent.  |
+      
+      Const ERR_DOCUMENT_NOT_FOUND = 			1020
+      Const MSG_DOCUMENT_NOT_FOUND = 			|Could not find the specified document.  |
+      
+      Const ERR_VIEW_NOT_FOUND = 				1039
+      Const MSG_VIEW_NOT_FOUND = 				|Could not find the specified view.  |
+      
+      Const ERR_DATABASE_NOTOPEN =  			1063 
+      Const MSG_DATABASE_NOTOPEN = 			|Could not open the specified database.  |
+      
+      Const ERR_MISSING_DATABASE =  			1401
+      Const MSG_MISSING_DATABASE = 			|The specified database cannot be found.  |
+      
+      Const ERR_MISSING_ITEM =  				1426
+      Const MSG_MISSING_ITEM =  				|The specified item is missing.  |
+      
+      Const ERR_DOC_NOT_SAVED = 				1257 
+      Const MSG_DOC_NOT_SAVED = 				|The document could not be saved.  |
+      
+      Const ERR_FORMULA_INVALID = 			1336
+      Const MSG_FORMULA_INVALID = 			|The Formula syntax is invalid.  |
+      
+      Const ERR_OBJECT_CREATE_FAILED = 		1208
+      Const MSG_OBJECT_CREATE_FAILED = 		|Failed to create an Object.  |
+      
+      Const ERR_PARENT_METHOD_NOT_ALLOWED = 	1100
+      Const MSG_PARENT_METHOD_NOT_ALLOWED = 	|Method must be overriden in child class.  |
+      
+      Const ERR_PARAMETER_BLANK = 			1199
+      Const MSG_PARAMETER_BLANK = 			|A required parameter is blank or missing.  |
+      
+      Const ERR_PARAMETER_INVALID = 			1195
+      Const MSG_PARAMETER_INVALID = 			|A passed parameter is invalid.  |
+      
+      Const ERR_INTERNAL_MAXRECOVER = 		1910
+      Const MSG_INTERNAL_MAXRECOVER = 		|Internal Error.  Maximum allowed recovery attempts exceeded.  |
+      
+      Const ERR_INTERNAL_NORECOVER = 			1900
+      Const MSG_INTERNAL_NORECOVER = 			|Internal Error.  No Recovery possible.  |
+      
+      Const ERR_DXLIMPORTER_FAILED = 			1452 
+      Const MSG_DXLIMPORTER_FAILED = 			|Import of DXL content has FAILED.  |
+      
+      
+      Const FORMAT_WHOLE_THOUSANDS = 			|###,###,###,##0|
+      Const FORMAT_DATETIME = 				|yyyy/mm/dd hh:mm:ss|
+      Const FORMAT_TIMESTAMP = 				|yyyy/mm/dd hh:mm:ss|
+      
+      
+      
+      Const BALI_THREAD_LINE = 				0
+      Const BALI_THREAD_PROC = 				1
+      Const BALI_THREAD_MODULE = 				2
+      Const BALI_THREAD_VERSION = 			3
+      Const BALI_THREAD_LANGUAGE = 			4
+      Const BALI_THREAD_COUNTRY = 			5
+      Const BALI_THREAD_TICKS = 				6
+      Const BALI_THREAD_TICKS_PER_SEC = 		7
+      Const BALI_THREAD_PROCESS_ID = 			8
+      Const BALI_THREAD_TASK_ID = 			9
+      Const BALI_THREAD_CALLPROC = 			10
+      Const BALI_THREAD_CALLMODULE = 			11
+      
+      
+      
+      Const ITEMTYPE_ACTIONCD = 				16 ' means saved action CD records; non-Computable; canonical form.
+      Const ITEMTYPE_ASSISTANTINFO = 			17 ' means saved assistant information; non-Computable; canonical form.
+      Const ITEMTYPE_ATTACHMENT = 			1084 ' means file attachment.
+      Const ITEMTYPE_AUTHORS = 				1076 ' means authors.
+      Const ITEMTYPE_COLLATION = 				2 ' Note: This value Is New With Release 6.
+      
+      Const ITEMTYPE_DATETIMES = 				1024 ' means date-time value Or range of date-time values.
+      Const ITEMTYPE_EMBEDDEDOBJECT = 		1090 ' means embedded object.
+      Const ITEMTYPE_ERRORITEM = 				256 ' means an Error occurred While accessing the type.
+      Const ITEMTYPE_FORMULA = 				1536 ' means Notes® formula.
+      Const ITEMTYPE_HTML = 					21 ' means HTML source text.
+      Const ITEMTYPE_ICON = 					6 ' means icon.
+      Const ITEMTYPE_LSOBJECT = 				20 ' means saved LotusScript® Object code For an agent.
+      Const ITEMTYPE_MIME_PART = 				25 ' means MIME support.
+      Const ITEMTYPE_NAMES = 					1074 ' means names.
+      Const ITEMTYPE_NOTELINKS = 				7 ' means link To a database, view, Or document.
+      Const ITEMTYPE_NOTEREFS = 				4 ' means reference To the parent document.
+      Const ITEMTYPE_NUMBERS = 				768 ' means number Or number list.
+      Const ITEMTYPE_OTHEROBJECT = 			1085 ' means other object.
+      Const ITEMTYPE_QUERYCD = 				15 ' means saved query CD records; non-Computable; canonical form.
+      Const ITEMTYPE_READERS = 				1075 ' means readers.
+      Const ITEMTYPE_RFC822Text = 			1282 ' means RFC822 Internet mail text.
+      
+      Const ITEMTYPE_RICHTEXT = 				1 ' means rich text.
+      Const ITEMTYPE_SIGNATURE = 				8 ' means signature.
+      Const ITEMTYPE_TEXT = 					1280 ' means Text Or Text list.
+      Const ITEMTYPE_UNAVAILABLE = 			512 ' means the item Type isn't available.
+      Const ITEMTYPE_UNKNOWN = 				0 ' means the item Type isn't known.
+      Const ITEMTYPE_USERDATA = 				14 ' means user data.
+      Const ITEMTYPE_USERID = 				1792 ' means user ID name.
+      Const ITEMTYPE_VIEWMAPDATA = 			18 ' means saved ViewMap dataset; non-Computable; canonical form.
+      Const ITEMTYPE_VIEWMAPLAYOUT = 			19 ' means saved ViewMap layout; non-Computable; canonical form.
+      
+      
+      
+      '++LotusScript Development Environment:2:2:Initialize:1:10
+      Sub Initialize
+      	
+      End Sub
+      
+      
+      
+      
+      '++LotusScript Development Environment:2:3:CR Get:6:8
+      
+      %REM
+      	Property Get CR
+      	Gets the LotusScript character for a carriage return
+      %END REM
+      Static Property Get CR As String  
+      	CR = Chr(13)
+      End Property
+      
+      '++LotusScript Development Environment:2:3:ESC Get:6:8
+      
+      %REM
+      	Property Get ESC
+      	Gets the LotusScript character for an Escape Key
+      %END REM
+      Static Property Get ESC As String  
+      	ESC = Chr(27)
+      End Property
+      
+      '++LotusScript Development Environment:2:3:CRLF Get:6:8
+      
+      %REM
+      	Property Get CRLF
+      	Gets the LotusScript characters for a carriage return followed by a line feed
+      %END REM
+      Static Property Get CRLF As String  
+      	CRLF = CR & LF 
+      End Property
+      
+      '++LotusScript Development Environment:2:3:NullValue Get:5:8
+      %REM
+      	Property Get NullValue
+      	Gets a NullValue (empty Variant) 
+      %END REM
+      Static Property Get NullValue As Variant 
+      	Dim result As Variant 
+      	NullValue = result 
+      End Property
+      
+      '++LotusScript Development Environment:2:3:LF Get:5:8
+      %REM
+      	Property Get LF
+      	Gets the LotusScript character for a line feed
+      %END REM
+      Static Property Get LF As String 
+      	LF = Chr(10)
+      End Property
+      
+      '++LotusScript Development Environment:2:3:HT Get:5:8
+      %REM
+      	Property Get HT
+      	Gets the LotusScript character for a horizontal tab
+      %END REM
+      Static Property Get HT As String 
+      	HT = Chr(9)
+      End Property
+    signed: true
+    nonsummary: true
+  - name: $TITLE
+    type: text
+    data: baliConstants
+    signed: true
+remaining: []

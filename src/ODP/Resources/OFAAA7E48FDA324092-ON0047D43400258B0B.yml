@@ -1,0 +1,107 @@
+---
+class: 1
+flags: 0x0100
+unid: OFAAA7E48FDA324092-ON0047D43400258B0B
+items:
+  - name: $FILE
+    type: object
+    obj_type: 0x0000
+    obj_class: 0x0001
+    obj_privs: 0x0000
+    file_name: lssemsta.h
+    HostType: 0
+    CompressionType: 1
+    FileAttributes: 0
+    Flags: 0x0002
+    FileCreated:
+      data: "2024-04-22T13:52:19.54-04:00"
+      dst: true
+    FileModified:
+      data: "2024-04-22T13:52:19.54-04:00"
+      dst: true
+    opaque: |
+      HXUBACAB///b//7/3v/9/+X//P/0//v/+P/6/ywAdwD5/yMAIgD3/2gA9v/1/zEAKgBGADIA8/9zAPL/
+      7v/x/3kA8P/v/1cAVgB4AFwA7f/s/1kARwDr/+j/6v/p/3sAcQAAAX0A5//m/zMALQBCADUA5P/i/+P/
+      XwBOAHAAdADh/2QA4P9nAN//SwA6AD0A3f/c/2UARQBuANr/yv8gANn/2P/P/9f/1f9BANb/SAAuANT/
+      TADT/1UA0v9iACQA0f8oAND/KwApAM7/DQDN/8z/ZgBSAEQAy/9QAC8Ayf+//8j/xv8KAMf/YwBhAMX/
+      wP9NAMT/w/91AML/wf85ADAAdgA7AHIAbwC+/7v/vf9pAFQAvP9DAG0Auv9TAE8Auf9JAGwASPa22222
+      222222222222222222222222222222327iDoO2xpG3YkWHzLWjVGuMgkRpnzCyNWP3K5XK/z9Ct6dGg6
+      DttQRsS5GLKSxgl58hr7GG+Q1BGxLkfPvQTwREn6LCs1dz5D/FBGxLkfiuCog7b7EFGMM7ORGWU5Dz4L
+      jTiCQ47psbZYpM0gZsEEZI2H/Fnx58hqCNiXIWIO2+sgoxhnZkK2TBSZjNI27MhO8+Q1BGxLkMzKDoO2
+      235nO2AkJH///WGbGG+QsIJwpAQRsS5HEhQKNnuCfReiwrIOg7bVSCRzjJjpigiYxat2Zm2wQRpisEhh
+      DP7IJZmEmIxeSGKT/kiyKWH58IT5/mEwg7bxFzJIlYpmMWUljBLz5DUEbEuQxceIuZJErFMxiyJMyT/F
+      wMKD8fQrgCg+Qdt98KOtDVDvvrpky+44WYGGmY0PdKFHCh7gYfq19+t4IXdL84FnyCXHd2JjnGQSxDNg
+      goxWIO2wRDz5DUEbEuQ05BLz5D5tBok4jWEMlhKGYYeEgqwTIUsL2gkYLnBES4zJYoO2wghgsmZERLjK
+      Sxgl58hqCNiXIWIOg7b9RBIwG2oAEywDrrFqDoO20scNJFtkREsBQjJTjBAwzbwgmGDtzMDGCCSqI2GF
+      GbBIGRLJmRESQdB22k94aDAavTQVRcERLAbfQLPdtXoOg/c9rbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+      bbbbfZIQdB/0SeWMJ3pQAJl6AOuOqBpB/3GE4pQ9KABMvQB1x1QNIOg+e20YwncSKDH06DtgmXoCoaNm
+      ADr9/mg7YJl6HDD0Wvv16BMtdJWhppg+aDtgmXrcMfXqGq3S/NB2wTL1uGPoCpJSQ0w80vzQdsEy9bhj
+      6UDG4IXfq0OtTTXS/IO2CZekswDpg+uaX5B2wTL0AcKoppQMbgzS/IO2CZeks10qgY3B+QdsEy9KBjcH
+      XqmnPRYUBa441b8g7YJl63DH1PcNV1LdAmWukrQ00wIP0jBMvQB1x1QCog6D/uMJxShjhjrqaBMvRYOo
+      DBMvW4Y+p7hqupboEy10laGmmBq5fug6DmhDOcYIGTCZKiDoP+xLESdB+lA=
+    signed: true
+    encrypted: true
+  - name: Authors
+    type: text
+    data:
+      - CN=Rocky Oliver/OU=USA/O=PNPHCL
+      - "[Admin]"
+    authors: true
+    names: true
+  - name: CreatedOn
+    type: time
+    data: "2024-04-22T15:34:31.18-04:00"
+    dst: true
+  - name: F_LSXCreator
+    type: text
+    data: Rocky Oliver
+  - name: FileComments
+    type: text
+    data: ""
+  - name: Form
+    type: text
+    data: file_res
+  - name: LastModified
+    type: time
+    data: "2024-04-22T15:34:43.29-04:00"
+    dst: true
+  - name: fileCountValidation
+    type: text
+    data: ""
+  - name: fileName
+    type: text
+    data: lssemsta.h
+  - name: fileTargetPath
+    type: text
+    data: "\\src\\inc\\"
+  - name: fileUsage
+    type: text
+    data: VSE
+  - name: fileUsageEdit
+    type: text
+    data: VSE
+  - name: fileAttach
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: |
+      gv9aAAEAAAAAAAEAAQB7Dyw4ew8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      AACGAQAAAACVhEgAAQBIAAEAAAAAAAEAAAAGAAAAgwQBAN0GAACF/4X/CAABAM8K0ggBAE9PTwDeBgAA
+      hf/dBgAArf+p/yIABAAIAAAAFgBsc3NlbXN0YS5oAGxzc2Vtc3RhLmgAmQAcAAAAAAAAAAAAAAAAAAAA
+      AAAAAAAAAQAAAJUAJgAAAAAAAAAAAAAAAQAAAAAAAABDACIACAABAAgAAQAgAAEAlgCJAgAAAAAAAAAA
+      AAAiAHcCQAgAwwBACADDAEACAMYAxwLJBAEOQAMAxABAAgDGAAECzgADAg8OQAMAwwBAAgDGAAECzgAE
+      Ah8PDkADAMIAQAIAxgABAs4AAQLCEwIPDkADAAEAQAIAxgABAs4AAgITwg8CHg5AAwBAAgDGAAECzgAB
+      AsQDAQdAAwBAAgDGAAECQAIAwwABFkADAEACAMYAAQJAAgDDAAEVQAMAQAIAxgABBEACAMMAAQNAAwBA
+      AgDGAAEExgAEGBwGCcIBAxkSCMQAAQNAAwBAAgDGAAEExQACEQrIAQEIwwABA0ADAEACAMYAAQTEAAII
+      CcMBAQnCBgEKwgEBCMMAAQNAAwBAAgDGAAEExAABCsMBAhAYwwADERIIwwABA0ADAEACAMYAAQTDAAEL
+      wwEBEssAAQNAAwBAAgDGAAEEwwABEMMBAQvLAAEDQAMAQAIAxgABBMMAAQbDAcwAAQ1AAwBAAgDGAAEE
+      wwABBsMBzAABDUADAEACAMYAARfDAAEUwwHMAAENQAMAQAIAxgABF8MAARDDAQELywABBUADAEACAMYA
+      AQfDAAELwwEBFMsAAQVAAwBAAgDGAAEHxAABBsMBARvEAAMLBgjDAAEFQAMAQAIAxgABB8QAAhEJwwEB
+      CcIGAQrCAQEIwwABBUADAEACAMYAAQfFAAIRCsgBAQjDAAEFQAMAQAIAxgABB8cAAx0GCcIBAwoQC8QA
+      AQVAAwBAAgDGAAEHQAIAwwABBUADAEACAMYAAQdAAgDDAAEMQAMAQAIAxgABB0ACAMMAAQxAAwBAAgDG
+      AAIWFccDwg0BGsYFwwxAAwBACADDAEAIAMMAQAgAwwBACADDAACXAGYAAAD///9IiKCgoKCIiIiYmJiA
+      gIBwoLiQkJDg6PBQkKhYmLDI2OB4gICAiIioqKjg4OCQuMjY4OiIsMDo6OiAqMCIiJCIkJCQkJjo8PBo
+      oLCAgIigwNCoyNCw0NjY2Njw8PCYAB4AAAAAAAAAAAAAAGFzL2RvbWlub18xNF8wLmR2/yYACgAAAQAA
+      CQEAAAAAAAAAAAAAAAAAAAAAbHNzZW1zdGEuaKoC3gYAAK4A3QYAAIX/hf8IAAEAzwrSCAEAT09PAN4G
+      AACF/w==
+remaining: []

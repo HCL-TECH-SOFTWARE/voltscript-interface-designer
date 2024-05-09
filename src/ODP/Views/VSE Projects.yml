@@ -1,0 +1,420 @@
+---
+class: 32776
+flags: 0x2000
+unid: OFD3F7AEC1FFFFD480-ON0078982F8525669A
+items:
+  - name: $Collation
+    type_num: 2
+    type: opaque
+    opaque: KgADAABEAGYAAAADAAhmAAMAAwAIZgAGAAkAJDE0JDE1Rl9BcHBOYW1l
+  - name: $Comment
+    type: text
+    data: ""
+    signed: true
+  - name: $DesignerVersion
+    type: text
+    data: 8.5.3
+  - name: $Flags
+    type: text
+    data: Y
+  - name: $Formula
+    type: formula
+    data: " @IsMember(@LowerCase(Form); \"argument\" : \"class\" : \"event\" : \"method\" : \"project\" : \"property\")"
+    opaque: |
+      GAQCAEIAAwAkMTIABQAEAEZvcm1hAQEABwBwcm9qZWN0AAoCrwAcABAAAAAAAAAAAAAAQK4ADAABAAAA
+      rgAEALUDAwACAEAAAwAkMTAABQAEAEZvcm1hAQEABQBjbGFzcwAKAq8AHAAQAAAAAAAAAAAANkCuAAwA
+      AQAAAK4ABAC1AwMAAQAeAAsAZm0Aq1VoAFmKJQAABQAEAEZvcm1hAQMAAgCmAAIAJDkFAAsAZm0Aq1Vo
+      AFmKJQAAAQAIAHByb3BlcnR5CgKvAHwAEAAAAAAAAAAAgERArgBsAAUACwBmbQCrVWgAWYolAAABAAYA
+      bWV0aG9kCgKvAEwAEAAAAAAAAAAAAEVArgA8AAUACwBmbQCrVWgAWYolAAABAAUAZXZlbnQACgKvABwA
+      EAAAAAAAAAAAgEVArgAMAAEAAACuAAQAtQcDAAEAHgALAGZtAKtVaABZiiUAAAUABABGb3JtYQEDAAIA
+      qAADACQxNAAFAAsAZm0Aq1VoAFmKJQAAAQAIAHByb3BlcnR5CgKvAHwAEAAAAAAAAAAAAPA/rgBsAAUA
+      CwBmbQCrVWgAWYolAAABAAYAbWV0aG9kCgKvAEwAEAAAAAAAAAAAAABArgA8AAUACwBmbQCrVWgAWYol
+      AAABAAUAZXZlbnQACgKvABwAEAAAAAAAAAAAAAhArgAMAAEAAACuAAQAtQcDAAEAHgALAGZtAKtVaABZ
+      iiUAAAUABABGb3JtYQEDAAIAtgADACQxNQAFAAsAZm0Aq1VoAFmKJQAAAQAIAHByb3BlcnR5CgKvAIoA
+      FAAFAAoARl9Qcm9wTmFtZa4AdgAFAAsAZm0Aq1VoAFmKJQAAAQAGAG1ldGhvZAoCrwBWABQABQAKAEZf
+      TWV0aE5hbWWuAEIABQALAGZtAKtVaABZiiUAAAEABQBldmVudAAKAq8AIgAWAAUACwBGX0V2ZW50TmFt
+      ZQCuAAwAAQAAAK4ABAC1BwMAAgBUAAMAJDE3AAUABABGb3JtYQEBAAcAcHJvamVjdAAKAq8ALgAiAAUA
+      CQBGX0FwcE5hbWUAAQABAHwAIgKQAFYBIgKuAAwAAQAAAK4ABAC1AwMABQBWAFIACgADAAMAAgATAAMA
+      AwAJAAMACQAEACQxMiQxMCQ5UHJvamVjdHNWaWV3U3VtbWFyeSQxNCQxNUZfQXBwTmFtZSQxNyRDb25m
+      bGljdCRSRUYEAAQAAABeAAUABABGb3JtYQEBAAgAYXJndW1lbnQBAAUAY2xhc3MAHwIBAAUAZXZlbnQA
+      HwIBAAYAbWV0aG9kHwIBAAcAcHJvamVjdAAfAgEACABwcm9wZXJ0eR8CdAIDAAcAKgAjAAlMMVM4UzlT
+      MTBTMTFTMTJTMTNTMTRTMTVTMTZTMTdTMThTAA==
+    signed: true
+    nonsummary: true
+  - name: $FormulaClass
+    type: text
+    data: "1"
+    signed: true
+  - name: $Index
+    type: text
+    data: /T/O
+    signed: true
+  - name: $PublicAccess
+    type: text
+    data: "1"
+  - name: $TITLE
+    type: text
+    data: VSE Projects|LSX Projects
+    signed: true
+  - name: $ViewFormat
+    type_num: 5
+    type: opaque
+    opaque: |
+      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
+      AAAAAAABAA==
+    signed: true
+    nonsummary: true
+  - name: $ViewGlobalScript
+    type: text
+    data: |
+      '++LotusScript Development Environment:2:5:(Options):0:74
+      Option Public
+      Option Declare
+      Option Base 1
+      Option Compare Nocase
+      Use "BSXnotesUtilsUI"
+      
+      '++LotusScript Development Environment:2:5:(Forward):0:1
+      
+      '++LotusScript Development Environment:2:5:(Declarations):0:2
+    signed: true
+    nonsummary: true
+  - name: $V5ACTIONS
+    type: composite
+    signed: true
+    nonsummary: true
+    data:
+      - type: 0x00bd
+        BackColor: 0
+        BorderStyle: 1
+        BorderWidth: 1440
+        BtnHeight: 8
+        FontID: 0x09060101
+        HeightSpc: 0
+        LineColor: 14
+        LineStyle: 3
+        ShareID: 0x00000000
+        dwFlags: 0x00000001
+      - type: 0xff79
+        BackColor:
+          Flags: 0x0001
+          rgb: 0x000000
+        BtnBorderDisplay: 0
+        BtnTextJustify: 0
+        BtnWidthStyle: 0
+        ButtonColor:
+          Flags: 0x0001
+          rgb: 0x000000
+        FontColor:
+          Flags: 0x0001
+          rgb: 0xffff00
+        LineColor:
+          Flags: 0x0001
+          rgb: 0x808080
+        Spare:
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+        barFontID: 0x00000000
+        barHeight:
+          Flags: 0x0000
+          Length:
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+          Reserved: 0
+          Units: 0
+        dwFlags: 0x00000003
+        wAppletHeight: 31
+        wBarBackgroundRepeat: 0
+        wBtnInternalMargin: 0
+        wBtnWidthAbsolute: 0
+        wSpare: 0x0000
+        wThemeSetting: 0
+      - type: 0xfffc
+        BorderFlags: 0
+        BorderStyle: 1
+        BorderWidthBottom: 1
+        BorderWidthLeft: 0
+        BorderWidthRight: 0
+        BorderWidthTop: 0
+        Color:
+          Flags: 0x0009
+          rgb: 0x000000
+        DropShadowWidth: 12
+        Flags: 0x00000000
+        InnerWidthBottom: 0
+        InnerWidthLeft: 0
+        InnerWidthRight: 0
+        InnerWidthTop: 0
+        OuterWidthBottom: 0
+        OuterWidthLeft: 0
+        OuterWidthRight: 0
+        OuterWidthTop: 0
+        dwSpare: 0x00000000
+        wSpares:
+          - 0x0000
+          - 0x0000
+          - 0x0000
+          - 0x0000
+          - 0x0000
+      - type: 0xffbe
+        Flags: 0x0000019e
+        IconIndex: 0
+        ShareId: 0
+        Type: 1
+        data: "@Command([Compose]; \"Project\")"
+        data_opaque: KgAAAB4AAgDoAwAAAAAAAAEABwBQcm9qZWN0AO0CAwAHAAoAAwAJNFMA
+        title: Project
+      - type: 0xffbe
+        Flags: 0x0000019e
+        IconIndex: 0
+        ShareId: 0
+        Type: 2
+        data: |
+          '++LotusScript Development Environment:2:5:(Options):0:66
+          
+          '++LotusScript Development Environment:2:5:(Forward):0:1
+          Declare Sub Click(Source As Button)
+          
+          '++LotusScript Development Environment:2:5:(Declarations):0:2
+          
+          '++LotusScript Development Environment:2:2:Click:1:12
+          Sub Click(Source As Button)
+          	composeElementDocument "class"
+          End Sub
+          '++LotusScript Development Environment:2:2:BindEvents:1:129
+          Private Sub BindEvents ( Byval ObjectName_ As String )
+          	Static Source As BUTTON
+          	Set Source = Bind(Objectname_)
+          	On Event CLICK From Source Call CLICK
+          End Sub
+        title: Class
+      - type: 0xff5f
+        dwReserved: 0x00000000
+        wActionType: 2
+        wEventId: 213
+        wPlatform: 1
+        wReserved: 0
+      - type: 0xffbe
+        Flags: 0x0000019e
+        IconIndex: 0
+        ShareId: 0
+        Type: 2
+        data: |
+          '++LotusScript Development Environment:2:5:(Options):0:66
+          
+          '++LotusScript Development Environment:2:5:(Forward):0:1
+          Declare Sub Click(Source As Button)
+          
+          '++LotusScript Development Environment:2:5:(Declarations):0:2
+          
+          '++LotusScript Development Environment:2:2:Click:1:12
+          Sub Click(Source As Button)
+          	composeElementDocument "property"
+          End Sub
+          '++LotusScript Development Environment:2:2:BindEvents:1:129
+          Private Sub BindEvents ( Byval ObjectName_ As String )
+          	Static Source As BUTTON
+          	Set Source = Bind(Objectname_)
+          	On Event CLICK From Source Call CLICK
+          End Sub
+        title: Property
+      - type: 0xff5f
+        dwReserved: 0x00000000
+        wActionType: 2
+        wEventId: 213
+        wPlatform: 1
+        wReserved: 0
+      - type: 0xffbe
+        Flags: 0x0000019e
+        IconIndex: 0
+        ShareId: 0
+        Type: 2
+        data: |
+          '++LotusScript Development Environment:2:5:(Options):0:66
+          
+          '++LotusScript Development Environment:2:5:(Forward):0:1
+          Declare Sub Click(Source As Button)
+          
+          '++LotusScript Development Environment:2:5:(Declarations):0:2
+          
+          '++LotusScript Development Environment:2:2:Click:1:12
+          Sub Click(Source As Button)
+          	composeElementDocument "method"
+          End Sub
+          '++LotusScript Development Environment:2:2:BindEvents:1:129
+          Private Sub BindEvents ( Byval ObjectName_ As String )
+          	Static Source As BUTTON
+          	Set Source = Bind(Objectname_)
+          	On Event CLICK From Source Call CLICK
+          End Sub
+        title: Method
+      - type: 0xff5f
+        dwReserved: 0x00000000
+        wActionType: 2
+        wEventId: 213
+        wPlatform: 1
+        wReserved: 0
+      - type: 0xffbe
+        Flags: 0x0000019e
+        IconIndex: 0
+        ShareId: 0
+        Type: 2
+        data: |
+          '++LotusScript Development Environment:2:5:(Options):0:66
+          
+          '++LotusScript Development Environment:2:5:(Forward):0:1
+          Declare Sub Click(Source As Button)
+          
+          '++LotusScript Development Environment:2:5:(Declarations):0:2
+          
+          '++LotusScript Development Environment:2:2:Click:1:12
+          Sub Click(Source As Button)
+          	composeElementDocument "event"
+          End Sub
+          '++LotusScript Development Environment:2:2:BindEvents:1:129
+          Private Sub BindEvents ( Byval ObjectName_ As String )
+          	Static Source As BUTTON
+          	Set Source = Bind(Objectname_)
+          	On Event CLICK From Source Call CLICK
+          End Sub
+        title: Event
+      - type: 0xff5f
+        dwReserved: 0x00000000
+        wActionType: 2
+        wEventId: 213
+        wPlatform: 1
+        wReserved: 0
+      - type: 0xffbe
+        Flags: 0x0000019f
+        IconIndex: 0
+        ShareId: 0
+        Type: 1
+        title: "   "
+      - type: 0xffbe
+        Flags: 0x8000019f
+        IconIndex: 0
+        ShareId: 0
+        Type: 1
+        data: "@Command([RunAgent]; \"generateLSXFiles\")"
+        data_opaque: MgAAACYAAgATJwAAAAAAAAEAEABnZW5lcmF0ZUxTWEZpbGVz7QIDAAcACgADAAk0UwA=
+        title: Generate Extension Files
+      - type: 0xffbe
+        Flags: 0x0180019f
+        IconIndex: 45
+        ShareId: 0
+        Type: 2
+        data: |
+          '++LotusScript Development Environment:2:5:(Options):0:66
+          
+          '++LotusScript Development Environment:2:5:(Forward):0:1
+          Declare Sub Click(Source As Button)
+          
+          '++LotusScript Development Environment:2:5:(Declarations):0:2
+          
+          '++LotusScript Development Environment:2:2:Click:1:12
+          Sub Click(Source As Button)
+          	
+          	Dim session As New NotesSession
+          	Dim ws As New NotesUIWorkspace
+          	Dim docDB As NotesDatabase
+          	
+               'Yes.  This is obcure.  Here's why it was done this way:
+               '1.  @DBExists doesn't seem to work unless the icon is on your desktop.
+               '2.  The front end classes put up a really bad dialog box if you try to open a database it can't find.
+               '3.  The backend classes don't visibly open the database, they just create the object.
+          	Set docDB = session.GetDatabase("", "vsiddoc.nsf")
+          	If Not docDB.IsOpen Then 
+          		Messagebox "The VSID Documentation database (vsiddoc.nsf) cannot be located.  It must be moved from your installation directory to the Notes Data directory."
+          	Else
+          		Call ws.OpenDatabase("", docDB.FilePath)
+          	End If
+          	
+          End Sub
+          '++LotusScript Development Environment:2:2:BindEvents:1:129
+          Private Sub BindEvents ( Byval ObjectName_ As String )
+          	Static Source As BUTTON
+          	Set Source = Bind(Objectname_)
+          	On Event CLICK From Source Call CLICK
+          End Sub
+        title: Help
+      - type: 0xff5f
+        dwReserved: 0x00000000
+        wActionType: 2
+        wEventId: 213
+        wPlatform: 1
+        wReserved: 0
+      - type: 0xffbe
+        Flags: 0x0100019f
+        IconIndex: 88
+        ShareId: 0
+        Type: 2
+        data: |
+          '++LotusScript Development Environment:2:5:(Options):0:66
+          
+          '++LotusScript Development Environment:2:5:(Forward):0:1
+          Declare Sub Click(Source As Button)
+          
+          '++LotusScript Development Environment:2:5:(Declarations):0:2
+          
+          '++LotusScript Development Environment:2:2:Click:1:12
+          Sub Click(Source As Button)
+          	Call SetConfiguration()
+          End Sub
+          '++LotusScript Development Environment:2:2:BindEvents:1:129
+          Private Sub BindEvents ( Byval ObjectName_ As String )
+          	Static Source As BUTTON
+          	Set Source = Bind(Objectname_)
+          	On Event CLICK From Source Call CLICK
+          End Sub
+        title: Setup
+      - type: 0xff5f
+        dwReserved: 0x00000000
+        wActionType: 2
+        wEventId: 213
+        wPlatform: 1
+        wReserved: 0
+remaining: []

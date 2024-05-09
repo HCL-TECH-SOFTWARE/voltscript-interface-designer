@@ -1,0 +1,50 @@
+---
+class: 1
+flags: 0x0100
+unid: OF9AFFF86857984575-ON00835B8785256699
+items:
+  - name: $Revisions
+    type: time
+    data:
+      - data: "1998-10-10T19:55:17.70-04:00"
+        dst: true
+      - data: "2023-03-13T10:37:19.74-04:00"
+        dst: true
+      - data: "2023-07-18T11:36:44.62-04:00"
+        dst: true
+  - name: Authors
+    type: text
+    data:
+      - CN=Rocky Oliver/OU=USA/O=PNPHCL
+      - "[Admin]"
+    authors: true
+    names: true
+  - name: Category
+    type: text
+    data: "2"
+  - name: CreatedOn
+    type: time
+    data: "1998-10-10T19:54:46.47-04:00"
+    dst: true
+  - name: DataType
+    type: text
+    data: NotesDatabase
+  - name: F_LSXCreator
+    type: text
+    data: Rocky Oliver
+  - name: Form
+    type: text
+    data: DataType
+  - name: LastModified
+    type: time
+    data: "2023-03-13T10:37:19.73-04:00"
+    dst: true
+  - name: ProjectType
+    type: text
+    data:
+      - "2"
+      - "1"
+  - name: keywordComments
+    type: text
+    data: ""
+remaining: []

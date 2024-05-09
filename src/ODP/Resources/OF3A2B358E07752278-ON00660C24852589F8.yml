@@ -1,0 +1,32 @@
+---
+class: 1
+flags: 0x0100
+unid: OF3A2B358E07752278-ON00660C24852589F8
+items:
+  - name: Form
+    type: text
+    data: Skeleton
+  - name: FormId
+    type: number
+    data: 29
+  - name: FormName
+    type: text
+    data: ADD_REMOVE_CPP
+  - name: TheCodeAbstract
+    type: text
+    data: "void %1%:: LSXAddTo%2%List(LSPTR(%2%) c) this->LSXAddToList((LSPTR(LSXBase))c,"
+  - name: TheCode
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: |
+      hf8xAAEAAAp2b2lkICUxJTo6IExTWEFkZFRvJTIlTGlzdChMU1BUUiglMiUpIGMpACCF/woAAQAACnsA
+      hf8xAAEAAAogICB0aGlzLT5MU1hBZGRUb0xpc3QoKExTUFRSKExTWEJhc2UpKWMsACCF/0YAAQAACiAg
+      ICAgICAgICAgICAgICAgICAgICAoTFNQVFIoTFNQVFIoTFNYQmFzZSkpKSZ0aGlzLT4lMiVMaXN0KTsA
+      hf8KAAEAAAp9AIX/CQABAAAKACCF/zYAAQAACnZvaWQgJTElOjogTFNYUmVtb3ZlRnJvbSUyJUxpc3Qo
+      TFNQVFIoJTIlKSBjKQCF/woAAQAACnsAhf82AAEAAAogICB0aGlzLT5MU1hSZW1vdmVGcm9tTGlzdCgo
+      TFNQVFIoTFNYQmFzZSkpYywAhf9LAAEAAAogICAgICAgICAgICAgICAgICAgICAgICAgICAoTFNQVFIo
+      TFNQVFIoTFNYQmFzZSkpKSZ0aGlzLT4lMiVMaXN0KTsAIIX/CgABAAAKfQCF/wkAAQAACgAghf9SAAEA
+      AAovKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
+      KioqKioqKioqKioqKiovAA==
+remaining: []

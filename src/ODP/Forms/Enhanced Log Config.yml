@@ -1,0 +1,619 @@
+---
+class: 4
+flags: 0x0000
+unid: OFEB4CE02A894B8A15-ON0041D15380258939
+items:
+  - name: $$FormScript
+    type: text
+    data: |
+      '++LotusScript Development Environment:2:5:(Options):0:66
+      
+      '++LotusScript Development Environment:2:5:(Forward):0:1
+      Declare Sub Postopen(Source As Notesuidocument)
+      
+      '++LotusScript Development Environment:2:5:(Declarations):0:2
+      
+      '++LotusScript Development Environment:2:2:Postopen:1:12
+      Sub Postopen(Source As Notesuidocument)
+      	Call enhLogSetCommonProperties(FORM_PREFIX, True, True, True, True, True)
+      End Sub
+      '++LotusScript Development Environment:2:2:BindEvents:1:129
+      Private Sub BindEvents ( Byval ObjectName_ As String )
+      	Static Source As NOTESUIDOCUMENT
+      	Set Source = Bind(Objectname_)
+      	On Event POSTOPEN From Source Call POSTOPEN
+      End Sub
+    signed: true
+    nonsummary: true
+  - name: $$ScriptName
+    type: text
+    data: enhLogConfig
+    signed: true
+    nonsummary: true
+  - name: $DesignerVersion
+    type: text
+    data: 8.5.3
+  - name: $Fields
+    type: text
+    data: []
+  - name: $Flags
+    type: text
+    data: CD
+  - name: $Script
+    type: text
+    data: |
+      '++LotusScript Development Environment:2:5:(Options):0:66
+      Option Public
+      Option Explicit
+      Use "enhLogClassLite"
+      
+      
+      
+      '++LotusScript Development Environment:2:5:(Forward):0:1
+      
+      '++LotusScript Development Environment:2:5:(Declarations):0:2
+      Const FORM_PREFIX = |Form: LogConfig.|
+    signed: true
+    nonsummary: true
+  - name: $SubForm_RepIDs
+    type: text
+    data:
+      - "0000000000000000"
+      - "0000000000000000"
+    signed: true
+  - name: $TITLE
+    type: text
+    data:
+      - Enhanced Log Config
+      - enhLogConfig
+    signed: true
+  - name: $WindowTitle
+    type: formula
+    data: "\"Log Configuration\""
+    opaque: HgAAABwAAQARAExvZyBDb25maWd1cmF0aW9uAAMA
+    signed: true
+    nonsummary: true
+  - name: enhLogPurgeAge
+    type: number
+    data: 0
+    nonsummary: true
+  - name: $Body
+    type: composite
+    signed: true
+    nonsummary: true
+    data:
+      - type: 0x0081
+      - type: 0xff82
+        FirstLineLeftMargin: 1440
+        Flags: 0x8100
+        Flags2: 0x8495
+        JustifyMode: 0
+        LeftMargin: 1440
+        LineSpacing: 0
+        PABID: 1
+        ParagraphSpacingAfter: 0
+        ParagraphSpacingBefore: 0
+        RightMargin: 0
+        Tab:
+          - 720
+          - 1440
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+        TabTypes: 0x00000000
+        Tabs: 2
+        data:
+          - 1440
+          - 12
+          - 1440
+          - 12
+          - 0
+          - 0
+          - 0x00000001
+          - 0x00000006
+      - type: 0x0083
+        PABID: 1
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0xe0b0101
+        data: FORM Enhanced Log Config | enhLogConfig
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x800080
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x0081
+      - type: 0xff82
+        FirstLineLeftMargin: 1440
+        Flags: 0x8100
+        Flags2: 0x8095
+        JustifyMode: 0
+        LeftMargin: 1440
+        LineSpacing: 0
+        PABID: 2
+        ParagraphSpacingAfter: 0
+        ParagraphSpacingBefore: 0
+        RightMargin: 0
+        Tab:
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+        TabTypes: 0x00000000
+        Tabs: 0
+        data:
+          - 1440
+          - 12
+          - 1440
+          - 12
+          - 12240
+          - 100
+          - 0x00000001
+          - 0x00000006
+      - type: 0x0083
+        PABID: 2
+      - type: 0xff85
+        FontID: 0xa000001
+      - type: 0x00dd
+        Signature: 0xffad
+        Version: 0
+      - type: 0xff71
+        opaque: |
+          cf9YAAAAAAADABgANgAAAAAAAAAAAAAAAAAAAAAAAAAAAE5vdGVzXFN0YW5kYXJkIEZvcm0gQnV0dG9u
+          cyB8IG5vdGVzU3RhbmRhcmRGb3JtQnV0dG9ucw==
+      - type: 0xffad
+        opaque: |
+          rf9DAA4ACAAAADcATm90ZXNcU3RhbmRhcmQgRm9ybSBCdXR0b25zIHwgbm90ZXNTdGFuZGFyZEZvcm1C
+          dXR0b25zAA==
+      - type: 0x00ae
+        opaque: rgI=
+      - type: 0x00de
+        Signature: 0x00ae
+        Version: 0
+      - type: 0xff85
+        FontID: 0xa000001
+      - type: 0x0081
+      - type: 0x0083
+        PABID: 2
+      - type: 0xff85
+        FontID: 0x8000001
+      - type: 0x0081
+      - type: 0xff82
+        FirstLineLeftMargin: 1440
+        Flags: 0x0100
+        Flags2: 0x8794
+        JustifyMode: 0
+        LeftMargin: 1440
+        LineSpacing: 0
+        PABID: 3
+        ParagraphSpacingAfter: 0
+        ParagraphSpacingBefore: 0
+        RightMargin: 0
+        Tab:
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+        TabTypes: 0x00000000
+        Tabs: 0
+        data:
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0x00000001
+          - 0x00000004
+      - type: 0x0083
+        PABID: 3
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x12b70105
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x182954
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xffad
+        Version: 0
+      - type: 0xffa9
+        opaque: qf8WAAEAGAAEAAoACgAAAAgAnAADAA==
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x12b70005
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x182954
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x00aa
+        opaque: qgI=
+      - type: 0x00de
+        Signature: 0x00ae
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0xeb70005
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x182954
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x0081
+      - type: 0x0083
+        PABID: 3
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0xeb70005
+        data: "Enhanced Log Configuration "
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x182954
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x0081
+      - type: 0xff82
+        FirstLineLeftMargin: 1440
+        Flags: 0x0100
+        Flags2: 0x8594
+        JustifyMode: 0
+        LeftMargin: 1440
+        LineSpacing: 0
+        PABID: 4
+        ParagraphSpacingAfter: 0
+        ParagraphSpacingBefore: 0
+        RightMargin: 0
+        Tab:
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+        TabTypes: 0x00000000
+        Tabs: 0
+        data:
+          - 0
+          - 0
+          - 1440
+          - 12
+          - 0
+          - 0
+          - 0x00000001
+          - 0x00000004
+      - type: 0x0083
+        PABID: 4
+      - type: 0xff85
+        FontID: 0x8000005
+      - type: 0x0081
+      - type: 0xff82
+        FirstLineLeftMargin: 1440
+        Flags: 0x0100
+        Flags2: 0x0794
+        JustifyMode: 0
+        LeftMargin: 1440
+        LineSpacing: 0
+        PABID: 5
+        ParagraphSpacingAfter: 0
+        ParagraphSpacingBefore: 0
+        RightMargin: 0
+        Tab:
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+        TabTypes: 0x00000000
+        Tabs: 0
+        data:
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+      - type: 0x0083
+        PABID: 5
+      - type: 0x00dd
+        Signature: 0xfffb
+        Version: 1
+      - type: 0xfffb
+        opaque: +/8sACAAAAABAQAAAAAAAAAABAAdAAAAAAAAAAAAAAABAP///wAAAAAAAAA=
+      - type: 0xff5c
+        opaque: |
+          XP8+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4AAAAAAAAABgAACgAAAAABAAAA
+          AAA=
+      - type: 0xfffc
+        BorderFlags: 1
+        BorderStyle: 0
+        BorderWidthBottom: 1
+        BorderWidthLeft: 1
+        BorderWidthRight: 1
+        BorderWidthTop: 1
+        Color:
+          Component1: 0
+          Component2: 0
+          Component3: 0
+          Flags: 0x0000
+        DropShadowWidth: 12
+        Flags: 0x00000000
+        InnerWidthBottom: 0
+        InnerWidthLeft: 0
+        InnerWidthRight: 0
+        InnerWidthTop: 0
+        OuterWidthBottom: 0
+        OuterWidthLeft: 0
+        OuterWidthRight: 0
+        OuterWidthTop: 0
+        dwSpare: 0x00000000
+        wSpares:
+          - 0x0000
+          - 0x0000
+          - 0x0000
+          - 0x0000
+          - 0x0000
+      - type: 0x00de
+        Signature: 0xfffb
+        Version: 1
+      - type: 0x00a3
+        opaque: ow6gBSgAPAAdAB0AQgA=
+      - type: 0x00e2
+        opaque: 4gQdAA==
+      - type: 0x00a4
+        opaque: pBIAAL0FvTIAAAACAAABAQAA
+      - type: 0x0081
+      - type: 0xff82
+        FirstLineLeftMargin: 1484
+        Flags: 0x8186
+        Flags2: 0x8795
+        JustifyMode: 0
+        LeftMargin: 1484
+        LineSpacing: 0
+        PABID: 6
+        ParagraphSpacingAfter: 0
+        ParagraphSpacingBefore: 0
+        RightMargin: 12989
+        Tab:
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+        TabTypes: 0x00000000
+        Tabs: 0
+        data:
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0x00000001
+          - 0x00000006
+      - type: 0x0083
+        PABID: 6
+      - type: 0xff85
+        FontID: 0x4000006
+      - type: 0x0081
+      - type: 0x0083
+        PABID: 6
+      - type: 0xff85
+        FontID: 0xa000001
+      - type: 0x00dd
+        Signature: 0xffad
+        Version: 0
+      - type: 0xff71
+        opaque: |
+          cf9SAAAAAAADABgAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAENvbmZpZ1xFbmhhbmNlZCBMb2cgSW5mb3Jt
+          YXRpb24gfCBjZmctRW5oTG9nSW5mbw==
+      - type: 0xffad
+        opaque: |
+          rf89AA4ACAAAADEAQ29uZmlnXEVuaGFuY2VkIExvZyBJbmZvcm1hdGlvbiB8IGNmZy1FbmhMb2dJbmZv
+          AA==
+      - type: 0x00ae
+        opaque: rgI=
+      - type: 0x00de
+        Signature: 0x00ae
+        Version: 0
+      - type: 0xff85
+        FontID: 0xa000001
+      - type: 0x0081
+      - type: 0x0083
+        PABID: 6
+      - type: 0xff85
+        FontID: 0x4000006
+      - type: 0xffe3
+        Flags: 0x0002
+        Label: Logging
+      - type: 0xff78
+        opaque: eP8rAAAAAAADABMACQAAAAAAAAAAAAAAAAAAAAAAAAAAAGZybWJnLmdpZg==
+      - type: 0xffee
+        opaque: 7v8KAAUAAAAAAA==
+      - type: 0x00a5
+        opaque: pQYAAAAA
+      - type: 0x0081
+      - type: 0xff82
+        FirstLineLeftMargin: 1440
+        Flags: 0x8100
+        Flags2: 0x8795
+        JustifyMode: 0
+        LeftMargin: 1440
+        LineSpacing: 0
+        PABID: 7
+        ParagraphSpacingAfter: 0
+        ParagraphSpacingBefore: 0
+        RightMargin: 0
+        Tab:
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+        TabTypes: 0x00000000
+        Tabs: 0
+        data:
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0x00000001
+          - 0x00000006
+      - type: 0x0083
+        PABID: 7
+      - type: 0xff85
+        FontID: 0x8000001
+      - type: 0x0081
+      - type: 0x0083
+        PABID: 7
+      - type: 0xff85
+        FontID: 0xa000001
+  - name: $Fonts
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: |
+      i/9KAAIABSZBcmlhbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYmVmVyZGFuYQAAAAAAAAAAAAAA
+      AAAAAAAAAAAAAAAAAAA=
+  - name: $HTMLCode
+    signed: true
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: X/8QAAIADwAHAAAAAAAAAF//EAABAMsAAgAAAAAAAAA=
+  - name: $Info
+    signed: true
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+remaining: []

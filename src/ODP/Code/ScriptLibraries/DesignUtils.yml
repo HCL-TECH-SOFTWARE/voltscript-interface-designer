@@ -1,0 +1,230 @@
+---
+class: 512
+flags: 0x2000
+unid: OFD5FDB1C003730DC5-ON003763AD862588C6
+items:
+  - name: $Flags
+    type: text
+    data: s34Q
+  - name: $PublicAccess
+    type: text
+    data: "1"
+    signed: true
+  - name: $ScriptLib
+    type: text
+    data: |
+      '++LotusScript Development Environment:2:5:(Options):0:74
+      %REM
+      	Library DesignUtils
+      	Created Mar 8, 2010 by Andre Guirard/Cambridge/IBM
+      	Description: Some functions useful in programmatically manipulating design elements.
+      %END REM
+      %REM
+      	**********************************************************************
+      	**********************************************************************
+      		
+          Copyright 2010 IBM Corporation
+      
+         	Licensed under the Apache License, Version 2.0 (the "License");
+          you may not use this file except in compliance with the License.
+          You may obtain a copy of the License at
+      
+              http://www.apache.org/licenses/LICENSE-2.0
+      
+          Unless required by applicable law or agreed to in writing, software
+          distributed under the License is distributed on an "AS IS" BASIS,
+          WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+          See the License for the specific language governing permissions and
+         	limitations under the License.
+      
+      	**********************************************************************
+      	**********************************************************************
+      %END REM
+      Option Public
+      Option Declare
+      
+      
+      '++LotusScript Development Environment:2:5:(Forward):0:1
+      Declare Sub SetSelectionExt(ncoll As NotesNoteCollection, ByVal strDesignType As String, _
+      ByVal addlCond$, ByVal flags%)
+      Declare Function Macroquote(ByVal x As String) As String
+      Declare Sub SetSelection(ncoll As NotesNoteCollection, ByVal strDesignType As String)
+      
+      '++LotusScript Development Environment:2:5:(Declarations):0:2
+      
+      '++LotusScript Development Environment:2:2:SetSelectionExt:22:8
+      %REM
+      	Sub SetSelectionExt
+      	Description: Like SetSelection, this lets you set up a
+      		notesNoteCollection to search for design elements of a
+      		particular type, but it adds the ability to specify
+      		additional criteria to further narrow the selection.
+      		This can be either in the form of a formula, or "*"
+      		followed by a design element title.
+      	Parameters:
+      		ncoll: the note collection whose selection criteria to set.
+      		strDesignType: the type of design element you're looking for,
+      			e.g. "xpage" or "view".
+      		addlCond: a formula that's "anded" with the selection formula
+      			for the design element type, to narrow down the design elements
+      			returned (e.g. {@Contains("$Flags"; "P")}) or "*" followed by a
+      			|-delimited list of design element names, e.g. "*Reply|Report"
+      			to search for design elements whose name or alias = "Reply" or "Report" 
+      		flags: 1 for case-insensitive match of design element names, else 0.
+      			Only has an effect when the "*" syntax of addlCond is used.	
+      %END REM
+      Sub SetSelectionExt(ncoll As NotesNoteCollection, ByVal strDesignType As String, _
+      ByVal addlCond$, ByVal flags%)
+      	If Left(addlCond, 1) = "*" Then
+      		Dim nameses
+      		nameses = Split(FullTrim(Mid$(addlCond, 2)), "|")
+      		ForAll aName In nameses
+      			aName = macroquote(LCase(aName))
+      			If flags And 1 Then
+      				aName = LCase(aName)
+      			End If
+      		End ForAll
+      		addlCond = {@Explode($TITLE; "|")}
+      		If flags And 1 Then addlCond = {@Lowercase(} & addlCond & {)}
+      		addlCond = addlCond & "=" & Join(nameses, ":")
+      	End If
+      	
+      	SetSelection ncoll, strDesignType
+      	If Len(addlCond) Then
+      		If Len(ncoll.Selectionformula) Then
+      			' this is a weird formula but it's more efficient since the additional condition
+      			' doesn't have to be evaluated unless it's the right design element type, plus
+      			' it lets the addlCond contain multiple statements.
+      			ncoll.Selectionformula = {@If(} & ncoll.Selectionformula & {; @Do(} & addlCond & {); @False)}
+      		Else
+      			ncoll.Selectionformula = addlCond
+      		End If 
+      	End If
+      End Sub
+      
+      
+      '++LotusScript Development Environment:2:1:Macroquote:1:8
+      Function Macroquote(ByVal x As String) As String
+      ' convert string to macro code quoted string; change all " to \" and add quotes at start and end.
+      	Dim fromArr(0 To 0) As String
+      	Dim toArr(0 To 0) As String
+      	Dim targetArr(0 To 0) As String
+      	If InStr(x, {"}) Then
+      		fromArr(0) = {"}
+      		toArr(0) = {\"}
+      		targetArr(0) = x
+      		Dim result As Variant
+      		result = Replace(targetArr, fromArr, toArr)
+      		macroquote = {"} & result(0) & {"}
+      	Else
+      		macroquote = {"} & x & {"}
+      	End If
+      End Function
+      
+      '++LotusScript Development Environment:2:2:SetSelection:14:8
+      %REM
+      	Sub SetSelection
+      	Description: Given the name of a design element type, e.g. "Form", and a note
+      		collection, sets the note collection to select design elements of that type.
+      		Note: detecting certain design elements requires testing $Flags. This means
+      		it doesn't always work to call SetSelection twice with the same collection
+      		but different design element names. For instance, if you say you want forms
+      		and file resources, you will find no forms because their $Flag items never
+      		contain the character 'g'. Instead do two searches and combine results.
+      	Parameters:
+      		ncoll: the collection to set selection for.
+      		strDesignType: the design element type, e.g. "form", "image".
+      %END REM
+      Sub SetSelection(ncoll As NotesNoteCollection, ByVal strDesignType As String)
+      	Select Case LCase(strDesignType)
+      	Case {action}
+      		ncoll.SelectActions = True
+      	Case {agent}
+      		ncoll.SelectAgents = True
+      	Case {applet}
+      		ncoll.Selectallformatelements True
+      		ncoll.SelectionFormula = {@Contains($Flags; "@")}
+      	Case {databasescript}, {database script}
+      		ncoll.SelectDatabaseScript = True
+      	Case {column}
+      		ncoll.SelectMiscIndexElements = True
+      		ncoll.SelectionFormula = {@Contains($Flags; "^")}
+      	Case {data connection}
+      		ncoll.SelectDataConnections = True
+      	Case {file}, {file resource}
+      		ncoll.SelectMiscFormatElements = True
+      		ncoll.SelectionFormula = |@Contains($Flags; "g") & !@Matches($Flags; "*{~K[];`_}*")|
+      	Case {hidden file} ' extra file-resource type elements created when XPages are built.
+      		ncoll.SelectMiscFormatElements = True
+      		ncoll.SelectionFormula = |@Contains($Flags; "g") & @Contains($Flags; "~") & !@Matches($Flags; "*{~K[];`_}*")|
+      	Case {custom control}
+      		ncoll.SelectMiscFormatElements = True
+      		ncoll.SelectionFormula = {@Contains($Flags; "g") & @Contains($Flags; ";")}
+      	Case {theme}
+      		ncoll.SelectMiscFormatElements = True
+      		ncoll.SelectionFormula = {@Contains($Flags; "g") & @Contains($Flags; "`")}
+      	Case {xpage}
+      		ncoll.SelectMiscFormatElements = True
+      		ncoll.SelectionFormula = {@Contains($Flags; "g") & @Contains($Flags; "K")}
+      	Case {folder}
+      		ncoll.SelectFolders = True
+      	Case {form}
+      		ncoll.SelectForms = True
+      	Case {frameset}
+      		ncoll.SelectFrameSets = True
+      	Case {navigator}
+      		' ncoll.SelectNavigators = True ' BUG - doesn't work.
+      		ncoll.Selectallindexelements True
+      		ncoll.Selectionformula = |@Matches($Flags; "*G*")|
+      	Case {outline}
+      		ncoll.SelectOutlines = True
+      	Case {page}
+      		ncoll.SelectPages = True
+      	Case {profile}
+      		ncoll.SelectProfiles = True
+      	Case {script library}, {library} ' including web service consumers
+      		ncoll.SelectScriptLibraries = True
+      	Case {libraryonly} ' not including web service consumers
+      		ncoll.SelectScriptLibraries = True
+      		ncoll.SelectionFormula = {!@Contains($FlagsExt; "W")}
+      	Case {web service consumer}
+      		ncoll.SelectScriptLibraries = True
+      		ncoll.SelectionFormula = {@Contains($FlagsExt; "W")}
+      	Case {web service}, {web service provider}
+      		ncoll.SelectMiscCodeElements = True
+      		ncoll.SelectionFormula = |@Contains($Flags; "{")|
+      	Case {sharedfield}, {shared field}
+      		ncoll.SelectSharedFields = True
+      	Case {subform}
+      		ncoll.SelectSubforms = True
+      	Case {view}
+      	'	ncoll.SelectViews = True  ' BUG - doesn't work.
+      		ncoll.Selectallindexelements True
+      		ncoll.Selectionformula = |!@Matches($Flags; "*{FG^}*")|
+      	Case {wiring}, {wiring properties}
+      		ncoll.SelectMiscFormatElements = True
+      		ncoll.SelectionFormula = {@Contains($Flags; ":")}
+      	Case {composite application}, {ca xml}
+      		ncoll.SelectMiscFormatElements = True
+      		ncoll.SelectionFormula = {@Contains($Flags; "|")}
+      	Case {image}
+      		ncoll.SelectImageResources = True
+      	Case {stylesheet}
+      		ncoll.SelectStyleSheetResources = True
+      	Case {db2 access view}
+      		ncoll.SelectMiscFormatElements = True
+      		ncoll.SelectionFormula = {@Contains($Flags; "z")}
+      	Case {icon}
+      		ncoll.SelectIcon = True
+      	Case {component}
+      		ncoll.SelectMiscFormatElements = True
+      		ncoll.SelectionFormula = {@Contains($Flags; "_")}
+      	End Select
+      End Sub
+    signed: true
+    nonsummary: true
+  - name: $TITLE
+    type: text
+    data: DesignUtils
+    signed: true
+remaining: []

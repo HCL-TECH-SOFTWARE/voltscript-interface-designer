@@ -1,0 +1,7 @@
+nav:
+  - index.md
+  - Use VoltScript Extension forms: extension
+  - Use VoltScript Library forms: library 
+  - generatevse.md
+  - generatevss.md
+  - generateapi.md 

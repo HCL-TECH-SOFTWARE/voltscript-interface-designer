@@ -1,0 +1,25 @@
+---
+class: 1
+flags: 0x0100
+unid: OF31C1B8A0280C70E5-ON00660C1C852589F8
+items:
+  - name: Form
+    type: text
+    data: Skeleton
+  - name: FormId
+    type: number
+    data: 21
+  - name: FormName
+    type: text
+    data: PARENT_OBJ_HPP
+  - name: TheCodeAbstract
+    type: text
+    data: "// Keep a reference to this object's containing object"
+  - name: TheCode
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: |
+      hf9FAAEAAAogICAgICAvLyBLZWVwIGEgcmVmZXJlbmNlIHRvIHRoaXMgb2JqZWN0J3MgY29udGFpbmlu
+      ZyBvYmplY3QAIIX/LAABAAAKICAgICAgTFNQVFIoJTElKSAgIHBDb250YWluZXJPYmplY3Q7
+remaining: []

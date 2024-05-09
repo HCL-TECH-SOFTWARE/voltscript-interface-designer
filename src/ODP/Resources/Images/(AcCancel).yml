@@ -1,0 +1,46 @@
+---
+class: 4
+flags: 0x0000
+unid: OF016E718CC0B5CF9D-ON005F8109852588D8
+items:
+  - name: $DesignerVersion
+    type: text
+    data: 8.5.3
+  - name: $EditFilePath
+    type: text
+    data: "C:\\TEMP\\notes97E53A\\~cacel.png"
+    signed: true
+  - name: $Flags
+    type: text
+    data: 34CiQ$
+  - name: $FlagsExt
+    type: text
+    data: D
+    signed: true
+  - name: $ImageNames
+    type: text
+    data: cacel.png
+    signed: true
+  - name: $ImagesColorize
+    type: number
+    data: 0
+    signed: true
+  - name: $ImagesHigh
+    type: number
+    data: 1
+    signed: true
+  - name: $ImagesWide
+    type: number
+    data: 1
+    signed: true
+  - name: $TITLE
+    type: text
+    data:
+      - (AcCancel)
+      - (AcCancel)
+    signed: true
+  - name: $ImageData
+    type: composite
+    signed: true
+    nonsummary: true
+remaining: []

@@ -1,0 +1,216 @@
+---
+class: 8
+flags: 0x0000
+unid: OFDFA8C7D635A8FA08-ON003812CE8025893A
+items:
+  - name: $Collation
+    type_num: 2
+    type: opaque
+    opaque: FgABAABEAWYAAAAJAEEkTE9HVElNRQ==
+  - name: $Comment
+    type: text
+    data: ""
+    signed: true
+  - name: $DesignerVersion
+    type: text
+    data: 8.5.3
+  - name: $Flags
+    type: text
+    data: dY
+  - name: $Formula
+    type: formula
+    data: " @IsMember(Form; \"Log Entry\":\"Events\")"
+    opaque: |
+      rgEIADoABQAJAEhhc0Vycm9ycwCvACQAEgAAAAAAAAAAwFxAwgGuABIAAAAAAAAAAAAAAK4ABAC1AwMA
+      AgA+AAIAJDUFAAsASGFzV2FybmluZ3MArwAiABAAAAAAAAAAAABeQK4AEgAAAAAAAAAAAAAArgAEALUD
+      AwABACYADwB2VmFsdWUAYS9KAN2KJQAABQAKAEEkUFJPR05BTUUDAAIAagADACQxMgAFAA8AdlZhbHVl
+      AGEvSgDdiiUAAAEAAQB8AEcCrwA+ACIABQAPAHZWYWx1ZQBhL0oA3YolAAABAAEAfABgAq4AHAAFAA8A
+      dlZhbHVlAGEvSgDdiiUAAK4ABAC1A14BAwACACIAAwAkMTEAAgAGAAAAAAAAAAUABgBBJFVTRVK0AgMA
+      BQBIAEMACAAJAAIAAwADAAgACQAJAAQAQSRMT0dUSU1FJDUkMTIkMTFBJFNFUlZFUkEkREJUSVRMRSRD
+      b25mbGljdCRSRUYABAAEAAAAKgAFAAQARm9ybQEACQBMb2cgRW50cnkAAQAGAEV2ZW50cx8CdAIDAAcA
+      DAAGAAlMMVM1Uw==
+    signed: true
+  - name: $FormulaClass
+    type: text
+    data: "1"
+    signed: true
+  - name: $Index
+    type: text
+    data: ""
+    signed: true
+  - name: $TITLE
+    type: text
+    data: "Logs\\by Log Time|lkp-LogsByLogTime"
+    signed: true
+  - name: $ViewFormat
+    type_num: 5
+    type: opaque
+    opaque: |
+      AQAGAAAAiEAAAFZDBQAJAAgAAAAAAHgAAQEICAAAAAAAAAAAAAIAAAAgVkPAAAIAAACUAAAACAABAAAJ
+      AAAAAAAAAAAAAgIAAABWQwAAAwAMALIAAADwAAEABAgAAAAAAAAAAAACAgAAIFZDAAADAAQALgAAAFAA
+      AQAACAAAAAAAAAAAAAICAAAAVkMAAAgABgAAAAAAeAABAAAIAAAAAAAAAAAAAgIAAABWQwAACQAHAAAA
+      AAB4AAEAAAgAAAAAAAAAAAACAgAAAEEkTE9HVElNRUxvZyBUaW1lJDWUAAgAOgAFAAkASGFzRXJyb3Jz
+      AK8AJAASAAAAAAAAAADAXEDCAa4AEgAAAAAAAAAAAAAArgAEALUDAwAHAAwABQAJNFM5UwACAD4AAgAk
+      NQUACwBIYXNXYXJuaW5ncwCvACIAEAAAAAAAAAAAAF5ArgASAAAAAAAAAAAAAACuAAQAtQMDAAcADgAH
+      AAkwUjRTNlMAJDEyUHJvZ3JhbSBOYW1lsgABACYADwB2VmFsdWUAYS9KAN2KJQAABQAKAEEkUFJPR05B
+      TUUDAAcADAAFAAkxUzJTAAIAagADACQxMgAFAA8AdlZhbHVlAGEvSgDdiiUAAAEAAQB8AEcCrwA+ACIA
+      BQAPAHZWYWx1ZQBhL0oA3YolAAABAAEAfABgAq4AHAAFAA8AdlZhbHVlAGEvSgDdiiUAAK4ABAC1A14B
+      AwAHABQADgAJMFI4UzExUzE1UzE4UyQxMVVzZXIuAAIAIgADACQxMQACAAYAAAAAAAAABQAGAEEkVVNF
+      UrQCAwAHAAoAAwAJNFMAQSRTRVJWRVJTZXJ2ZXJBJERCVElUTEVEYlRpdGxlJgABAAAAAQEACQEAAAoB
+      AQAKAAAvAK0rAQEBAAEAAAAAAAAAAABXQwEBAAkAAAAAAAAAAAAAAAAAAAAAAADAAAAAAAD//wAAAAAA
+      AAAAAAAAAAAAV0MBAQAJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//8AAAAAAAAAAAAAAAAAAFdDAQEA
+      CQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP//AAAAAAAAAAAAAAAAAABXQwEBAAkAAAAAAAAAAAAAAAAA
+      AAAAAAAEAAAAAAD//wAAAAAAAAAAAAAAAAAAV0MBAQAJAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAA//8A
+      AAAAAAAAAAAAAAAAAFdDAQEACQAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAP//AAAAAAAAAAAAAAAAAABC
+      ABAAAAABAP///wABAPf39wABAAAAAAAAAAAAAAAAAAEA////AAEA////AAAAAQAAAAAAAQAAAAAAAQAA
+      AAAAAAAIAAAAAAABAFhDAAyAAgAAAAAAAQICAgEBAQEHBAMAAAAAAAAAACAvLzpZQwAAAAAAAAAAAAAA
+      AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    signed: true
+    nonsummary: true
+  - name: $V5ACTIONS
+    type: composite
+    signed: true
+    nonsummary: true
+    data:
+      - type: 0x00bd
+        BackColor: 0
+        BorderStyle: 1
+        BorderWidth: 0
+        BtnHeight: 0
+        FontID: 0x09060101
+        HeightSpc: 0
+        LineColor: 14
+        LineStyle: 3
+        ShareID: 0x00000000
+        dwFlags: 0x00000001
+      - type: 0xff79
+        BackColor:
+          Flags: 0x0001
+          rgb: 0x000000
+        BtnBorderDisplay: 0
+        BtnTextJustify: 0
+        BtnWidthStyle: 0
+        ButtonColor:
+          Flags: 0x0001
+          rgb: 0x000000
+        FontColor:
+          Flags: 0x0001
+          rgb: 0xffff00
+        LineColor:
+          Flags: 0x0001
+          rgb: 0x808080
+        Spare:
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+        barFontID: 0x00000000
+        barHeight:
+          Flags: 0x0000
+          Length:
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+          Reserved: 0
+          Units: 0
+        dwFlags: 0x00000003
+        wAppletHeight: 31
+        wBarBackgroundRepeat: 0
+        wBtnInternalMargin: 0
+        wBtnWidthAbsolute: 0
+        wSpare: 0x0000
+        wThemeSetting: 0
+      - type: 0xfffc
+        BorderFlags: 0
+        BorderStyle: 0
+        BorderWidthBottom: 1
+        BorderWidthLeft: 0
+        BorderWidthRight: 0
+        BorderWidthTop: 0
+        Color:
+          Component1: 0
+          Component2: 0
+          Component3: 0
+          Flags: 0x0000
+        DropShadowWidth: 12
+        Flags: 0x00000000
+        InnerWidthBottom: 0
+        InnerWidthLeft: 0
+        InnerWidthRight: 0
+        InnerWidthTop: 0
+        OuterWidthBottom: 0
+        OuterWidthLeft: 0
+        OuterWidthRight: 0
+        OuterWidthTop: 0
+        dwSpare: 0x00000000
+        wSpares:
+          - 0x0000
+          - 0x0000
+          - 0x0000
+          - 0x0000
+          - 0x0000
+      - type: 0xffbe
+        Flags: 0x0000019d
+        IconIndex: 0
+        ShareId: 0
+        Type: 5
+        opaque: AQBOfA==
+        title: Categori_ze
+      - type: 0xffbe
+        Flags: 0x0000019d
+        IconIndex: 0
+        ShareId: 0
+        Type: 5
+        opaque: AgACCg==
+        title: _Edit Document
+      - type: 0xffbe
+        Flags: 0x0000019d
+        IconIndex: 0
+        ShareId: 0
+        Type: 5
+        opaque: AwADCg==
+        title: _Send Document
+      - type: 0xffbe
+        Flags: 0x0000019d
+        IconIndex: 0
+        ShareId: 0
+        Type: 5
+        opaque: BAAECg==
+        title: _Forward
+      - type: 0xffbe
+        Flags: 0x0000019d
+        IconIndex: 0
+        ShareId: 0
+        Type: 5
+        opaque: BQA9fA==
+        title: _Move To Folder...
+      - type: 0xffbe
+        Flags: 0x0000019d
+        IconIndex: 0
+        ShareId: 0
+        Type: 5
+        opaque: BgA+fA==
+        title: _Remove From Folder
+      - type: 0xffbe
+        Flags: 0x0110019f
+        IconIndex: 0
+        ShareId: 0
+        Type: 1
+        data: "@Command([ToolsRunMacro]; \"ui-OpenLogConfig\")"
+        data_opaque: MgAAACYAAgCiDwAAAAAAAAEAEAB1aS1PcGVuTG9nQ29uZmln7QIDAAcACgADAAk0UwA=
+        title: Log Config
+      - type: 0xfff6
+        opaque: 9v8wAAAAAAADABMADgAAAAAAAAAAAAAAAAAAAAAAAAAAAGljb25fdGh1bWIuanBn
+remaining: []

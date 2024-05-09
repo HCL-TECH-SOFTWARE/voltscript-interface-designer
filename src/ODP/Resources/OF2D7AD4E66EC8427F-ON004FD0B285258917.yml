@@ -1,0 +1,52 @@
+---
+class: 1
+flags: 0x0100
+unid: OF2D7AD4E66EC8427F-ON004FD0B285258917
+items:
+  - name: $Revisions
+    type: time
+    data:
+      - data: "2022-12-13T09:32:07.94-05:00"
+      - data: "2023-07-18T11:35:38.29-04:00"
+        dst: true
+      - data: "2023-07-24T10:44:26.82-04:00"
+        dst: true
+      - data: "2023-07-24T10:45:27.86-04:00"
+        dst: true
+      - data: "2023-07-24T10:45:33.38-04:00"
+        dst: true
+  - name: Authors
+    type: text
+    data:
+      - CN=Rocky Oliver/OU=USA/O=PNPHCL
+      - "[Admin]"
+    authors: true
+    names: true
+  - name: Category
+    type: text
+    data: "1"
+  - name: CreatedOn
+    type: time
+    data: "2022-12-13T09:31:47.70-05:00"
+  - name: DataType
+    type: text
+    data: Byte
+  - name: F_LSXCreator
+    type: text
+    data: Rocky Oliver
+  - name: Form
+    type: text
+    data: DataType
+  - name: LastModified
+    type: time
+    data: "2023-10-10T10:59:41.84-04:00"
+    dst: true
+  - name: ProjectType
+    type: text
+    data:
+      - "1"
+      - "2"
+  - name: keywordComments
+    type: text
+    data: ""
+remaining: []

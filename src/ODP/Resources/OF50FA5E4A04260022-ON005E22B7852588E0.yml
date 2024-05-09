@@ -1,0 +1,49 @@
+---
+class: 1
+flags: 0x0100
+unid: OF50FA5E4A04260022-ON005E22B7852588E0
+items:
+  - name: $Revisions
+    type: time
+    data:
+      - data: "2022-10-19T13:09:16.10-04:00"
+        dst: true
+      - data: "2023-02-09T11:51:35.93-05:00"
+      - data: "2023-02-09T11:58:49.17-05:00"
+      - data: "2023-03-08T13:48:09.68-05:00"
+  - name: Authors
+    type: text
+    data:
+      - CN=Rocky Oliver/OU=USA/O=PNPHCL
+      - "[Admin]"
+    authors: true
+    names: true
+  - name: CreatedBy
+    type: text
+    data: Rocky Oliver/USA/PNPHCL
+  - name: CreatedOn
+    type: time
+    data: "2022-10-19T13:08:12.71-04:00"
+    dst: true
+  - name: F_LSXCreator
+    type: text
+    data: Rocky Oliver
+  - name: Form
+    type: text
+    data: keyword
+  - name: LastModified
+    type: time
+    data: "2023-03-08T13:48:59.93-05:00"
+  - name: keywordComments
+    type: text
+    data: "Old OS versions removed:"
+  - name: keywordName
+    type: text
+    data: Platforms
+  - name: keywordValues
+    type: text
+    data:
+      - LINUX|LINUX
+      - W32 (NT or Win9X)|W32
+      - W64 (WinXP or above)|W64
+remaining: []

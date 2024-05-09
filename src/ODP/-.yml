@@ -1,0 +1,41 @@
+---
+class: 34816
+flags: 0x0000
+unid: OFBEBA23760BB9FA1E-ON0048F47C85258A20
+items:
+  - name: $ReplClassMasks
+    type: text
+    data:
+      - "30719"
+  - name: $ReplFields
+    type: text
+    data:
+      - ""
+  - name: $ReplForm
+    type: text
+    data:
+      - "0"
+  - name: $ReplFormula
+    type: formula
+    data: "@All"
+    opaque: CgAAAAgAZgADAA==
+  - name: $ReplPrivateFolder
+    type: text
+    data:
+      - ""
+  - name: $ReplSrcServers
+    type: text
+    data:
+      - "-"
+  - name: $ReplVersion
+    type: text
+    data: "2"
+  - name: $ReplView
+    type: text
+    data:
+      - ""
+  - name: $TITLE
+    type: text
+    data:
+      - "-"
+remaining: []

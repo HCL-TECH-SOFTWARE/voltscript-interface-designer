@@ -1,0 +1,87 @@
+---
+class: 512
+flags: 0x0000
+unid: OFC151BFCB0734BADB-ON0055872F852589F0
+items:
+  - name: $AssistAction
+    type: action
+    code_type: 65412
+    opaque: |
+      gQKE//QDAAAAAOoD6gMHAIgDggMgAAkqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
+      KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAAkqKioqKioqKioqKioqKioqKioqKioqKioq
+      KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAAkJACAgICBDb3B5cmln
+      aHQgSENMIEFtZXJpY2EsIEluYy4gMTk5OSwgMjAyMwAAICAgCUxpY2Vuc2VkIHVuZGVyIHRoZSBBcGFj
+      aGUgTGljZW5zZSwgVmVyc2lvbiAyLjAgKHRoZSAiTGljZW5zZSIpOwAgICAgeW91IG1heSBub3QgdXNl
+      IHRoaXMgZmlsZSBleGNlcHQgaW4gY29tcGxpYW5jZSB3aXRoIHRoZSBMaWNlbnNlLgAgICAgWW91IG1h
+      eSBvYnRhaW4gYSBjb3B5IG9mIHRoZSBMaWNlbnNlIGF0AAAgICAgICAgIGh0dHA6Ly93d3cuYXBhY2hl
+      Lm9yZy9saWNlbnNlcy9MSUNFTlNFLTIuMAAAICAgIFVubGVzcyByZXF1aXJlZCBieSBhcHBsaWNhYmxl
+      IGxhdyBvciBhZ3JlZWQgdG8gaW4gd3JpdGluZywgc29mdHdhcmUAICAgIGRpc3RyaWJ1dGVkIHVuZGVy
+      IHRoZSBMaWNlbnNlIGlzIGRpc3RyaWJ1dGVkIG9uIGFuICJBUyBJUyIgQkFTSVMsACAgICBXSVRIT1VU
+      IFdBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBBTlkgS0lORCwgZWl0aGVyIGV4cHJlc3Mgb3IgaW1w
+      bGllZC4AICAgIFNlZSB0aGUgTGljZW5zZSBmb3IgdGhlIHNwZWNpZmljIGxhbmd1YWdlIGdvdmVybmlu
+      ZyBwZXJtaXNzaW9ucyBhbmQAICAgCWxpbWl0YXRpb25zIHVuZGVyIHRoZSBMaWNlbnNlLgAACSoqKioq
+      KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
+      KioqKioACSoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
+      KioqKioqKioqKioqKioqKioABwAKAAMACTFTAAMAMAALAFByb2plY3RUeXBlAAUACwBQcm9qZWN0VHlw
+      ZQABAAEAMgAfAqsBXgEDAAcAEgALAAkwUlJSMVMyUzNTAAAACABmAAMABwAMAAYACTBSTDFT
+    signed: true
+    nonsummary: true
+  - name: $AssistDocCount
+    type: number
+    data: 0
+    signed: true
+  - name: $AssistFlags
+    type: text
+    data: sE
+    signed: true
+  - name: $AssistInfo
+    type_num: 17
+    type: opaque
+    opaque: |
+      AQAEAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    signed: true
+    nonsummary: true
+  - name: $AssistLastRun
+    type: time
+    signed: true
+  - name: $AssistQuery
+    type_num: 15
+    type: opaque
+    opaque: gQYAAAAA
+    signed: true
+    nonsummary: true
+  - name: $AssistRunInfo
+    type: object
+    obj_type: 0x0008
+    obj_class: 0x0200
+    obj_privs: 0x0000
+    item_extra_opaque: AAU=
+    opaque: AAAAAAEAAAAAAAAAAAAAAA==
+  - name: $AssistTrigger
+    type: text
+    data: "4"
+  - name: $AssistType
+    type: number
+    data: 65412
+    signed: true
+  - name: $DesignerVersion
+    type: text
+    data: 8.5.3
+  - name: $Flags
+    type: text
+    data: 3f
+  - name: $FlagsExt
+    type: text
+    data: ""
+    signed: true
+  - name: $Restricted
+    type: number
+    data: 1
+    signed: true
+  - name: $TITLE
+    type: text
+    data: (Append Library (VSS) to ProjectType)|appendProjectType_VSS
+    signed: true
+remaining:
+  - $AssistAction_Ex

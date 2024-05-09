@@ -1,0 +1,25 @@
+---
+class: 1
+flags: 0x0100
+unid: OFD0881E7F8060FE96-ON00660C2C852589F8
+items:
+  - name: Form
+    type: text
+    data: Skeleton
+  - name: FormId
+    type: number
+    data: 36
+  - name: FormName
+    type: text
+    data: EVENT_ARG_TAB
+  - name: TheCodeAbstract
+    type: text
+    data: "static LSDATATYPE %2%%1%Args[N_%2%_%3%_ARGS +1] = %4%"
+  - name: TheCode
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: |
+      hf86AAEAAApzdGF0aWMgTFNEQVRBVFlQRSAlMiUlMSVBcmdzW05fJTIlXyUzJV9BUkdTICsxXSA9AIX/
+      CgABAAAKewCF/wwAAQAACiU0JQCF/wsAAQAACn07ACA=
+remaining: []

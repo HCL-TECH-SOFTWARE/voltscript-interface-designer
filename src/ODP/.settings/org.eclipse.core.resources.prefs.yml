@@ -1,0 +1,23 @@
+---
+class: 4
+flags: 0x0000
+unid: OF36C8316D39B89BEC-ON0037A31A862588C6
+items:
+  - name: $DesignerVersion
+    type: text
+    data: 8.5.3
+  - name: $FileNames
+    type: text
+    data: ".settings/org.eclipse.core.resources.prefs"
+    signed: true
+  - name: $Flags
+    type: text
+    data: ~C4g
+  - name: $TITLE
+    type: text
+    data: ".settings/org.eclipse.core.resources.prefs"
+  - name: $FileData
+    type: composite
+    signed: true
+    nonsummary: true
+remaining: []

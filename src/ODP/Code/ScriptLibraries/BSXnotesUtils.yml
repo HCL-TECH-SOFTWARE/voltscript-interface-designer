@@ -1,0 +1,4566 @@
+---
+class: 512
+flags: 0x2000
+unid: OF5E6C0EB9B91D1B1E-ON00375741862588C6
+items:
+  - name: $DesignerVersion
+    type: text
+    data: 8.5.3
+  - name: $Flags
+    type: text
+    data: s34Q
+  - name: $PublicAccess
+    type: text
+    data: "1"
+    signed: true
+  - name: $ScriptLib
+    type: text
+    data: |
+      '++LotusScript Development Environment:2:5:(Options):0:74
+      %REM
+      	Library BSXnotesUtils
+      	Created Jul 2022 by Devin Olson/USA/PNPHCL
+      	BaliSX Notes Object Utilities
+      %END REM
+      %REM
+      	**********************************************************************
+      	**********************************************************************
+      		
+          Copyright HCL America, Inc. 1999, 2023
+      
+         	Licensed under the Apache License, Version 2.0 (the "License");
+          you may not use this file except in compliance with the License.
+          You may obtain a copy of the License at
+      
+              http://www.apache.org/licenses/LICENSE-2.0
+      
+          Unless required by applicable law or agreed to in writing, software
+          distributed under the License is distributed on an "AS IS" BASIS,
+          WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+          See the License for the specific language governing permissions and
+         	limitations under the License.
+      
+      	**********************************************************************
+      	**********************************************************************
+      %END REM
+      Option Public
+      Option Declare
+      Use "BSXdocumentationUtils"
+      Use "FileResource" 
+      Use "enhLogClassLite" 
+      
+      '++LotusScript Development Environment:2:5:(Forward):0:1
+      Declare Private Class Data_Type 
+      Declare Private Function getCategoryNameForDataTypeName(datatypename As String) As String  
+      Declare Function getConstructorUNIDforClassName(project As NotesDocument, classname As String) As String 
+      Declare Public Function ArchiveTag(S1 As String, S2 As String) As String
+      Declare Function importProjects(source As NotesDatabase) As StringQueue
+      Declare Private Function getDataTypes(projectType As Integer, category As Integer, clearcache As Boolean) As VariantList  
+      Declare Private Function updateDocument_DataType(datatypeName As String, newNoteComment As String, category As Integer, projectType As Integer) As Boolean
+      Declare Private Function generateMethod(source As NotesDocument, parent As CodeElement) As Method
+      Declare Function resetCollectionAncestorIDs(unids As StringQueue) As Integer 
+      Declare Private Function getDataTypeLabels(projectType As Integer, category As Integer, clearcache As Boolean) As StringsCarrier 
+      Declare Private Function getObjectDataTypeLabels(projectType As Integer, clearcache As Boolean) As StringsCarrier 
+      Declare Private Function getAttributes(scope$, attributesstring$) As StringQueue 
+      Declare Private Function getScalarDataTypeLabels(projectType As Integer, clearcache As Boolean) As StringsCarrier 
+      Declare Public Sub DumpSkeletons
+      Declare Function getToolKitConfigDoc(clearcache As Boolean) As NotesDocument 
+      Declare Public Function GenerateLSXClassID(ProjectDoc As NotesDocument, ClassName As String, CreateIfNotFound As Boolean) As Long 
+      Declare Private Function updateVSEspecialItems(target As NotesDocument) As Boolean
+      Declare Private Function updateElementDocument(target As NotesDocument, ndocProject As NotesDocument, ndocClass As NotesDocument, ndocType As NotesDocument) As Boolean
+      Declare Function updateProjects As Integer 
+      Declare Private Function generateVariable(source As NotesDocument, parent As CodeElement) As Variable
+      Declare Private Function generateProperties(source As NotesDocument, parent As CodeElement) As Variant
+      Declare Public Sub loadVSIDstubContent(vsidsuffix$) 
+      Declare Public Sub CreateLSXArchivesIfMissing(ProjectDoc As NotesDocument)
+      Declare Private Function resetAncestorIDs(source As NotesDocument, formsuffix$) As Boolean 
+      Declare Private Function getDataType_ProjectTypeName(projecttype As Integer) As String 
+      Declare Sub DeleteFileSilently(theFilename As String)
+      Declare Static Function getAttributeNameStubs_Script() As Variant 
+      Declare Function generateVSE(source As NotesDocument, parent As CodeElement) As VSE 
+      Declare Function getItemNamesPotentialHTML(form$) As StringStack 
+      Declare Function getUNIDforClassName(project As NotesDocument, classname As String) As String 
+      Declare Private Function generateObjectClass(source As NotesDocument, parent As CodeElement) As ObjectClass 
+      Declare Function generateLibrary(source As NotesDocument, parent As CodeElement) As Library 
+      Declare Private Function getDataType_CategoryName(category As Integer) As String 
+      Declare Private Function getAllowedChildForms() As StringsCarrierList 
+      Declare Private Sub spawnArgumentsForMethod(source As NotesDocument, target As Method, attributenamestubs As Variant, isVSE As Boolean)   
+      Declare Static Function getAttributeNameStubs() As Variant 
+      Declare Private Function getDataTypeUNIDs(projectType As Integer, category As Integer, clearcache As Boolean) As StringsCarrier 
+      Declare Function generateVSID(includeVSEs As Boolean, includeLibraries As Boolean) As VSID 
+      Declare Public Function writeAPIdoc_supportFiles(writer As VSIDwriter) As StringQueue 
+      Declare Function getUNIDsByForm(form$) As StringQueue    
+      Declare Function getDataTypeCategory(datatypename As String) As Integer  
+      Declare Function getParentAllowedForForm(source As NotesDocument, targetform$) As NotesDocument
+      Declare Private Function generateObjectType(source As NotesDocument, parent As CodeElement) As ObjectType
+      Declare Public Function GenerateLSXMethodID(ProjectDoc As NotesDocument, ClassName As String, MethodName As String, AddIfNotFound As Boolean ) As Long
+      Declare Private Function StreamToStringsCarrier(streamIn As NotesStream, ByVal chrset$) As StringsCarrier
+      Declare Public Function isValidGUID(source As String) As Boolean 
+      Declare Private Function generateConstant(source As NotesDocument, parent As CodeElement) As Constant
+      Declare Public Sub CreateNewMethodDocument (source As NotesDocument)  
+      
+      '++LotusScript Development Environment:2:5:(Declarations):0:10
+      
+      
+      Private Const MODULE_NAME = |BSXnotesUtils| 
+      Private Const LIB_PREFIX = |Library: | & MODULE_NAME & |.|
+      
+      
+      Public Const ADT_SUCCESS = True
+      Public Const ADT_FAIL = False 
+      
+      
+      Public Const FORMNAME_TOOLKIT_CONFIG = |Toolkit Configuration|
+      
+      Public Const PREFIX_VSID = |vsid.| 
+      
+      
+      Public Const PREFIX_APIDOC_SCRIPT = PREFIX_VSID & |vss.|
+      Public Const PREFIX_APIDOC_CSS = PREFIX_VSID & |css.|  
+      Public Const PREFIX_APIDOC_HTML = PREFIX_VSID & |html.|  
+      Public Const PREFIX_APIDOC_IMAGE = PREFIX_VSID & |image.|  
+      Public Const PREFIX_APIDOC_JS = PREFIX_VSID & |js.|  
+      
+      
+      Public Const DATATYPE_SCALAR = 1 		' Scalar DataType such as Integer, String, etc.
+      Public Const DATATYPE_NOTES = 2			' Notes Object data types, such as NotesSession, NotesDatabase, etc
+      Public Const DATATYPE_ADT = 3 			' C++ Automatic Data Types (VSE Object).
+      Public Const DATATYPE_VOLTSCRIPT = 4 	' VoltScript Object data types (VSS Object).
+      
+      
+      Public Const ITEMNAME_APP_NAME = |F_AppName|
+      Public Const ITEMNAME_CLASS_ARCHIVE = |F_VSEClassArchive|
+      Public Const ITEMNAME_CLASS_NAME = |F_ClassName|
+      Public Const ITEMNAME_CLASSID_COUNTER = |F_LSXClassID|
+      Public Const ITEMNAME_METHOD_ARCHIVE = |F_VSEPMEArchive|
+      Public Const ITEMNAME_METHODID_COUNTER = |F_LSXPMEID|
+      
+      
+      Public Const PROJECTTYPE_EXTENSION = 1 	' VoltScript Extension (VSE) Project Types
+      Public Const PROJECTTYPE_LIBRARY = 2	' VoltScript Library (VSS) Project Types 
+      
+       
+      Public Const VIEWNAME_PROJECTS_LSX = |LSX Projects|
+      Public Const VIEWNAME_PROJECTS_VSE = |VSE Projects|
+      Public Const VIEWNAME_PROJECTS_SCRIPT = |Script Projects|
+      
+      Public Const WIZARD_OK = 0
+      Public Const WIZARD_YESNO = 36
+      Public Const WIZARD_ERR = 16
+      Public Const WIZARD_EXCLAM = 48
+      Public Const WIZARD_YES = 6
+      Public Const WIZARD_NO = 7
+      
+      
+      Public Type Argument
+      	ArgName As String
+      	ArgType As String
+      	ArgIsArray As String
+      	ArgIsByVal As String     
+      	ArgIndex As Integer  
+      	ArgIsConst As String
+      	ArgIsOptional As String
+      	ArgOptionalValue As String
+      End Type 
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      %REM
+      	Class Data_Type
+      	In-Memory information from a DataType document 
+      %END REM
+      Private Class Data_Type 
+      
+      	Private unid_ As String 
+      	Private label_ As String 
+      	Private category_ As Integer 
+      	Private projecttypes_ As Variant ' Array of Project Type Codes  
+      
+      	%REM
+      		Property Get CLASS_NAME
+      		Name of the Class
+      	%END REM
+      	Private Property Get CLASS_NAME As String 
+      		CLASS_NAME = |Data_Type|
+      	End Property
+      	
+      
+      	%REM
+      		Property Get CLASS_PREFIX
+      		Prefix of the Class:  MODULE_NAME.CLASS_NAME.
+      	%END REM
+      	Private Property Get CLASS_PREFIX As String 
+      		CLASS_PREFIX = MODULE_NAME & |.| & CLASS_NAME & |.|
+      	End Property
+      	
+      
+      	%REM
+      		Property Get UniversalID
+      		UniversalID of the underlying DataType document 
+      	%END REM
+      	Property Get UniversalID As String 
+      		UniversalID = me.unid_
+      	End Property
+      
+      
+      	%REM
+      		Property Get Label
+      		DataType (label) of the underlying DataType document 
+      	%END REM
+      	Property Get Label As String 
+      		Label = me.label_
+      	End Property
+      
+      
+      	%REM
+      		Property Get CategoryName
+      		Category Name of the underlying DataType document 
+      	%END REM
+      	Property Get CategoryName As String 
+      		CategoryName = getDataType_CategoryName(me.category_) 
+      	End Property
+      
+      
+      	%REM
+      		Property Get ProjectTypeNames
+      		ProjectType Names from the underlying DataType document
+      		
+      		Array of Strings containing the ProjectTypes  
+      	%END REM
+      	Property Get ProjectTypeNames As Variant  
+      		Dim result() As String
+      		Dim idx% 
+      		
+      		ReDim result(LBound(me.projecttypes_) To UBound(me.projecttypes_)) As String 
+      		For idx% = LBound(me.projecttypes_) To UBound(me.projecttypes_) 
+      			result(idx%) = getDataType_ProjectTypeName(me.projecttypes_(idx%))
+      		Next
+      		
+      		ProjectTypeNames = result 
+      	End Property
+      
+      
+      	%REM
+      		Property Get Category
+      		Category of the underlying DataType document 
+      	%END REM
+      	Property Get Category As Integer 
+      		Category = me.category_
+      	End Property
+      
+      
+      	%REM
+      		Property Get ProjectType
+      		ProjectTypes from the underlying DataType document
+      		
+      		Array of Integers containing the ProjectTypes  
+      	%END REM
+      	Property Get ProjectTypes As Variant 
+      		ProjectTypes = me.projecttypes_
+      	End Property
+      
+      
+      
+      	%REM
+      		Property Set UniversalID
+      		UniversalID of the underlying DataType document 
+      	%END REM
+      	Property Set UniversalID As String 
+      		On Error GoTo ErrorTrap
+      	
+      	
+      		' exception variables
+      		Dim extendedinfo List As String 
+      		Dim errmsg$
+      		Dim errcode%
+      		Dim errline%	
+      
+      		Dim ndoc As NotesDocument 
+      		Dim nitm As NotesItem
+      		 
+      		Dim values As Variant 
+      		Dim ptypes() As Integer 
+      		
+      		Dim unid$ 
+      		Dim temp$
+      		 
+      		Dim idx% 
+      
+      	
+      		' BEGIN CODE
+      		unid$ = UniversalID  
+      		extendedinfo(|UniversalID|) = unid$
+      		If isBlankString(unid$) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |UniversalID is blank.  | 
+      		
+      		Set ndoc = getDocumentByUNID(unid$) 
+      		If (ndoc Is Nothing) Then Error ERR_DOCUMENT_NOT_FOUND, MSG_DOCUMENT_NOT_FOUND 
+      		
+      		me.unid_ = unid$ 
+      		me.label_ = getItemValueText(ndoc, |DataType|, ||, ||)  
+      		
+      		temp$ = getItemValueText(ndoc, |Category|, ||, ||)
+      		extendedinfo(|category|) = temp$ 
+      		me.category_ = CInt(temp$) 
+      		
+      		If ndoc.hasItem(|ProjectType|) Then 
+      			Set nitm = ndoc.getFirstItem(|ProjectType|)
+      			values = nitm.values 
+      			ReDim ptypes(LBound(values) To UBound(values)) As Integer 
+      			For idx% = LBound(values) To UBound(values) 
+      				extendedinfo(|idx%|) = CStr(idx%)
+      				temp$ = CStr(values(idx%))
+      				extendedinfo(|temp$|) = temp$  
+      				If IsNumeric(temp$) Then 
+      					ptypes(idx%) = CInt(temp$)
+      				Else 
+      					ptypes(idx%) = 0 
+      				End If
+      			Next
+      			
+      		Else 
+      			ReDim ptypes(0) As Integer 
+      			ptypes(0) = 0 
+      		End If
+      
+      		me.projecttypes_ = ptypes 
+      	
+      	ExitPoint: 
+      		If (0 <> errcode%) Then Error errcode%, errmsg$ & | at line | & CStr(errline%) & | in | & CLASS_PREFIX & |UniversalID Property setter.  | 
+      		Exit Property 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		errcode% = Err() 
+      		errmsg$ = Error() 
+      		errline% = Erl()
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedInfo
+      		Resume ExitPoint
+      	End Property
+      
+      
+      	%REM
+      		Constructor 
+      	%END REM 
+      	Sub New() 
+      		 Dim emptyarray(0) As Integer 
+      		 me.projecttypes_ = emptyarray 
+      	End Sub 
+      
+      
+      End Class
+      '++LotusScript Development Environment:2:1:getCategoryNameForDataTypeName:10:8
+      %REM
+      	Function getCategoryNameForDataTypeName
+      	Gets the Category Name for the specific Data Type 
+      	
+      	@param datatypename Name of the Data Type 
+      	@return Category Name of the Data Type 
+      	
+      	@throws ERR_PARAMETER_BLANK if source is blank
+      %END REM
+      Private Function getCategoryNameForDataTypeName(datatypename As String) As String  
+      	If isBlankString(datatypename) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK
+      	On Error GoTo ErrorTrap
+      	
+      	' exception variables
+      	Dim extendedinfo List As String
+      	Dim errmsg$ 
+      	Dim errcode%
+      	 
+      	Dim datatypecategory%
+      	
+      	Dim result$
+      	
+      	' BEGIN CODE
+      	extendedinfo(|datatypename|) = datatypename 
+      	
+      	datatypecategory% = getDataTypeCategory(datatypename) 
+      	extendedinfo(|datatypecategory|) = CStr(datatypecategory%) 
+      	result$ = getDataType_categoryName(datatypecategory%) 
+      	
+      ExitPoint: 
+      	If (0 <> errcode%) Then Error errcode%, errmsg$ 
+      	getCategoryNameForDataTypeName = result$
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	errcode% = Err() 
+      	errmsg$ = Error$() 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:getConstructorUNIDforClassName:12:8
+      %REM
+      	Function getConstructorUNIDforClassName
+      	Gets the UniversalID of the Constructor Method document ("New" Method) for the specified child class of a Project 
+      		
+      	@param project the Project NotesDocument for which to retrieve the child Class document UniversalID 
+      	@param classname Name of the child class.
+      	
+      	@returns UniversalID of the specified child Class document.
+      	
+      	@throws ERR_PARAMETER_BLANK if the project is Nothing or the classname is blank
+      %END REM
+      Function getConstructorUNIDforClassName(project As NotesDocument, classname As String) As String 
+      	If (project Is Nothing) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |Project document is Nothing.  |
+      	If isBlankString(classname) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |Class Name is blank.  |
+      	On Error GoTo ErrorTrap
+      	
+      	Dim cache List As String 
+      	
+      	Dim col As NotesDocumentCollection
+      	Dim ndocclass As NotesDocument  
+      	Dim child As NotesDocument 
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	Dim errmsg$ 
+      	Dim errcode%
+      	
+      	Dim cachekey$ 
+      	Dim classunid$
+      	Dim form$
+      	Dim methodname$  
+      	Dim result$
+      	
+      	
+      	' BEGIN CODE
+      	
+      	
+      	' process the child documents of the Project
+      	extendedinfo(|Project|) = getItemValueText(project, |F_AppName|, ||, ||)  
+      	extendedinfo(|classname|) = classname 
+      	
+      	cachekey$ = project.UniversalID & |:| & classname 
+      	If IsElement(cache(cachekey$)) Then 
+      		result$ = cache(cachekey$) 
+      	Else 
+      		
+      		classunid$ = getUNIDforClassName(project, classname) 
+      		If Not isBlankString(classunid$) Then 
+      			extendedinfo(|class unid|) = classunid$ 
+      			Set ndocclass = getDocumentByUNID(classunid$) 
+      			If Not (ndocclass Is Nothing) Then 
+      				' find the constructor document for the class 
+      					Set col = ndocclass.Responses 
+      					Set child = col.getFirstDocument()
+      					Do While Not (child Is Nothing) 
+      						form$ = getItemValueText(child, |Form|, ||, ||)
+      						extendedinfo(|Form|) = form$ 
+      						If strCmp(form$, |method|) Or strCmp(form$, |method_script|) Then 
+      							' child is a method document 
+      							methodname$ = getItemValueText(child, |F_MethName|, ||, ||)
+      							extendedinfo(|F_MethName|) = methodname$ 
+      							If Strcmp(|New|, methodname$) Then 
+      								' found the constructor document
+      								result$ = child.UniversalID 
+      								Exit Do 
+      							End If
+      						End If
+      						
+      						Set child = col.getNextDocument(child)
+      					Loop
+      			End If
+      		End If
+      		
+      		cache(cachekey$) = result$ 
+      	End If
+      	
+      	 
+      ExitPoint: 
+      	If (0 <> errcode%) Then Error errcode%, errmsg$ 
+      	getConstructorUNIDforClassName = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	errcode% = Err() 
+      	errmsg$ = Error$()
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:ArchiveTag:3:8
+      
+      
+      Public Function ArchiveTag(S1 As String, S2 As String) As String
+      	ArchiveTag = "(" & S1 & ")[" & S2 & "]"
+      End Function
+      
+      '++LotusScript Development Environment:2:1:importProjects:11:8
+      %REM
+      	Function importProjects
+      	Imports all Project documents and their descendents from another (VSE Wizard / VSID / VSID) database. 
+      	
+      	@param source NotesDatabase from which to import the Project documents and their descendents 
+      	
+      	@return universalIDs of all newly imported documents.
+      	
+      	@throws ERR_PARAMETER_BLANK if source database is Nothing
+      %END REM
+      Function importProjects(source As NotesDatabase) As StringQueue
+      	If (source Is Nothing) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |Source database is Nothing.  | 
+      	On Error GoTo ErrorTrap
+      
+      	Dim nvw As NotesView 
+      	Dim nav As NotesViewNavigator
+      	Dim nvent As NotesViewEntry 
+      
+      	Dim ndocProject As NotesDocument 
+      	Dim ndocClass As NotesDocument  
+      	Dim ndocType As NotesDocument ' should always be Nothing in this instance -only processing VSE Projects. 
+      	
+      	
+      	Dim responses As NotesDocumentCollection 
+      	
+      	
+      	Dim ndoc As NotesDocument 
+      	Dim copiedDoc As NotesDocument 
+      
+      	Dim unids As StringQueue 
+      	Dim unid$ 
+      	Dim form$
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	Dim errcode% 
+      	Dim errmsg$ 
+      		
+      	Dim result As New StringQueue() 
+      
+      	
+      	
+      	' BEGIN CODE
+      	If isBlankString(source.Server) Then 
+      		extendedinfo(|Source Database|) = source.Title & |on LOCAL | & source.Filepath
+      	Else 
+      		extendedinfo(|Source Database|) = source.Title & |on | & source.Server & | | & source.Filepath
+      	End If
+      	
+      	enhLogExtendedContent LIB_PREFIX, ||, |Importing From | & extendedinfo(|Source Database|) 
+      	
+      	' import all Project documents and their descendants 
+      	extendedinfo(|Viewname|) = VIEWNAME_PROJECTS_VSE 
+      	Set nvw = source.getView(VIEWNAME_PROJECTS_VSE)
+      	If (nvw Is Nothing) Then 
+      		extendedinfo(|Viewname|) = VIEWNAME_PROJECTS_LSX 
+      		Set nvw = source.getView(VIEWNAME_PROJECTS_LSX)
+      		If (nvw Is Nothing) Then Error ERR_VIEW_NOT_FOUND, MSG_VIEW_NOT_FOUND
+      	End If
+      	
+      	Set nav = nvw.createViewNav() 
+      	Set nvent = nav.getFirstDocument()
+      	
+      	
+      	While Not (nvent Is Nothing) 
+      			Set ndoc = nvent.Document 
+      			
+      			form$ = LCase(getItemValueText(ndoc, |Form|, ||, ||)) 
+      			extendedinfo(|form|) = form$ 
+      			
+      			Select Case form$ 
+      				Case |project|
+      					Set unids = copyDocumentHierarchyToDatabase(ndoc, getCurrentDb(), copiedDoc) 
+      					enhLogExtendedContent ||, ||, |Imported Project | & getItemValueText(ndoc, ITEMNAME_APP_NAME, ||, ||)  
+      					If (unids.size > 1) Then 
+      						enhLogExtendedContent ||, ||, HT & | - imported | & CStr(unids.size - 1) & | decendants.|
+      						enhLogExtendedContent ||, ||, ||
+      					End If  
+      
+      					While unids.hasContent 
+      						result.push unids.pop() 
+      					Wend
+      				
+      				Case Else
+      					' no other form-specific code  
+      					
+      			End Select	
+      				
+      		Set nvent = nav.getNextDocument(nvent) 
+      	Wend
+      		
+      
+      	
+      ExitPoint: 
+      	If (0 <> errcode%) Then Error errcode%, errmsg$ 
+      	
+      	enhLogMethodResult LIB_PREFIX, |Imported | & Format$(result.size, FORMAT_WHOLE_THOUSANDS) & | documents.|
+      	Set importProjects = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	errcode% = Err() 
+      	errmsg$ = Error$() 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:getDataTypes:28:8
+      %REM
+      	Function getDataTypes
+      	
+      	Data_Types from the DataType Keyword documents 
+      	 
+      	@param projectType 	Integer indicating the project type filter:  
+      		0 = ALL PROJECT TYPES
+      		1 = PROJECTTYPE_EXTENSION 	Include only VoltScript Extension (VSE) Project Types
+      		2 = PROJECTTYPE_LIBRARY 	Include only VoltScript Library (VSS) Project Types 
+      				
+      	@param category 	Integer indicating the category filter:
+      		0 = ALL CATEGORIES 
+      		1 = DATATYPE_SCALAR 		Include only Scalar DataType such as Integer, String, etc.
+      		2 = DATATYPE_NOTES			Include only Notes Object data types, such as NotesSession, NotesDatabase, etc
+      		3 = DATATYPE_ADT			Include only C++ Automatic Data Types (VSE Object).
+      		4 = DATATYPE_VOLTSCRIPT		Include only VoltScript Object data types (VSS Object).
+      		
+      	@param clearcache Flag indicating to clear the cache 
+      		
+      		
+      	@return VariantList object containing Data_Type object instances 
+      		k=DataType (name), v=Data_Type instance 
+      	
+      	@throws ERR_PARAMETER_INVALID if projectType is not a member of the allowed values 
+      	@throws ERR_PARAMETER_INVALID if category is not a member of the allowed values
+      
+      %END REM
+      Private Function getDataTypes(projectType As Integer, category As Integer, clearcache As Boolean) As VariantList  
+      	On Error GoTo ErrorTrap
+      		Static cache As VariantList 
+      		
+      		Dim result As New VariantList()
+      	
+      		Dim nvw As NotesView 
+      		Dim nav As NotesViewNavigator 
+      		Dim nvent As NotesViewEntry
+      		Dim unids As StringQueue 
+      		Dim dt As Data_Type 
+      		
+      		Dim resultkey$
+      		Dim viewname$   
+      		Dim unid$ 
+      		Dim label$ 
+      	
+      	
+      		' exception variables
+      		Dim extendedinfo List As String
+      		Dim errmsg$ 
+      		Dim errcode%  
+      	
+      		Dim include As Boolean 
+      	
+      	
+      		' BEGIN CODE
+      		extendedinfo(|projectType|) = CStr(projectType) 
+      		extendedinfo(|category|) = CStr(category) 
+      		extendedinfo(|clearcache|) = CStr(clearcache) 
+      	
+      	
+      		If clearcache Then Set cache = Nothing 
+      		If cache Is Nothing Then 
+      			Set cache = New VariantList() 
+      			viewname$ = |lkp-datatypes|
+      			extendedinfo(|viewname|) = viewname$
+      			Set nvw = getCurrentDb().getView(viewname$) 
+      			Set unids = getViewUNIDs(nvw) 
+      			
+      			unid$ = unids.pop() 
+      			While Not isBlankString(unid$) 
+      				Set dt = New Data_Type()
+      				 
+      				dt.UniversalID = unid$ 
+      				Call cache.setElementValue(dt.label, dt) 
+      				
+      				unid$ = unids.pop() 
+      			Wend
+      		End If 
+      		
+      		
+      		ForAll element In cache.content_ 
+      			extendedinfo(|ListTag(element|) = ListTag(element)
+      
+      			Set dt = element 
+      			extendedinfo(|dt.Label|) = dt.Label
+      			extendedinfo(|dt.CategoryName|) = dt.CategoryName
+      			extendedinfo(|dt.ProjectTypeName|) = Join(dt.ProjectTypeNames, |; |)
+      			extendedinfo(|dt.Label|) = dt.Label
+      			extendedinfo(|dt.Label|) = dt.Label
+      			
+      			include = (0 = projectType)
+      			If Not include Then 
+      				ForAll pt In dt.ProjectTypes 
+      					If (projectType = CInt(pt)) Then 
+      						include = True 
+      						Exit ForAll 
+      					End If
+      				End ForAll
+      			End If
+      			
+      			If include And ((0 = category) Or (category = dt.Category)) Then Call result.setElementValue(dt.Label, dt) 
+      			
+      		End ForAll
+      		
+      
+      	ExitPoint: 
+      		If (0 <> errcode%) Then Error errcode%, errmsg$ 
+      		Set getDataTypes = result
+      		Exit Function 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		errcode% = Err() 
+      		errmsg$ = Error$()
+      		pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      		Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:updateDocument_DataType:22:8
+      %REM
+      	Function updateDocument_DataType
+      	Updates or Conditionally spawns a DataType document. 
+      	
+      	Verifies that an existing matching datatype does not exist by checking datatypeName.
+      	If one does not exist, creates a new datatype document.  
+      	
+      	@param datatypeName 	Name of the DataType to update / create. 
+      	@param newNoteComment 	Comment to be added if a new document is spawned.
+      	@param category  		Category for the DataType.  
+      			Allowed values are DATATYPE_SCALAR, DATATYPE_NOTES, DATATYPE_ADT, and DATATYPE_VOLTSCRIPT 
+      			
+      	@param projectType 	ProjectType, Allowed values are PROJECT_TYPE_EXTENSION, PROJECTTYPE_LIBRARY or their sum.
+      	
+      	@return Flag indicting if a found document was either updated or a new document was spawned. False on Failure
+      	
+      	@throws ERR_PARAMETER_BLANK if datatypeName is Blank
+      	@throws ERR_PARAMETER_INVALID if category is not one of the allowed values 
+      	@throws ERR_PARAMETER_INVALID if projectType is not one of the allowed values 
+      	@throws ERR_VIEW_NOT_FOUND if the DataTypes Lookup view is missing 			
+      %END REM
+      Private Function updateDocument_DataType(datatypeName As String, newNoteComment As String, category As Integer, projectType As Integer) As Boolean
+      	If isBlankString(datatypeName) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK  
+      	On Error GoTo ErrorTrap
+      	
+      	Static nvw As NotesView 
+      	Static unids List As String ' list of UniversalIDs 
+      	
+      	Dim ndoc As NotesDocument 
+      	Dim key$
+      
+      	Dim VSE_VSS(1) As String 
+      
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	Dim errmsg$ 
+      	Dim errcode% 
+      	
+      	Dim result As Boolean
+      	
+      	
+      	' BEGIN CODE
+      	extendedinfo(|datatyepName|) = datatypeName
+      	extendedinfo(|newNoteComment|) = newNoteComment 
+      	extendedinfo(|category|) = CStr(category) 
+      	extendedinfo(|projectType|) = CStr(projectType) 
+      	
+      	
+      	' validate the category 
+      	Select Case category 
+      		Case DATATYPE_SCALAR, DATATYPE_NOTES, DATATYPE_ADT, DATATYPE_VOLTSCRIPT
+      			' do nothing
+      		
+      		Case Else
+      			Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |Category: | & CStr(category) & |.  | 
+      	End Select
+      	
+      
+      	' NOTE: validate the projectType later  
+      	
+      	
+      	key$ = LCase(datatypeName)
+      	If IsElement(unids(key$)) Then Set ndoc = getDocumentByUNID(unids(key$))
+      	If (ndoc Is Nothing) Then
+      		If (nvw Is Nothing) Then 
+      			Set nvw = getCurrentDb().getView(|lkp-datatypes|)
+      			If (nvw Is Nothing) Then Error ERR_VIEW_NOT_FOUND, MSG_VIEW_NOT_FOUND & |Viewname: lkp-datatypes.  |
+      		End If 
+      		
+      		Set ndoc = nvw.getDocumentByKey(datatypeName) 
+      		If (ndoc Is Nothing) Then Set ndoc = getCurrentDb().CreateDocument() 
+      	End If
+      
+      	With ndoc 
+      		.ReplaceItemValue |Form|, |DataType|  
+      		.ReplaceItemValue |Category|, CStr(category) 
+      		.ReplaceItemValue |DataType|, datatypeName 
+      		If .isNewNote Then .ReplaceItemValue |keywordComments|, newNoteComment 
+      
+      		Select Case projectType 
+      			Case PROJECTTYPE_EXTENSION, PROJECTTYPE_LIBRARY
+      				.ReplaceItemValue |ProjectType|, CStr(projectType)
+      								
+      			Case (PROJECTTYPE_EXTENSION + PROJECTTYPE_LIBRARY) 
+      				VSE_VSS(0) = CStr(PROJECTTYPE_EXTENSION)
+      				VSE_VSS(1) = CStr(PROJECTTYPE_LIBRARY)
+      				.ReplaceItemValue |ProjectType|, VSE_VSS
+      			
+      			Case Else
+      				Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |Project Type: | & CStr(projectType) & |.  | 
+      		End Select
+      
+      		Call .computeWithForm(False, False) 
+      		
+      		result = .save(True, False, True) 
+      	End With
+      
+      
+      	
+      ExitPoint: 
+      	If (0 <> errcode%) Then Error errcode%, errmsg$ 
+      
+      	If result Then 
+      		unids(key$) = ndoc.UniversalID
+      		enhLogMethodResult LIB_PREFIX, |Updated datatype | & datatypeName
+      	End If 	
+      	
+      	updateDocument_DataType = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	errcode% = Err() 
+      	errmsg$ = Error$()
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:generateMethod:10:8
+      %REM
+      	Function generateMethod
+      	Generates a BSXdocumentationUtils.Method object for a Method (Sub, Function, or Event)
+      
+      	@param source NotesDocument from which to generate the Method		
+      	@param parent Parent Object for the generated result.	
+      
+      	@return Generated Method 
+      %END REM
+      Private Function generateMethod(source As NotesDocument, parent As CodeElement) As Method
+      	On Error GoTo ErrorTrap
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      
+      	Dim result As Method
+      	Dim exception As ExceptionElement
+      	Dim attributes As Variant  
+      	Dim chunks As Variant 
+      	Dim namestubs As Variant 
+      	
+      	Dim label$ 
+      	Dim valuetype$ 
+      	Dim comment$ 
+      	Dim codesample$
+      	Dim attribute$ 
+      	Dim temp$
+      	Dim itemname$ 
+      	Dim form$
+      	Dim parentconstructor$ 
+      	Dim scope$ 
+      
+      	Dim signaturecode&
+      
+      	Dim errnumber% 
+      	Dim index% 
+      	
+      	Dim isSub As Boolean 	
+      	Dim isEvent As Boolean 
+      	Dim isInLibrary As Boolean
+      	Dim isInVSE As Boolean 
+      	
+      	
+      	
+      	' BEGIN CODE
+      	If (source Is Nothing) Then GoTo ExitPoint 
+      	
+      	extendedinfo(|UniversalID|) = source.Universalid
+      	extendedinfo(|NoteID|) = source.Noteid
+      	form$ =  getItemValueText(source, |Form|, ||, ||)
+      	extendedinfo(|Form|) = form$ 
+      	
+      	If (|method| = LCase(form$)) Then 
+      		isInVSE = True 
+      		label$ = getItemValueText(source, |F_MethName|, ||, ||)
+      		valuetype$ = getItemValueText(source, |F_MethReturnType|, ||, ||)
+      		attribute$ = getItemValueText(source, |F_MethAttribute|, |,|, ||)
+      		If source.getFirstItem(|F_MethAttribute|).Contains(|HIDDEN|) Then GoTo ExitPoint ' Do no generate for hidden methods. 
+      		
+      		' Check for Array
+      		temp$ = getItemValueText(source, |F_MethReturnTypeIsArray|, |,|, ||)
+      		extendedinfo(|F_MethReturnTypeIsArray|) = temp$		
+      		If Not isBlankString(temp$) Then 
+      			If isBlankString(attribute$) Then 
+      				attribute$ = temp$ 
+      			Else
+      				attribute$ = attribute$ & |,| & temp$ 
+      			End If
+      		End If
+      		
+      		extendedinfo(|F_MethName|) = label$
+      		extendedinfo(|F_MethReturnType|) = valuetype$		
+      		extendedinfo(|F_MethAttribute|) = attribute$
+      		
+      	ElseIf (|method_script| = LCase(form$)) Then 
+      		isInLibrary = True
+      		label$ = getItemValueText(source, |F_MethName|, ||, ||)
+      		valuetype$ = getItemValueText(source, |F_MethReturnType|, ||, ||)
+      		attribute$ = getItemValueText(source, |F_MethAttribute|, |,|, ||)
+      		scope$ = |Public| 
+      				
+      		extendedinfo(|F_MethName|) = label$
+      		extendedinfo(|F_MethReturnType|) = scope$
+      		extendedinfo(|F_Scope|) = valuetype$
+      		
+      		If strCmp(label$, |new|) Then parentconstructor$ = getItemValueText(source, |F_ParentConstructor|, ||, ||) 
+      			
+      	ElseIf (|event| = LCase(form$)) Then 
+      		isInVSE = True
+      		label$ = getItemValueText(source, |F_EventName|, ||, ||)
+      		valuetype$ = ||
+      		
+      		extendedinfo(|F_EventName|) = label$
+      		
+      		isEvent = True
+      	Else
+      		Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |Form must be 'Method', 'Method_Script', or 'Event'.  |
+      	End If
+      
+      
+      	comment$ = getItemValueText(source, |Comment|, CRLF, | |)
+      	codesample$ = getItemValueText(source, |CodeSample|, CRLF, | |) 
+      	isSub = (|sub| = LCase$(Trim$(getItemValueText(source, |F_Funct_or_Sub|, ||, ||))))
+      
+      	extendedinfo(|Comment|) = comment$ 
+      	extendedinfo(|CodeSample|) = codesample$ 
+      	extendedinfo(|isSub|) = CStr(isSub)
+      
+      	If getContext().GeneratingAPIdoc Then 
+      		' Ampersand encode variables which may potentially include HTML content. 
+      		comment$ = getBaliStrings().ampersandEncode(comment$)
+      		codesample$ = getBaliStrings().ampersandEncode(codesample$)
+      	End If
+      
+      	If isEvent Then 
+      		signaturecode& = SIGNATURE_VALUE_EVENT
+      		
+      	ElseIf isSub Then 
+      		signaturecode& = SIGNATURE_VALUE_SUB
+      		
+      	Else 
+      		' default to Function
+      		signaturecode& = SIGNATURE_VALUE_FUNCTION
+      	End If
+      
+      
+      	Select Case LCase(scope$) 
+      		Case |public|
+      			signaturecode& = signaturecode& + SIGNATURE_VALUE_PUBLIC
+      		
+      		Case |private| 
+      			signaturecode& = signaturecode& + SIGNATURE_VALUE_PRIVATE
+      			
+      	End Select
+      	
+      	If strCmp(|Static|, attribute$) Then signaturecode& = signaturecode& + SIGNATURE_VALUE_STATIC
+      	
+      	extendedinfo(|signature code|) = CStr(signaturecode&)
+      	Set result = New Method(parent, label$, valuetype$, comment$, codesample$, signaturecode&)
+      	Call result.setElementValue(|F_ReturnsObject|, getItemValueText(source, |F_ReturnsObject|, |,|, ||))
+      	If Not isBlankString(parentconstructor$) Then Call result.setElementValue(|parentconstructor|, parentconstructor$)
+      		
+      	' conditionally add attributes 
+      	If Not isBlankString(attribute$) Then 
+      		attributes = Split(attribute$, |,|) 
+      		ForAll element In attributes 
+      			attribute$ = CStr(element) 
+      			If Not isBlankString(attribute$) Then result.appendAttribute attribute$ 
+      		End ForAll
+      	End If
+      	
+      	' get attribute name stubs 
+      	If isInVSE Then 
+      		namestubs = getAttributeNameStubs()
+      	Else 
+      		namestubs = getAttributeNameStubs_Script()
+      	End If 
+      		
+      	Call spawnArgumentsForMethod(source, result, namestubs, isInVSE)
+      	
+      	' conditionally add exceptions
+      	itemname$ = |ThrowsExceptions|
+      	If (source.Hasitem(itemname$)) Then
+      		If Not isBlankString(source.getFirstItem(itemname$).Text) Then 
+      			ForAll element In source.Getitemvalue(itemname$) 
+      				temp$ = CStr(element) 
+      				extendedinfo(itemname$ & | element|) = temp$
+      				chunks = Split(temp$, |~|) 
+      				
+      				errnumber% = CInt(chunks(0))
+      				label$ = CStr(chunks(1)) 
+      				If (UBound(chunks) > 1) Then 
+      					comment$ = chunks(2)
+      				Else 
+      					comment$ = || 
+      				End If
+      				
+      				Set exception = New ExceptionElement(label$, comment$, errnumber%)
+      				result.appendException exception
+      			End ForAll			
+      		End If
+      	End If
+      
+      	
+      ExitPoint: 
+      	Set generateMethod = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      
+      
+      '++LotusScript Development Environment:2:1:resetCollectionAncestorIDs:12:8
+      %REM
+      	Function resetCollectionAncestorIDs
+      	Conditionally resets the ancestor ID fields (F_ProjectID, F_ClassID, F_TypeID) for documents matching UniversalIDs
+      	
+      	@param unids UniversalIDs of all documents to reset. 
+      	NOTE: UniversalIDs will be popped from this StringQueue, causing it to be EMPTY after this method exits successfully. 
+      	
+      	@return Number of documents that were updated and saved.  
+      	
+      	@throws ERR_PARAMETER_BLANK if unids is Nothing
+      %END REM
+      Function resetCollectionAncestorIDs(unids As StringQueue) As Integer 
+      	If (unids Is Nothing) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK
+      	On Error GoTo ErrorTrap
+      	
+      	
+      	Dim ndoc As NotesDocument 
+      	Dim form$ 
+      	
+      	Dim result%
+      
+      	
+      	' BEGIN CODE
+      	While unids.hasContent
+      		Set ndoc = getDocumentByUNID(unids.pop())
+      		form$ = LCase(getItemValueText(ndoc, |Form|, ||, ||))
+      		
+      		Select Case form$ 
+      			Case |class|, |event|, |method|, |project|, |property|
+      				If resetAncestorIDs(ndoc, ||) Then result% = result% + 1
+      				
+      			Case |class_script|, |method_script|, |project_script|, |property_script|, |type_script|, |variable_script|
+      				If resetAncestorIDs(ndoc, |_script|) Then result% = result% + 1
+      
+      			Case Else 
+      				' do nothing 
+      
+      		End Select
+      	Wend	
+      	
+      	
+      ExitPoint: 
+      	If (result% > 0) Then 	enhLogMethodResult ||, |Updated | & Format$(result%, FORMAT_WHOLE_THOUSANDS) & | documents.| 
+      	
+      	resetCollectionAncestorIDs = result%
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, ||
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:getDataTypeLabels:25:8
+      %REM
+      	Function getDataTypeLabels
+      	Labels (DataType Field) of Datatype Keyword Documents  
+      	
+      	@param projectType 	Integer indicating the project type filter:  
+      		0 = ALL PROJECT TYPES
+      		1 = PROJECTTYPE_EXTENSION 	Include only VoltScript Extension (VSE) Project Types
+      		2 = PROJECTTYPE_LIBRARY 	Include only VoltScript Library (VSS) Project Types 
+      				
+      	@param category 	Integer indicating the category filter:
+      		0 = ALL CATEGORIES 
+      		1 = DATATYPE_SCALAR 		Include only Scalar DataType such as Integer, String, etc.
+      		2 = DATATYPE_NOTES			Include only Notes Object data types, such as NotesSession, NotesDatabase, etc
+      		3 = DATATYPE_ADT			Include only C++ Automatic Data Types (VSE Object).
+      		4 = DATATYPE_VOLTSCRIPT		Include only VoltScript Object data types (VSS Object).
+      		
+      	@param clearcache Flag indicating to clear the cache 
+      
+      	@return StringsCarrier object containing the DataType Labels 
+      		k=DataType (name), v=Label (DataType field)  
+      	
+      	@throws ERR_PARAMETER_INVALID if projectType is not a member of the allowed values 
+      	@throws ERR_PARAMETER_INVALID if category is not a member of the allowed values
+      %END REM
+      Private Function getDataTypeLabels(projectType As Integer, category As Integer, clearcache As Boolean) As StringsCarrier 
+      		On Error GoTo ErrorTrap
+      	
+      		Dim datatypes As VariantList 
+      		Dim dt As Data_Type 
+      		
+      		Dim result As New StringsCarrier()
+      	
+      		' exception variables
+      		Dim extendedinfo List As String
+      		Dim errmsg$ 
+      		Dim errcode%  
+      	
+      	
+      		' BEGIN CODE
+      		extendedinfo(|projectType|) = CStr(projectType) 
+      		extendedinfo(|category|) = CStr(category) 
+      		extendedinfo(|clearcache|) = CStr(clearcache)
+      		
+      		Set datatypes = getDataTypes(projectType, category, clearcache) 
+      		ForAll element In datatypes.content_
+      			extendedinfo(|ListTag(element)|) = ListTag(element) 
+      			Set dt = element
+      			extendedinfo(|dt.Label|) = dt.Label 
+      			result.push dt.Label  
+      		End ForAll
+      		 
+      
+      	ExitPoint: 
+      		If (0 <> errcode%) Then Error errcode%, errmsg$ 
+      		Set getDataTypeLabels = result
+      		Exit Function 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		errcode% = Err() 
+      		errmsg$ = Error$()
+      		pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      		Resume ExitPoint
+      End Function
+      
+      
+      '++LotusScript Development Environment:2:1:getObjectDataTypeLabels:10:8
+      %REM
+      	Function getObjectDataTypeLabels
+      	Gets the Object DataType Labels (field = DataType) for the specified projectType 
+      	
+      	@param projectType Project Type (PROJECTTYPE_EXTENSION or PROJECTTYPE_LIBRARY) for which to retrieve the Data Type Labels
+      	@param clearcache Flag indicating to clear the cache 
+      	
+      	@return StringsCarrier containing the Object Data Type Labels 
+      %END REM
+      Private Function getObjectDataTypeLabels(projectType As Integer, clearcache As Boolean) As StringsCarrier 
+      	On Error GoTo ErrorTrap
+      	
+      	Static cache As StringsCarrierList 
+      
+      	' exception variables
+      	Dim extendedinfo List As String 
+      
+      	Dim result As New StringsCarrier()
+      	Dim objectLabels As StringsCarrier 
+      	Dim scalarLabels As StringsCarrier 
+      	Dim strarray As Variant 
+      	
+      	Dim label$
+      	Dim tag$ 
+      
+      	
+      	' BEGIN CODE
+      	extendedinfo(|projectType|) = CStr(projectType) 
+      	extendedinfo(|clearcache|) = CStr(clearcache)
+      	
+      	tag$ = CStr(projectType)  
+      	
+      	If clearcache Then Set cache = Nothing 
+      	If cache Is Nothing Then Set cache = New StringsCarrierList() 
+      	
+      	Select Case projectType 
+      		Case PROJECTTYPE_EXTENSION, PROJECTTYPE_LIBRARY
+      			If Not cache.hasTag(tag$) Then 
+      				Set objectLabels = getDataTypeLabels(projecttype%, 0, clearcache) ' 0 = All Data Types
+      				Set scalarLabels = getScalarDataTypeLabels(projecttype%, clearcache)
+      				
+      				If scalarLabels.hasContent Then 
+      					strarray = scalarLabels.values 
+      					ForAll element In strarray 
+      						label$ = CStr(element) 
+      						Call objectLabels.yank(label$) 
+      					End ForAll
+      				End If
+      
+      				Call cache.setElementValue(tag$, objectLabels)
+      			End If
+      			
+      			Call result.load(cache.getValue(tag$))
+      			
+      		Case Else 
+      			' do nothing 
+      			
+      	End Select
+      	
+      	
+      ExitPoint: 
+      	Set getObjectDataTypeLabels = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:getAttributes:8:8
+      %REM
+      	Function getAttributes
+      	Generates a StringQueue of unique attribute values. 
+      	
+      	@param scope Scope for the attributes 
+      	@param attributestring Comma-delmited string containing attribute values 
+      %END REM
+      Private Function getAttributes(scope$, attributesstring$) As StringQueue 
+      	On Error GoTo ErrorTrap
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	
+      	Dim result As New StringQueue() 
+      	Dim values As Variant 
+      	Dim attribute$ 
+      
+      	
+      	' BEGIN CODE
+      	extendedinfo(|Scope|) = scope$ 
+      	extendedinfo(|AttributesString|) = attributesstring$ 
+      	
+      	If Not isBlankString(scope$) Then result.push scope$ 
+      	
+      	' get other attributes 
+      	If Not isBlankString(attributesstring$) Then 
+      		values = Split(attributesstring$, |,|)
+      		
+      		' load attributes 
+      		ForAll element In values 
+      			attribute$ = CStr(element) 
+      			If Not isBlankString(attribute$) And Not result.contains(attribute$) Then result.push attribute$
+      		End ForAll	
+      	End If
+      	
+      ExitPoint: 
+      	Set getAttributes = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:getScalarDataTypeLabels:10:8
+      %REM
+      	Function getScalarDataTypeLabels
+      	Gets the Scalar DataType Labels (field = DataType) for the specified projectType 
+      	
+      	@param projectType Project Type (PROJECTTYPE_EXTENSION or PROJECTTYPE_LIBRARY) for which to retrieve the Data Type Labels
+      	@param clearcache Flag indicating to clear the cache 
+      	
+      	@return StringsCarrier containing the Scalar Data Type Labels 
+      %END REM
+      Private Function getScalarDataTypeLabels(projectType As Integer, clearcache As Boolean) As StringsCarrier 
+      	On Error GoTo ErrorTrap
+      	
+      	Static cache As StringsCarrierList 
+      
+      	' exception variables
+      	Dim extendedinfo List As String 
+      
+      	Dim result As New StringsCarrier()
+      	Dim tag$ 
+      
+      	
+      	' BEGIN CODE
+      	extendedinfo(|projectType|) = CStr(projectType) 
+      	extendedinfo(|clearcache|) = CStr(clearcache)
+      	
+      	tag$ = CStr(projectType)  
+      	
+      	If clearcache Then Set cache = Nothing 
+      	If cache Is Nothing Then Set cache = New StringsCarrierList() 
+      	
+      	Select Case projectType 
+      		Case PROJECTTYPE_EXTENSION, PROJECTTYPE_LIBRARY
+      			If Not cache.hasTag(tag$) Then Call cache.setElementValue(tag$, getDataTypeLabels(projecttype%, DATATYPE_SCALAR, clearcache))
+      			
+      			Call result.load(cache.getValue(tag$))
+      			
+      		Case Else 
+      			' do nothing 
+      	End Select
+      	
+      	
+      ExitPoint: 
+      	Set getScalarDataTypeLabels = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:2:DumpSkeletons:1:8
+      Public Sub DumpSkeletons
+      	
+      ' Dump the UNID of the Skeleton documents to a text file.
+      ' Can be called from the LSX Skeletons view.
+      	
+      	Dim session As New NotesSession
+      	Dim theDB As NotesDatabase
+      	Dim theView As NotesView
+      	Dim theDoc As NotesDocument
+      	Dim theItem As NotesRichTextItem
+      	Dim theString As String
+      	Dim theLength As Long
+      	Dim countDocs As Integer
+      	Dim SkeletonDocNum As Integer 
+      	Dim FileNum As Integer
+      	Dim UNIDStr As String
+      	Dim StrValue As String
+      	
+      	Set theDB = session.CurrentDatabase     
+      	
+      	FileNum = FreeFile()  
+      	
+      	Open "C:\temp\LSXUNID.TXT" For Output As FileNum 
+           'UNIDStr = "AAAAAAAAAABBBBBBBBBBCCCCCCCCCCDD"
+      	
+      	Set theView = theDB.GetView("LSX Skeletons")
+      	If (theView Is Nothing) Then 
+      		MessageBox "Can't get the LSX Skeletons View", WIZARD_ERR, "LSX Wizard Error"
+      		Exit Sub
+      	End If
+      	
+      	Set theDoc = theView.GetFirstDocument
+      	If (theDoc Is Nothing) Then 
+      		MessageBox "Get LSX Skeletons first document failed", WIZARD_ERR, "LSX Wizard Error"
+      		Exit Sub
+      	End If
+      	
+      	countDocs = 0
+      	While Not (theDoc Is Nothing)
+      		countDocs = countDocs + 1
+      		Set theItem = theDoc.GetFirstItem("TheCode")
+      		If Not (theItem Is Nothing) Then
+                     'theString = theItem.Text               
+                     'Don't use NotesItem use Notesrichtextitem instead
+                     'I'm using 130 because the maxline in the METHOD ITEM table is 125
+      			theString = theItem.GetFormattedText(False, 130)  
+      			theLength = Len(theString)
+      			
+      		Else
+      			MessageBox "theItem in LSX Skeletons is NOTHING", WIZARD_ERR, "LSX Wizard Error"
+      			Exit Sub
+      		End If          
+      		
+      		UNIDStr = theDoc.UniversalID  'this code is to find the UNID number, don't enable it
+      		StrValue = CStr(countDocs)
+      		StrValue = |SkeletonUNID(| & StrValue & |) = | & |"| & UNIDStr 
+      		Write #FileNum, StrValue   'this code is to find the UNID number, don't enable it
+      		
+      		Set theDoc = theView.GetNextDocument(theDoc)
+      	Wend
+      	Close FileNum   
+      	MessageBox "Skeletons written", WIZARD_ERR, "LSX Wizard"
+      End Sub
+      
+      '++LotusScript Development Environment:2:1:getToolKitConfigDoc:9:8
+      %REM
+      	Function getToolKitConfigDoc
+      	Gets the Toolkit Configuration Document
+      	
+      	@param clearcache Flag indicating to clear the cache 
+      	
+      	@return ToolKit Config Document 
+      %END REM
+      Function getToolKitConfigDoc(clearcache As Boolean) As NotesDocument 
+      	On Error GoTo ErrorTrap
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	
+      	
+      	Dim result As NotesDocument
+      	Dim isUpdated As Boolean 
+      	
+      	
+      	' BEGIN CODE
+      	Set result = getDbConfigDoc(FORMNAME_TOOLKIT_CONFIG, clearcache)
+      	
+      	If Not (FORMNAME_TOOLKIT_CONFIG = getItemValueText(result, |Form|, ||, ||)) Then 
+      		Call result.replaceItemValue(|Form|, FORMNAME_TOOLKIT_CONFIG)
+      		isUpdated = True 
+      	End If 
+      	
+      	If Not (result.UniversalID = getItemValueText(result, |F_ConfigID|, ||, ||)) Then 
+      		Call result.replaceItemValue(|F_ConfigID|, result.UniversalID)
+      		isUpdated = True 
+      	End If
+      	
+      	If Not result.hasItem(|EditModeFlag|) Then 
+      		Call result.replaceItemValue(|EditModeFlag|, |Yes|) 
+      		isUpdated = True 
+      	End If 
+      	
+      	
+      ExitPoint: 
+      	Set getToolKitConfigDoc = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:GenerateLSXClassID:1:8
+      Public Function GenerateLSXClassID(ProjectDoc As NotesDocument, ClassName As String, CreateIfNotFound As Boolean) As Long 
+      '		GenerateLSXClassID	
+      '
+      '		Generates a classid for a new class in an LSX wizard project. 
+      '		This function checks the archive item in the project doc first, to preserve old IDs.
+      '
+      ' 		reo	07/14/2007	Created
+      '
+      	On Error GoTo ErrorTrap 
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	Dim errmsg$
+      	Dim errcode%
+      	Dim errline%	 
+      	Dim msg$ 
+      	
+      
+      	Dim Archive As String
+      	Dim ClassTag As String 
+      	Dim ID As String 
+      	Dim ClassIDTag As String  
+      	Dim tempstr As String 
+      	
+      	Dim TagStart As Long 
+      	Dim TagEnd As Long 
+      	Dim ID_Start As Long 
+      	Dim ID_End As Long 
+      	Dim ID_Len As Long 
+      	Dim ClassID As Long
+      
+      	Dim ClassNameFound As Boolean 
+      	
+      	
+      	' Create the Class and Method archives if they're missing.
+      	Call CreateLSXArchivesIfMissing(ProjectDoc)
+      	
+      	' Read the Class ID archive and try to find an entry for this class
+      	Archive = getItemValueText(ProjectDoc, ITEMNAME_CLASS_ARCHIVE, ||, ||)	 'Read archive list
+      	ClassTag = "(" & ClassName & ")"					' This is this class's tag
+      	TagStart = InStr(Archive, ClassTag)					' Look for it in the archive
+      	ClassNameFound = TagStart > 0						' Was it found?
+      	
+      	'Depending on if we found it or not, do certain things...
+      	If ClassNameFound Then
+      		'We found the classname in our archive... retrieve its ID
+      		ID_Start = 	TagStart + Len(ClassTag) + 1 			' Locate start of ID value's digits
+      		ID_End =  InStr(ID_Start, Archive, "]")  - 1  			' Compute ID string end
+      		ID_Len = ID_End - ID_Start	 + 1						' Compute ID string length
+      		ID = Mid(Archive, ID_Start, ID_Len ) 				' Extract ID string value
+      		ClassID = Val(ID)											' Return it
+      		Print "GenerateLSXClassID: Using archived Class ID value for " & ClassName & " (#" & CStr(ClassID) & ") to maintain backwards compatibility."
+      		
+      	ElseIf CreateIfNotFound Then
+      		' Didn't find it in the archive... so create one 
+      		tempStr = getItemValueText(ProjectDoc, ITEMNAME_CLASSID_COUNTER, ||, ||)
+      		If Not IsNumeric(tempStr) Then tempStr = |0|
+      		
+      		ClassID = CLng(tempStr) + 1
+      		ClassIDTag = "[" & CStr(ClassID) & "]"
+      		Call ProjectDoc.ReplaceItemValue(ITEMNAME_CLASSID_COUNTER, CLng(ClassID))
+      		Call ProjectDoc.ReplaceItemValue(ITEMNAME_CLASS_ARCHIVE, Archive & ClassTag & ClassIDTag)
+      		Call ProjectDoc.Save(True, True)
+      '		Print "GenerateLSXClassID: Creating ID for " & ClassName & " using #" & Cstr(ClassID)
+      		
+      	Else
+      		' Classname not found and we don't want to generate a new one
+      		ClassID = -1
+      '		Print "ID not found or created!"
+      	End If
+      	
+      
+      
+      		
+      ExitPoint: 
+      	If (0 <> errcode%) Then Error errcode%, errmsg$ & | at line | & CStr(errline%) & | in | & LIB_PREFIX & GetThreadInfo(1) & |().  | 
+      	' Return the archived or new ClassID
+      	GenerateLSXClassID = ClassID
+      	Exit Function  
+      ErrorTrap:
+      	On Error GoTo 0
+      	errcode% = Err() 
+      	errmsg$ = Error() 
+      	errline% = Erl()
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	
+      	ForAll s In extendedinfo 
+      		If isBlankString(msg$) Then 
+      			msg$ = ListTag(s) & |: | & s 
+      		Else 
+      			msg$ = msg$ & |, | & CRLF & ListTag(s) & |: | & s
+      		End If
+      		
+      	End ForAll
+      	enhLogException LIB_PREFIX, msg$ 
+      	
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:updateVSEspecialItems:14:8
+      %REM
+      	Function updateVSEspecialItems
+      	Updates special item values on Method (VSE only) documents
+      		
+      	Special Item Values: 
+      		- Integer changed to Integer-Signed 
+      		- Long changed to Long-Signed
+      	
+      	@param target Method document to be updated 
+      	@return Flag indicating if special items were updated 
+      	
+      	@throws ERR_PARAMETER_BLANK if target is Nothing 
+      %END REM
+      Private Function updateVSEspecialItems(target As NotesDocument) As Boolean
+      	If (target Is Nothing) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |Target is Nothing.  |
+      		
+      	On Error GoTo ErrorTrap
+      
+      	 
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	
+      	Dim form$ 
+      	Dim argitemname$ 
+      	Dim returntype$ 
+      	Dim argdatatype$
+      	Dim itemname$ 
+      	 
+      	
+      	Dim idx% 
+      	
+      	Dim result As Boolean
+      
+      	
+      	' BEGIN CODE
+      	form$ = getItemValueText(target, |Form|, ||, ||) 
+      	extendedinfo(|form|) = form$
+      	
+      	Select Case LCase$(form$) 
+      		Case |method| 
+      			itemname$ = |F_MethReturnType|
+      		Case |property| 
+      			itemname$ = |F_PropDataType|
+      		Case Else 
+      			Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |Unsupported Form: | & form$ 
+      	End Select
+      	
+      	
+      
+      	returntype$ = getBaliStrings().properCase(getItemValueText(target, itemname$, ||, ||))		 
+      	 
+      	Select Case returntype$
+      		Case |Integer|, |Long|
+      			returntype$ = returntype$ & |-Signed|
+      			extendedinfo(|returntype|) = returntype$ 
+      	
+      			Call target.replaceItemValue(itemname, returntype$)
+      			result = True 
+      			 
+      		Case Else 
+      			' do nothing 
+      			
+      	End Select
+      	
+      	
+      	For idx% = 1 To 10 
+      		argitemname$ = |F_ArgDataType_| & CStr(idx%)
+      		extendedinfo(|argitemname|) = argitemname$
+      			If target.hasItem(argitemname$) Then  
+      			
+      			argdatatype$ = getBaliStrings().properCase(getItemValueText(target, argitemname$, ||, ||))
+      			Select Case argdatatype$
+      				Case |Integer|, |Long|
+      					argdatatype$ = argdatatype$ & |-Signed|
+      					extendedinfo(|argdatatype|) = argdatatype$ 
+      					
+      					Call target.replaceItemValue(argitemname$, argdatatype$)
+      					result = True 
+      					 
+      				Case Else 
+      					' do nothing 
+      					
+      			End Select
+      		End If 
+      	Next
+      		
+      		
+      ExitPoint: 
+      	updateVSEspecialItems = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	result = False 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:updateElementDocument:24:8
+      %REM
+      	Function updateElementDocument
+      	Updates appropriate fields and saves the document. 
+      	Fields to be updated are dependent upon the document's form.
+      	Supported forms:
+      		project, project_script, 
+      		class, class_script, 
+      		event, 
+      		method, method_script, 
+      		property, property_script, 
+      		type_script, 
+      		variable_script
+      	
+      	@param target Document for which fields should be updated.
+      	@param ndocProject 	Project ancestor document for the target, if appropriate 
+      	@param ndocClass 	Class ancestor document for the target, if appropriate 
+      	@param ndocType 	Type ancestor document for the target, if appropriate 
+      
+      	@return Flag indicating if the target document was updated and successfully saved.   
+      	
+      	@throws ERR_PARAMETER_BLANK if target document is nothing 
+      	@throws ERR_PARAMETER_BLANK if form is blank
+      %END REM
+      Private Function updateElementDocument(target As NotesDocument, ndocProject As NotesDocument, ndocClass As NotesDocument, ndocType As NotesDocument) As Boolean
+      	If (target Is Nothing) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |Target document is Nothing.  |
+      	 
+      	On Error GoTo ErrorTrap
+      	
+      	Dim objectDataTypeLabels As StringsCarrier
+      		
+      	' exception variables
+      	Dim extendedinfo List As String
+      	
+      	Dim strarray As Variant 
+      	
+      	Dim label$
+      	Dim form$ 
+      	Dim returntype$ 
+      
+      	Dim projecttype% 
+      	
+      	Dim result As Boolean
+      
+      	
+      	' BEGIN CODE
+      	form$ = LCase(getItemValueText(target, |Form|, ||, ||)) 
+      	extendedinfo(|form|) = form$
+      	
+      	If getBaliStrings().endsWith(form$, |_script|) Then 
+      		projecttype% = PROJECTTYPE_LIBRARY
+      	Else
+      		projecttype% = PROJECTTYPE_EXTENSION
+      	End If 
+      	
+      	
+      	Set objectDataTypeLabels = getObjectDataTypeLabels(projecttype%, False) 
+      
+      	Select Case form$
+      		Case |project|, |project_script|
+      			Call target.replaceItemValue(|F_ProjectID|, target.UniversalID)
+      
+      		Case |class|
+      			Call target.replaceItemValue(|F_ClassID|, target.UniversalID)
+      			If Not target.hasItem(|F_ContainerClassType|) Then Call target.replaceItemValue(|F_ContainerClassType|, |Default|) 
+      			If Not target.hasItem(|F_ClassType|) Then Call target.replaceItemValue(|F_ClassType|, |Base|) 
+      
+      
+      		Case |class_script|
+      			Call target.replaceItemValue(|F_ClassID|, target.UniversalID)
+      			If Not target.hasItem(|F_ClassType|) Then Call target.replaceItemValue(|F_ClassType|, |Base|) 
+      		
+      			
+      		Case |method|, |method_script|
+      			If Not target.hasItem(|F_Funct_or_Sub|) Then Call target.replaceItemValue(|F_Funct_or_Sub|, |Function|) 
+      
+      			If strCmp(|method|, form$) Then Call updateVSEspecialItems(target) ' VSE ONLY
+      
+      			Call target.replaceItemValue(|F_ReturnsObject|, 0)
+      			If (0 <> strComp(|Sub|, getItemValueText(target, |F_Funct_or_Sub|, ||, ||))) Then 
+      				returntype$ = getBaliStrings().properCase(getItemValueText(target, |F_MethReturnType|, ||, ||))
+      				extendedinfo(|returntype|) = returntype$ 
+      				If (Not isBlankString(returntype$)) And objectDataTypeLabels.contains(returntype$) Then Call target.replaceItemValue(|F_ReturnsObject|, 1)
+      			End If
+      			
+      						
+      		Case |property|, |property_script|
+      			If strCmp(|property|, form$) Then Call updateVSEspecialItems(target) ' VSE ONLY
+      			
+      			returntype$ = getBaliStrings().properCase(getItemValueText(target, |F_PropDataType|, ||, ||))
+      			extendedinfo(|returntype|) = returntype$ 
+      			If (Not isBlankString(returntype$)) And objectDataTypeLabels.contains(returntype$) Then Call target.replaceItemValue(|F_ReturnsObject|, 1)
+      
+      			If Not getBaliStrings().endsWith(form$, |_script|) Then 
+      				' only applies to VSE Properties 			
+      				If Not target.hasItem(|F_PropGetConst|) Then Call target.replaceItemValue(|F_PropGetConst|, |GET_CONST|) 
+      				If Not target.hasItem(|F_PropSetConst|) Then Call target.replaceItemValue(|F_PropSetConst|, |SET_CONST|)
+      			End If  
+      
+      		Case |type_script|
+      			Call target.replaceItemValue(|F_TypeID|, target.UniversalID)
+      	
+      			
+      		Case |event|, |variable_script| 
+      			' no form-specific settings needed for these forms 
+      			
+      			
+      		Case Else
+      			' log a warning and bail out 
+      			enhLogWarning LIB_PREFIX, |Unsupported Form: | & form$ 
+      			GoTo ExitPoint 
+      			
+      	End Select 
+      	
+      	If Not (ndocProject Is Nothing) Then Call target.replaceItemValue(|F_ProjectID|, ndocProject.UniversalID)
+      	If Not (ndocClass Is Nothing) Then Call target.replaceItemValue(|F_ClassID|, ndocClass.UniversalID)
+      	If Not (ndocType Is Nothing) Then Call target.replaceItemValue(|F_TypeID|, ndocType.UniversalID)
+      		
+      	Call target.computeWithForm(False, False) 
+      	result = target.save(True, False, True) 
+      	
+      	
+      ExitPoint: 
+      	updateElementDocument = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:updateProjects:7:8
+      %REM
+      	Function updateProjects
+      	Updates all Project documents and their descendants. 
+      	
+      	@return count of documents that have been updated.  
+      %END REM
+      Function updateProjects As Integer 
+      	On Error GoTo ErrorTrap
+      	
+      	Dim ndocProject As NotesDocument 
+      	Dim ndocClass As NotesDocument  
+      	Dim ndocType As NotesDocument ' should always be Nothing in this instance -only processing VSE Projects. 
+      	Dim ndoc As NotesDocument 
+      
+      	Dim unids As New StringQueue() 
+      	Dim unid$ 
+      	Dim form$
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	Dim errcode% 
+      	Dim errmsg$ 
+      		
+      	Dim result%
+      
+      	
+      	
+      	' BEGIN CODE
+      	extendedinfo(|Viewname|) = VIEWNAME_PROJECTS_VSE
+      	
+      	' load the unids 
+      	Set unids = getViewUNIDs(getCurrentDb().getView(VIEWNAME_PROJECTS_VSE)) 
+      
+      	enhLogExtendedContent LIB_PREFIX, ||, |Processing Extension Documents| 	
+      	
+      	While unids.hasContent 
+      		unid$ = unids.pop()
+      		extendedinfo(|unid|) = unid$ 
+      		Set ndoc = getDocumentByUNID(unid$) 
+      		form$ = LCase(getItemValueText(ndoc, |Form|, ||, ||)) 
+      		extendedinfo(|form|) = form$ 
+      		
+      		enhLogExtendedContent ||, ||, |Processing | & form$ & |: | & unid$
+      		Select Case form$ 
+      			Case |project|
+      				Set ndocProject = ndoc 
+      				Set ndocClass = Nothing
+      				 
+      			Case |class|
+      				Set ndocClass = ndoc  
+      			
+      			Case Else
+      				' no other form-specific code  
+      				
+      		End Select
+      		
+      		If updateElementDocument(ndoc, ndocProject, ndocClass, ndocType) Then result% = result% + 1
+      		
+      	Wend
+      	
+      	
+      ExitPoint: 
+      	If (0 <> errcode%) Then Error errcode%, errmsg$ 
+      	
+      	enhLogMethodresult LIB_PREFIX, |Updated | & Format$(result%, FORMAT_WHOLE_THOUSANDS) & | documents.| 
+      	updateProjects = result%
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	errcode% = Err() 
+      	errmsg$ = Error$() 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:generateVariable:10:8
+      %REM
+      	Function generateVariable
+      	Generates a BSXdocumentationUtils.Variable object for a Variable 
+      
+      	@param source NotesDocument from which to generate the Variable		
+      	@param parent Parent Object for the generated result.	
+      
+      	@return Generated Variable 
+      %END REM
+      Private Function generateVariable(source As NotesDocument, parent As CodeElement) As Variable
+      	On Error GoTo ErrorTrap
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      
+      	Dim attributes As StringQueue
+      	Dim result As Variable
+      	Dim values As Variant
+      	
+      	Dim label$ 
+      	Dim valuetype$ 
+      	Dim initialValue$
+      	Dim comment$
+      	Dim attributesstring$ 
+      	Dim temp$
+      	Dim scope$ 
+      	Dim form$
+      	
+      	Dim signaturecode& 
+      	
+      	' BEGIN CODE
+      	If (source Is Nothing) Then GoTo ExitPoint 
+      	
+      	
+      	extendedinfo(|UniversalID|) = source.Universalid
+      	extendedinfo(|NoteID|) = source.Noteid
+      	form$ =  getItemValueText(source, |Form|, ||, ||)
+      	extendedinfo(|Form|) = form$ 
+      		
+      	If (|variable_script| = LCase(form$)) Then
+      		label$ = getItemValueText(source, |F_VarName|, ||, ||)
+      		valuetype$ = getItemValueText(source, |F_VarDataType|, ||, ||)
+      		attributesstring$ = getItemValueText(source, |F_VarAttribute|, |,|, ||)
+      		initialValue$ = getItemValueText(source, |F_InitValue|, |,|, ||)
+      		comment$ = getItemValueText(source, |Comment|, CRLF, | |)
+      		If Not strCmp(|ObjectType|, TypeName(parent)) Then scope$ = |Public| ' variables within Types may have no explicit scope 
+      
+      		If getContext().GeneratingAPIdoc Then 
+      			' Ampersand encode variables which may potentially include HTML content. 
+      			comment$ = getBaliStrings().ampersandEncode(comment$)
+      			initialValue$ = getBaliStrings().ampersandEncode(initialValue$)
+      		End If
+      
+      		extendedinfo(|Comment|) = comment$ 
+      		extendedinfo(|F_VarName|) = label$
+      		extendedinfo(|F_VarDataType|) = valuetype$
+      		extendedinfo(|F_VarAttribute|) = attributesstring$	
+      		extendedinfo(|F_InitValue|) = initialValue$
+      		extendedinfo(|F_Scope|) = scope$ 
+      		
+      		
+      
+      	Else
+      		Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |Form must be 'variable_script'.  |
+      
+      	End If
+      	
+      	Set attributes = getAttributes(scope, attributesstring$) 
+      	signaturecode& = getSignatureCode(attributes.joinContent(| |)) + SIGNATURE_VALUE_VARIABLE 
+      	extendedinfo(|signature code|) = CStr(signaturecode&)
+      
+      	If SIGNATURE_VALUE_VARIABLE <> signatureCodeToInstanceCode(signaturecode&) Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |Source document does not represent a Variable.  |
+      	Set result = New Variable(parent, label$, valuetype$, comment$, ||, signaturecode&)
+      
+      	result.setElementValue |F_ReturnsObject|, getItemValueText(source, |F_ReturnsObject|, |,|, ||)
+      	
+      	' conditionally add attributes
+      	While attributes.hasContent 
+      		result.appendAttribute attributes.pop() 
+      	Wend 
+      	
+      ExitPoint: 
+      	Set generateVariable = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:generateProperties:10:8
+      %REM
+      	Function generateProperties
+      	Generates BSXdocumentationUtils.Method object(s) for a Property (Getter / Setter)
+      
+      	@param source NotesDocument from which to generate the Property		
+      	@param parent Parent Object for the generated result.	
+      
+      	@return array (one or two elements) containing the generated  (Getter / Setter) Property (or Properties)  
+      %END REM
+      Private Function generateProperties(source As NotesDocument, parent As CodeElement) As Variant
+      	On Error GoTo ErrorTrap
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      
+      	Dim result() As Method 
+      	Dim objProperty As Method
+      	Dim attributes As Variant  
+      	Dim chunks As Variant
+      	Dim namestubs As Variant  
+      
+      	Dim label$ 
+      	Dim valuetype$ 
+      	Dim initialValue$
+      	Dim comment$ 
+      	Dim codesample$
+      	Dim attribute$ 
+      	Dim temp$
+      	Dim itemname$ 
+      	Dim scope$ 
+      
+      	Dim errnumber% 
+      	Dim index% 
+      
+      	Dim signaturecode&
+      	
+      	Dim isInLibrary As Boolean
+      	Dim isInVSE As Boolean 
+      	Dim hasAttributes As Boolean
+      	Dim hasExceptions As Boolean  
+      	
+      	Dim form$
+      	
+      	
+      	' BEGIN CODE
+      	If (source Is Nothing) Then GoTo ExitPoint 
+      	
+      	extendedinfo(|UniversalID|) = source.Universalid
+      	extendedinfo(|NoteID|) = source.Noteid
+      	form$ =  getItemValueText(source, |Form|, ||, ||)
+      	extendedinfo(|Form|) = form$ 
+      	
+      
+      	If (|property| = LCase(form$)) Then 
+      		isInVSE = True 
+      		label$ = getItemValueText(source, |F_PropName|, ||, ||)
+      		valuetype$ = getItemValueText(source, |F_PropDataType|, ||, ||)
+      		attribute$ = getItemValueText(source, |F_PropAttribute|, |,|, ||)
+      		
+      		' Check for Get Constant
+      		temp$ = getItemValueText(source, |F_PropGetConst|, |,|, ||)
+      		extendedinfo(|F_PropGetConst|) = temp$		
+      		If Not isBlankString(temp$) Then 
+      			If isBlankString(attribute$) Then 
+      				attribute$ = temp$ 
+      			Else
+      				attribute$ = attribute$ & |,| & temp$ 
+      			End If
+      		End If
+      		
+      		' Check for Set Constant
+      		temp$ = getItemValueText(source, |F_PropSetConst|, |,|, ||)
+      		extendedinfo(|F_PropSetConst|) = temp$		
+      		If Not isBlankString(temp$) Then 
+      			If isBlankString(attribute$) Then 
+      				attribute$ = temp$ 
+      			Else
+      				attribute$ = attribute$ & |,| & temp$ 
+      			End If
+      		End If
+      		
+      		' Check for Array
+      		temp$ = getItemValueText(source, |F_PropIsArray|, |,|, ||)
+      		extendedinfo(|F_PropIsArray|) = temp$		
+      		If Not isBlankString(temp$) Then 
+      			If isBlankString(attribute$) Then 
+      				attribute$ = temp$ 
+      			Else
+      				attribute$ = attribute$ & |,| & temp$ 
+      			End If
+      		End If
+      			
+      		extendedinfo(|F_PropName|) = label$
+      		extendedinfo(|F_PropDataType|) = valuetype$
+      		extendedinfo(|F_MethAttribute|) = attribute$		
+      		
+      	ElseIf (|property_script| = LCase(form$)) Then 
+      		isInLibrary = True
+      		label$ = getItemValueText(source, |F_PropName|, ||, ||)
+      		valuetype$ = getItemValueText(source, |F_PropDataType|, ||, ||)
+      		attribute$ = getItemValueText(source, |F_PropAttribute|, |,|, ||)
+      		initialValue$ = getItemValueText(source, |F_InitValue|, |,|, ||)
+      		scope$ = |Public| 
+      		
+      		extendedinfo(|F_PropName|) = label$
+      		extendedinfo(|F_PropDataType|) = valuetype$
+      		extendedinfo(|F_PropAttribute|) = attribute$	
+      		extendedinfo(|F_InitValue|) = initialValue$	
+      		extendedinfo(|F_Scope|) = scope$ 
+      
+      	Else
+      		Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |Form must be 'Property', or 'Property_Script'.  |
+      	End If
+      
+      	comment$ = getItemValueText(source, |Comment|, CRLF, | |)
+      	codesample$ = getItemValueText(source, |CodeSample|, CRLF, | |) 
+      
+      	If getContext().GeneratingAPIdoc Then 
+      		' Ampersand encode variables which may potentially include HTML content. 
+      		comment$ = getBaliStrings().ampersandEncode(comment$)
+      		codesample$ = getBaliStrings().ampersandEncode(codesample$)
+      	End If
+      
+      	extendedinfo(|Comment|) = comment$ 
+      	extendedinfo(|CodeSample|) = codesample$ 
+      
+      	' currently default all properties to GETTERS
+      	ReDim result(0) As Method 
+      	extendedinfo(|isProperty|) = |true|
+      	signaturecode& = SIGNATURE_VALUE_PROPERTY + SIGNATURE_VALUE_GET 
+      	Select Case LCase(scope$) 
+      		Case |public|
+      			signaturecode& = signaturecode& + SIGNATURE_VALUE_PUBLIC
+      		
+      		Case |private| 
+      			signaturecode& = signaturecode& + SIGNATURE_VALUE_PRIVATE
+      		
+      	End Select
+      
+      	extendedinfo(|SIGNATURE_VALUE_PROPERTY|) = CStr(SIGNATURE_VALUE_PROPERTY)
+      	extendedinfo(|SIGNATURE_VALUE_GET|) = CStr(SIGNATURE_VALUE_GET)
+      	extendedinfo(|signature code|) = CStr(signaturecode&)
+      	
+      	Set result(0) = New Method(parent, label$, valuetype$, comment$, codesample$, signaturecode&)
+      	
+      	If (InStr(attribute$, |READ_ONLY|) > 0) Then 
+      		' Property is a GETTER ONLY
+      	Else 
+      		' Not Read-Only means property is also a SETTER 
+      		ReDim Preserve result(1) As Method 
+      		signaturecode& = signaturecode& + SIGNATURE_VALUE_SET - SIGNATURE_VALUE_GET 
+      		extendedinfo(|SIGNATURE_VALUE_SET|) = CStr(SIGNATURE_VALUE_SET)
+      		extendedinfo(|signature code|) = CStr(signaturecode&)
+      		Set result(1) = New Method(parent, label$, valuetype$, comment$, codesample$, signaturecode&)
+      	End If
+      
+      
+      	' conditionally get attributes 
+      	If Not isBlankString(attribute$) Then 
+      		hasAttributes = True
+      		attributes = FullTrim(Split(attribute$, |,|))
+      		If isBlankString(attributes(0)) Then hasAttributes = False 
+      	End If  
+      
+      	' conditionally add exceptions
+      	itemname$ = |ThrowsExceptions|
+      	If (source.Hasitem(itemname$)) Then 
+      		index% = 0  
+      		ReDim exceptions(index%) As ExceptionElement
+      		hasExceptions = True 
+      		If Not isBlankString(source.getFirstItem(itemname$).Text) Then 
+      			ForAll element In source.Getitemvalue(itemname$) 
+      				temp$ = CStr(element) 
+      				extendedinfo(itemname$ & | element|) = temp$
+      				chunks = Split(temp$, |~|) 
+      				
+      				errnumber% = CInt(chunks(0))
+      				label$ = CStr(chunks(1)) 
+      				If (UBound(chunks) > 1) Then 
+      					comment$ = chunks(2)
+      				Else 
+      					comment$ = || 
+      				End If
+      				
+      				ReDim Preserve exceptions(index%) As ExceptionElement
+      				Set exceptions(index%) = New ExceptionElement(label$, comment$, errnumber%)
+      				index% = index% + 1 
+      			End ForAll			
+      		End If
+      	End If
+      
+      	' get attribute name stubs 
+      	If isInLibrary Then namestubs = getAttributeNameStubs_Script() 
+      	If isInVSE Then namestubs = getAttributeNameStubs()
+      
+      
+      	' Result can contain:
+      	' 1) Single Getter
+      	' 2) Single Setter
+      	' 3) Both a Getter and a Setter 
+      	ForAll propertyelement In result
+      		Set objProperty = propertyelement  
+      		
+      		If hasAttributes Then 
+      			ForAll element In attributes 
+      				objProperty.appendAttribute CStr(element) 
+      			End ForAll
+      		End If
+      		
+      		Call spawnArgumentsForMethod(source, objProperty, namestubs, isInVSE)
+      
+      		If hasExceptions Then 
+      			ForAll exception In exceptions 
+      				objProperty.appendException exception
+      			End ForAll
+      		End If
+      
+      	End ForAll
+      
+      	
+      ExitPoint: 
+      	generateProperties = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      
+      
+      
+      '++LotusScript Development Environment:2:2:loadVSIDstubContent:8:8
+      %REM
+      	Sub loadVSIDstubContent
+      	Loads the VSID Stub Content StringsCarrierList with content from VSIDxxx File Resources which match the suffix 
+      	
+      	@param vsidsuffix$ suffix for VSIDxxx named File Resources to match 
+      	
+      %END REM
+      Public Sub loadVSIDstubContent(vsidsuffix$) 
+      	On Error GoTo ErrorTrap
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      
+      
+      	Dim col As NotesNoteCollection 
+      	Dim designDoc As NotesDocument 
+      	Dim stream As NotesStream
+      	Dim sq As StringQueue
+      	 
+      	Dim st As NotesStream 
+      	Dim sc As StringsCarrier 
+      	
+      	Dim fr As FileResource
+      	Dim fi As FileItem 
+      	
+      	Dim titles As Variant
+      	
+      	Dim content As Variant 
+      	
+      	Dim strings As Variant 
+      	
+      	Dim prefix$ 
+      	Dim suffix$ 
+      	Dim tag$ 
+      	Dim attachmentname$  
+      	Dim noteid$ 	
+      	Dim ssdata$ 
+      	Dim pos%
+      	
+      
+      	
+      	' BEGIN CODE 
+      	extendedinfo(|vsidsuffix|) = vsidsuffix$
+      	 
+      	prefix$ = PREFIX_VSID & vsidsuffix$ & |.|
+      	extendedinfo(|prefix|) = prefix$ 
+      
+      	suffix$ = |.| & vsidsuffix$ 
+      	extendedinfo(|suffix|) = suffix$ 
+      
+      	Set col = getCurrentDb().CreateNoteCollection(False)
+      	' select file and file resources 
+      	col.SelectMiscFormatElements = True
+      	col.SelectionFormula = |@Contains($Flags; "g") & !@Matches($Flags; "*{~K[];`_}*")|
+      	Call col.BuildCollection 
+      	noteid$ = col.getFirstNoteID()
+      	While Not isBlankString(noteid$)
+      		extendedinfo(|NoteID|) = noteid$ 
+      		Set designDoc = getCurrentDb().getDocumentByID(noteid$) 
+      		titles = Split(Join(Split(FullTrim(getItemValueText(designDoc, |$title|, ||, ||)), | |), ||), |;|)
+      		attachmentname$ = titles(0) 
+      		If (Left$(attachmentname$, Len(prefix$)) = prefix$) Then 
+      			' use this attachment 
+      			
+      			tag$ = Mid$(attachmentname$, Len(prefix$) + 1, Len(attachmentname$))
+      
+      			' Only include .suffix$ files 
+      			pos% = 0			
+      			If getBaliStrings().endsWith(LCase$(tag$), suffix$) Then 
+      				pos% = Len(tag$) - Len(suffix$)  
+      				extendedinfo(|pos|) = CStr(pos) 
+      				
+      				tag$ = Left$(tag$, pos%)
+      				extendedinfo(|tag|) = tag$ 
+      
+      				attachmentname$ = titles(UBound(titles)) ' use the alias if it is set 
+      				extendedinfo(|Attachment Name|) = attachmentname$
+      				
+      				Set fr = MakeFileResource(designDoc) 
+      				Set stream = getCurrentSession().createStream
+      				fr.ReadFileData stream
+      
+      				Set sc = StreamToStringsCarrier(stream, fr.MimeCharSet)
+      				getVSIDstubContent(vsidsuffix$).setElementValue tag$, sc
+      			End If 
+      		End If
+      		
+      		Delete designDoc 
+      		noteid$ = col.getNextNoteID(noteid$) 
+      	Wend
+      
+      
+      ExitPoint:
+      	If Not (designDoc Is Nothing) Then Delete designDoc
+      	enhLogMethodResult LIB_PREFIX, |Loaded | & CStr(getVSIDstubContent(vsidsuffix$).size) & | | & PREFIX_VSID & vsidsuffix & | files.| 
+      	Exit Sub 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier LIB_PREFIX, ||, extendedinfo
+      	Resume ExitPoint
+      End Sub
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      '++LotusScript Development Environment:2:2:CreateLSXArchivesIfMissing:1:8
+      Public Sub CreateLSXArchivesIfMissing(ProjectDoc As NotesDocument)
+      	' CreateLSXArchivesIfMissing
+      	'
+      	' Checks for the existence for class and method ID archive items on the project document.
+      	' If they do not exist, we reorder the class and method IDs and archive them to be backwards compatible in the future.
+      	' This method changes and saves the project doc. (RO)
+      	'
+      	'	reo	08/03/2007	Created
+      	On Error GoTo ErrorTrap 
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	Dim errmsg$
+      	Dim errcode%
+      	Dim errline%	 
+      	Dim msg$ 
+      	
+      	Dim ClassDoc As NotesDocument, ClassDocs As NotesDocumentCollection
+      	Dim MethodDoc As NotesDocument, MethodDocs As NotesDocumentCollection 
+      	Dim MethodArchive As String, ClassArchive As String, NextTag As String
+      	Dim ClassName As String, MethodName As String
+      	Dim ClassIDCount As Long, MethodIDCount As Long	
+      	Dim ClassID As Long, MethodID As Long
+      	
+      	' Exit if the archives exist already
+      	If Not ProjectDoc.GetFirstItem(ITEMNAME_METHOD_ARCHIVE) Is Nothing Then Exit Sub
+      	
+      	' Let the user know we're on their side!
+      	Print "LSXWizard: Creating a property/method/event/class ID archive for '" & getItemValueText(ProjectDoc, ITEMNAME_APP_NAME, ||, ||) & "' to maintain backwards compatibility with compiled LotusScript."
+      	
+      	' ClassIDs start at 2, MethodIDs at 1
+      	ClassIDCount = 1
+      	ClassID = 1
+      	MethodName = 0
+      	
+      	' If we do not detect an existing method archive, then the project was probably generated with an older wizard and we should build the archive now.
+      	' This will reorder the method and class IDs, but only one more time, but afterwards they will be preserved.
+      	' Now, we could extend this to use all of the existing class IDs and method IDs when first generating the archive, but that
+      	' would require us to immediately set the F_LSXClassID and F_LSXPMEID counters to the maximum value in the project,
+      	' which could problems if there were many additions and deletions of the methods. It is probably better to start clean. (RO)
+      	
+      	
+      	' Iterate over all class docs
+      	Set ClassDocs = ProjectDoc.Responses
+      	Set ClassDoc = ClassDocs.GetFirstDocument
+      	While Not (ClassDoc Is Nothing)
+      		ClassIDCount = ClassIDCount + 1																' Increment max ClassID
+      		ClassID = ClassIDCount																				' Just use the count (see note above)
+      		ClassName = getItemValueText(ClassDoc, ITEMNAME_CLASS_NAME, ||, ||)					' Read classname
+      		ClassArchive = ClassArchive & ArchiveTag(ClassName, CStr(ClassID))				' Assign it the next ID
+      		Call ClassDoc.ReplaceItemValue(ITEMNAME_CLASSID_COUNTER, CLng(ClassID))	' Update the Class doc
+      		Call ClassDoc.Save(True, True)
+      		
+      		' Iterate over all method docs
+      		Set MethodDocs = ClassDoc.Responses
+      		Set MethodDoc = MethodDocs.GetFirstDocument
+      		While Not (MethodDoc Is Nothing)
+      			MethodID = MethodID + 1
+      			MethodName = getItemValueText(MethodDoc, |F_MethName|, ||, ||) _ 
+      				& getItemValueText(MethodDoc, |F_PropName|, ||, ||) _ 
+      				& getItemValueText(MethodDoc, |F_EventName|, ||, ||)
+      
+      			MethodArchive = MethodArchive & ArchiveTag(ClassName & "." & MethodName, CStr(MethodID))
+      			Call MethodDoc.ReplaceItemValue(ITEMNAME_METHODID_COUNTER, CLng(MethodID))	' Update the method doc
+      			Call MethodDoc.Save(True, True)
+      			Set MethodDoc = MethodDocs.GetNextDocument(MethodDoc)						
+      		Wend
+      		
+      		' Go to next class doc
+      		Set ClassDoc = ClassDocs.GetNextDocument(ClassDoc)
+      	Wend
+      	
+      	' Update the archive items in the project doc with the lists we just generated
+      	Call ProjectDoc.ReplaceItemValue(ITEMNAME_CLASS_ARCHIVE, ClassArchive)
+      	Call ProjectDoc.ReplaceItemValue(ITEMNAME_METHOD_ARCHIVE, MethodArchive)
+      	Call ProjectDoc.ReplaceItemValue(ITEMNAME_CLASSID_COUNTER, CLng(ClassID))
+      	Call ProjectDoc.ReplaceItemValue(ITEMNAME_METHODID_COUNTER, CLng(MethodID))
+      	Call ProjectDoc.Save(True, True)
+      		
+      ExitPoint: 
+      	If (0 <> errcode%) Then Error errcode%, errmsg$ & | at line | & CStr(errline%) & | in | & LIB_PREFIX & GetThreadInfo(1) & |().  | 
+      	Exit Sub 
+      ErrorTrap:
+      	On Error GoTo 0
+      	errcode% = Err() 
+      	errmsg$ = Error() 
+      	errline% = Erl()
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	
+      	ForAll s In extendedinfo 
+      		If isBlankString(msg$) Then 
+      			msg$ = ListTag(s) & |: | & s 
+      		Else 
+      			msg$ = msg$ & |, | & CRLF & ListTag(s) & |: | & s
+      		End If
+      		
+      	End ForAll
+      	enhLogException LIB_PREFIX, msg$ 
+      	
+      	Resume ExitPoint		
+      End Sub
+      
+      '++LotusScript Development Environment:2:1:resetAncestorIDs:10:8
+      %REM
+      	Function resetAncestorIDs
+      	Conditionally resets the ancestor ID fields (F_ProjectID, F_ClassID, F_TypeID) of the specified document.
+      	
+      	@param source Document for which the Ancestor ID fields should be reset. 
+      	@param formsuffix$ Suffix to be appended to standard parent form names (project, class, type) when determining ancestor IDs.   
+      	 
+      	@return Flag indicating if the source document has been successfully updated and saved. 
+      %END REM
+      Private Function resetAncestorIDs(source As NotesDocument, formsuffix$) As Boolean 
+      	On Error GoTo ErrorTrap
+      
+      	Dim ndocProject As NotesDocument 
+      	Dim ndocClass As NotesDocument 
+      	Dim ndocType As NotesDocument 
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      
+      
+      	Dim result As Boolean
+      	
+      	' BEGIN CODE
+      	If source.hasItem(|F_ProjectID|) Then Call source.removeItem(|F_ProjectID|) 
+      	If source.hasItem(|F_ClassID|) Then Call source.removeItem(|F_ClassID|)
+      	If source.hasItem(|F_TypeID|) Then Call source.removeItem(|F_TypeID|)
+      	If source.isResponse Then Call source.replaceItemValue(|$ParentUNID|, source.parentDocumentUNID)  
+      	
+      	Set ndocProject = getAncestorByForm(source, |project| & formsuffix$, True) 
+      	Set ndocClass = getAncestorByForm(source, |class| & formsuffix$, True)
+      	Set ndocType = getAncestorByForm(source, |type| & formsuffix$, True)
+      	 
+      	If Not (ndocProject Is Nothing) Then Call source.replaceItemValue(|F_ProjectID|, ndocProject.UniversalID) 			 
+      	If Not (ndocClass Is Nothing) Then Call source.replaceItemValue(|F_ClassID|, ndocClass.UniversalID) 			 
+      	If Not (ndocType Is Nothing) Then Call source.replaceItemValue(|F_TypeID|, ndocType.UniversalID) 
+      				 
+      
+      	result = source.Save(True, False)
+      	
+      	
+      ExitPoint: 
+      	resetAncestorIDs = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:getDataType_ProjectTypeName:8:8
+      %REM
+      	Function getDataType_ProjectTypeName
+      	Gets the ProjectType Name for a DataType ProjectType Integer Value 
+      
+      	@param projecttype DataType ProjectType Value 
+      	@return ProjectType Name associated with the ProjectType.  Blank if no association exists. 
+      %END REM
+      Private Function getDataType_ProjectTypeName(projecttype As Integer) As String 
+      	On Error GoTo ErrorTrap
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	
+      	Dim result As String
+      	
+      	' BEGIN CODE
+      
+      	extendedinfo(|ProjectType|) = CStr(projecttype) 
+      	Select Case projecttype 
+      		' DATA TYPE CATEGORIES From DataType Form, field chxProjectType
+      		'  "Extension (VSE)|1":"Library (VSS)|2"
+      
+      		Case PROJECTTYPE_EXTENSION
+      			result$ = |Extension (VSE)|
+      			
+      		Case PROJECTTYPE_LIBRARY
+      			result$ = |Library (VSS)|
+      			
+      		Case Else 
+      			' do nothing
+      	End Select
+      		
+      	
+      ExitPoint: 
+      	getDataType_ProjectTypeName = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:2:DeleteFileSilently:4:8
+      %REM
+      	Sub DeleteFileSilently
+      %END REM
+      Sub DeleteFileSilently(theFilename As String)
+      	On Error GoTo Fail
+      	Kill theFilename
+      Fail:
+      	Exit Sub
+      End Sub
+      
+      '++LotusScript Development Environment:2:1:getAttributeNameStubs_Script:5:8
+      %REM
+      	Function getAttributeNameStubs
+      	String Array containining Name Stubs for VSS Attributes		
+      %END REM
+      Static Function getAttributeNameStubs_Script() As Variant 
+      	Dim result(3) As Variant
+      	Dim isInstantiated As Boolean  
+      	
+      	' BEGIN CODE
+      	If Not isInstantiated Then 
+      		result(0) = |F_IsConst_|
+      		result(1) = |F_IsOptional_|
+      		result(2) = |F_ArgIsList_|
+      		result(3) = |F_ArgByVal_|
+      
+      		isInstantiated = True 
+      	End If
+      	
+      ExitPoint:
+      	getAttributeNameStubs_Script = result 
+      End Function
+      
+      '++LotusScript Development Environment:2:1:generateVSE:9:8
+      %REM
+      	Function generateVSE
+      	Generates a BSXdocumentationUtils.VSE object for a VSE
+      	
+      	@param source NotesDocument from which to generate the VSE		
+      		
+      	@return BSXdocumentationUtils.VSE for the VSE.  
+      %END REM
+      Function generateVSE(source As NotesDocument, parent As CodeElement) As VSE 
+      	On Error GoTo ErrorTrap
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	
+      	
+      	Dim col As NotesDocumentCollection 
+      	Dim ndoc As NotesDocument 
+      	Dim nitm As NotesItem 
+      	
+      	Dim result As VSE  
+      	Dim objMethod As Method
+      	Dim objClass As ObjectClass 
+      	
+      	Dim pair As Variant 
+      	Dim properties As Variant 
+      
+      	Dim fqnprefix$ 
+      	Dim appname$
+      	Dim summary$ 
+      	Dim description$ 
+      	Dim form$
+      	Dim baseid$ 
+      	Dim baseguid$ 
+      	Dim characterset$
+      	Dim alwaysoverwriteprojectfiles$
+      	Dim supportole$
+      	Dim lsxcreator$ 
+      	Dim platform$
+      	Dim constants$
+      	
+      	
+      	' BEGIN CODE
+      	If (source Is Nothing) Then GoTo ExitPoint 
+      	
+      	extendedinfo(|UniversalID|) = source.Universalid
+      	extendedinfo(|NoteID|) = source.Noteid
+      	form$ =  getItemValueText(source, |Form|, ||, ||)
+      	extendedinfo(|Form|) = form$ 
+      	If (|project| <> LCase(form$)) Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |Form must be 'Project'.  |
+      
+      
+      	fqnprefix$ = getCurrentDb().Title 
+      	appname$ = getItemValueText(source, ITEMNAME_APP_NAME, ||, ||)
+      	summary$ = getItemValueText(source, |F_AppSummary|, CRLF, ||)
+      	description$ = getItemValueText(source, |F_AppDescription|, CRLF, ||) 
+      	
+      	If getContext().GeneratingAPIdoc Then 
+      		' Ampersand encode variables which may potentially include HTML content. 
+      		summary$ = getBaliStrings().ampersandEncode(summary$)
+      		description$ = getBaliStrings().ampersandEncode(description$)
+      	End If
+      
+      	baseid$ = getItemValueText(source, |F_BaseIDValue|, ||, ||) 
+      	baseguid$ = getItemValueText(source, |F_BaseGUId|, ||, ||) 
+      	characterset$ = getItemValueText(source, |F_CharacterSet|, ||, ||)
+      	alwaysoverwriteprojectfiles$ = getItemValueText(source, |F_AlwaysOverwriteProject|, ||, ||)
+      	supportole$ = getItemValueText(source, |F_SupportOLE|, ||, ||)
+      	lsxcreator$ = getItemValueText(source, |F_LSXCreator|, ||, ||)
+      	platform$ = getItemValueText(source, |F_LSXPlatform|, ||, ||)
+      	constants$ = getItemValueText(source, |F_Constants|, ||, ||)
+      	
+      	extendedinfo(|fqnprefix|) = fqnprefix$
+      	extendedinfo(ITEMNAME_APP_NAME) = appname$
+      	extendedinfo(|F_AppSummary|) = summary$ 
+      	extendedinfo(|F_AppDescription|) = description$
+      	extendedinfo(|F_BaseIDValue|) = baseid$
+      	extendedinfo(|F_BaseGUId|) = baseguid$
+      	extendedinfo(|F_CharacterSet|) = characterset$
+      	extendedinfo(|F_AlwaysOverwriteProject|) = alwaysoverwriteprojectfiles$
+      	extendedinfo(|F_SupportOLE|) = supportole$
+      	extendedinfo(|F_LSXCreator|) = lsxcreator$
+      	extendedinfo(|F_LSXPlatform|) = platform$ 
+      	extendedinfo(|F_Constants|) = constants$
+      	
+      	
+      	Set result = New VSE(parent, appname$, summary$, description$)
+      	
+      	If isTrue(alwaysoverwriteprojectfiles$) Then result.appendAttribute(|Always overwrite project files on VSE Generate|)
+      	If isTrue(supportole$) Then result.appendAttribute(|Add extra code to support OLE / COM automation|)
+      	result.setElementValue |baseid|, baseid$ 
+      	result.setElementValue |baseguid|, baseguid$ 
+      	result.setElementValue |characterset|, characterset$ 
+      	result.setElementValue |lsxcreator|, lsxcreator$ 
+      	
+      	If Not isBlankString(platform$) Then 
+      		Set nitm = source.getFirstItem(|F_LSXPlatform|)
+      		ForAll element In nitm.values 
+      			result.appendPlatform CStr(element) 
+      		End ForAll
+      	End If 
+      	
+      	
+      	If Not isBlankString(constants$) Then 
+      		Set nitm = source.getFirstItem(|F_Constants|)
+      		ForAll element In nitm.values 
+      			pair = Split(CStr(element), | |) 
+      			result.appendStringConstant CStr(pair(LBound(pair))), CStr(pair(UBound(pair)))
+      		End ForAll
+      	End If 
+      	
+      	' Generate the VSE's Properties, Methods, and Classes 	
+      	Set col = source.Responses 
+      	Set ndoc = col.getFirstDocument()
+      	While Not (ndoc Is Nothing) 
+      		form$ = LCase(ndoc.getFirstItem(|Form|).Text)
+      		
+      		Select Case form$
+      		Case |property| 
+      			properties = generateProperties(ndoc, result)
+      			ForAll element In properties 
+      				Set objMethod = element 
+      				result.appendMethod objMethod				
+      			End ForAll
+      			
+      		Case |method|: 
+      			Set objMethod = generateMethod(ndoc, result)
+      			result.appendMethod objMethod
+      			
+      		Case |class| 
+      			Set objClass = generateObjectClass(ndoc, result)
+      			result.appendClass objClass
+      			
+      		Case Else: 
+      			enhLogWarning ||, form$ & | not yet implemented|
+      	End Select
+      		
+      		Set ndoc = col.getNextDocument(ndoc) 
+      	Wend
+      
+      	
+      ExitPoint: 
+      	Set generateVSE = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:getItemNamesPotentialHTML:8:8
+      %REM
+      	Function getItemNamesPotentialHTML
+      	Gets item names for a specific form that may potentially contain HTML content
+      	
+      	@param form Name of the Form for which to get the item names 
+      	@return Item names for the specified form 
+      %END REM
+      Function getItemNamesPotentialHTML(form$) As StringStack 
+      	On Error GoTo ErrorTrap
+      	
+      	Static cache As StringsCarrierList 
+      	Dim result As StringStack 
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	
+      	If cache Is Nothing Then Set cache = New StringsCarrierList() 
+      		
+      	' BEGIN CODE
+      
+      	If Not cache.hasTag(form$) Then
+      		Set result = New StringStack()  
+      
+      		Select Case form$ 
+      			Case |project|, |project_script| 
+      				result.push |F_AppSummary| 
+      				result.push |F_AppDescription|
+      				
+      			Case |method|, |method_script| 
+      				result.push |comment| 
+      				result.push |codesample|
+      				result.push |F_MethReturnComment| 
+      				result.push |F_ThrowsExceptions|
+      				result.push |F_ArgComment_1|
+      				result.push |F_ArgComment_2|
+      				result.push |F_ArgComment_3|
+      				result.push |F_ArgComment_4|
+      				result.push |F_ArgComment_5|
+      				result.push |F_ArgComment_6|
+      				result.push |F_ArgComment_7|
+      				result.push |F_ArgComment_8|
+      				result.push |F_ArgComment_9|
+      				result.push |F_ArgComment_10|			
+      				
+      			Case |property|, |property_script| 
+      				result.push |comment| 
+      				result.push |codesample|
+      				result.push |F_InitValue| 
+      				result.push |F_ArgComment_1|
+      				result.push |F_ArgComment_2|
+      				result.push |F_ArgComment_3|
+      				result.push |F_ArgComment_4|
+      				result.push |F_ArgComment_5|
+      				result.push |F_ArgComment_6|
+      				result.push |F_ArgComment_7|
+      				result.push |F_ArgComment_8|
+      				result.push |F_ArgComment_9|
+      				result.push |F_ArgComment_10|	
+      						
+      							
+      			Case |variable_script| 
+      				result.push |comment| 
+      				result.push |F_InitValue|
+      							
+      			Case |class|, |class_script|, |type_script| 
+      				result.push |comment| 
+      				result.push |codesample|
+      							
+      		End Select
+      		
+      		Call cache.setElementValue(form$, result)
+      
+      	End If
+      	
+      	Set result = New StringStack()
+      	Call result.load(cache.getValue(form$))  
+      	
+      	
+      ExitPoint: 
+      	Set getItemNamesPotentialHTML = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:getUNIDforClassName:12:8
+      %REM
+      	Function getUNIDforClassName
+      	Gets the UniversalID for a specified child class of a Project 
+      	
+      	@param project the Project NotesDocument for which to retrieve the child Class document UniversalID 
+      	@param classname Name of the child class.
+      	
+      	@returns UniversalID of the specified child Class document.
+      	
+      	@throws ERR_PARAMETER_BLANK if the project is Nothing or the classname is blank
+      %END REM
+      Function getUNIDforClassName(project As NotesDocument, classname As String) As String 
+      	If (project Is Nothing) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |Project document is Nothing.  |
+      	If isBlankString(classname) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |Class Name is blank.  |
+      	On Error GoTo ErrorTrap
+      	
+      	
+      	Static cache List As String 
+      	
+      	Dim col As NotesDocumentCollection 
+      	Dim child As NotesDocument 
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	Dim errmsg$ 
+      	Dim errcode%
+      	
+      	Dim cachekey$ 
+      	Dim form$
+      	Dim f_classname$ 
+      	Dim result$
+      
+      	
+      	' BEGIN CODE
+      	' process the child documents of the Project
+      	extendedinfo(|Project|) = getItemValueText(project, ITEMNAME_APP_NAME, ||, ||)  
+      	extendedinfo(|classname|) = classname
+      
+      	cachekey$ = project.UniversalID & |:| & classname 
+      	If IsElement(cache(cachekey$)) Then 
+      		result$ = cache(cachekey$) 
+      	Else 
+      
+      		Set col = project.Responses 
+      		Set child = col.getFirstDocument()
+      		Do While Not (child Is Nothing) 
+      			form$ = getItemValueText(child, |Form|, ||, ||)
+      			extendedinfo(|Form|) = form$ 
+      			If strCmp(form$, |class|) Or strCmp(form$, |class_script|) Then 
+      				' child is a class document 
+      				f_classname$ = getItemValueText(child, |F_ClassName|, ||, ||)
+      				extendedinfo(|F_ClassName|) = f_classname$ 
+      				If strCmp(classname, f_classname$) Then 
+      					' found the specified classname
+      					result$ = child.UniversalID 
+      					Exit Do 
+      				End If
+      			End If
+      			
+      			Set child = col.getNextDocument(child)
+      		Loop
+      
+      		cache(cachekey$) = result$ 
+      	End If 
+      	
+      
+      		
+      ExitPoint: 
+      	If (0 <> errcode%) Then Error errcode%, errmsg$ 
+      	getUNIDforClassName = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	errcode% = Err() 
+      	errmsg$ = Error$()
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:generateObjectClass:10:8
+      %REM
+      	Function generateObjectClass
+      	Generates a BSXdocumentationUtils.ObjectClass object.  
+      	
+      	@param source NotesDocument from which to generate the ObjectClass	
+      	@param parent Parent Object for the generated result.	
+      		
+      	@return BSXdocumentationUtils.ObjectClass for the Class.  
+      %END REM
+      Private Function generateObjectClass(source As NotesDocument, parent As CodeElement) As ObjectClass 
+      	On Error GoTo ErrorTrap
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	
+      	
+      	Dim col As NotesDocumentCollection 
+      	Dim ndoc As NotesDocument 
+      	
+      	Dim result As ObjectClass  
+      	Dim objClass As ObjectClass 
+      	Dim objMethod As Method
+      	Dim objVariable As Variable
+      	Dim objConstant As Constant 
+      	
+      	
+      	Dim attributes As Variant
+      	Dim properties As Variant  
+      	Dim values As Variant 
+      
+      	Dim attribute$
+      	Dim label$ 
+      	Dim codesample$ 
+      	Dim comment$
+      	Dim derivedfrom$ 
+      	Dim form$
+      	Dim temp$
+      	Dim key$ 
+      	Dim scope$ 
+      	
+      	Dim signaturecode&
+      	Dim hasAttributes As Boolean 
+      	Dim hasAdditionalProperties As Boolean 
+      	Dim isConstant As Boolean 
+      	
+      	
+      	' BEGIN CODE
+      	If (source Is Nothing) Then GoTo ExitPoint 
+      	If (parent Is Nothing) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |A Parent CodeObject is required.  | 
+      	
+      	extendedinfo(|UniversalID|) = source.Universalid
+      	extendedinfo(|NoteID|) = source.Noteid
+      	form$ =  getItemValueText(source, |Form|, ||, ||)
+      	extendedinfo(|Form|) = form$ 
+      	If (|class| <> LCase(form$)) And (|class_script| <> LCase(form$)) Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |Form must be either 'class' or 'class_script'. |
+      
+      
+      	label$ = getItemValueText(source, |F_ClassName|, ||, ||)
+      	
+      	comment$ = getItemValueText(source, |Comment|, CRLF, | |)
+      	codesample$ = getItemValueText(source, |CodeSample|, CRLF, | |)
+      	
+      	If getContext().GeneratingAPIdoc Then 
+      		' Ampersand encode variables which may potentially include HTML content. 
+      		comment$ = getBaliStrings().ampersandEncode(comment$)
+      		codesample$ = getBaliStrings().ampersandEncode(codesample$)
+      	End If
+      
+      	If strCmp(|Derived|, getItemValueText(source, |F_ClassType|, ||, ||)) Then derivedfrom$ = getItemValueText(source, |F_ClassDeriveType|, ||, ||)
+      	scope$ = |Public| 
+      	
+      	extendedinfo(|F_ClassName|) = label$
+      	extendedinfo(|Comment|) = comment$
+      	extendedinfo(|CodeSample|) = codesample$
+      	extendedinfo(|F_Scope|) = scope$
+      
+      	attribute$ = getItemValueText(source, |F_ClassAttrib|, |,|, ||)
+      	extendedinfo(|F_ClassDeriveType|) = derivedfrom$
+      
+      	signaturecode& = SIGNATURE_VALUE_CLASS
+      	Select Case LCase(scope$) 
+      		Case |public|
+      			signaturecode& = signaturecode& + SIGNATURE_VALUE_PUBLIC
+      		
+      		Case |private| 
+      			signaturecode& = signaturecode& + SIGNATURE_VALUE_PRIVATE
+      			
+      	End Select
+      	
+      
+      	Set result = New ObjectClass(parent, label$, derivedfrom$, comment$, codesample$, signaturecode&)
+      
+      
+      	' add additional properties
+      	ForAll element In getAdditionalPropertyKeys(result.ParentProject.InstanceCode) 
+      		key$ = CStr(element) 
+      		temp$ = getItemValueText(source, |F_| & key$, ||, ||)
+      		extendedinfo(key$) = temp$ 
+      		If Not isBlankString(temp$) Then result.setElementValue key$, temp$
+      		If Not isBlankString(temp$) Then hasAdditionalProperties = True 
+      	End ForAll
+      
+      	' conditionally add attributes 
+      	If Not isBlankString(attribute$) Then 
+      		attributes = Split(attribute$, |,|) 
+      		ForAll element In attributes 
+      			attribute$ = CStr(element) 
+      			If Not isBlankString(attribute$) Then result.appendAttribute attribute$ 
+      			If Not isBlankString(attribute$) Then hasAttributes = True 
+      		End ForAll
+      	End If
+      
+      
+      	' get properties, events, methods, and any child classes 
+      	Set col = source.Responses 
+      	Set ndoc = col.getFirstDocument()
+      	
+      	
+      	While Not (ndoc Is Nothing) 
+      		isConstant = False 
+      		form$ = LCase(ndoc.getFirstItem(|Form|).Text)
+      
+      		Select Case form$
+      		Case |property|, |property_script|
+      			properties = generateProperties(ndoc, result)
+      			ForAll element In properties 
+      				Set objMethod = element 
+      				result.appendMethod objMethod				
+      			End ForAll
+      			
+      		Case |method|, |method_script|, |event|: 
+      			Set objMethod = generateMethod(ndoc, result)
+      			result.appendMethod objMethod
+      			
+      		Case |variable_script|
+      			values = Split(getItemValueText(ndoc, |F_VarAttribute|, |,|, ||), |,|) 
+      			ForAll element In values 
+      				If (0 = StrComp(|Const|, CStr(element), 5)) Then 
+      					isConstant = True 
+      					Exit ForAll 
+      				End If
+      			End ForAll
+      			
+      			If isConstant Then 
+      				Set objConstant = generateConstant(ndoc, result)
+      				result.appendConstant objConstant
+      			Else 
+      				Set objVariable = generateVariable(ndoc, result)
+      				result.appendVariable objVariable
+      			End If
+      			
+      		Case |class| 
+      			Set objClass = generateObjectClass(ndoc, result)
+      			If Not (objClass Is Nothing) Then Call result.appendClass(objClass) 
+      			
+      		Case Else: 
+      			enhLogWarning ||, form$ & | not yet implemented|
+      	End Select
+      		
+      		Set ndoc = col.getNextDocument(ndoc) 
+      	Wend
+      	
+      
+      	
+      	
+      ExitPoint: 
+      '	If Not result Is Nothing Then 
+      '		enhLogAction LIB_PREFIX, result.label & | JSON| 
+      '		enhLogExtendedContent ||, ||, result.JSON 
+      '		enhLogExtendedContent ||, ||, || 
+      '	End If
+      	Set generateObjectClass = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:generateLibrary:9:8
+      %REM
+      	Function generateVSE
+      	Generates a BSXdocumentationUtils.VSE object for a VSE
+      	
+      	@param source NotesDocument from which to generate the Library		
+      		
+      	@return BSXdocumentationUtils.vse Library for the VSE.  
+      %END REM
+      Function generateLibrary(source As NotesDocument, parent As CodeElement) As Library 
+      	On Error GoTo ErrorTrap
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	
+      	
+      	Dim col As NotesDocumentCollection 
+      	Dim ndoc As NotesDocument 
+      	Dim nitm As NotesItem 
+      	
+      	Dim result As Library
+      	Dim objMethod As Method
+      	Dim objClass As ObjectClass 
+      	Dim objType As ObjectType
+      	Dim objVariable As Variable
+      	Dim objConstant As Constant 
+      	Dim objCodeElement As CodeElement 
+      	Dim optioncompare As StringQueue 
+      	
+      	Dim pair As Variant 
+      	Dim properties As Variant 
+      	Dim values As Variant 
+      
+      	Dim fqnprefix$ 
+      	Dim appname$
+      	Dim summary$ 
+      	Dim description$ 
+      	Dim form$
+      	Dim scriptcreator$
+      	
+      	Dim s$
+      	Dim s1$	
+      	
+      	Dim isConstant As Boolean 
+      	
+      	
+      	' BEGIN CODE
+      	If (source Is Nothing) Then GoTo ExitPoint 
+      	
+      	extendedinfo(|UniversalID|) = source.Universalid
+      	extendedinfo(|NoteID|) = source.Noteid
+      	form$ =  getItemValueText(source, |Form|, ||, ||)
+      	extendedinfo(|Form|) = form$ 
+      	If (|project_script| <> LCase(form$)) Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |Form must be 'project_script'.  |
+      
+      
+      	fqnprefix$ = getCurrentDb().Title 
+      	appname$ = getItemValueText(source, ITEMNAME_APP_NAME, ||, ||)
+      	summary$ = getItemValueText(source, |F_AppSummary|, CRLF, ||)
+      	description$ = getItemValueText(source, |F_AppDescription|, CRLF, ||) 
+      	scriptcreator$ = getItemValueText(source, |F_ScriptCreator|, ||, ||)
+      
+      	If getContext().GeneratingAPIdoc Then 
+      		' Ampersand encode variables which may potentially include HTML content. 
+      		summary$ = getBaliStrings().ampersandEncode(summary$)
+      		description$ = getBaliStrings().ampersandEncode(description$)
+      	End If
+      	
+      	extendedinfo(|fqnprefix|) = fqnprefix$
+      	extendedinfo(ITEMNAME_APP_NAME) = appname$
+      	extendedinfo(|F_AppSummary|) = summary$ 
+      	extendedinfo(|F_AppDescription|) = description$
+      	extendedinfo(|F_ScriptCreator|) = scriptcreator$
+      	
+      	
+      	Set result = New Library(parent, appname$, summary$, description$)
+      	
+      	result.setElementValue |scriptcreator|, scriptcreator$ 
+      	
+      
+      	' Options fields
+      	If source.hasItem(|F_Options|) Then 
+      		Set nitm = source.getFirstItem(|F_Options|) 
+      		If Not isBlankString(nitm.Text) Then 
+      			ForAll value In nitm.values 
+      				s$ = CStr(value) 
+      				Select Case s$
+      				Case |Base|
+      					s$ = s$ & | | & source.getFirstItem(|F_OptionBase|).Text 
+      					
+      				Case |Compare|
+      					Set optioncompare = New StringQueue() 
+      					s1$ = source.getFirstItem(|F_OptionCompareBinary|).Text
+      					If Not isBlankString(s1$) Then optioncompare.push s1$ 
+      
+      					s1$ = source.getFirstItem(|F_OptionCompareCase|).Text
+      					If Not isBlankString(s1$) Then optioncompare.push s1$ 
+      					
+      					s1$ = source.getFirstItem(|F_OptionComparePitch|).Text
+      					If Not isBlankString(s1$) Then optioncompare.push s1$
+      					
+      					s$ = s$ & | | & optioncompare.joinContent(|, |) 
+      
+      				Case Else
+      					' do nothing
+      			End Select
+      				
+      				result.appendOption s$  
+      			End ForAll
+      		End If
+      	End If
+      	
+      	
+      	' Dependencies fields
+      	If source.hasItem(|F_Use_Libraries|) Then 
+      		Set nitm = source.getFirstItem(|F_Use_Libraries|) 
+      		If Not isBlankString(nitm.Text) Then 
+      			ForAll value In nitm.values 
+      				result.appendUseLibrary CStr(value) 
+      			End ForAll
+      		End If
+      	End If
+      	
+      	If source.hasItem(|F_Use_LSXs|) Then 
+      		Set nitm = source.getFirstItem(|F_Use_LSXs|) 
+      		If Not isBlankString(nitm.Text) Then 
+      			ForAll value In nitm.values 
+      				result.appendUseVSE CStr(value) 
+      			End ForAll
+      		End If
+      	End If
+      	
+      	If source.hasItem(|F_Include_Externals|) Then 
+      		Set nitm = source.getFirstItem(|F_Include_Externals|) 
+      		If Not isBlankString(nitm.Text) Then 
+      			ForAll value In nitm.values 
+      				result.appendIncludeExternalLibrary CStr(value) 
+      			End ForAll
+      		End If
+      	End If
+      	
+      	
+      	' Generate the Scripts's Variables, Types, Properties, Methods, and Classes 	
+      	Set col = source.Responses 
+      	Set ndoc = col.getFirstDocument()
+      	While Not (ndoc Is Nothing) 
+      		isConstant = False 
+      		form$ = LCase(ndoc.getFirstItem(|Form|).Text)
+      		
+      		Select Case form$
+      			
+      			Case |property_script| 
+      				properties = generateProperties(ndoc, result)
+      				ForAll element In properties 
+      					Set objMethod = element 
+      					result.appendMethod objMethod				
+      				End ForAll
+      				
+      			Case |method_script|: 
+      				Set objMethod = generateMethod(ndoc, result)
+      				result.appendMethod objMethod
+      				
+      			Case |class|, |class_script|
+      				Set objClass = generateObjectClass(ndoc, result)
+      				result.appendClass objClass
+      				
+      			Case |type_script|
+      				Set objType = generateObjectType(ndoc, result)
+      				result.appendType objType
+      				
+      			Case |variable_script|
+      				values = Split(getItemValueText(ndoc, |F_VarAttribute|, |,|, ||), |,|) 
+      				ForAll element In values 
+      					If (0 = StrComp(|Const|, CStr(element), 5)) Then 
+      						isConstant = True 
+      						Exit ForAll 
+      					End If
+      				End ForAll
+      				
+      				If isConstant Then 
+      					Set objConstant = generateConstant(ndoc, result)
+      					result.appendConstant objConstant
+      				Else 
+      					Set objVariable = generateVariable(ndoc, result)
+      					result.appendVariable objVariable
+      				End If
+      				
+      			Case Else: 
+      				enhLogWarning ||, form$ & | not yet implemented|
+      		End Select
+      		
+      		Set ndoc = col.getNextDocument(ndoc) 
+      	Wend
+      
+      	
+      ExitPoint:
+      	If Not (result Is Nothing) Then enhLogMethodResult ||, |Generated Library | & result.LibraryName 
+      	Set generateLibrary = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:getDataType_CategoryName:8:8
+      %REM
+      	Function getDataType_CategoryName
+      	Gets the Category Name for a DataType Category Integer Value 
+      
+      	@param category DataType Category Value 
+      	@return Category Name associated with the category.  Blank if no association exists. 
+      %END REM
+      Private Function getDataType_CategoryName(category As Integer) As String 
+      	On Error GoTo ErrorTrap
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	
+      	Dim result As String
+      	
+      	' BEGIN CODE
+      
+      	extendedinfo(|category|) = CStr(category) 
+      	Select Case category 
+      		' DATA TYPE CATEGORIES From DataType Form, field chxCategory
+      		'  "Scalar|1":"Notes|2":"Automatic Data Type (VSE Object)|3":"VoltScript Object|4"
+      
+      		Case DATATYPE_SCALAR
+      			result$ = |Scalar|
+      			
+      		Case DATATYPE_NOTES
+      			result$ = |Notes|
+      			
+      		Case DATATYPE_ADT
+      			result$ = |Automatic Data Type (VSE Object)|
+      			
+      		Case DATATYPE_VOLTSCRIPT
+      			result$ = |VoltScript Object|
+      			
+      		Case Else 
+      			' do nothing
+      	End Select
+      		
+      	
+      ExitPoint: 
+      	getDataType_CategoryName = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:getAllowedChildForms:11:8
+      %REM
+      	Function getAllowedChildForms
+      	Gets the names of forms which are allowed for child documents to certain parent documents. 
+      	
+      	@return StringsCarrierList contining allowed child forms for parent forms.
+      	
+      	k = parent form
+      	v = StringsCarrier containing the form names
+      	
+      %END REM
+      Private Function getAllowedChildForms() As StringsCarrierList 
+      	On Error GoTo ErrorTrap
+      	
+      	Static result As StringsCarrierList 
+      	
+      	Dim carrier As StringsCarrier
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	
+      	
+      	' BEGIN CODE
+      	If (result Is Nothing) Then
+      		' instantiate and populate result  
+      		Set result = New StringsCarrierList()
+      		
+      		' Type_Script 
+      		Set carrier = New StringsCarrier() 
+      		carrier.push |variable_script|
+      		result.setElementValue |type_script|, carrier 
+      		
+      		' Class_Script
+      		Set carrier = New StringsCarrier() 
+      		carrier.push |variable_script|
+      		carrier.push |property_script|
+      		carrier.push |method_script|
+      		result.setElementValue |class_script|, carrier 
+      				
+      		' Project_Script (VSS)  
+      		Set carrier = New StringsCarrier() 
+      		carrier.push |variable_script|
+      		carrier.push |property_script|
+      		carrier.push |method_script|
+      		carrier.push |type_script|
+      		carrier.push |class_script|
+      		result.setElementValue |project_script|, carrier 
+      
+      		' Class
+      		Set carrier = New StringsCarrier() 
+      		carrier.push |variable|
+      		carrier.push |property|
+      		carrier.push |method|
+      		carrier.push |event|
+      		result.setElementValue |class|, carrier 
+      				
+      		' Project (VSE)  
+      		Set carrier = New StringsCarrier() 
+      		carrier.push |property|
+      		carrier.push |method|
+      		carrier.push |class|
+      		result.setElementValue |project|, carrier 
+      
+      	End If
+      	
+      	
+      ExitPoint: 
+      	Set getAllowedChildForms = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:2:spawnArgumentsForMethod:14:8
+      %REM
+      	Sub spawnArgumentsForMethod
+      	
+      	Reads arguments information from a source NotesDocument, 
+      	generates Argument objects from the information, 
+      	and appends the generated Argument objects to a target Method 
+      	
+      	@param source 				NotesDocument from which to read argument information 
+      	@param attributenamestubs 	String Array contining Attribute Name Stubs used for each argument 
+      	@param target 				Method object to which Argument objects should be appended
+      	@param isVSE 				Flag indicating if the target Method is a VSE method.  True indicates VSE, False indicates VSS  
+      	
+      %END REM
+      Private Sub spawnArgumentsForMethod(source As NotesDocument, target As Method, attributenamestubs As Variant, isVSE As Boolean)   
+      	On Error GoTo ErrorTrap
+      	
+      	' exception variables
+      	Dim extendedinfo List As String
+      	
+      	Dim argument As ValuedElement 
+      	
+      	Dim attribute$ 
+      	Dim label$ 
+      	Dim valuetype$ 
+      	Dim comment$ 
+      	
+      	Dim index%
+      	
+      	
+      	
+      	' BEGIN CODE
+      	If getContext().GeneratingAPIdoc Then 
+      		' ampersand encode the comments 
+      		For index% = 1 To 10 
+      			label$ = getItemValueText(source, |F_ArgName_| & CStr(index%), ||, ||)
+      			If isBlankString(label$) Then Exit For 		
+      			
+      			valuetype$ = getItemValueText(source, |F_ArgDataType_| & CStr(index%), ||, ||)
+      			comment$ = getBaliStrings().ampersandEncode(getItemValueText(source, |F_ArgComment_| & CStr(index%), CRLF, ||))
+      	
+      			Set argument = New ValuedElement(target.FQN, label$, valuetype$, comment$)
+      			
+      			attribute$ = getItemValueText(source, |F_ArgIndex_| & CStr(index%), ||, ||) 
+      			If Not isBlankString(attribute$) Then argument.setElementValue |argumentindex|, attribute$ 
+      			
+      			ForAll element In attributenamestubs 
+      				attribute$ = getItemValueText(source, CStr(element) & CStr(index%), ||, ||)
+      				If Not isBlankString(attribute$) Then argument.appendAttribute attribute$  
+      			End ForAll
+      			
+      			If isVSE Then 
+      				attribute$ = getItemValueText(source, |F_OptionalValue_| & CStr(index%), ||, ||) 
+      				If Not isBlankString(attribute$) Then argument.setElementValue |optionalvalue|, attribute$
+      			End If
+      			
+      			Call target.appendArgument(argument)		
+      		Next
+      	
+      	Else 
+      		For index% = 1 To 10 
+      			label$ = getItemValueText(source, |F_ArgName_| & CStr(index%), ||, ||)
+      			If isBlankString(label$) Then Exit For 		
+      			
+      			valuetype$ = getItemValueText(source, |F_ArgDataType_| & CStr(index%), ||, ||)
+      			comment$ = getItemValueText(source, |F_ArgComment_| & CStr(index%), CRLF, ||)
+      	
+      			Set argument = New ValuedElement(target.FQN, label$, valuetype$, comment$)
+      			
+      			attribute$ = getItemValueText(source, |F_ArgIndex_| & CStr(index%), ||, ||) 
+      			If Not isBlankString(attribute$) Then argument.setElementValue |argumentindex|, attribute$ 
+      			
+      			ForAll element In attributenamestubs 
+      				attribute$ = getItemValueText(source, CStr(element) & CStr(index%), ||, ||)
+      				If Not isBlankString(attribute$) Then argument.appendAttribute attribute$  
+      			End ForAll
+      			
+      			If isVSE Then 
+      				attribute$ = getItemValueText(source, |F_OptionalValue_| & CStr(index%), ||, ||) 
+      				If Not isBlankString(attribute$) Then argument.setElementValue |optionalvalue|, attribute$
+      			End If
+      			
+      			Call target.appendArgument(argument)		
+      		Next
+      
+      	End If
+      	
+      	
+      	
+      ExitPoint: 
+      	Exit Sub 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Sub
+      
+      '++LotusScript Development Environment:2:1:getAttributeNameStubs:5:8
+      %REM
+      	Function getAttributeNameStubs
+      	String Array containining Name Stubs for VSE Attributes	
+      %END REM
+      Static Function getAttributeNameStubs() As Variant 
+      	Dim result(3) As Variant
+      	Dim isInstantiated As Boolean  
+      	
+      	' BEGIN CODE
+      	If Not isInstantiated Then 
+      		result(0) = |F_IsConst_|
+      		result(1) = |F_IsOptional_|
+      		result(2) = |F_ArgIsArray_|
+      		result(3) = |F_ArgByVal_|
+      
+      		isInstantiated = True 
+      	End If
+      	
+      ExitPoint:
+      	getAttributeNameStubs = result 
+      End Function
+      
+      '++LotusScript Development Environment:2:1:getDataTypeUNIDs:26:8
+      %REM
+      	Function getDataTypeUNIDs
+      	UniversalIDs of Datatype Keyword Documents  
+      	
+      	@param projectType 	Integer indicating the project type filter:  
+      		0 = ALL PROJECT TYPES
+      		1 = PROJECTTYPE_EXTENSION 	Include only VoltScript Extension (VSE) Project Types
+      		2 = PROJECTTYPE_LIBRARY 	Include only VoltScript Library (VSS) Project Types 
+      				
+      	@param category 	Integer indicating the category filter:
+      		0 = ALL CATEGORIES 
+      		1 = DATATYPE_SCALAR 		Include only Scalar DataType such as Integer, String, etc.
+      		2 = DATATYPE_NOTES			Include only Notes Object data types, such as NotesSession, NotesDatabase, etc
+      		3 = DATATYPE_ADT			Include only C++ Automatic Data Types (VSE Object).
+      		4 = DATATYPE_VOLTSCRIPT		Include only VoltScript Object data types (VSS Object).
+      		
+      	@param clearcache Flag indicating to clear the cache 
+      
+      
+      	@return StringsCarrier object containing the DataType UniversalIDs 
+      		k=DataType (name), v=UniversalID 
+      	
+      	@throws ERR_PARAMETER_INVALID if projectType is not a member of the allowed values 
+      	@throws ERR_PARAMETER_INVALID if category is not a member of the allowed values
+      %END REM
+      Private Function getDataTypeUNIDs(projectType As Integer, category As Integer, clearcache As Boolean) As StringsCarrier 
+      		On Error GoTo ErrorTrap
+      	
+      		Dim datatypes As VariantList 
+      		Dim dt As Data_Type 
+      		
+      		Dim result As StringsCarrier 
+      	
+      		' exception variables
+      		Dim extendedinfo List As String
+      		Dim errmsg$ 
+      		Dim errcode%  
+      	
+      	
+      		' BEGIN CODE
+      		extendedinfo(|projectType|) = CStr(projectType) 
+      		extendedinfo(|category|) = CStr(category) 
+      		extendedinfo(|clearcache|) = CStr(clearcache)
+      		
+      		Set datatypes = getDataTypes(projectType, category, clearcache) 
+      		ForAll element In datatypes.content_
+      			extendedinfo(|ListTag(element)|) = ListTag(element) 
+      			Set dt = element
+      			extendedinfo(|dt.Label|) = dt.Label 
+      			result.push dt.UniversalID 
+      		End ForAll
+      		 
+      
+      	ExitPoint: 
+      		If (0 <> errcode%) Then Error errcode%, errmsg$ 
+      		Set getDataTypeUNIDs = result
+      		Exit Function 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		errcode% = Err() 
+      		errmsg$ = Error$()
+      		pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      		Resume ExitPoint
+      End Function
+      
+      
+      '++LotusScript Development Environment:2:1:generateVSID:14:8
+      %REM
+      	Function generateVSID
+      	Generates a BSXdocumentationUtils.VSID object for the VSID Database
+      	
+      	**IMPORTANT NOTE:  "Project" forms are associated with "VSE" classes  
+      	
+      	 The VSID class represents the VSID Database, and can contain MULTIPLE VSE classes generated from MULTIPLE Project forms!!!
+      	 
+      	@param includeVSEs 			Flag indicating if VSE (form = "project") content should be included. 
+      	@param includeLibraries 	Flag indicating if Script Library (form = "project_script") content should be included.  
+      		
+      	@return BSXdocumentationUtils.VSID object for the VSID Database.  
+      %END REM
+      Function generateVSID(includeVSEs As Boolean, includeLibraries As Boolean) As VSID 
+      	On Error GoTo ErrorTrap
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	
+      	
+      	Dim unids As New StringQueue()
+      	Dim ndoc As NotesDocument 
+      	
+      	Dim result As VSID
+      	Dim lsxinstance As VSE   
+      	Dim libraryinstance As Library 
+      	Dim objMethod As Method 
+      
+      	Dim vsidname$
+      	Dim summary$ 
+      	Dim description$ 
+      	Dim unid$ 
+      	Dim form$
+      	
+      	
+      	' BEGIN CODE
+      
+      	vsidname$ = getCurrentDb().Title 	
+      	summary$ = ||
+      	description$ = || 
+      	
+      	
+      	extendedinfo(ITEMNAME_APP_NAME) = vsidname$
+      	extendedinfo(|F_AppSummary|) = summary$ 
+      	extendedinfo(|F_AppDescription|) = description$
+      	
+      	Set result = New VSID(vsidname$, summary$, description$)
+      	If includeVSEs Then unids.load getUNIDsByForm(|project|)
+      	If includeLibraries Then unids.load getUNIDsByForm(|project_script|) 
+      	
+      	unid$ = unids.pop() 
+      	While Not isBlankString(unid$) 
+      		Set ndoc = getDocumentByUNID(unid$)
+      		form$ = LCase(ndoc.getFirstItem(|Form|).Text) 
+      		
+      		Select Case form$
+      			Case |project|
+      				Set lsxinstance = generateVSE(ndoc, result) 
+      				If Not (lsxinstance Is Nothing) Then Call result.appendVSE(lsxinstance) 
+      				
+      			Case |project_script|
+      				Set libraryinstance = generateLibrary(ndoc, result) 
+      				If Not (libraryinstance Is Nothing) Then Call result.appendLibrary(libraryinstance)
+      				
+      			Case Else 
+      				' do nothing  
+      				
+      		End Select
+      
+      		unid$ = unids.pop() 
+      	Wend	
+      	
+      	
+      	
+      ExitPoint: 
+      	If Not (result Is Nothing) Then enhLogMethodResult ||, |Generated Project | & result.VSIDname
+      	
+      	Set generateVSID = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:writeAPIdoc_supportFiles:13:8
+      
+      %REM
+      	Function writeAPIdoc_supportFiles
+      	Writes the supporting files for balidoc (css, images, etc) to the target directory. 
+      	
+      	@param writer VSID API Documentation Writer to use 
+      					
+      	@return Filepaths of support files that were successfully written. 
+      	
+      	@throws ERR_PARAMETER_BLANK if writer is Nothing
+      	@throws ERR_OPERATION_FAILED or other file system exception on failure.   
+      %END REM
+      Public Function writeAPIdoc_supportFiles(writer As VSIDwriter) As StringQueue 
+      	On Error GoTo ErrorTrap
+      	
+      	
+      	Dim col As NotesNoteCollection
+      	Dim designDoc As NotesDocument
+      	Dim stream As NotesStream
+      	
+      	Dim fr As FileResource 
+      
+      	Dim titles As Variant
+      	
+      	Dim directory$
+      	Dim attachmentname$ 
+      	Dim filepath$
+      	Dim noteid$ 
+      	Dim ssdata$ 
+      	Dim tag$
+      	
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	Dim errmsg$
+      	
+      	Dim pos% 
+      	Dim errcode%
+      	Dim useattachment As Boolean 
+      	
+      	Dim result As New StringQueue() 
+      	
+      	
+      	
+      	' BEGIN CODE
+      	If (writer Is Nothing) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |BSX Documentation Writer is Nothing|
+      
+      	directory$ = writer.DocumentationDirectory 
+      	If Not getBaliStrings().endswith(directory$, FOLDERNAME_RESOURCES) Then directory$ = directory$ & DIRECTORY_DELIMITER & FOLDERNAME_RESOURCES & DIRECTORY_DELIMITER
+      
+      	extendedinfo(|Directory|) = directory$
+      	
+      	If Not makeDirectory(directory$) Then Error ERR_OPERATION_FAILED, MSG_OPERATION_FAILED & |Target directory does not exist and could not be created.|
+      	
+      	enhLogExtendedContent LIB_PREFIX, ||, |Exporting BSX Support Files|
+      	
+      
+      	' Stylesheets 
+      	Set col = getCurrentDb().CreateNoteCollection(False)
+      	col.SelectStyleSheetResources = True
+      	Call col.BuildCollection 
+      	noteid$ = col.getFirstNoteID()
+      	While Not isBlankString(noteid$)
+      		extendedinfo(|NoteID|) = noteid$ 
+      		Set designDoc = getCurrentDb().getDocumentByID(noteid$) 
+      		titles = Split(Join(Split(FullTrim(getItemValueText(designDoc, |$title|, ||, ||)), | |), ||), |;|)
+      		attachmentname$ = titles(0) 
+      		If getBaliStrings().beginsWith(attachmentname$, PREFIX_APIDOC_CSS) Then 
+      			' use this attachment 
+      			
+      			attachmentname$ = titles(UBound(titles)) ' use the alias if it is set 
+      			extendedinfo(|Attachment Name|) = attachmentname$
+      			filepath$ = directory$ & attachmentname$ 
+      			
+      			Set fr = MakeFileResource(designDoc) 
+      			Set stream = getCurrentSession().createStream
+      
+      			fr.ReadFileData stream
+      			ssdata$ = streamToText(stream, fr.MimeCharSet)
+      			writeTextFile ssdata$, filepath$
+      			result.push filepath$
+      			enhLogExtendedContent ||, ||, filepath$ 
+      		End If
+      		
+      		Delete designDoc 
+      		noteid$ = col.getNextNoteID(noteid$) 
+      	Wend
+      
+      
+      	' Images 
+      	Set col = getCurrentDb().CreateNoteCollection(False)
+      	col.SelectImageResources = True
+      	Call col.BuildCollection 
+      	noteid$ = col.getFirstNoteID()
+      	While Not isBlankString(noteid$)
+      		extendedinfo(|NoteID|) = noteid$ 
+      		Set designDoc = getCurrentDb().getDocumentByID(noteid$) 
+      		titles = Split(Join(Split(FullTrim(getItemValueText(designDoc, |$title|, ||, ||)), | |), ||), |;|)
+      		attachmentname$ = titles(0) 
+      		If getBaliStrings().beginsWith(attachmentname$, PREFIX_APIDOC_IMAGE) Then 
+      			' use this attachment 
+      			
+      			attachmentname$ = titles(UBound(titles)) ' use the alias if it is set 
+      			extendedinfo(|Attachment Name|) = attachmentname$
+      
+      			filepath$ = directory$ & attachmentname$  
+      			
+      			Set fr = MakeFileResource(designDoc) 
+      			Set stream = getCurrentSession().createStream
+      			stream.Open filepath$, "binary"
+      			stream.Truncate
+      			fr.ReadFileData stream
+      			result.push filepath$
+      			enhLogExtendedContent ||, ||, filepath$
+      		End If
+      		Delete designDoc 
+      		noteid$ = col.getNextNoteID(noteid$) 
+      	Wend
+      
+      
+      	' Files 
+      	Set col = getCurrentDb().CreateNoteCollection(False)
+      	' select file and file resources 
+      	col.SelectMiscFormatElements = True
+      	col.SelectionFormula = |@Contains($Flags; "g") & !@Matches($Flags; "*{~K[];`_}*")|
+      	Call col.BuildCollection 
+      	noteid$ = col.getFirstNoteID()
+      	While Not isBlankString(noteid$) 
+      		useattachment = False 
+      		extendedinfo(|NoteID|) = noteid$ 
+      		Set designDoc = getCurrentDb().getDocumentByID(noteid$) 
+      		titles = Split(Join(Split(FullTrim(getItemValueText(designDoc, |$title|, ||, ||)), | |), ||), |;|)
+      		attachmentname$ = titles(0)
+      		tag$ = ||
+      		If getBaliStrings().beginsWith(attachmentname$, PREFIX_APIDOC_HTML) Then
+      			' Only include HTML and HTM files for stub HTML 
+      			pos% = 0			
+      			If getBaliStrings().endsWith(attachmentname$, |.htm|) Then 
+      				tag$ = Mid$(attachmentname$, Len(PREFIX_APIDOC_HTML) + 1, Len(attachmentname$) - (Len(PREFIX_APIDOC_HTML) + 4))
+      				useattachment = True 
+      			ElseIf getBaliStrings().endsWith(attachmentname$, |.html|) Then
+      				tag$ = Mid$(attachmentname$, Len(PREFIX_APIDOC_HTML) + 1, Len(attachmentname$) - (Len(PREFIX_APIDOC_HTML) + 5))
+      				useattachment = True 
+      			End If 
+      			If useattachment Then
+      				' possibly use this attachment
+      				If getVSIDstubContent(|html|).hasTag(tag$) Then useattachment = False 
+      				' only write the file if it is NOT a BSXstubHTML element!
+      			End If  
+      			
+      		ElseIf getBaliStrings().beginsWith(attachmentname$, PREFIX_APIDOC_JS) Then  
+      			' javascript files 
+      			useattachment = True
+      		End If 
+      		 
+      		If useattachment Then 
+      			attachmentname$ = titles(UBound(titles)) ' use the alias if it is set 
+      			extendedinfo(|Attachment Name|) = attachmentname$
+      			
+      			filepath$ = directory$ & attachmentname$ 
+      			
+      			Set fr = MakeFileResource(designDoc) 
+      			Set stream = getCurrentSession().createStream
+      			
+      			fr.ReadFileData stream
+      			ssdata$ = streamToText(stream, fr.MimeCharSet)
+      			writeTextFile ssdata$, filepath$ 
+      			result.push filepath$
+      			enhLogExtendedContent ||, ||, filepath$ 
+      		End If
+      		
+      		Delete designDoc 
+      		noteid$ = col.getNextNoteID(noteid$) 
+      	Wend
+      
+      	
+      ExitPoint: 
+      	If Not (designDoc Is Nothing) Then Delete designDoc
+      	If (0 <> errcode%) Then Error errcode%, errmsg$ 
+      	Set writeAPIdoc_supportFiles = result
+      	enhLogMethodResult ||, |Exported | & CStr(result.size) & | support files.|
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0 
+      	errcode% = Err() 
+      	errmsg$ = Error$() 
+      	pushExceptionCarrier LIB_PREFIX, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:getUNIDsByForm:5:8
+      %REM
+      	Function getUNIDsByForm
+      	Gets the UniversalIDs of all Documents matching a specified form.
+      %END REM
+      Function getUNIDsByForm(form$) As StringQueue    
+      	On Error GoTo ErrorTrap
+      	
+      	Static nvw As NotesView
+      	 
+      	Dim col As NotesViewEntryCollection
+      	Dim nvent As NotesViewEntry 
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	
+      	
+      	Dim result As New StringQueue() 
+      	
+      	' BEGIN CODE
+      	extendedinfo(|form|) = form$
+      	If nvw Is Nothing Then Set nvw = getCurrentDb().getView(|codeAllByForm|)
+      	
+      	Set col = nvw.getAllEntriesByKey(form$, True)  
+      	If col Is Nothing Then GoTo ExitPoint 
+      	
+      	Set nvent = col.getFirstEntry() 
+      	While Not (nvent Is Nothing) 
+      		If nvent.isDocument And nvent.isValid Then result.push nvent.UniversalID  
+      		
+      		Set nvent = col.getNextEntry(nvent) 
+      	Wend
+      
+      		
+      ExitPoint: 
+      	Set getUNIDsByForm = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:getDataTypeCategory:10:8
+      %REM
+      	Function getDataTypeCategory
+      	Gets the Category Number for the specific Data Type 
+      	
+      	@param datatypename Name of the Data Type 
+      	@return Category Number of the Data Type 
+      	
+      	@throws ERR_PARAMETER_BLANK if source is blank
+      %END REM
+      Function getDataTypeCategory(datatypename As String) As Integer  
+      	If isBlankString(datatypename) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK
+      	On Error GoTo ErrorTrap
+      	
+      	
+      	Static datatypecategories As IntegerList
+      	Dim nvw As NotesView 
+      	Dim nav As NotesViewNavigator 
+      	Dim nvent As NotesViewEntry 
+      	
+      	 
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	Dim errmsg$ 
+      	Dim errcode%
+      	
+      	
+      	
+      	Dim result%
+      	
+      	' BEGIN CODE
+      	extendedinfo(|datatypename|) = datatypename 
+      	If (datatypecategories Is Nothing) Then 
+      		Set datatypecategories = New IntegerList() 
+      		Set nvw = getCurrentDb().getView(|lkp-datatypes|)
+      		Set nav = nvw.createViewNav()
+      		Set nvent = nav.Getfirstdocument() 
+      		While Not (nvent Is Nothing)
+      			extendedinfo(|nvent.columnValues(1)|) = CStr(nvent.columnValues(1))
+      			extendedinfo(|nvent.columnValues(2)|) = CStr(nvent.columnValues(2))
+      			Call datatypecategories.setElementValue(CStr(nvent.columnValues(1)), CInt(nvent.columnValues(2)))		
+      			Set nvent = nav.Getnextdocument(nvent)
+      		Wend
+      	End If
+      	
+      	result% = datatypecategories.getValue(datatypename) 
+      	
+      ExitPoint: 
+      	If (0 <> errcode%) Then Error errcode%, errmsg$ 
+      	getDataTypeCategory = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	errcode% = Err() 
+      	errmsg$ = Error$() 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:getParentAllowedForForm:14:8
+      %REM
+      	Function getParentAllowedForForm
+      	Gets the appropriate parent document for a given source document and child form  
+      	
+      	@param source Notes document for which to get a Parent document that is valid for a given child form
+      	@param targetform$ Name of a form which is valid for a given Parent document's form. 
+      		Some child forms are only valid for certain parent forms. 	
+      	
+      	@return valid Parent document (NOTE: this COULD in fact be an instance of SOURCE), or NOTHING if none can be found. 
+      	
+      	@throws ERR_PARAMETER_BLANK if source is Nothing
+      	@throws ERR_PARAMETER_BLANK if childform is Blank	
+      %END REM
+      Function getParentAllowedForForm(source As NotesDocument, targetform$) As NotesDocument
+      	If (source Is Nothing) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |Source document is Nothing.  |
+      	If isBlankString(targetform$) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |Child form is blank.  |
+      	On Error GoTo ErrorTrap
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	
+      	Dim sc As StringsCarrier
+      	Dim parent As NotesDocument 
+      	Dim result As NotesDocument
+      	
+      	Dim childform$
+      	Dim sourceform$
+      	
+      	
+      	
+      	' BEGIN CODE
+      	childform$ = LCase(targetform$) 
+      	extendedinfo(|childform|) = childform$ 
+      	sourceform$ = LCase(getItemValueText(source, |Form|, ||, ||)) 
+      	extendedinfo(|sourceform|) = sourceform$
+      	
+      	If getAllowedChildForms().hasTag(sourceform$) Then 
+      		Set sc = getAllowedChildForms().getValue(sourceform$) 
+      		If sc.contains(childform$) Then Set result = source 
+      	End If
+      	
+      	
+      	Do While (result Is Nothing) 
+      		Set parent = getParentDocument(source) 
+      		If (parent Is Nothing) Then Exit Do 
+      		Set result = getParentAllowedForForm(parent, childform$)  
+      	Loop
+      	 	
+      	
+      ExitPoint: 
+      	Set getParentAllowedForForm = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:generateObjectType:10:8
+      %REM
+      	Function generateObjectType_Script
+      	Generates a BSXdocumentationUtils.ObjectClass object.  
+      	
+      	@param source NotesDocument from which to generate the ObjectClass	
+      	@param parent Parent Object for the generated result.	
+      		
+      	@return BSXdocumentationUtils.ObjectClass for the Class.  
+      %END REM
+      Private Function generateObjectType(source As NotesDocument, parent As CodeElement) As ObjectType
+      	On Error GoTo ErrorTrap
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	
+      	
+      	Dim col As NotesDocumentCollection 
+      	Dim ndoc As NotesDocument 
+      	
+      	Dim result As ObjectType
+      	Dim objVariable As Variable
+      	Dim objConstant As Constant 
+      	
+      	Dim values As Variant 
+      
+      	Dim label$ 
+      	Dim comment$ 
+      	Dim codesample$ 
+      	Dim form$
+      	Dim key$
+      	Dim temp$
+      	Dim scope$
+      	Dim f_varattribute$
+      	
+      	Dim signaturecode& 
+      	
+      	Dim hasAttributes As Boolean 
+      	Dim hasAdditionalProperties As Boolean 
+      	
+      	
+      	' BEGIN CODE
+      	If (source Is Nothing) Then GoTo ExitPoint 
+      	If (parent Is Nothing) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |A Parent CodeObject is required.  | 
+      	
+      	extendedinfo(|UniversalID|) = source.Universalid
+      	extendedinfo(|NoteID|) = source.Noteid
+      	form$ =  getItemValueText(source, |Form|, ||, ||)
+      	extendedinfo(|Form|) = form$ 
+      	If (|type_script| <> LCase(form$)) Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |Form must be 'type_script'.  |
+      
+      
+      	label$ = getItemValueText(source, |F_TypeName|, ||, ||)
+      	comment$ = getItemValueText(source, |Comment|, CRLF, | |)
+      	codesample$ = getItemValueText(source, |CodeSample|, CRLF, | |) 
+      	scope$ = |Public| 
+      		
+      	If getContext().GeneratingAPIdoc Then 
+      		' Ampersand encode variables which may potentially include HTML content. 
+      		comment$ = getBaliStrings().ampersandEncode(comment$)
+      		codesample$ = getBaliStrings().ampersandEncode(codesample$)
+      	End If
+      
+      	extendedinfo(|F_TypeName|) = label$
+      	extendedinfo(|Comment|) = comment$
+      	extendedinfo(|CodeSample|) = codesample$
+      	extendedinfo(|F_Scope|) = scope$
+      
+      	signaturecode& = SIGNATURE_VALUE_TYPE
+      	Select Case LCase(scope$) 
+      		Case |public|
+      			signaturecode& = signaturecode& + SIGNATURE_VALUE_PUBLIC
+      		
+      		Case |private| 
+      			signaturecode& = signaturecode& + SIGNATURE_VALUE_PRIVATE
+      			
+      	End Select
+      	
+      	
+      
+      	Set result = New ObjectType(parent, label$, ||, comment$, codesample$, signaturecode&)
+      
+      	' add additional properties
+      	ForAll element In getAdditionalPropertyKeys(SIGNATURE_VALUE_TYPE) 
+      		key$ = CStr(element) 
+      		temp$ = getItemValueText(source, |F_| & key$, ||, ||)
+      		extendedinfo(key$) = temp$ 
+      		If Not isBlankString(temp$) Then result.setElementValue key$, temp$
+      		If Not isBlankString(temp$) Then hasAdditionalProperties = True 
+      	End ForAll
+      
+      	' get properties, events, methods, and any child classes 
+      	Set col = source.Responses 
+      	Set ndoc = col.getFirstDocument()
+      	
+      	While Not (ndoc Is Nothing) 
+      		form$ = LCase(ndoc.getFirstItem(|Form|).Text)
+      		
+      		Select Case form$ 
+      		Case |variable_script|
+      			f_varattribute$ = getItemValueText(ndoc, |F_VarAttribute|, |,|, ||)
+      			
+      			values = Split(f_varattribute$, |,|) 
+      			ForAll element In values 
+      				If (0 = StrComp(|Const|, CStr(element), 5)) Then Error ERR_OPERATION_PROHIBITED, MSG_OPERATION_PROHIBITED & |Types may not have child Constant elements.  | 
+      			End ForAll
+      			
+      			Set objVariable = generateVariable(ndoc, result)
+      			result.appendVariable objVariable
+      			
+      		Case Else: 
+      			enhLogWarning ||, form$ & | not yet implemented|
+      			
+      	End Select
+      		
+      		Set ndoc = col.getNextDocument(ndoc) 
+      	Wend
+      	
+      
+      	
+      	
+      ExitPoint: 
+      	Set generateObjectType = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:GenerateLSXMethodID:1:8
+      Public Function GenerateLSXMethodID(ProjectDoc As NotesDocument, ClassName As String, MethodName As String, AddIfNotFound As Boolean ) As Long
+      '
+      '	GenerateLSXMethodID
+      '
+      '	Each property/event/method in an LSX DLL has an ID value associated with it that is compiled into lotuscript. 
+      ' 	To prevent reshuffling of these IDs every time we regenerate the code for the DLL, we keep an archive of all the p/m/e
+      '	names we've used thus far and their ID values, only extending the list. This provides a degree of backwards compatibility
+      '	across compiled LotusScript and new versions of LSX DLLs.
+      '	
+      '	NOTE: This function saves the current LSX project document!
+      '	
+      '	We're currently called by the form methods: Method.QuerySave(), Property.QuerySave(), and Event.QuerySave()
+      ' 	We're also called by CreateNewMethodDocument to handle the New() function for each class.
+      '	
+      ' 		reo	07/14/2007	Created
+      	On Error GoTo ErrorTrap 
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	Dim errmsg$
+      	Dim errcode%
+      	Dim errline%	 
+      	Dim msg$ 
+      
+      	
+      	Dim Archive As String 
+      	Dim ID As String 
+      	Dim ID_Tag As String 
+      	Dim NewIDString As String 
+      
+      	Dim PME_Count As Long
+      	Dim Name_Start As Long
+      	Dim ID_Start As Long
+      	Dim ID_End As Long
+      	Dim ID_Len As Long
+      	Dim NewID As Long 
+      
+      	Dim Name_Exists As Boolean 
+      	
+      	' Create the Class and Method archives if they're missing.
+      	Call CreateLSXArchivesIfMissing(ProjectDoc)
+      	
+      	' Find position of P/M/E in archive
+      	Archive = getItemValueText(ProjectDoc, ITEMNAME_METHOD_ARCHIVE, ||, ||)		' Read in the list of property / method / names
+      	ID_Tag = "(" & ClassName & "." & MethodName & ")"
+      	Name_Start = InStr(Archive, ID_Tag)
+      	Name_Exists = Name_Start > 0
+      	
+      	' If the method exists...
+      	If Name_Exists Then
+      		' We found the name in the archive, return its ID
+      		ID_Start = Name_Start + Len(ID_Tag) + 1		' Locate start of ID value
+      		ID_End =  InStr(ID_Start, Archive, "]") -1  			' Compute ID string end
+      		ID_Len = ID_End - ID_Start	 + 1						' Compute ID string length
+      		ID = Mid(Archive, ID_Start, ID_Len ) 				' Extract ID string value
+      		NewID = Val(ID)												' Return it
+      		Print "LSXWizard: Using previously archived method/property/event ID value (#" & CStr(NewID) & ") for " & MethodName 
+      		
+      	ElseIf AddIfNotFound Then
+      		' We didn't find the property / method / event name in the archive... add it if desired.
+      		' Read and increment maximum ID
+      		NewIDString = getItemValueText(ProjectDoc, ITEMNAME_METHODID_COUNTER, ||, ||)
+      		If isBlankString(NewIDString) Then 
+      			NewID = 1 
+      		Else 
+      			extendedInfo(|NewIDString|) = NewIDString 
+      			NewID = CLng(NewIDString) + 1 
+      		End If 
+      		
+      		Call ProjectDoc.ReplaceItemValue(ITEMNAME_METHODID_COUNTER,  CLng(NewID))		' Write new Max ID
+      		Archive = Archive & ID_Tag & "[" & CStr(NewID) & "]" 							' Append new item's name and ID to the list
+      		Call ProjectDoc.ReplaceItemValue(ITEMNAME_METHOD_ARCHIVE,  Archive)	' Write new names list archive
+      		Call ProjectDoc.Save(True, True)          												' Save the new values
+      		
+      	Else
+      		' We didn't find it and don't want a new one
+      		NewID =  -1	' Item doesn't exist so return -1 since we don't want to add it
+      	End If
+      	
+      	
+      		
+      ExitPoint: 
+      	If (0 <> errcode%) Then Error errcode%, errmsg$ & | at line | & CStr(errline%) & | in | & LIB_PREFIX & GetThreadInfo(1) & |().  | 
+      	GenerateLSXMethodID = NewID	
+      	Exit Function  
+      ErrorTrap:
+      	On Error GoTo 0
+      	errcode% = Err() 
+      	errmsg$ = Error() 
+      	errline% = Erl()
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	
+      	ForAll s In extendedinfo 
+      		If isBlankString(msg$) Then 
+      			msg$ = ListTag(s) & |: | & s 
+      		Else 
+      			msg$ = msg$ & |, | & CRLF & ListTag(s) & |: | & s
+      		End If
+      		
+      	End ForAll
+      	enhLogException LIB_PREFIX, msg$ 
+      	
+      	Resume ExitPoint
+      
+      	
+      End Function
+      
+      '++LotusScript Development Environment:2:1:StreamToStringsCarrier:7:8
+      %REM
+      	Function StreamToStringsCarrier
+      	Description: Convert a NotesStream to StringsCarrier in a specified character set.
+      		The default is to interpret NotesStreams as Unicode unless they are
+      		attached to a file; this lets you override that. 
+      %END REM
+      Private Function StreamToStringsCarrier(streamIn As NotesStream, ByVal chrset$) As StringsCarrier
+      	On Error GoTo ErrorTrap 
+      	
+      	Dim doc As NotesDocument
+      	Dim mime As NotesMIMEEntity
+      	
+      	Dim stout As NotesStream 
+      	Dim result As New StringsCarrier()
+      
+      	Dim extendedinfo List As String 
+      	
+      	extendedinfo(|charset|) = chrset$ 
+      
+      
+      	Set doc = getCurrentDb().CreateDocument() 
+      	Set mime = doc.CreateMIMEEntity("Body")
+      	streamIn.Position = 0
+      	Call mime.SetContentFromBytes(streamIn, "text/plain; charset=" & chrset, ENC_NONE)
+      	
+      	Set stout = getCurrentSession().CreateStream() 
+      	Call mime.getContentAsText(stout, True)
+      	
+      	stout.Position = 0 
+      	While Not stout.IsEOS
+      		result.push getBaliStrings().stripCRLF(stout.ReadText(STMREAD_LINE, EOL_ANY))
+      	Wend 
+      	
+      ExitPoint: 
+      	Set StreamToStringsCarrier = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:isValidGUID:8:8
+      %REM
+      	Function isValidGUID
+      	Tests a source to determine if it is fits the pattern of a valid Globally Unique ID
+      	
+      	@param source String to test. 
+      	@return Flag indicating if source is a valid GUID 
+      %END REM
+      Public Function isValidGUID(source As String) As Boolean 
+      	On Error GoTo ErrorTrap
+      	
+      	Const MSG_GUID_PATTERN = |GUID must consist of hexadecimal characters in the pattern 12345678-1234-1234-1234-123456789012.  |
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	
+      	Dim chunks As Variant 
+      	
+      	Dim strChar As String 
+      	Dim sourceLen As Integer 
+      	Dim HyphenCount As Integer 
+      	Dim i As Integer
+      	Dim j As Integer  
+      	
+      	
+      	Dim result As Boolean
+      	
+      	' BEGIN CODE
+      	extendedinfo(|source|) = source 
+      
+      	sourceLen = Len(source)
+      	extendedinfo(|source length|) = sourceLen     
+      '	GUIDFormat = False
+      	HyphenCount = 0    
+      	
+      	' Make sure source isn't blank.
+      	If isBlankString(source) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK
+      	
+      	' Make sure source is 36 characters.
+      	If (sourceLen <> 36) Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |The Base GUID must contain 36 characters.  |
+      	
+      	' VALID PATTERN: 12345678-1234-1234-1234-123456789012
+      	' Split into substrings 
+      	chunks = Split(source, |-|) 
+      	If (UBound(chunks) - LBound(chunks)) <> 4 Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & MSG_GUID_PATTERN
+      	
+      	' Make sure source contains valid characters.  
+      	For i = LBound(chunks) To UBound(chunks) 
+      		Select Case i 
+      			Case LBound(chunks) 
+      				If Len(chunks(i)) <> 8 Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & MSG_GUID_PATTERN
+      
+      			Case UBound(chunks) 
+      				If Len(chunks(i)) <> 12 Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & MSG_GUID_PATTERN
+      				
+      			Case Else 
+      				If Len(chunks(i)) <> 4 Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & MSG_GUID_PATTERN
+      		End Select
+      		
+      		For j = 1 To Len(chunks(i)) 
+      			strChar = Mid$(chunks(i), j, 1)
+      			If Not (strChar  Like |[0-9a-fA-F]|) Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & MSG_GUID_PATTERN
+      		Next
+      	Next
+      
+      	result = True 
+      	
+      	
+      ExitPoint: 
+      	isValidGUID = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:generateConstant:10:8
+      %REM
+      	Function generateConstant
+      	Generates a BSXdocumentationUtils.Method object for a Constant 
+      
+      	@param source NotesDocument from which to generate the Constant		
+      	@param parent Parent Object for the generated result.	
+      
+      	@return Generated Constant 
+      %END REM
+      Private Function generateConstant(source As NotesDocument, parent As CodeElement) As Constant
+      	On Error GoTo ErrorTrap
+      	
+      	' exception variables
+      	Dim extendedinfo List As String  
+      	Dim msg$ 
+      
+      	Dim attributes As StringQueue
+      	Dim result As Constant
+      	Dim values As Variant
+      	
+      	Dim label$ 
+      	Dim valuetype$ 
+      	Dim initialValue$
+      	Dim attributesstring$ 
+      	Dim comment$ 
+      	Dim temp$
+      	Dim scope$ 
+      	Dim form$
+      	
+      	Dim signaturecode& 
+      	
+      	' BEGIN CODE
+      	If (source Is Nothing) Then GoTo ExitPoint 
+      	
+      	extendedinfo(|UniversalID|) = source.Universalid
+      	extendedinfo(|NoteID|) = source.Noteid
+      	form$ =  getItemValueText(source, |Form|, ||, ||)
+      	extendedinfo(|Form|) = form$ 
+      		
+      	If (|variable_script| = LCase(form$)) Then
+      		label$ = getItemValueText(source, |F_VarName|, ||, ||)
+      		valuetype$ = getItemValueText(source, |F_VarDataType|, ||, ||)
+      		attributesstring$ = getItemValueText(source, |F_VarAttribute|, |,|, ||)
+      		initialValue$ = getItemValueText(source, |F_InitValue|, |,|, ||)
+      		scope$ = |Public| 
+      		comment$ = getItemValueText(source, |Comment|, CRLF, | |)
+      
+      		If getContext().GeneratingAPIdoc Then 
+      			' Ampersand encode variables which may potentially include HTML content. 
+      			comment$ = getBaliStrings().ampersandEncode(comment$)
+      			initialValue$ = getBaliStrings().ampersandEncode(initialValue$)
+      		End If
+      
+      		extendedinfo(|Comment|) = comment$ 
+      		extendedinfo(|F_VarName|) = label$
+      		extendedinfo(|F_VarDataType|) = valuetype$
+      		extendedinfo(|F_VarAttribute|) = attributesstring$	
+      		extendedinfo(|F_InitValue|) = initialValue$
+      		extendedinfo(|F_Scope|) = scope$ 
+      
+      	Else
+      		Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |Form must be 'variable_script'.  |
+      	End If
+      	
+      	Set attributes = getAttributes(scope, attributesstring$) 
+      	signaturecode& = getSignatureCode(attributes.joinContent(| |))
+      	extendedinfo(|signature code|) = CStr(signaturecode&)
+      	
+      	If SIGNATURE_VALUE_CONST <> signatureCodeToInstanceCode(signaturecode&) Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |Source document does not represent a Constant.  |
+      	Set result = New Constant(parent, label$, initialValue$, comment$, signaturecode&)
+      	
+      	result.setElementValue |F_ReturnsObject|, getItemValueText(source, |F_ReturnsObject|, |,|, ||) 
+      	
+      ExitPoint: 
+      	Set generateConstant = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	msg$ = || 
+      	ForAll s In extendedinfo 
+      		If isBlankString(msg$) Then 
+      			msg$ = ListTag(s) & |: | & s 
+      		Else 
+      			msg$ = msg$ & CRLF & ListTag(s) & |: | & s
+      		End If
+      	End ForAll
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:2:CreateNewMethodDocument:2:8
+      
+      Public Sub CreateNewMethodDocument (source As NotesDocument)  
+      	If (source Is Nothing) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK  
+      	On Error GoTo ErrorTrap 
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	Dim errmsg$
+      	Dim errcode%
+      	Dim errline%	 
+      	Dim msg$ 
+      	
+      
+      
+      	Dim currProject As NotesDocument
+      	Dim newMethodDoc As NotesDocument
+      	Dim tempItem As NotesItem
+      	
+      	Dim ClassName As String
+      	Dim form As String
+      	Dim methodform As String 
+      	Dim methodtype As String 
+      	
+      	
+      	Dim pmeID As Long 
+      	
+      	
+      	
+      	Set currProject = getCurrentDb().GetDocumentByUNID(getItemValueText(source, |F_ProjectID|, ||, ||))          
+      	
+      	' Set the class and method names for this method
+      	ClassName = getItemValueText(source, |F_ClassName|, ||, ||) 
+      	form = getItemValueText(source, |Form|, ||, ||)
+      	
+      	extendedinfo(|ClassName|) = ClassName 
+      	extendedinfo(|form|) = form  
+      	
+      
+      	' Get a new (or archived) method ID for it
+      	pmeID = GenerateLSXMethodID(currProject, ClassName, |New|, True)
+      	extendedinfo(|pmeID|) = CStr(pmeID) 
+      
+      	Select Case LCase$(form) 
+      		Case |class| 			
+      			methodform = |method| 
+      			methodtype = |Function|
+      			
+      		Case |class_script| 
+      			methodform = |method_script| 
+      			methodtype = |Sub| 
+      			
+      		Case Else 
+      			Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |Source document is not a "Class" nor a "Class_Script" document.  |
+      			 
+      	End Select	
+      
+      	extendedinfo(|methodform|) = methodform  
+      	extendedinfo(|methodtype|) = methodtype  
+      	
+      	
+      	Set newMethodDoc = getCurrentDb().CreateDocument()
+      	Call newMethodDoc.MakeResponse (source)
+      
+      	Call newMethodDoc.replaceItemValue(|Form|, methodform) 
+      	Call newMethodDoc.replaceItemValue(|F_Funct_or_Sub|, methodtype) 
+      	Call newMethodDoc.replaceItemValue(|F_ProjectID|, getItemValueText(source, |F_ProjectID|, ||, ||))
+      	Call newMethodDoc.replaceItemValue(|F_MethName|, "New")
+      	Call newMethodDoc.replaceItemValue(|F_GMethNameOld|, "")
+      	Call newMethodDoc.replaceItemValue(|F_MethReturnType|, ClassName)
+      	Call newMethodDoc.replaceItemValue(|F_MethAttribute|, "")
+      	Call newMethodDoc.replaceItemValue(|F_TempArgCount|, 0)
+      	Call newMethodDoc.replaceItemValue(ITEMNAME_METHODID_COUNTER, pmeID)
+      	Call newMethodDoc.replaceItemValue(|F_ReturnsObject|, 0)
+      
+      	Set tempItem = source.GetFirstItem("F_TempClassList")     
+      	tempItem.AppendToTextList(getItemValueText(source, |F_ClassName|, ||, ||))     
+      	Call newMethodDoc.CopyItem(tempItem, "F_TempClassList")
+      
+      
+          ' Make sure the first argument type is the same as the derived notes class if the method is new.
+      	If (|Derived| = getItemValueText(source, |F_ClassType|, ||, ||)) Then
+      		Dim classDerivedType As String
+      		classDerivedType = getItemValueText(source, |F_ClassDeriveType|, ||, ||)
+      		If (DATATYPE_NOTES = getDataTypeCategory(classDerivedType)) Then 
+      			Call newMethodDoc.replaceItemValue(|F_ArgName_1|, "A" & classDerivedType)                     
+      			Call newMethodDoc.replaceItemValue(|F_ArgDataType_1|, classDerivedType)
+      			Call newMethodDoc.replaceItemValue(|F_ArgByVal_1|, "")
+      			Call newMethodDoc.replaceItemValue(|F_TempArgCount|, 1)
+      		End If
+      	End If    
+      
+      	Call newMethodDoc.ComputeWithForm (False, False)
+      	Call newMethodDoc.replaceItemValue(|F_MethReturnType|, ClassName) ' this gets wiped out by comptewithform, will resolve in detail at a later time.  DSO 20230521
+      	Call newMethodDoc.Save (True, True)          
+      	
+      		
+      ExitPoint: 
+      	If (0 <> errcode%) Then Error errcode%, errmsg$ & | at line | & CStr(errline%) & | in | & LIB_PREFIX & GetThreadInfo(1) & |().  | 
+      	Exit Sub 
+      ErrorTrap:
+      	On Error GoTo 0
+      	errcode% = Err() 
+      	errmsg$ = Error() 
+      	errline% = Erl()
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	
+      	ForAll s In extendedinfo 
+      		If isBlankString(msg$) Then 
+      			msg$ = ListTag(s) & |: | & s 
+      		Else 
+      			msg$ = msg$ & |, | & CRLF & ListTag(s) & |: | & s
+      		End If
+      		
+      	End ForAll
+      	enhLogException LIB_PREFIX, msg$ 
+      	
+      	Resume ExitPoint	
+      End Sub
+    signed: true
+    nonsummary: true
+  - name: $TITLE
+    type: text
+    data: BSXnotesUtils
+    signed: true
+remaining: []

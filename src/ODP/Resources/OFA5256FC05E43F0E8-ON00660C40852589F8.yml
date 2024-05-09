@@ -1,0 +1,36 @@
+---
+class: 1
+flags: 0x0100
+unid: OFA5256FC05E43F0E8-ON00660C40852589F8
+items:
+  - name: Form
+    type: text
+    data: Skeleton
+  - name: FormId
+    type: number
+    data: 54
+  - name: FormName
+    type: text
+    data: EXP_CLASS_DTOR
+  - name: TheCodeAbstract
+    type: text
+    data: "if this is an Expanded class, then walk down the ExpandedNames list"
+  - name: TheCode
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: |
+      hf8OAAEAAAogICAvKgCF/1IAAQAACiAgICAgIGlmIHRoaXMgaXMgYW4gRXhwYW5kZWQgY2xhc3MsIHRo
+      ZW4gd2FsayBkb3duIHRoZSBFeHBhbmRlZE5hbWVzIGxpc3QAhf84AAEAAAogICAgICBhbmQgZnJlZSBh
+      bGwgdGhlIEV4cGFuZGVkIHByb3BlcnR5IGl0ZW1zLgCF/w4AAQAACiAgICovAIX/CQABAAAKACCF/yQA
+      AQAACiAgIGlmICh0aGlzLT5FeHBhbmRlZE5hbWVzKQCF/w0AAQAACiAgIHsAIIX/PgABAAAKICAgICAg
+      TFNQVFIoTFNYUFJPUEVSVFkpIHBQcm9wID0gdGhpcy0+RXhwYW5kZWROYW1lczsAhf8nAAEAAAogICAg
+      ICBMU1BUUihMU1hQUk9QRVJUWSkgcFRtcDsAIIX/HAABAAAKICAgICAgd2hpbGUgKHBQcm9wKQCF/xAA
+      AQAACiAgICAgIHsAhf8lAAEAAAogICAgICAgICBkZWxldGUgcFByb3AtPm5hbWU7ACCF/yUAAQAACiAg
+      ICAgICAgIHBUbXAgPSBwUHJvcC0+bmV4dDsAIIX/NwABAAAKICAgICAgICAgaWYgKHBQcm9wLT5WYWx1
+      ZS5UeXBlID09IExTVlRfU1RSSU5HKQAghf8TAAEAAAogICAgICAgICB7ACCF/0AAAQAACiAgICAgICAg
+      ICAgIExTSUNBTEwoU3RyaW5nRGVyZWYocFByb3AtPlZhbHVlLnZTdHJpbmcpKTsAhf8TAAEAAAogICAg
+      ICAgICB9ACCF/x8AAQAACiAgICAgICAgIGRlbGV0ZSBwUHJvcDsAIIX/HwABAAAKICAgICAgICAgcFBy
+      b3AgPSBwVG1wOwAghf8QAAEAAAogICAgICB9AIX/KgABAAAKICAgICAgdGhpcy0+RXhwYW5kZWROYW1l
+      cz1MU05VTEw7AIX/DQABAAAKICAgfQAg
+remaining: []

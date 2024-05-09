@@ -1,0 +1,41 @@
+---
+class: 1
+flags: 0x0100
+unid: OF2155BBA16FCE2B1F-ON006EC7DB85258AE2
+items:
+  - name: Authors
+    type: text
+    data:
+      - CN=Devin Olson/OU=USA/O=PNPHCL
+      - "[Admin]"
+    authors: true
+    names: true
+  - name: Category
+    type: text
+    data: "2"
+  - name: CreatedOn
+    type: time
+    data: "2024-03-16T16:10:01.23-04:00"
+    dst: true
+  - name: DataType
+    type: text
+    data: NotesStream
+  - name: F_LSXCreator
+    type: text
+    data: Devin Olson
+  - name: Form
+    type: text
+    data: DataType
+  - name: LastModified
+    type: time
+    data: "2024-03-16T16:10:15.83-04:00"
+    dst: true
+  - name: ProjectType
+    type: text
+    data:
+      - "1"
+      - "2"
+  - name: keywordComments
+    type: text
+    data: Represents a stream of binary or character data.
+remaining: []

@@ -1,0 +1,31 @@
+---
+class: 1
+flags: 0x0100
+unid: OF7FAF96C6AE54819B-ON00660C17852589F8
+items:
+  - name: Form
+    type: text
+    data: Skeleton
+  - name: FormId
+    type: number
+    data: 17
+  - name: FormName
+    type: text
+    data: Class Reg_CPP
+  - name: TheCodeAbstract
+    type: text
+    data: "if (status == LSX_OK) // register %4% %3% class status = ::LSXRegisterOneClass(hInst, C%1%_%2%_ID, "
+  - name: TheCode
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: |
+      hf8hAAEAAAogICBpZiAoc3RhdHVzID09IExTWF9PSykAIIX/DQABAAAKICAgewAghf8oAAEAAAogICAg
+      ICAvLyByZWdpc3RlciAlNCUgJTMlIGNsYXNzAIX/CQABAAAKACCF/0YAAQAACiAgICAgIHN0YXR1cyA9
+      IDo6TFNYUmVnaXN0ZXJPbmVDbGFzcyhoSW5zdCwgQyUxJV8lMiVfSUQsICU3JSwAhf8MAAEAAAolOCUA
+      hf8MAAEAAAolOSUAhf8NAAEAAAolMTAlACCF/zgAAQAACiAgICAgICAgIENIQVJTRVQsICAgICAvLyBD
+      bGFzcyBuYW1lIHN0cmluZyB0eXBlAIX/SQABAAAKICAgICAgICAgQ0hBUlNFVCwgICAgIC8vIHN0cmlu
+      ZyB0eXBlIGZvciBDbGFzcyBDb250cm9sIFByb2NlZHVyZQAghf9GAAEAAAogICAgICAgICBwTFNYRExM
+      TmFtZSwgKExTUExUU1RSKUxTWF9DTEFTU19DT05UUk9MX05BTUUsIGhNb2QsAIX/HAABAAAKICAgICAg
+      ICAgJTYlICUxMSUpOwCF/w0AAQAACiAgIH0AIA==
+remaining: []

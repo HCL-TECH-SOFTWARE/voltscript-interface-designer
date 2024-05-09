@@ -1,0 +1,30 @@
+---
+class: 1
+flags: 0x0100
+unid: OF5BD69F42B1EDDCCD-ON00660C37852589F8
+items:
+  - name: Form
+    type: text
+    data: Skeleton
+  - name: FormId
+    type: number
+    data: 46
+  - name: FormName
+    type: text
+    data: DEF File OS400
+  - name: TheCodeAbstract
+    type: text
+    data: /* Declares the module parameters for the application - OS400. /* Always add the new exports to the
+  - name: TheCode
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: |
+      hf9KAAEAAAovKiBEZWNsYXJlcyB0aGUgbW9kdWxlIHBhcmFtZXRlcnMgZm9yIHRoZSBhcHBsaWNhdGlv
+      biAtIE9TNDAwLiAqLwCF/zcAAQAACi8qIEFsd2F5cyBhZGQgdGhlIG5ldyBleHBvcnRzIHRvIHRoZSBi
+      b3R0b20gKi8AIIX/CQABAAAKACCF/zYAAQAAClNUUlBHTUVYUCBQR01MVkwoKkNVUlJFTlQpIFNJR05B
+      VFVSRSgiTk9URVMiKQCF/wkAAQAACgAghf8oAAEAAApFWFBPUlQgU1lNQk9MKCJNYWluRW50cnlQb2lu
+      dCIpAIX/KQABAAAKRVhQT1JUIFNZTUJPTCgiTFNYQ2xhc3NDb250cm9sIikAIIX/CQABAAAKACCF/y8A
+      AQAACi8qIC8ve3tMU1hfQVVUSE9SX0NPREVfTW9yZV9FeHBvcnRzICovACCF/xMAAQAACi8qIC8vfX0g
+      Ki8AIIX/CQABAAAKACCF/xEAAQAACkVORFBHTUVYUCA=
+remaining: []

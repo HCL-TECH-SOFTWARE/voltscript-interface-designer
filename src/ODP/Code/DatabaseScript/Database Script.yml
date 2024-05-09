@@ -1,0 +1,72 @@
+---
+class: 512
+flags: 0x2000
+unid: OFEDDB2F5120FB6CBD-ON0002E1D8852566EF
+items:
+  - name: $DBScript
+    type: text
+    data: |
+      '++LotusScript Development Environment:2:5:(Options):0:66
+      %REM
+      	Database Script Database Script
+      	Created Jul 25, 2023 by Devin Olson/USA/PNPHCL
+      	Description
+      %END REM
+      Option Declare
+      
+      
+      '++LotusScript Development Environment:2:5:(Forward):0:1
+      Declare Sub Querydocumentdelete(Source As Notesuidatabase, Continue As Variant)
+      
+      '++LotusScript Development Environment:2:5:(Declarations):0:2
+      
+      '++LotusScript Development Environment:2:2:Querydocumentdelete:1:12
+      Sub Querydocumentdelete(Source As Notesuidatabase, Continue As Variant)
+      	Dim ndoc As NotesDocument 
+      	
+      
+      	Set ndoc = Source.Documents.getFirstDocument() 
+      	
+      	Do While Not (ndoc Is Nothing) 
+      		If ndoc.Responses.Count > 0 Then 
+      			If Source.Documents.Count > 1 Then 
+      				Messagebox |At least one of the documents being deleted has response documents. | _ 
+      				& Chr(13) & Chr(13) _
+      				& |Response documents must be deleted before proceeding.|, 16, |ACTION ABORTED|
+      			Else 
+      				Messagebox |The document being deleted has response documents. | _ 
+      				& Chr(13) & Chr(13) _
+      				& |Response documents must be deleted before proceeding.|, 16, |ACTION ABORTED|
+      			End If
+      			
+      			Continue = False
+      			Exit Do  
+      		End If
+      		
+      		Set ndoc = Source.Documents.getNextDocument(ndoc) 
+      	Loop
+      
+      End Sub
+      
+      '++LotusScript Development Environment:2:2:BindEvents:1:129
+      Private Sub BindEvents ( Byval ObjectName_ As String )
+      	Static Source As NOTESUIDATABASE
+      	Set Source = Bind(Objectname_)
+      	On Event QUERYDOCUMENTDELETE From Source Call QUERYDOCUMENTDELETE
+      End Sub
+    signed: true
+    nonsummary: true
+  - name: $DesignerVersion
+    type: text
+    data: 8.5.3
+  - name: $Flags
+    type: text
+    data: t34Q
+  - name: $PublicAccess
+    type: text
+    data: "1"
+  - name: $TITLE
+    type: text
+    data: Database Script
+    signed: true
+remaining: []

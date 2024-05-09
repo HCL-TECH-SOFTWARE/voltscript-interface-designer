@@ -1,0 +1,32 @@
+---
+class: 1
+flags: 0x0100
+unid: OF8E98AD1E6EF0932B-ON0054CA2085256691
+items:
+  - name: $Revisions
+    type: time
+    data:
+      - data: "1998-10-02T11:26:22.30-04:00"
+        dst: true
+      - data: "1998-10-10T19:41:58.84-04:00"
+        dst: true
+      - data: "1998-12-29T13:42:30.20-05:00"
+      - data: "1998-12-29T14:09:37.73-05:00"
+      - data: "1998-12-29T14:14:04.47-05:00"
+      - data: "2023-07-18T11:36:44.63-04:00"
+        dst: true
+  - name: Category
+    type: text
+    data: "1"
+  - name: DataType
+    type: text
+    data: Single
+  - name: Form
+    type: text
+    data: DataType
+  - name: ProjectType
+    type: text
+    data:
+      - "2"
+      - "1"
+remaining: []

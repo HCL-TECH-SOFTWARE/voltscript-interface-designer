@@ -1,0 +1,30 @@
+---
+class: 1
+flags: 0x0100
+unid: OF1845A1C064D5355B-ON00660C10852589F8
+items:
+  - name: Form
+    type: text
+    data: Skeleton
+  - name: FormId
+    type: number
+    data: 10
+  - name: FormName
+    type: text
+    data: OBJSRESP.OS2
+  - name: TheCodeAbstract
+    type: text
+    data: "%2%"
+  - name: TheCode
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: |
+      hf8MAAEAAAolMiUAhf8gAAEAAAouXG9ianNcb3MyXGxzeHNlc3Mub2JqKwCF/yEAAQAACi5cb2Jqc1xv
+      czJcbHN4YXBwbHgub2JqKwAghf8jAAEAAAouLlwuLlxsaWJcb3MyXGxzeGJhc2Uub2JqKwAghf8jAAEA
+      AAouLlwuLlxsaWJcb3MyXGxzeGNvbW0ub2JqKwAghf8iAAEAAAouLlwuLlxsaWJcb3MyXGxzeG9sZS5v
+      YmorAIX/JAABAAAKLi5cLi5cbGliXG9zMlxsc3hub3Rlcy5vYmorAIX/JAABAAAKLi5cLi5cbGliXG9z
+      Mlxsc3h2YWx1ZS5vYmorAIX/JAABAAAKLi5cLi5cbGliXG9zMlxsc3hhcnJheS5vYmorAIX/IwABAAAK
+      Li5cLi5cbGliXG9zMlxsc3hkYXRlLm9iaisAIIX/JgABAAAKLi5cLi5cbGliXG9zMlxsc3hmb3JlaWdu
+      Lm9iaisAhf8iAAEAAAouLlwuLlxsaWJcb3MyXGxzeGFyZ3Mub2JqKw==
+remaining: []

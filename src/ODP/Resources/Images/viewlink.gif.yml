@@ -1,0 +1,47 @@
+---
+class: 4
+flags: 0x2000
+unid: OFE71021836AE0BDF5-ON0037868D862588C6
+items:
+  - name: $DesignerVersion
+    type: text
+    data: 8.5.3
+  - name: $EditFilePath
+    type: text
+    data: "C:\\Users\\dolson\\AppData\\Local\\Temp\\notes97E53A\\~viewlink.gif"
+    signed: true
+  - name: $Flags
+    type: text
+    data: 34CiQ
+  - name: $FlagsExt
+    type: text
+    data: D
+    signed: true
+  - name: $ImageNames
+    type: text
+    data: viewlink.gif
+    signed: true
+  - name: $ImagesColorize
+    type: number
+    data: 0
+    signed: true
+  - name: $ImagesHigh
+    type: number
+    data: 1
+    signed: true
+  - name: $ImagesWide
+    type: number
+    data: 1
+    signed: true
+  - name: $PublicAccess
+    type: text
+    data: "1"
+  - name: $TITLE
+    type: text
+    data: viewlink.gif
+    signed: true
+  - name: $ImageData
+    type: composite
+    signed: true
+    nonsummary: true
+remaining: []

@@ -1,0 +1,23 @@
+---
+class: 1
+flags: 0x0100
+unid: OF53B54D04F7D3F862-ON00660C36852589F8
+items:
+  - name: Form
+    type: text
+    data: Skeleton
+  - name: FormId
+    type: number
+    data: 45
+  - name: FormName
+    type: text
+    data: DEF file OS390
+  - name: TheCodeAbstract
+    type: text
+    data: MainEntryPoint
+  - name: TheCode
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: hf8XAAEAAApNYWluRW50cnlQb2ludAAghf8XAAEAAApMU1hDbGFzc0NvbnRyb2wg
+remaining: []

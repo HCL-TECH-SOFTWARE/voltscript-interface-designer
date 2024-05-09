@@ -1,0 +1,41 @@
+---
+class: 1
+flags: 0x0100
+unid: OF1A687E75071AD160-ON004BFBBD85258AE4
+items:
+  - name: Authors
+    type: text
+    data:
+      - CN=Devin Olson/OU=USA/O=PNPHCL
+      - "[Admin]"
+    authors: true
+    names: true
+  - name: Category
+    type: text
+    data: "2"
+  - name: CreatedOn
+    type: time
+    data: "2024-03-18T09:49:56.45-04:00"
+    dst: true
+  - name: DataType
+    type: text
+    data: NotesDOMParser
+  - name: F_LSXCreator
+    type: text
+    data: Devin Olson
+  - name: Form
+    type: text
+    data: DataType
+  - name: LastModified
+    type: time
+    data: "2024-03-18T09:50:40.70-04:00"
+    dst: true
+  - name: ProjectType
+    type: text
+    data:
+      - "1"
+      - "2"
+  - name: keywordComments
+    type: text
+    data: Processes input XML into a standard DOM (Document Object Model) tree structure.
+remaining: []

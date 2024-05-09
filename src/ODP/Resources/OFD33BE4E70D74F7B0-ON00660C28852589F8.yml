@@ -1,0 +1,26 @@
+---
+class: 1
+flags: 0x0100
+unid: OFD33BE4E70D74F7B0-ON00660C28852589F8
+items:
+  - name: Form
+    type: text
+    data: Skeleton
+  - name: FormId
+    type: number
+    data: 32
+  - name: FormName
+    type: text
+    data: METHOD_ID_TAB
+  - name: TheCodeAbstract
+    type: text
+    data: "static LSUINT %3%_methodnameids[] = %4% #define  N_%2%_METHODS  ((sizeof(%3%_methodnameids)) / (siz"
+  - name: TheCode
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: |
+      hf8sAAEAAApzdGF0aWMgTFNVSU5UICUzJV9tZXRob2RuYW1laWRzW10gPQCF/woAAQAACnsAhf8MAAEA
+      AAolNCUAhf8LAAEAAAp9OwAghf8JAAEAAAoAIIX/UQABAAAKI2RlZmluZSAgTl8lMiVfTUVUSE9EUyAg
+      KChzaXplb2YoJTMlX21ldGhvZG5hbWVpZHMpKSAvIChzaXplb2YoTFNVSU5UKSkpACA=
+remaining: []

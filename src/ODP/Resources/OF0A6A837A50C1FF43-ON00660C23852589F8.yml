@@ -1,0 +1,25 @@
+---
+class: 1
+flags: 0x0100
+unid: OF0A6A837A50C1FF43-ON00660C23852589F8
+items:
+  - name: Form
+    type: text
+    data: Skeleton
+  - name: FormId
+    type: number
+    data: 28
+  - name: FormName
+    type: text
+    data: LSXAPPLX_E.H
+  - name: TheCodeAbstract
+    type: text
+    data: "#define ERR_%1%_EXPAND_PROP_NOT_SET   (LSX_FIRST_USER_ERROR_CODE+1)"
+  - name: TheCode
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: |
+      hf9LAAEAAAojZGVmaW5lIEVSUl8lMSVfRVhQQU5EX1BST1BfTk9UX1NFVCAgIChMU1hfRklSU1RfVVNF
+      Ul9FUlJPUl9DT0RFKzEpIA==
+remaining: []

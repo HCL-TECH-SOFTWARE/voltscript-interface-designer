@@ -1,0 +1,35 @@
+---
+class: 1
+flags: 0x0100
+unid: OF8D583CEC36E4CD9E-ON00660C21852589F8
+items:
+  - name: Form
+    type: text
+    data: Skeleton
+  - name: FormId
+    type: number
+    data: 26
+  - name: FormName
+    type: text
+    data: EXPANDED3_CPP
+  - name: TheCodeAbstract
+    type: text
+    data: "PLSXPROPERTY   pProp; pProp = FindPropById(this->ExpandedNames, id); if (pProp) This is the \"expand"
+  - name: TheCode
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: |
+      hf8kAAEAAAogICAgICBQTFNYUFJPUEVSVFkgICBwUHJvcDsAhf8JAAEAAAoAIIX/PQABAAAKICAgICAg
+      cFByb3AgPSBGaW5kUHJvcEJ5SWQodGhpcy0+RXhwYW5kZWROYW1lcywgaWQpOwAghf8ZAAEAAAogICAg
+      ICBpZiAocFByb3ApACCF/xAAAQAACiAgICAgIHsAhf8UAAEAAAogICAgICAgICAvKgCF/1UAAQAACiAg
+      ICAgICAgICAgIFRoaXMgaXMgdGhlICJleHBhbmRlZCIgcHJvcGVydHkgZmVhdHVyZS4gSWYgYWxsIGlz
+      IHdlbGwsIHdlIGhhdmUAIIX/VgABAAAKICAgICAgICAgICAgYWxyZWFkeSBzYXZlZCB0aGUgInByb3Bl
+      cnR5IiBuYW1lIGluIGEgbWVtYmVyIHZhcmlhYmxlIGR1cmluZyB0aGUAhf9VAAEAAAogICAgICAgICAg
+      ICBMU1hRdWVyeUJpbmRNZW1iZXIgY2FsbC4gTm93IHdlIGp1c3QgaGF2ZSB0byBmaW5kIChvciBjcmVh
+      dGUpIGFuACCF/zoAAQAACiAgICAgICAgICAgIGl0ZW0gb2YgdGhhdCBuYW1lLCBhbmQgc2V0IGl0cyB2
+      YWx1ZS4Ahf8UAAEAAAogICAgICAgICAqLwCF/0wAAQAACiAgICAgICAgIHN0YXQgPSB0aGlzLT5MU1hT
+      dG9yZVByb3BlcnR5VmFsdWUocGFyYW0tPnZhbFByb3AsIHBQcm9wKTsAhf8QAAEAAAogICAgICB9AIX/
+      EwABAAAKICAgICAgZWxzZQAghf8QAAEAAAogICAgICB7AIX/DAABAAAKJTIlAIX/EAABAAAKICAgICAg
+      fQA=
+remaining: []

@@ -1,0 +1,25 @@
+---
+class: 1
+flags: 0x0100
+unid: OF367AC8E3FFA7CC5F-ON00660C31852589F8
+items:
+  - name: Form
+    type: text
+    data: Skeleton
+  - name: FormId
+    type: number
+    data: 40
+  - name: FormName
+    type: text
+    data: PROP_ITEM_TAB
+  - name: TheCodeAbstract
+    type: text
+    data: "{(LSPLTSTR)LSNULL, C%1%_%2%PROP_%3%, %4%, 0, LSX_READ%5%%6%%7%, LSI_NO_HELPID}"
+  - name: TheCode
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: |
+      hf9aAAEAAAogICB7KExTUExUU1RSKUxTTlVMTCwgQyUxJV8lMiVQUk9QXyUzJSwgJTQlLCAwLCBMU1hf
+      UkVBRCU1JSU2JSU3JSwgTFNJX05PX0hFTFBJRH0s
+remaining: []

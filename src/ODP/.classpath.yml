@@ -1,0 +1,23 @@
+---
+class: 4
+flags: 0x0000
+unid: OF38E2DE24F0810FF4-ON006215D685258712
+items:
+  - name: $DesignerVersion
+    type: text
+    data: 8.5.3
+  - name: $FileNames
+    type: text
+    data: ".classpath"
+    signed: true
+  - name: $Flags
+    type: text
+    data: ~C4g
+  - name: $TITLE
+    type: text
+    data: ".classpath"
+  - name: $FileData
+    type: composite
+    signed: true
+    nonsummary: true
+remaining: []

@@ -1,0 +1,179 @@
+---
+class: 512
+flags: 0x2000
+unid: OF646A2357BF93186A-ON0079FD3185258ABD
+items:
+  - name: $Comment
+    type: text
+    data: Utilities that make Windows specific dll calls
+  - name: $DesignerVersion
+    type: text
+    data: 8.5.3
+  - name: $Flags
+    type: text
+    data: s34Q
+  - name: $PublicAccess
+    type: text
+    data: "1"
+    signed: true
+  - name: $ScriptLib
+    type: text
+    data: |
+      '++LotusScript Development Environment:2:5:(Options):0:74
+      %REM
+      	Library WindowsDLLutils
+      	Windows DLL specific utilities 
+      	Author: Rocky Oliver/USA/PNPHCL
+      %END REM
+      %REM
+      	**********************************************************************
+      	**********************************************************************
+      		
+          Copyright HCL America, Inc. 1999, 2023
+      
+          Licensed under the Apache License, Version 2.0 (the "License");
+          you may not use this file except in compliance with the License.
+          You may obtain a copy of the License at
+      
+              http://www.apache.org/licenses/LICENSE-2.0
+      
+          Unless required by applicable law or agreed to in writing, software
+          distributed under the License is distributed on an "AS IS" BASIS,
+          WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+          See the License for the specific language governing permissions and
+          limitations under the License.
+      
+      	**********************************************************************
+      	**********************************************************************
+      %END REM
+      Option Public
+      Option Declare
+      Use "baliExceptions"
+      
+      
+      
+      
+      
+      '++LotusScript Development Environment:2:5:(Forward):0:1
+      Declare Public Function validateFilepath(filepath As String) As Boolean
+      Declare Public Function CreateGUID () As String
+      
+      '++LotusScript Development Environment:2:5:(Declarations):0:10
+      
+      Private Const MODULE_NAME = |WindowsDLLutils| 
+      Private Const LIB_PREFIX = |Library: | & MODULE_NAME & |.|
+      
+      Public Type GUID
+      	Guid1 As Long
+      	Guid2 As Integer
+      	Guid3 As Integer     
+      	Guid4 As Double
+      End Type     
+      
+      Declare Function CoCreateGuid Lib "OLE32.DLL" (pGuid As GUID) As Long
+      Declare Function StringFromGUID2 Lib "OLE32.DLL" (pGuid As GUID, ByVal s As String, ByVal MaxLength As Long) As Long
+      
+      ' makes sure all of the subdirs on a path exist, on the fly, without any additional calls; 
+      Declare Function MakeSureDirectoryPathExists Lib "imagehlp.dll" (ByVal lpPath As String) As Long
+      %REM example calling MakeSureDirectoryPathExists
+      	If Right(imgpath, 1) <> |\| Then imgpath = imgpath & |\|
+      	rlng = MakeSureDirectoryPathExists(imgpath)  ' WinAPI call, in (Declarations)
+      	If rlng = 0 Then Error 1027, "Encountered a problem validating or creating the destination directory path for the new image"
+      %END REM
+      
+      
+      
+      '++LotusScript Development Environment:2:1:validateFilepath:8:8
+      
+      %REM
+      	Function validateFilepath
+      	Validates that a specific filepath exists or can be created
+      
+      	Description: Rewrote this function to use an old W32 C API call to make sure the directory path exists
+      %END REM
+      Public Function validateFilepath(filepath As String) As Boolean
+      	On Error GoTo ErrorTrap 
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	
+      	Dim result As Boolean  
+      	
+      
+      	' BEGIN CODE 
+      	extendedinfo(|filepath|) = filepath
+      
+      	' MakeSureDirectoryPathExists is a WinAPI call (check declarations section) 
+      	extendedinfo(|dll|) = |imagehlp.dll|
+      	If (0 = MakeSureDirectoryPathExists(filepath)) Then Error ERR_OPERATION_FAILED, "Encountered a problem validating or creating the directory ( " & filepath & " )"
+      	
+      	result = True
+      	
+      ExitPoint: 
+      	validateFilepath = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint	
+      End Function
+      
+      
+      
+      
+      
+      '++LotusScript Development Environment:2:1:CreateGUID:1:8
+      Public Function CreateGUID () As String
+      	On Error GoTo ErrorTrap 
+      	
+      ' Generate a unique GUID.     
+      	
+      	Const GUID_LENGTH = 38
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	
+      
+      	Dim udtGUID As GUID
+      	Dim tempString As String * 78
+      	Dim result As String * 36
+      	Dim status As Long
+      
+      
+      	extendedinfo(|dll|) = |OLE32.DLL|
+      	
+      	status = CoCreateGuid (udtGUID)
+      	
+      	tempString = String(78, 0)    
+      	result = String(36, 0)        
+      	
+      	If (status = 0) Then
+      		status = StringFromGUID2 (udtGUID, tempString, GUID_LENGTH +1 ) 
+      		
+      		Dim i As Integer
+      		Dim c As Integer
+      		
+      		For i = 2 To 76               
+      			If ((Uni(Mid(tempString, i , 1)) <> 0) And (c < 36)) Then
+      				c = c + 1
+      				Mid(result, c, 1) = Mid(tempString, i , 1)
+      			End If
+      		Next
+      	End If     
+      			
+      			
+      ExitPoint: 
+      	CreateGUID = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+    signed: true
+    nonsummary: true
+  - name: $TITLE
+    type: text
+    data: WindowsDLLutils
+    signed: true
+remaining: []

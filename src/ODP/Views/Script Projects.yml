@@ -1,0 +1,572 @@
+---
+class: 8
+flags: 0x2000
+unid: OF6869D7C6DB450FC9-ON0033C27E80258932
+items:
+  - name: $Collation
+    type_num: 2
+    type: opaque
+    opaque: |
+      QwAEAABEAGYAAAACAAhmAAIAAwAAZgAFABMACGYAGAAJACQwJDE1UHJvamVjdHNWaWV3U3VtbWFyeUZf
+      QXBwTmFtZQ==
+  - name: $Comment
+    type: text
+    data: ""
+    signed: true
+  - name: $DesignerVersion
+    type: text
+    data: 8.5.3
+  - name: $Flags
+    type: text
+    data: Y
+  - name: $Formula
+    type: formula
+    data: " @IsMember(@LowerCase(Form); \"argument_script\" : \"class_script\" :  \"type_script\" : \"event_script\" : \"method_script\" : \"project_script\" : \"property_script\" : \"variable_script\")"
+    opaque: |
+      tgcCAHgAAwAkMTIAAQAOAHByb2plY3Rfc2NyaXB0BQAEAEZvcm1hAQoCrwBMABAAAAAAAAAAAAAAQK4A
+      PAABAAAABQAQAFRocm93c0V4Y2VwdGlvbnNeAQsCrwAcABAAAAAAAAAAAMBiQK4ADAABAAAArgAEALUF
+      AwABAB4ACwBmbQB6VWgAWYolAAAFAAQARm9ybWEBAwACAIIAAwAkMTAABQALAGZtAHpVaABZiiUAAAEA
+      DABjbGFzc19zY3JpcHQKAq8AUgAQAAAAAAAAAAAANkCuAEIABQALAGZtAHpVaABZiiUAAAEACwB0eXBl
+      X3NjcmlwdAAKAq8AHAAQAAAAAAAAAAAANECuAAwAAQAAAK4ABAC1BQMAAQAeAAsAZm0AelVoAFmKJQAA
+      BQAEAEZvcm1hAQMAAgCqAQIAJDkFAAsAZm0AelVoAFmKJQAAAQAPAHByb3BlcnR5X3NjcmlwdAAKAgUA
+      CgBGX1JlYWRPbmx5AQAJAFJFQURfT05MWQAKAhwCrwBYARAAAAAAAAAAAABMQK4ASAEFAAsAZm0AelVo
+      AFmKJQAAAQAPAHByb3BlcnR5X3NjcmlwdAAKAq8AHgEQAAAAAAAAAACARECuAA4BBQALAGZtAHpVaABZ
+      iiUAAAEADwB2YXJpYWJsZV9zY3JpcHQACgIFAA4ARl9WYXJBdHRyaWJ1dGUBAAUAQ29uc3QACgIcAq8A
+      xAAQAAAAAAAAAAAATECuALQABQALAGZtAHpVaABZiiUAAAEADwB2YXJpYWJsZV9zY3JpcHQACgKvAIoA
+      EAAAAAAAAAAAAPA/rgB6AAUACwBmbQB6VWgAWYolAAABAA0AbWV0aG9kX3NjcmlwdAAKAq8AUgAQAAAA
+      AAAAAAAARUCuAEIABQALAGZtAHpVaABZiiUAAAEADABldmVudF9zY3JpcHQKAq8AHAAQAAAAAAAAAACA
+      RUCuAAwAAQAAAK4ABAC1DQMACgAEAAEAHgALAGZtAIiCaADgiiUAAAUABABGb3JtYQEDAAEAYgANAHZG
+      TXMAiYJoAOCKJQAAAQAOAHByb2plY3Rfc2NyaXB0AQALAHR5cGVfc2NyaXB0AB8CAQAPAHByb3BlcnR5
+      X3NjcmlwdAAfAgEADABjbGFzc19zY3JpcHQfAgMAAQA0AA4AdklkeHMAioJoAOCKJQABAAEAMQABAAEA
+      NAAfAgEAAQA1AB8CAQABADYAHwIDAAgAegAFAAsAZm0AiIJoAOCKJQAABQANAHZGTXMAiYJoAOCKJQAA
+      dAKvAE4AQgAFAAsAZm0AiIJoAOCKJQAABQANAHZGTXMAiYJoAOCKJQAABQAOAHZJZHhzAIqCaADgiiUA
+      jQP7AVQBwgGuAAwAAQAAAK4ABAC1AwMAAgCSAAIAJDAFAAsAZm0AiIJoAOCKJQAAAQAPAHZhcmlhYmxl
+      X3NjcmlwdAAKAq8AYABOAAUADgBGX1ZhckF0dHJpYnV0ZWEBAQAFAGNvbnN0AHQCrwAiABAAAAAAAAAA
+      AAAAQK4AEgAAAAAAAAAAAAhArgAEALUD+wFUAa4AEgAAAAAAAAAAABxArgAEALUDAwABACAADgB2Rm9y
+      bQCIgmgA4IolAAUABABGb3JtYQEDAAEAaAAQAHZTZWFyY2gAiYJoAOCKJQABAA8AcHJvcGVydHlfc2Ny
+      aXB0AAEADwB2YXJpYWJsZV9zY3JpcHQAHwIBAA0AbWV0aG9kX3NjcmlwdAAfAgEADABldmVudF9zY3Jp
+      cHQfAgMACABIAAUADgB2Rm9ybQCIgmgA4IolAAUAEAB2U2VhcmNoAImCaADgiiUAdAKvABgACgABAAAA
+      rgAOAAEAAADCAa4ABAC1AwMAAQBaABEAdlJlcGxhY2UAioJoAOCKJQAABQAKAEZfUHJvcE5hbWUFAAkA
+      Rl9WYXJOYW1lAB8CBQAKAEZfTWV0aE5hbWUfAgUACwBGX0V2ZW50TmFtZQAfAgMAAgBKAAMAJDE1AAUA
+      DgB2Rm9ybQCIgmgA4IolAAUAEAB2U2VhcmNoAImCaADgiiUABQARAHZSZXBsYWNlAIqCaADgiiUAAI0D
+      AwACAFoAAwAkMTcABQAEAEZvcm1hAQEADgBwcm9qZWN0X3NjcmlwdAoCrwAuACIABQAJAEZfQXBwTmFt
+      ZQABAAEAfAAiApAAVgEiAq4ADAABAAAArgAEALUDAwAFAFYAUQAKAAMAAwACAAIAAwATAAkAAwAJAAQA
+      JDEyJDEwJDkkMCQxNVByb2plY3RzVmlld1N1bW1hcnlGX0FwcE5hbWUkMTckQ29uZmxpY3QkUkVGAAQA
+      BAAAALAABQAEAEZvcm1hAQEADwBhcmd1bWVudF9zY3JpcHQAAQAMAGNsYXNzX3NjcmlwdB8CAQALAHR5
+      cGVfc2NyaXB0AB8CAQAMAGV2ZW50X3NjcmlwdB8CAQANAG1ldGhvZF9zY3JpcHQAHwIBAA4AcHJvamVj
+      dF9zY3JpcHQfAgEADwBwcm9wZXJ0eV9zY3JpcHQAHwIBAA8AdmFyaWFibGVfc2NyaXB0AB8CdAIDAAcA
+      OAAxAAlMMVM4UzlTMTBTMTFTMTJTMkUxM1MxNFMxNVMxNlMxN1MxOFMxOVMyMFMyMVMyMlMA
+    signed: true
+    nonsummary: true
+  - name: $FormulaClass
+    type: text
+    data: "1"
+    signed: true
+  - name: $Index
+    type: text
+    data: /T/O
+    signed: true
+  - name: $PublicAccess
+    type: text
+    data: "1"
+  - name: $TITLE
+    type: text
+    data: Script Projects|Script Projects
+    signed: true
+  - name: $ViewFormat
+    type_num: 5
+    type: opaque
+    opaque: |
+      AQAIAAAAiXQAAFZDwAADAAAAlgAAAAkAAQAACgAAAAAAAAAAAAICAAAAVkPAAAMAAADEAAAACAABAAAK
+      AAAAAAAAAAAAAgIAAABWQ8AAAgAAACYCAAAIAAEAAAoAAAAAAAAAAAACAgAAAFZDCQACAAAAcgIAAAgA
+      AQAACgAAAAAAAAAAAAICAAAAVkMJAAMAAAC8AQAACAABAAAKAAEAAAAAAAAAAgIAAABWQ5EEEwACAAAA
+      AAAIAAEAAAoAAAAAAAAAAAACAgAAAFZDgQQJAAgAAAAAACADAQAACgABAAAAAAAAAAICAAAAVkMIAAMA
+      GAB4AAAA7wABAAkIAAAAAAAAAAAAAgIAAAAkMTKWAAIAeAADACQxMgABAA4AcHJvamVjdF9zY3JpcHQF
+      AAQARm9ybWEBCgKvAEwAEAAAAAAAAAAAAABArgA8AAEAAAAFABAAVGhyb3dzRXhjZXB0aW9uc14BCwKv
+      ABwAEAAAAAAAAAAAwGJArgAMAAEAAACuAAQAtQUDAAcAHAAWAAkzUzRTOVMxMVMxMlMxM1MxOFMyMFMk
+      MTDEAAEAHgALAGZtAHpVaABZiiUAAAUABABGb3JtYQEDAAcADAAFAAkxUzJTAAIAggADACQxMAAFAAsA
+      Zm0AelVoAFmKJQAAAQAMAGNsYXNzX3NjcmlwdAoCrwBSABAAAAAAAAAAAAA2QK4AQgAFAAsAZm0AelVo
+      AFmKJQAAAQALAHR5cGVfc2NyaXB0AAoCrwAcABAAAAAAAAAAAAA0QK4ADAABAAAArgAEALUFAwAHABYA
+      EAAJMFI4UzlTMTBTMTJTMTRTJDkmAgEAHgALAGZtAHpVaABZiiUAAAUABABGb3JtYQEDAAcADAAFAAkw
+      UzBFAAIAqgECACQ5BQALAGZtAHpVaABZiiUAAAEADwBwcm9wZXJ0eV9zY3JpcHQACgIFAAoARl9SZWFk
+      T25seQEACQBSRUFEX09OTFkACgIcAq8AWAEQAAAAAAAAAAAATECuAEgBBQALAGZtAHpVaABZiiUAAAEA
+      DwBwcm9wZXJ0eV9zY3JpcHQACgKvAB4BEAAAAAAAAAAAgERArgAOAQUACwBmbQB6VWgAWYolAAABAA8A
+      dmFyaWFibGVfc2NyaXB0AAoCBQAOAEZfVmFyQXR0cmlidXRlAQAFAENvbnN0AAoCHAKvAMQAEAAAAAAA
+      AAAAAExArgC0AAUACwBmbQB6VWgAWYolAAABAA8AdmFyaWFibGVfc2NyaXB0AAoCrwCKABAAAAAAAAAA
+      AADwP64AegAFAAsAZm0AelVoAFmKJQAAAQANAG1ldGhvZF9zY3JpcHQACgKvAFIAEAAAAAAAAAAAAEVA
+      rgBCAAUACwBmbQB6VWgAWYolAAABAAwAZXZlbnRfc2NyaXB0CgKvABwAEAAAAAAAAAAAgEVArgAMAAEA
+      AACuAAQAtQ0DAAcAUABJAAkwUjRTNVM2UzdTOFMxMFMxMVMxMlMxNFMxNlMxOFMxOVMyMFMyMVMyMlMy
+      M1MyNFMyNlMyN1MyOFMyOVMzMFMzMlMzNFMzNlMAJDByAgoABAABAB4ACwBmbQCIgmgA4IolAAAFAAQA
+      Rm9ybWEBAwAHAAwABQAJMVMyUwAHAEQAPQAgT3JkZXIgaXMgUHJvamVjdCwgQ29uc3RhbnQsIFZhcmlh
+      YmxlLCBUeXBlLCBQcm9wZXJ0eSwgQ2xhc3MgAAcADAAGAAkwUlIxUwEAYgANAHZGTXMAiYJoAOCKJQAA
+      AQAOAHByb2plY3Rfc2NyaXB0AQALAHR5cGVfc2NyaXB0AB8CAQAPAHByb3BlcnR5X3NjcmlwdAAfAgEA
+      DABjbGFzc19zY3JpcHQfAgMABwAQAAoACTBSUlJSMVMyUwEANAAOAHZJZHhzAIqCaADgiiUAAQABADEA
+      AQABADQAHwIBAAEANQAfAgEAAQA2AB8CAwAHAA4ABwAJMFIxUzJTAAgAegAFAAsAZm0AiIJoAOCKJQAA
+      BQANAHZGTXMAiYJoAOCKJQAAdAKvAE4AQgAFAAsAZm0AiIJoAOCKJQAABQANAHZGTXMAiYJoAOCKJQAA
+      BQAOAHZJZHhzAIqCaADgiiUAjQP7AVQBwgGuAAwAAQAAAK4ABAC1AwMABwAWABAACTBSNlM5UzE3UzE5
+      UzI0UwIAkgACACQwBQALAGZtAIiCaADgiiUAAAEADwB2YXJpYWJsZV9zY3JpcHQACgKvAGAATgAFAA4A
+      Rl9WYXJBdHRyaWJ1dGVhAQEABQBjb25zdAB0Aq8AIgAQAAAAAAAAAAAAAECuABIAAAAAAAAAAAAIQK4A
+      BAC1A/sBVAGuABIAAAAAAAAAAAAcQK4ABAC1AwMABwAcABYACTBSUjNTNFM2UzE3UzIwUzIyUzI2UyQx
+      NbwBAQAgAA4AdkZvcm0AiIJoAOCKJQAFAAQARm9ybWEBAwAHAAwABQAJMVMyUwABAGgAEAB2U2VhcmNo
+      AImCaADgiiUAAQAPAHByb3BlcnR5X3NjcmlwdAABAA8AdmFyaWFibGVfc2NyaXB0AB8CAQANAG1ldGhv
+      ZF9zY3JpcHQAHwIBAAwAZXZlbnRfc2NyaXB0HwIDAAcADgAHAAkwUjFTMlMACABIAAUADgB2Rm9ybQCI
+      gmgA4IolAAUAEAB2U2VhcmNoAImCaADgiiUAdAKvABgACgABAAAArgAOAAEAAADCAa4ABAC1AwMABwAQ
+      AAoACTBSNlM5UzExUwEAWgARAHZSZXBsYWNlAIqCaADgiiUAAAUACgBGX1Byb3BOYW1lBQAJAEZfVmFy
+      TmFtZQAfAgUACgBGX01ldGhOYW1lHwIFAAsARl9FdmVudE5hbWUAHwIDAAcADgAIAAkwUlIxUzJTAgBK
+      AAMAJDE1AAUADgB2Rm9ybQCIgmgA4IolAAUAEAB2U2VhcmNoAImCaADgiiUABQARAHZSZXBsYWNlAIqC
+      aADgiiUAAI0DAwAHAA4ABwAJMFI0UzZTAFByb2plY3RzVmlld1N1bW1hcnkgIEZfQXBwTmFtZVByb2pl
+      Y3RzJDE3UHJvamVjdHMgfCB1bmlkIChoaWRkZW4peAACAFoAAwAkMTcABQAEAEZvcm1hAQEADgBwcm9q
+      ZWN0X3NjcmlwdAoCrwAuACIABQAJAEZfQXBwTmFtZQABAAEAfAAiApAAVgEiAq4ADAABAAAArgAEALUD
+      AwAHABwAFgAJNlM3UzlTMTBTMTFTMTJTMTNTMThTJgABAAAAAQEACQEAAAoBAQ4KAAAvAK0rAQEBAAEA
+      AAAAAAAAAABXQwEBAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wAAAAAAAAAAAAAAAAAAV0MBAQAJ
+      AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//8AAAAAAAAAAAAAAAAAAFdDAQEACQAAAAAAAAAAAAAAAAAA
+      AAAAAAAAAAAAAP//AAAAAAAAAAAAAAAAAABXQwEBAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wAA
+      AAAAAAAAAAAAAAAAV0MBAQAJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//8AAAAAAAAAAAAAAAAAAFdD
+      AQEACQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP//AAAAAAAAAAAAAAAAAABXQwEBAAkAAAAAAAAAAAAA
+      AAAAAAAAAAAAAAAAAAD//wAAAAAAAAAAAAAAAAAAV0MBAQAJAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAA
+      //8AAAAAAAAAAAAAAAAAAEIAEAAAAAEA////AAEA9fX1AAEAAAAAAAAAAAAAAAAAAQD///8AAQD///8A
+      AAABAAAAAAABAICAgAABAAAAAAAAAAgAAAAAAAEA
+    signed: true
+    nonsummary: true
+  - name: $ViewGlobalScript
+    type: text
+    data: |
+      '++LotusScript Development Environment:2:5:(Options):0:74
+      Option Public
+      Option Declare
+      Option Base 1
+      Option Compare Nocase
+      Use "BSXnotesUtilsUI"
+      
+      
+      
+      
+      '++LotusScript Development Environment:2:5:(Forward):0:1
+      
+      '++LotusScript Development Environment:2:5:(Declarations):0:2
+    signed: true
+    nonsummary: true
+  - name: $V5ACTIONS
+    type: composite
+    signed: true
+    nonsummary: true
+    data:
+      - type: 0x00bd
+        BackColor: 0
+        BorderStyle: 1
+        BorderWidth: 1440
+        BtnHeight: 8
+        FontID: 0x09060101
+        HeightSpc: 0
+        LineColor: 14
+        LineStyle: 3
+        ShareID: 0x00000000
+        dwFlags: 0x00000001
+      - type: 0xff79
+        BackColor:
+          Flags: 0x0001
+          rgb: 0x000000
+        BtnBorderDisplay: 0
+        BtnTextJustify: 0
+        BtnWidthStyle: 0
+        ButtonColor:
+          Flags: 0x0001
+          rgb: 0x000000
+        FontColor:
+          Flags: 0x0001
+          rgb: 0xffff00
+        LineColor:
+          Flags: 0x0001
+          rgb: 0x808080
+        Spare:
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+          - 0x00000000
+        barFontID: 0x00000000
+        barHeight:
+          Flags: 0x0000
+          Length:
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+          Reserved: 0
+          Units: 0
+        dwFlags: 0x00000003
+        wAppletHeight: 31
+        wBarBackgroundRepeat: 0
+        wBtnInternalMargin: 0
+        wBtnWidthAbsolute: 0
+        wSpare: 0x0000
+        wThemeSetting: 0
+      - type: 0xfffc
+        BorderFlags: 0
+        BorderStyle: 0
+        BorderWidthBottom: 1
+        BorderWidthLeft: 0
+        BorderWidthRight: 0
+        BorderWidthTop: 0
+        Color:
+          Flags: 0x0001
+          rgb: 0x000000
+        DropShadowWidth: 12
+        Flags: 0x00000000
+        InnerWidthBottom: 0
+        InnerWidthLeft: 0
+        InnerWidthRight: 0
+        InnerWidthTop: 0
+        OuterWidthBottom: 0
+        OuterWidthLeft: 0
+        OuterWidthRight: 0
+        OuterWidthTop: 0
+        dwSpare: 0x00000000
+        wSpares:
+          - 0x0000
+          - 0x0000
+          - 0x0000
+          - 0x0000
+          - 0x0000
+      - type: 0xffbe
+        Flags: 0x0000019e
+        IconIndex: 0
+        ShareId: 0
+        Type: 1
+        data: "@Command([Compose]; \"project_script\")"
+        data_opaque: MAAAACQAAgDoAwAAAAAAAAEADgBwcm9qZWN0X3NjcmlwdO0CAwAHAAoAAwAJNFMA
+        title: Project
+      - type: 0xffbe
+        Flags: 0x0000019e
+        IconIndex: 0
+        ShareId: 0
+        Type: 2
+        data: |
+          '++LotusScript Development Environment:2:5:(Options):0:66
+          Option Declare
+          
+          
+          '++LotusScript Development Environment:2:5:(Forward):0:1
+          Declare Sub Click(Source As Button)
+          
+          '++LotusScript Development Environment:2:5:(Declarations):0:2
+          
+          '++LotusScript Development Environment:2:2:Click:1:12
+          Sub Click(Source As Button)
+          	composeElementDocument "type_script"
+          End Sub
+          '++LotusScript Development Environment:2:2:BindEvents:1:129
+          Private Sub BindEvents ( Byval ObjectName_ As String )
+          	Static Source As BUTTON
+          	Set Source = Bind(Objectname_)
+          	On Event CLICK From Source Call CLICK
+          End Sub
+        title: Type
+      - type: 0xff5f
+        dwReserved: 0x00000000
+        wActionType: 2
+        wEventId: 213
+        wPlatform: 1
+        wReserved: 0
+      - type: 0xffbe
+        Flags: 0x0000019e
+        IconIndex: 0
+        ShareId: 0
+        Type: 2
+        data: |
+          '++LotusScript Development Environment:2:5:(Options):0:66
+          
+          '++LotusScript Development Environment:2:5:(Forward):0:1
+          Declare Sub Click(Source As Button)
+          
+          '++LotusScript Development Environment:2:5:(Declarations):0:2
+          
+          '++LotusScript Development Environment:2:2:Click:1:12
+          Sub Click(Source As Button)
+          	composeElementDocument "variable_script"
+          End Sub
+          '++LotusScript Development Environment:2:2:BindEvents:1:129
+          Private Sub BindEvents ( Byval ObjectName_ As String )
+          	Static Source As BUTTON
+          	Set Source = Bind(Objectname_)
+          	On Event CLICK From Source Call CLICK
+          End Sub
+        title: Variable
+      - type: 0xff5f
+        dwReserved: 0x00000000
+        wActionType: 2
+        wEventId: 213
+        wPlatform: 1
+        wReserved: 0
+      - type: 0xffbe
+        Flags: 0x0000019e
+        IconIndex: 0
+        ShareId: 0
+        Type: 2
+        data: |
+          '++LotusScript Development Environment:2:5:(Options):0:66
+          
+          '++LotusScript Development Environment:2:5:(Forward):0:1
+          Declare Sub Click(Source As Button)
+          
+          '++LotusScript Development Environment:2:5:(Declarations):0:2
+          
+          '++LotusScript Development Environment:2:2:Click:1:12
+          Sub Click(Source As Button)
+          	composeElementDocument "constant_integer"
+          End Sub
+          '++LotusScript Development Environment:2:2:BindEvents:1:129
+          Private Sub BindEvents(Byval Objectname_ As String)
+          	Static Source As BUTTON
+          	Set Source = Bind(Objectname_)
+          	On Event Click From Source Call Click
+          End Sub
+        title: "Constant\\Integer Constant"
+      - type: 0xff5f
+        dwReserved: 0x00000000
+        wActionType: 2
+        wEventId: 213
+        wPlatform: 1
+        wReserved: 0
+      - type: 0xffbe
+        Flags: 0x0000019e
+        IconIndex: 0
+        ShareId: 0
+        Type: 2
+        data: |
+          '++LotusScript Development Environment:2:5:(Options):0:66
+          
+          '++LotusScript Development Environment:2:5:(Forward):0:1
+          Declare Sub Click(Source As Button)
+          
+          '++LotusScript Development Environment:2:5:(Declarations):0:2
+          
+          '++LotusScript Development Environment:2:2:Click:1:12
+          Sub Click(Source As Button)
+          	composeElementDocument "constant_string"
+          End Sub
+          '++LotusScript Development Environment:2:2:BindEvents:1:129
+          Private Sub BindEvents(Byval Objectname_ As String)
+          	Static Source As BUTTON
+          	Set Source = Bind(Objectname_)
+          	On Event Click From Source Call Click
+          End Sub
+        title: "Constant\\String Constant"
+      - type: 0xff5f
+        dwReserved: 0x00000000
+        wActionType: 2
+        wEventId: 213
+        wPlatform: 1
+        wReserved: 0
+      - type: 0xffbe
+        Flags: 0x0000019e
+        IconIndex: 0
+        ShareId: 0
+        Type: 2
+        data: |
+          '++LotusScript Development Environment:2:5:(Options):0:66
+          
+          '++LotusScript Development Environment:2:5:(Forward):0:1
+          Declare Sub Click(Source As Button)
+          
+          '++LotusScript Development Environment:2:5:(Declarations):0:2
+          
+          '++LotusScript Development Environment:2:2:Click:1:12
+          Sub Click(Source As Button)
+          	composeElementDocument "constant_script"
+          End Sub
+          '++LotusScript Development Environment:2:2:BindEvents:1:129
+          Private Sub BindEvents(Byval Objectname_ As String)
+          	Static Source As BUTTON
+          	Set Source = Bind(Objectname_)
+          	On Event Click From Source Call Click
+          End Sub
+        title: "Constant\\Constant"
+      - type: 0xff5f
+        dwReserved: 0x00000000
+        wActionType: 2
+        wEventId: 213
+        wPlatform: 1
+        wReserved: 0
+      - type: 0xffbe
+        Flags: 0x0000019e
+        IconIndex: 0
+        ShareId: 0
+        Type: 2
+        data: |
+          '++LotusScript Development Environment:2:5:(Options):0:66
+          
+          '++LotusScript Development Environment:2:5:(Forward):0:1
+          Declare Sub Click(Source As Button)
+          
+          '++LotusScript Development Environment:2:5:(Declarations):0:2
+          
+          '++LotusScript Development Environment:2:2:Click:1:12
+          Sub Click(Source As Button)
+          	composeElementDocument "class_script"
+          End Sub
+          '++LotusScript Development Environment:2:2:BindEvents:1:129
+          Private Sub BindEvents ( Byval ObjectName_ As String )
+          	Static Source As BUTTON
+          	Set Source = Bind(Objectname_)
+          	On Event CLICK From Source Call CLICK
+          End Sub
+        title: Class
+      - type: 0xff5f
+        dwReserved: 0x00000000
+        wActionType: 2
+        wEventId: 213
+        wPlatform: 1
+        wReserved: 0
+      - type: 0xffbe
+        Flags: 0x0000019e
+        IconIndex: 0
+        ShareId: 0
+        Type: 2
+        data: |
+          '++LotusScript Development Environment:2:5:(Options):0:66
+          
+          '++LotusScript Development Environment:2:5:(Forward):0:1
+          Declare Sub Click(Source As Button)
+          
+          '++LotusScript Development Environment:2:5:(Declarations):0:2
+          
+          '++LotusScript Development Environment:2:2:Click:1:12
+          Sub Click(Source As Button)
+          	composeElementDocument "method_script"
+          End Sub
+          '++LotusScript Development Environment:2:2:BindEvents:1:129
+          Private Sub BindEvents ( Byval ObjectName_ As String )
+          	Static Source As BUTTON
+          	Set Source = Bind(Objectname_)
+          	On Event CLICK From Source Call CLICK
+          End Sub
+        title: Method
+      - type: 0xff5f
+        dwReserved: 0x00000000
+        wActionType: 2
+        wEventId: 213
+        wPlatform: 1
+        wReserved: 0
+      - type: 0xffbe
+        Flags: 0x0000019e
+        IconIndex: 0
+        ShareId: 0
+        Type: 2
+        data: |
+          '++LotusScript Development Environment:2:5:(Options):0:66
+          
+          '++LotusScript Development Environment:2:5:(Forward):0:1
+          Declare Sub Click(Source As Button)
+          
+          '++LotusScript Development Environment:2:5:(Declarations):0:2
+          
+          '++LotusScript Development Environment:2:2:Click:1:12
+          Sub Click(Source As Button)
+          	composeElementDocument "property_script"
+          End Sub
+          '++LotusScript Development Environment:2:2:BindEvents:1:129
+          Private Sub BindEvents ( Byval ObjectName_ As String )
+          	Static Source As BUTTON
+          	Set Source = Bind(Objectname_)
+          	On Event CLICK From Source Call CLICK
+          End Sub
+        title: Property
+      - type: 0xff5f
+        dwReserved: 0x00000000
+        wActionType: 2
+        wEventId: 213
+        wPlatform: 1
+        wReserved: 0
+      - type: 0xffbe
+        Flags: 0x0000019f
+        IconIndex: 0
+        ShareId: 0
+        Type: 1
+        title: "   "
+      - type: 0xffbe
+        Flags: 0x0180019f
+        IconIndex: 45
+        ShareId: 0
+        Type: 2
+        data: |
+          '++LotusScript Development Environment:2:5:(Options):0:66
+          
+          '++LotusScript Development Environment:2:5:(Forward):0:1
+          Declare Sub Click(Source As Button)
+          
+          '++LotusScript Development Environment:2:5:(Declarations):0:2
+          
+          '++LotusScript Development Environment:2:2:Click:1:12
+          Sub Click(Source As Button)
+          	
+          	Dim session As New NotesSession
+          	Dim ws As New NotesUIWorkspace
+          	Dim docDB As NotesDatabase
+          	
+               'Yes.  This is obcure.  Here's why it was done this way:
+               '1.  @DBExists doesn't seem to work unless the icon is on your desktop.
+               '2.  The front end classes put up a really bad dialog box if you try to open a database it can't find.
+               '3.  The backend classes don't visibly open the database, they just create the object.
+          	Set docDB = session.GetDatabase("", "vsiddoc.nsf")
+          	If Not docDB.IsOpen Then 
+          		Messagebox "The VSID Documentation database (vsiddoc.nsf) cannot be located.  It must be moved from your installation directory to the Notes Data directory."
+          	Else
+          		Call ws.OpenDatabase("", docDB.FilePath)
+          	End If
+          	
+          End Sub
+          '++LotusScript Development Environment:2:2:BindEvents:1:129
+          Private Sub BindEvents ( Byval ObjectName_ As String )
+          	Static Source As BUTTON
+          	Set Source = Bind(Objectname_)
+          	On Event CLICK From Source Call CLICK
+          End Sub
+        title: Help
+      - type: 0xff5f
+        dwReserved: 0x00000000
+        wActionType: 2
+        wEventId: 213
+        wPlatform: 1
+        wReserved: 0
+      - type: 0xffbe
+        Flags: 0x0100019f
+        IconIndex: 88
+        ShareId: 0
+        Type: 2
+        data: |
+          '++LotusScript Development Environment:2:5:(Options):0:66
+          
+          '++LotusScript Development Environment:2:5:(Forward):0:1
+          Declare Sub Click(Source As Button)
+          
+          '++LotusScript Development Environment:2:5:(Declarations):0:2
+          
+          '++LotusScript Development Environment:2:2:Click:1:12
+          Sub Click(Source As Button)
+          	Call SetConfiguration()
+          End Sub
+          '++LotusScript Development Environment:2:2:BindEvents:1:129
+          Private Sub BindEvents(Byval Objectname_ As String)
+          	Static Source As BUTTON
+          	Set Source = Bind(Objectname_)
+          	On Event Click From Source Call Click
+          End Sub
+        title: Setup
+      - type: 0xff5f
+        dwReserved: 0x00000000
+        wActionType: 2
+        wEventId: 213
+        wPlatform: 1
+        wReserved: 0
+remaining: []

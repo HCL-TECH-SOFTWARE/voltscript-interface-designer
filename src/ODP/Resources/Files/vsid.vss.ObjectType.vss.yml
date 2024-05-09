@@ -1,0 +1,28 @@
+---
+class: 4
+flags: 0x0000
+unid: OFE9175C70AD8E4A26-ON0052EC77852589E4
+items:
+  - name: $DesignerVersion
+    type: text
+    data: 8.5.3
+  - name: $FileNames
+    type: text
+    data: vsid.vss.ObjectType.vss
+    signed: true
+  - name: $Flags
+    type: text
+    data: g345QC
+  - name: $FlagsExt
+    type: text
+    data: D
+    signed: true
+  - name: $TITLE
+    type: text
+    data: vsid.vss.ObjectType.vss
+    signed: true
+  - name: $FileData
+    type: composite
+    signed: true
+    nonsummary: true
+remaining: []

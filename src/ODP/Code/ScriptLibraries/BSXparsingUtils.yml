@@ -1,0 +1,4197 @@
+---
+class: 512
+flags: 0x2000
+unid: OF50356D5119E1ADC8-ON0038CA7E80258939
+items:
+  - name: $Comment
+    type: text
+    data: BaliSX Script Reading and Parsing Utilities
+  - name: $DesignerVersion
+    type: text
+    data: 8.5.3
+    signed: true
+  - name: $Flags
+    type: text
+    data: s34Q
+  - name: $PublicAccess
+    type: text
+    data: "1"
+    signed: true
+  - name: $ScriptLib
+    type: text
+    data: |
+      '++LotusScript Development Environment:2:5:(Options):0:74
+      %REM
+      	Library BSXparsingUtils
+      	Created Nov 2022 by Devin Olson/USA/PNPHCL
+      	BaliSX Script Reading / Parsing Utilities 
+      %END REM
+      %REM
+      	**********************************************************************
+      	**********************************************************************
+      		
+          Copyright HCL America, Inc. 1999, 2023
+      
+         	Licensed under the Apache License, Version 2.0 (the "License");
+          you may not use this file except in compliance with the License.
+          You may obtain a copy of the License at
+      
+              http://www.apache.org/licenses/LICENSE-2.0
+      
+          Unless required by applicable law or agreed to in writing, software
+          distributed under the License is distributed on an "AS IS" BASIS,
+          WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+          See the License for the specific language governing permissions and
+         	limitations under the License.
+      
+      	**********************************************************************
+      	**********************************************************************
+      %END REM
+      Option Public
+      Option Declare
+      Use "BSXdocumentationUtils"
+      
+      '++LotusScript Development Environment:2:5:(Forward):0:1
+      Declare Public Class BSXscriptParser 
+      Declare Class ScriptLine   
+      Declare Public Class BSXscriptNode As ValuedElement
+      Declare Class ScriptLinesCarrier 
+      Declare Class ScriptLineQueue As ScriptLinesCarrier
+      Declare Function mergeScriptSource(source As StringQueue, projectname$, filepath$, instance_code&, unmerged As StringQueue, duplicateoutput As Boolean, generatejson As Boolean) As StringQueue  
+      Declare Private Property Get AS_DELIMS As Variant 
+      Declare Function getBeginIndices(source$, substring$, maxindex%) As IntegerQueue  
+      Declare Private Function getScriptLine(source$) As ScriptLine
+      Declare Function spawnScriptNodeFromFile(projectname$, filepath$, instance_code&, duplicateoutput As Boolean, generatejson As Boolean) As BSXscriptNode  
+      Declare Private Function fixSourceCodeLine(source As String) As String 
+      
+      '++LotusScript Development Environment:2:5:(Declarations):0:10
+      
+      
+      Private Const MODULE_NAME = |BSXparsingUtils| 
+      Private Const LIB_PREFIX = |Library: | & MODULE_NAME & |.|
+      
+      
+      Private Const AUTHOR_CODE_OPEN = |'{{|
+      Private Const AUTHOR_CODE_BEGIN = AUTHOR_CODE_OPEN & |SETI_AUTHOR_CODE_|
+      Private Const AUTHOR_CODE_END = |'}}|
+      
+      Private Const SPAN_LINE_INDICATOR = | _|
+      
+      
+      
+      
+      
+      %REM
+      	Class BSXscriptParser 
+      	Utilitiy class for parsing BSX script source content 
+      %END REM
+      Public Class BSXscriptParser 
+      
+      	Private scriptNode_ As BSXscriptNode
+      	Private projectname_ As String 
+      	Private fqn_ As String  
+      	Private instance_code_ As Long 
+      	
+      
+      	%REM
+      		Property Get CLASS_NAME
+      		Name of the Class
+      	%END REM
+      	Private Property Get CLASS_NAME As String 
+      		CLASS_NAME = |BSXscriptParser|
+      	End Property
+      	
+      
+      	%REM
+      		Property Get CLASS_PREFIX
+      		Prefix of the Class:  MODULE_NAME.CLASS_NAME.
+      	%END REM
+      	Private Property Get CLASS_PREFIX As String 
+      		CLASS_PREFIX = MODULE_NAME & |.| & CLASS_NAME & |.|
+      	End Property
+      	
+      
+      	%REM
+      		Property Get ProjectName
+      		Project Name for the object
+      	%END REM
+      	Private Property Get ProjectName As String 
+      		ProjectName = me.projectname_
+      	End Property
+      	
+      
+      	%REM
+      		Property Get isInstanceComplete
+      		Flag indicating the current Instance element being parsed is complete (has reached and read the "End XXX" line)
+      	%END REM
+      	Property Get isInstanceComplete As Boolean
+      		isInstanceComplete = me.scriptNode_.isInstanceComplete 
+      	End Property 
+      
+      
+      
+      	%REM
+      		Property Get ScriptNode
+      		BSXscriptNode for the object
+      	%END REM
+      	Property Get ScriptNode As BSXscriptNode 
+      		Set ScriptNode = me.scriptNode_ 
+      	End Property
+      
+      
+      	%REM
+      		Property Get Script
+      		Generated Script Source Code for the object
+      	%END REM
+      	Property Get Script As StringQueue
+      		Set Script = me.scriptNode_.Script 
+      	End Property 
+      
+      	%REM
+      		Constructor
+      		@param Project Name 	Project Name of the Object. 
+      		@param FQN 				Fully Qualified Name for the object
+      		@param instance_code&  	Integer code indicating the type of code block this object (Library, Function, Class, etc) represents.
+      	%END REM 
+      	Sub New(projectname As String, FQN As String, instance_code&) 
+      		On Error GoTo ErrorTrap
+      
+      		' exception variables
+      		Dim errmsg$
+      		Dim errcode%
+      		Dim errline%
+      		
+      
+      		' BEGIN CODE
+      		me.projectname_ = FullTrim(projectname)
+      		me.fqn_ = FullTrim(FQN)  
+      		me.instance_code_ = instance_code&
+      		
+      		Call me.clear() 
+      
+      
+      	ExitPoint: 
+      		If (0 <> errcode%) Then Error errcode%, errmsg$ & | at line | & CStr(errline%) & | in | & CLASS_PREFIX & |New() Constructor| 
+      		Exit Sub 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		errcode% = Err() 
+      		errmsg$ = Error() 
+      		errline% = Erl()
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, ||
+      		enhLogException CLASS_PREFIX, || 
+      		Resume ExitPoint
+      	End Sub 
+      
+      
+      	%REM
+      		Sub clear
+      		Clears the object. 
+      	%END REM
+      	Sub clear() 
+      		On Error GoTo ErrorTrap
+      
+      		' exception variables
+      		Dim extendedinfo List As String 
+      		Dim errmsg$
+      		Dim errcode%
+      		Dim errline%
+      		
+      
+      		' BEGIN CODE
+      		extendedinfo(|FQN|) = me.fqn_ 
+      		extendedinfo(|InstanceCode|) = CStr(me.instance_code_) 
+      		Set me.scriptNode_ = New BSXscriptNode(Nothing, me.fqn_, ||)
+      		me.scriptNode_.QN = ||  
+      		me.scriptNode_.QN = getBaliStrings().filenameify(me.ProjectName)
+      		me.scriptNode_.InstanceCode = me.instance_code_ 
+      
+      	ExitPoint: 
+      		If (0 <> errcode%) Then Error errcode%, errmsg$ & | at line | & CStr(errline%) & | in | & CLASS_PREFIX & |clear() method| 
+      		Exit Sub 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		errcode% = Err() 
+      		errmsg$ = Error() 
+      		errline% = Erl()
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedInfo
+      		Resume ExitPoint
+      	End Sub
+      
+      
+      	
+      	%REM
+      		Sub parseLine
+      		Parses a line of text (script sourcecode) into the object 
+      	%END REM
+      	Sub parseLine(source$) 
+      		On Error GoTo ErrorTrap
+      		
+      		' exception variables
+      		Dim extendedinfo List As String 
+      		Dim errmsg$
+      		Dim errcode%
+      		
+      
+      		' BEGIN CODE
+      		extendedinfo(|source|) = source$ 
+      		Call me.scriptNode_.parseLine(source$) 
+      				
+      		
+      	ExitPoint: 
+      		If (0 <> errcode%) Then Error errcode%, errmsg$ 
+      		Exit Sub 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		errcode% = Err() 
+      		errmsg$ = Error() 
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedInfo
+      		enhLogException CLASS_PREFIX, || 
+      		Resume ExitPoint
+      	End Sub
+      	
+      
+      
+      End Class
+      %REM
+      	Class ScriptLine
+      	Represents a Line of Script Code 
+      %END REM
+      Class ScriptLine   
+      	Private code_ As String  	 	' the code portion of the line 
+      	Private comment_ As String 		' in-line comment portion of the line 
+      	Private source_ As String 		' source line of code used to instantiate this object.
+      	Private hascode_ As Boolean 	' Flag indicating if the object has code content 
+      	Private hascomment_ As Boolean	' Flag indicating if the object has comment content  
+      
+      	%REM
+      		Property Get CLASS_NAME
+      		Name of the Class
+      	%END REM
+      	Private Property Get CLASS_NAME As String 
+      		CLASS_NAME = |ScriptLine|
+      	End Property
+      	
+      
+      	%REM
+      		Property Get CLASS_PREFIX
+      		Prefix of the Class:  MODULE_NAME.CLASS_NAME.
+      	%END REM
+      	Private Property Get CLASS_PREFIX As String 
+      		CLASS_PREFIX = MODULE_NAME & |.| & CLASS_NAME & |.|
+      	End Property
+      	
+      
+      	%REM
+      		Property Get Code
+      		Code portion of the line 
+      	%END REM
+      	Property Get Code As String 
+      		Code = me.code_ 
+      	End Property
+      
+      
+      	%REM
+      		Property Get Comment
+      		in-line comment portion of the line 
+      	%END REM
+      	Property Get Comment As String 
+      		Comment = me.comment_ 
+      	End Property
+      
+      	%REM
+      		Property Get hasCode
+      		Flag indicating if this object has code 
+      	%END REM
+      	Property Get hasCode As Boolean 
+      		hasCode = me.hascode_
+      	End Property
+      
+      
+      	%REM
+      		Property Get hasComment
+      		Flag indicating if this object has a comment 
+      	%END REM
+      	Property Get hasComment As Boolean 
+      		hasComment = me.hascomment_ 
+      	End Property
+      
+      
+      	%REM
+      		Property Get isBlank
+      		Flag indicating if this object has neither code nor comment
+      	%END REM
+      	Property Get isBlank As Boolean
+      		isBlank = Not (me.hascode_ Or me.hascomment_) 
+      	End Property
+      
+      
+      	%REM
+      		Property Get JSON
+      		JSON representation of the object 
+      	%END REM
+      	Property Get JSON As String
+      		On Error GoTo ErrorTrap
+      		
+      		' exception variables
+      		Dim extendedinfo List As String
+      		
+      		Dim chunks() As String 
+      		
+      		Dim result$
+      		Dim idx% 
+      
+      		
+      		' BEGIN CODE
+      		extendedinfo(|code|) = me.code_ 
+      		extendedinfo(|comment|) = me.comment_ 
+      
+      		idx% = 0		
+      		ReDim chunks(idx%) As String 
+      		If Not isBlankString(me.code_) Then
+      			ReDim Preserve chunks(idx%) As String  
+      			chunks(idx%) = |"code":| & toJSONvalue(me.code_)
+      			idx% = idx% + 1 
+      		End If
+      
+      		If Not isBlankString(me.comment_) Then 
+      			ReDim Preserve chunks(idx%) As String  
+      			chunks(idx%) = |"comment":| & toJSONvalue(me.comment_)
+      			idx% = idx% + 1 
+      		End If
+      		
+      		result$ = |{|
+      		If (idx% > 0) Then result$ = result$ & Join(chunks, |,|)
+      		
+      		result$ = result$ & |,"isBlank":| & LCase(CStr(me.isBlank))
+      		result$ = result$ & |,"hasCode":| & LCase(CStr(me.hasCode))
+      		result$ = result$ & |,"hasComment":| & LCase(CStr(me.hasComment))
+      		
+      		result$ = result$ & |}|
+      
+      
+      	ExitPoint: 
+      		JSON = result$
+      		Exit Property 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		Resume ExitPoint
+      	End Property
+      
+      
+      
+      
+      	%REM
+      		Property Get SourceLine
+      		Source line of code used to instantiate this object.  
+      	%END REM
+      	Property Get SourceLine As String
+      		SourceLine = me.source_
+      	End Property
+      
+      	
+      	%REM
+      		Sub appendScriptLine
+      		Appends information from another ScriptLine object.  
+      		
+      		@param source ScriptLine from which to append content 
+      		
+      		@throws ERR_PARAMETER_BLANK if source is Nothing 
+      	%END REM
+      	Sub appendScriptLine(source As ScriptLine)
+      		If (source Is Nothing) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |ScriptLine is Nothing.  | 	
+      		On Error GoTo ErrorTrap
+      		
+      		' exception variables
+      		Dim extendedinfo List As String 
+      
+      		Dim chunks(1) As String 
+      		
+      		
+      		' BEGIN CODE
+      		If source.isBlank Then GoTo ExitPoint ' nothing to do.  
+      		 
+      		extendedInfo(|source.SourceLine|) = source.SourceLine
+      		If source.hasCode Then 
+      			chunks(0) = FullTrim(me.Code) 
+      			If getBaliStrings().endsWith(chunks(0), SPAN_LINE_INDICATOR) Then chunks(0) = StrLeftBack(chunks(0), SPAN_LINE_INDICATOR) 
+      
+      			chunks(1) = source.Code
+      			
+      			me.code_ = fixSourceCodeLine(FullTrim(Join(chunks, | |))) 
+      			me.hascode_ = Not isBlankString(me.code_)  
+      		End If 
+      		  
+      		If source.hasComment Then 
+      			chunks(0) = me.Comment  
+      			chunks(1) = source.Comment
+      			
+      			me.comment_ = FullTrim(Join(chunks, | |)) 
+      			me.hascomment_ = Not isBlankString(me.comment_)  
+      		End If 
+      
+      	
+      		If me.hasComment Then 
+      			chunks(0) = me.Code 
+      			chunks(1) = me.Comment 
+      			me.source_ = FullTrim(Join(chunks, | ' |)) 
+      		Else 
+      			me.source_ = me.Code 
+      		End If 
+      
+      	ExitPoint: 
+      		Exit Sub 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		Resume ExitPoint
+      	End Sub
+      
+      
+      	%REM
+      		Constructor  
+      		Constructs a new ScriptLine instance 
+      		
+      		@param source$ Line of sourcecode used to construct the object. 
+      	%END REM 
+      	Sub New(source$) 
+      		On Error GoTo ErrorTrap
+      		
+      
+      		' exception variables
+      		Dim extendedinfo List As String 
+      		Dim errmsg$
+      		Dim errcode%
+      		Dim errline%
+      		
+      		Dim indices_Apos As IntegerQueue 
+      		Dim indices_Quote As IntegerQueue 
+      		Dim indices_Pipe As IntegerQueue 
+      		Dim indices_Brace_Open As IntegerQueue 
+      		Dim indices As IntegerQueue 
+      		
+      		Dim opencharacter$ 
+      		Dim currentcharacter$ 
+      		Dim code$ 
+      		Dim comment$ 
+      		
+      		Dim sourcelength% 
+      		Dim idx%
+      		Dim idxApos%
+      		
+      		Dim isOpen As Boolean ' indicates if the current processing is within an open quote/pipe/brace instance
+      
+      		
+      		' BEGIN CODE
+      		extendedinfo(|source|) = source$
+      		If isBlankString(source$) Then GoTo ExitPoint ' bail out if blank 
+      		
+      		sourcelength% = Len(source$) 
+      		Set indices_Apos = getBeginIndices(source$, |'|, sourcelength%) 
+      		
+      		If Not indices_Apos.hasContent Then
+      			' no apostrophe, set code to source and bail out. 
+      			code$ = source$ 
+      			GoTo ExitPoint 
+      		End If
+      		
+      		idxApos% = indices_Apos.pop()
+      		If (1 = idxApos%) Then 
+      			' entire line is a comment.  set comment to the right of the apostrophe and bail out. 
+      			comment$ = Trim$(Right$(source$, Len(source$) -1)) 
+      			GoTo ExitPoint 
+      		End If
+      		
+      		If isBlankString(Left$(source$, idxApos% -1)) Then 
+      			' indented comment.  set comment and bail out. 
+      			comment$ = Trim$(Right$(source$, sourcelength - idxApos%))
+      			GoTo ExitPoint
+      		End If
+      		
+      		' found apostrophe character with preceeding text. 
+      		' find the the appropriate apostrophe that is not contained within string delimiters
+      		
+      		' find the index positions for quote, pipe, and braceopen  
+      		Set indices_Quote = getBeginIndices(source$, |"|, sourcelength%) 
+      		Set indices_Pipe = getBeginIndices(source$, "|", sourcelength%) 
+      		Set indices_Brace_Open = getBeginIndices(source$, |{|, sourcelength%)
+      		
+      		If Not (indices_Quote.hasContent And indices_Pipe.hasContent And indices_Brace_Open.hasContent) Then 
+      			' No opening Quotes, Pipes, or Braces found. 
+      			code$ = Left$(source$, idxApos%) 
+      			comment$ = Right$(source$, sourcelength - idxApos%) 
+      			GoTo ExitPoint		
+      		End If 
+      		
+      		' merge and sort all the indices (including brace-close characters  
+      		Set indices = getBeginIndices(source$, |}|, sourcelength%)
+      		indices.load indices_Pipe 
+      		indices.load indices_Pipe 
+      		indices.load indices_Brace_Open
+      		
+      		' sort the indices 
+      		Call indices.sort() 
+      		
+      		' step through the indices and check the character at each position. 
+      		isOpen = False 
+      		While indices.hasContent 
+      			idx% = indices.pop()
+      			While (idxApos% < idx%)
+      				If indices_Apos.hasContent Then 
+      					idxApos% = indices_Apos.pop() 
+      				Else 
+      					idxApos% = sourcelength%
+      				End If 
+      			Wend
+      
+      			currentcharacter$ = Mid$(source$, idx%, 1)
+      			If isOpen Then 
+      				' currently within an open quote/pipe/brace instance
+      				If (|}| = currentcharacter$) And (|{| = opencharacter$) Then 
+      					' closing brace
+      					isOpen = False 
+      				ElseIf currentcharacter$ = opencharacter$ Then 
+      					' closing quote or pipe 
+      					isOpen = False 
+      				End If 	
+      				
+      			Else 
+      				opencharacter$ = currentcharacter$ 
+      				isOpen = True 			
+      			End If
+      		Wend
+      
+      		If (idxApos% < sourcelength%) Then 
+      			code$ = Left$(source$, idxApos%) 
+      			comment$ = Right$(source$, sourcelength - idxApos%) 
+      		Else 
+      			code$ = source$ 
+      		End If
+      
+      
+      	ExitPoint:
+      		me.code_ = fixSourceCodeLine(code$)
+      		me.comment_ = Trim$(comment$)
+      		me.source_ = source$ 
+      		
+      		me.hascode_ = Not isBlankString(me.code_) 
+      		me.hascomment_ = Not isBlankString(me.comment_) 
+      		
+      		If (0 <> errcode%) Then Error errcode%, errmsg$ & | at line | & CStr(errline%) 
+      		Exit Sub 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		errcode% = Err() 
+      		errmsg$ = Error() 
+      		errline% = Erl()
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedInfo
+      		Resume ExitPoint
+      	End Sub 
+      
+      
+      	
+      
+      End Class
+      %REM
+      	Class BSXscriptNode
+      	Represents a block of script code. 
+      %END REM
+      Public Class BSXscriptNode As ValuedElement
+      	Private contentobjects_() As Variant		' array of content object instances (BSXscriptNode, String, StringQueue, ScriptLine, ScriptLineQueue)   			
+      
+      	Private spanned_lines_ As ScriptLineQueue 	' prior lines ending with span lines indicator ' _'  
+      	Private arguments_() As ValuedElement		' arguments for the object 
+      	Private signature_ As String 				' current signature
+      	
+      	Private previous_trimmed_ As String 		' the previously trimmed line
+      	Private qn_ As String 						' Qualified Name of the Object. 
+      	Private parent_fqn_ 	As String 			' Fully Qualified Name of the Object's Parent  
+      
+      	Private signature_code_ As Long 			' instance code summed with codes for all modifiers (such as Public, Private, etc) of the Signature
+      	Private instance_number_ As Integer 		' instance number of the node (relative to sibling nodes)
+      
+      	Private instance_complete_ As Boolean 		' flag indicating if this object instance is complete (has reached the "End XXX" line of code)
+      	Private is_vsid_author_block_ As Boolean 	' flag indicating if the node represents a vsid author block  
+      	Private is_args_instantiated_ As Boolean 	' flag indicating if arguments have been instantiated
+      	Private is_lastremcontentused_ As Boolean 	' flag indicating if the last rem content has been used. 
+      
+      	Public Filename As String 					' Filename of the BSXscriptNode 
+      
+      	%REM
+      		Property Get CLASS_NAME
+      		Name of the Class
+      	%END REM
+      	Private Property Get CLASS_NAME As String 
+      		CLASS_NAME = |BSXscriptNode|
+      	End Property
+      
+      	%REM
+      		Property Get CLASS_PREFIX
+      		Prefix of the Class:  MODULE_NAME.CLASS_NAME.
+      	%END REM
+      	Private Property Get CLASS_PREFIX As String 
+      		CLASS_PREFIX = MODULE_NAME & |.| & CLASS_NAME & |.|
+      	End Property
+      
+      
+      	%REM
+      		Property Get Arguments
+      		Array containing the Object Arguments 
+      	%END REM
+      	Property Get Arguments As Variant
+      		On Error GoTo ErrorTrap
+      	
+      		' exception variables
+      		Dim extendedinfo List As String 
+      	
+      		Dim result() As ValuedElement
+      		Dim argument As ValuedElement  
+      		Dim sq As StringQueue 
+      
+      
+      		Dim args As Variant 
+      		Dim chunks As Variant
+      		 
+      		Dim tempstr$
+      
+      		Dim i As Integer 
+      		
+      
+      		' BEGIN CODE 	
+      		If Not me.is_args_instantiated_ Then
+      			ReDim me.arguments_(0) As ValuedElement
+      			Set me.arguments_(0) = Nothing 
+      			me.is_args_instantiated_ = True 	
+      
+      			Set sq = me.Script  
+      			tempstr$ = sq.pop() 
+      			extendedinfo(|Script.pop()|) = tempstr$
+      			 
+      			tempstr$ = StrRight(tempstr$, me.signature_) 
+      			If InStr(tempstr$, |(|) Then 
+      				tempstr$ = StrRight(tempstr$, |(|)
+      				If InStr(tempstr$, |)|) Then 
+      					tempstr$ = StrLeftBack(tempstr$, |)|)
+      		
+      					If Not isBlankString(tempstr$) Then 
+      						args = Split(tempstr$, |,|) 
+      						 
+      						For i = LBound(args) To UBound(args)
+      							tempstr$ = args(i)
+      							chunks = Split(tempstr$, | As |)
+      							If (UBound(chunks) > LBound(chunks)) Then 
+      								Set argument = New ValuedElement(me.FQN, FullTrim(chunks(0)), FullTrim(chunks(1)), ||)
+      								Call argument.setElementValue(|argumentindex|, CStr(i))
+      								Call me.appendArgument(argument)
+      							End If 
+      						Next
+      					End If
+      				End If 
+      			End If 
+      			
+      		End If
+      		
+      		ReDim result(UBound(me.arguments_)) As ValuedElement
+      		
+      		For i = LBound(me.arguments_) To UBound(me.arguments_) 
+      			Set result(i) = me.arguments_(i)  
+      		Next  
+      		
+      		
+      	ExitPoint: 
+      		Arguments = result 
+      		Exit Property 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		Resume ExitPoint
+      	End Property 
+      
+      
+      	%REM
+      		Property Get hasArguments
+      		Flag indicating if the Object has Arguments 
+      	%END REM
+      	Property Get hasArguments As Boolean 
+      		If me.is_args_instantiated_ Then 
+      			hasArguments = Not (me.arguments_(0) Is Nothing)
+      		Else 
+      			hasArguments = Not (me.Arguments(0) Is Nothing)
+      		End If 
+      	End Property
+      
+      
+      	%REM
+      		Property Get FirstRemContent
+      		Everything between the first child node that begins with "%REM" and the first child node that begins with "%END REM"
+      		
+      		@return First Rem Content, concatenated with a CRLF 
+      	%END REM
+      	Property Get FirstRemContent As String
+      		On Error GoTo ErrorTrap 
+      
+      		Const TAG = |firstremcontent| 				
+      				
+      		Dim extendedinfo List As String 
+      		Dim node As BSXscriptNode 
+      		Dim scriptqueue As StringQueue 
+      		Dim sq As StringQueue
+      
+      		Dim objecttype$ 
+      		Dim tempstr$ 
+      		Dim result$
+      
+      
+      		' BEGIN CODE 	
+      		result$ = me.getValue(TAG)
+      		If isBlankString(result$) Then
+      			Select Case me.InstanceCode 
+      				Case SIGNATURE_VALUE_LIBRARY, SIGNATURE_VALUE_REMARK
+      					' Extrapolated comment - Script of the the FIRST child node where isRemark = True 
+      					
+      					ForAll element In me.contentobjects_
+      						objecttype$ = TypeName(element) 
+      						If strCmp(CLASS_NAME, objecttype$) Then 
+      							Set node = element
+      							extendedinfo(|node.FQN|) = node.FQN
+      							If node.isRemark Then 
+      								If node.LineCount > 0 Then 
+      									Set sq = New StringQueue() 
+      									Set scriptqueue = node.Script 
+      									While scriptqueue.hasContent 
+      										tempstr$ = FullTrim(scriptqueue.pop()) 
+      										If Not (strCmp(|%REM|, tempstr$) Or strCmp(|%END REM|, tempstr$)) Then sq.push tempstr$ 
+      									Wend 
+      
+      									result$ = sq.joinContent(CRLF)
+      									Call me.setElementValue(TAG, result$)
+      									Exit ForAll 
+      								End If 
+      							End If
+      						End If
+      					End ForAll
+      				
+      				
+      				Case SIGNATURE_VALUE_CLASS 
+      					' Extrapolated comment - Everything between the first STRING child node that begins with "%REM" and the first STRING child node that begins with "%END REM" 
+      					
+      					Set sq = Nothing 
+      					ForAll element In me.contentobjects_
+      						objecttype$ = TypeName(element) 
+      						If strCmp(|STRING|, objecttype$) Then
+      							tempstr$ = FullTrim(CStr(element)) 
+      							If (sq Is Nothing) Then 
+      								If getBaliStrings().beginsWith(tempstr$, |%REM|) Then
+      									Set sq = New StringQueue()  
+      									tempstr$ = StrRight(tempstr$, |%REM|) 
+      									If Not isBlankString(tempstr$) Then sq.push Trim$(tempstr$) 
+      								End If	
+      								
+      							ElseIf getBaliStrings().beginsWith(tempstr$, |%END REM|) Then 
+      									result$ = sq.joinContent(CRLF)
+      									Call me.setElementValue(TAG, result$)
+      									Exit ForAll 
+      							Else 
+      								sq.push tempstr$								
+      							End If
+      						End If
+      					End ForAll
+      					
+      					
+      				Case Else
+      					' do nothing 
+      			End Select
+      		End If
+      		
+      		
+      	ExitPoint:
+      		FirstRemContent = result$ 
+      		Exit Property
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		enhLogException CLASS_PREFIX, ||
+      		Resume ExitPoint
+      	End Property 
+      
+      
+      	%REM
+      		Property Get LastRemContent
+      		Everything between the last child node that begins with "%REM" and the last child node that begins with "%END REM"
+      		
+      		@return Last Rem Content, concatenated with a CRLF 
+      	%END REM
+      	Property Get LastRemContent As String
+      		On Error GoTo ErrorTrap 
+      
+      		Dim extendedinfo List As String 
+      		Dim node As BSXscriptNode 
+      		Dim scriptqueue As StringQueue 
+      		Dim sq As StringQueue
+      		Dim st As StringStack 
+      
+      		Dim objecttype$ 
+      		Dim tempstr$ 
+      		Dim result$
+      		
+      		Dim i%
+      
+      
+      		' BEGIN CODE 	
+      		Select Case me.InstanceCode 
+      			Case SIGNATURE_VALUE_LIBRARY, SIGNATURE_VALUE_REMARK
+      				' Extrapolated comment - Script of the the LAST child node where isRemark = True 
+      				
+      				If (UBound(me.contentobjects_) > 0) Then
+      					For i% = UBound(me.contentobjects_) To LBound(me.contentobjects_) Step -1 
+      						objecttype$ = TypeName(me.contentobjects_(i%)) 
+      						If strCmp(CLASS_NAME, objecttype$) Then 
+      							Set node = me.contentobjects_(i%)
+      							If node.isRemark Then Exit For 
+      						End If
+      					Next
+      					
+      				Else
+      					objecttype$ = TypeName(me.contentobjects_(LBound(me.contentobjects_)))
+      					If strCmp(CLASS_NAME, objecttype$) Then Set node = me.contentobjects_(LBound(me.contentobjects_))
+      				End If
+      				
+      			Case SIGNATURE_VALUE_CLASS 
+      				' Extrapolated comment - Everything between the last STRING child node that begins with "%REM" and the last STRING child node that begins with "%END REM" 
+      				Set st = Nothing 
+      				If (UBound(me.contentobjects_) > 0) Then
+      					For i% = UBound(me.contentobjects_) To LBound(me.contentobjects_) Step -1 
+      						objecttype$ = TypeName(me.contentobjects_(i%))
+      						Select Case objecttype$ 
+      							Case UCase(CLASS_NAME) 
+      								Set node = me.contentobjects_(i%)
+      								tempstr$ = node.Signature 
+      								If node.isRemark Then Exit For 
+      								 							
+      							Case |STRING|
+      								tempstr$ = FullTrim(CStr(me.contentobjects_(i%))) 
+      								If (st Is Nothing) Then 
+      									If getBaliStrings().beginsWith(tempstr$, |%END REM|) Then
+      										Set st = New StringStack()  
+      									End If	
+      									
+      								ElseIf getBaliStrings().beginsWith(tempstr$, |%REM|) Then
+      										tempstr$ = StrRight(tempstr$, |%REM|) 
+      										If Not isBlankString(tempstr$) Then st.push Trim$(tempstr$)
+      										
+      										result$ = st.joinContent(CRLF)
+      										GoTo ExitPoint 
+      								Else 
+      									st.push tempstr$								
+      								End If
+      								
+      							Case |STRINGQUEUE| 
+      								enhLogWarning CLASS_PREFIX, me.signature_ & | STRING QUEUE !!!!| 
+      																	 
+      							Case Else ' do nothing 
+      						End Select
+      					Next
+      
+      				Else
+      					objecttype$ = TypeName(me.contentobjects_(LBound(me.contentobjects_)))
+      					If strCmp(CLASS_NAME, objecttype$) Then Set node = me.contentobjects_(LBound(me.contentobjects_))
+      				End If
+      				
+      			Case Else
+      				' do nothing 
+      		End Select
+      					
+      		If Not (node Is Nothing) Then 
+      			If node.isRemark And (node.LineCount > 0) Then 
+      				Set sq = New StringQueue() 
+      				Set scriptqueue = node.Script 
+      				While scriptqueue.hasContent 
+      					tempstr$ = FullTrim(scriptqueue.pop()) 
+      					If Not (strCmp(|%REM|, tempstr$) Or strCmp(|%END REM|, tempstr$)) Then sq.push tempstr$ 
+      				Wend 
+      
+      				result$ = sq.joinContent(CRLF)
+      			End If 	
+      		End If 	
+      		
+      	ExitPoint:
+      		LastRemContent = result$ 
+      		Exit Property
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		enhLogException CLASS_PREFIX, ||
+      		Resume ExitPoint
+      	End Property 
+      
+      
+      
+      	%REM
+      		Property Get Classes
+      		All child BSXscriptNodes that have an instancecode of SIGNATURE_VALUE_CLASS
+      		
+      		@return Array of all child BSXscriptNodes that have an instancecode of SIGNATURE_VALUE_CLASS.  If no such nodes exist, returns a single-element array containing Nothing 
+      	%END REM
+      	Property Get Classes As Variant 
+      		On Error GoTo ErrorTrap
+      	
+      		' exception variables
+      		Dim extendedinfo List As String 
+      	
+      		Dim result() As BSXscriptNode
+      		Dim node As BSXscriptNode
+      		Dim objecttype$  
+      		
+      	
+      		' BEGIN CODE
+      		ReDim result(0) As BSXscriptNode
+      		Set result(0) = Nothing 
+      		
+      		ForAll element In me.contentobjects_
+      			objecttype$ = TypeName(element) 
+      			If UCase(CLASS_NAME) = UCase(objecttype$) Then 
+      				Set node = element
+      				extendedinfo(|objecttype|) = objecttype$
+      				extendedinfo(|node.Label|) = node.Label
+      				extendedinfo(|node.InstanceCode|) = CStr(node.InstanceCode)
+      				extendedinfo(|node.FQN|) = node.FQN
+      				extendedinfo(|node.QN|) = node.QN
+      
+      				If node.isClass Then 
+      					If Not (result(UBound(result)) Is Nothing) Then ReDim Preserve result(UBound(result) + 1) As BSXscriptNode 
+      					Set result(UBound(result)) = node  
+      				End If
+      			End If
+      		End ForAll
+      		
+      	ExitPoint: 
+      		Classes = result
+      		Exit Property 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		Resume ExitPoint
+      	End Property
+      
+      
+      	%REM
+      		Property Get Comment
+      		Comment for the object
+      	%END REM
+      	Property Get Comment As String
+      		On Error GoTo ErrorTrap 
+      
+      		Const TAG = |comment| 				
+      				
+      		Dim extendedinfo List As String 
+      		Dim node As BSXscriptNode 
+      		Dim scriptqueue As StringQueue 
+      		Dim sq As StringQueue
+      
+      		Dim objecttype$ 
+      		Dim tempstr$ 
+      		Dim result$
+      
+      
+      		' BEGIN CODE 	
+      		result$ = me.getValue(TAG)
+      		If isBlankString(result$) Then
+      			Select Case me.InstanceCode 
+      				Case SIGNATURE_VALUE_LIBRARY, SIGNATURE_VALUE_CLASS, SIGNATURE_VALUE_VARIABLE 
+      					result$ = me.FirstRemContent
+      					Call me.setElementValue(TAG, result$) 
+      					
+      				Case Else
+      					' do nothing 
+      			End Select
+      			 
+      		End If
+      
+      		
+      	ExitPoint:
+      		Comment = result$ 
+      		Exit Property
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		Resume ExitPoint
+      	End Property 
+      
+      
+      	%REM
+      		Property Get CodeSample
+      		CodeSample for the object
+      	%END REM
+      	Property Get CodeSample As String
+      		On Error GoTo ErrorTrap 
+      				
+      				
+      		Const TAG = |codesample| 
+      						
+      		Dim extendedinfo List As String 
+      		Dim node As BSXscriptNode 
+      		Dim scriptqueue As StringQueue 
+      		Dim sq As StringQueue
+      
+      		Dim objecttype$ 
+      		Dim tempstr$
+      		Dim result$ 
+      		 
+      		Dim counter% 
+      
+      
+      		' BEGIN CODE
+      		result$ = me.getValue(TAG) 		
+      		If isBlankString(TAG) Then 
+      			If me.isLibrary Then 
+      		' 		Extrapolated code sample - Script of the the Second child node where isRemark = True 
+      				ForAll element In me.contentobjects_
+      					objecttype$ = TypeName(element) 
+      					If UCase(CLASS_NAME) = UCase(objecttype$) Then 
+      						Set node = element
+      						extendedinfo(|node.FQN|) = node.FQN
+      						If node.isRemark Then 
+      							If node.LineCount > 0 Then 
+      								If counter% > 0 Then 
+      									Set sq = New StringQueue() 
+      									Set scriptqueue = node.Script 
+      									
+      									While scriptqueue.hasContent 
+      										tempstr$ = FullTrim(scriptqueue.pop()) 
+      										If Not (strCmp(|%REM|, tempstr$) Or strCmp(|%END REM|, tempstr$)) Then sq.push tempstr$ 
+      									Wend
+      									 
+      									Call me.setElementValue(TAG, sq.joinContent(CRLF))
+      									Exit ForAll 
+      								End If
+      
+      								counter% = counter% + 1 
+      							End If 
+      						End If
+      					End If
+      				End ForAll
+      				
+      			End If
+      		End If
+      		
+      	ExitPoint:
+      		CodeSample = result$  
+      		Exit Property
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		Resume ExitPoint 
+      	End Property 
+      
+      
+      	%REM
+      		Property Get ValueType
+      		Extrapolated type (such as String, Integer, etc) - pulled from the first line of the object's Script property  
+      	%END REM
+      	Property Get ValueType As String
+      		On Error GoTo ErrorTrap 
+      
+      
+      		Dim extendedinfo List As String 
+      
+      		Dim sq As StringQueue 
+      		Dim chunks As Variant 
+      
+      		Dim tempstr$ 
+      		Dim result$ 
+      		
+      		Dim i%
+      
+      		Dim addelement As Boolean 
+      		Dim asfound As Boolean 
+      
+      
+      '		 BEGIN CODE 
+      		result$ = me.getValue(|valuetype|)
+      		If isBlankString(result$) Then 
+      			If me.isClass Or me.isFunction Or (me.isProperty And me.isGetter) Then 
+      				Set sq = me.Script 
+      				tempstr$ = sq.pop()  
+      				extendedinfo(|tempstr|) = |"| & tempstr$ & |"|  
+      				
+      			ElseIf me.isVariable Then 
+      				tempstr$ = me.signature_ 
+      			End If
+      
+      			If Not isBlankString(tempstr$) Then
+      				chunks = Split(tempstr$, | |)
+      				extendedinfo(|Lbound(chunks))|) = CStr(LBound(chunks))
+      				extendedinfo(|UBound(chunks))|) = CStr(UBound(chunks))
+      				If UBound(chunks) > LBound(chunks) Then 
+      					For i% = UBound(chunks) To LBound(chunks) Step -1
+      						If strCmp(|As|, chunks(i%)) Then 
+      							asfound = True 
+      							Exit For 
+      						End If
+      					Next
+      					
+      					If asfound Then 
+      						' get valuetype
+      						If (i% < UBound(chunks)) Then result$ = chunks(i% + 1)
+      		
+      						' check for list 
+      						If (i% > 0) Then 
+      								If strCmp(|List|, chunks(i% -1)) Then Call me.appendAttribute(|List|)
+      						End If 
+      										
+      						' check for array 
+      						If (i% < UBound(chunks)) _ 
+      						And (strCmp(|()|, chunks(UBound(chunks))) _ 
+      							Or strCmp(|Array|, chunks(UBound(chunks)))) Then Call me.appendAttribute(|Array|)
+      						
+      					End If
+      				End If
+      			End If
+      
+      			
+      			Call me.setElementValue(|valuetype|, result$)
+      		End If
+      						
+      	ExitPoint:
+      		ValueType = result$ 
+      		Exit Property
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		Resume ExitPoint 
+      	End Property 	
+      
+       
+      
+      
+      
+      	%REM
+      		Property Get authorNodeFQNs
+      		FQNs of all descendent nodes that represent VSID Author Blocks
+      		
+      		@return StringQueue containing the FQNs of all descendent VSID Author Nodes. 
+      	%END REM
+      	Property Get authorNodeFQNs As StringQueue 
+      		On Error GoTo ErrorTrap
+      		
+      		Dim node As BSXscriptNode
+      		
+      		Dim sq As StringQueue  
+      		Dim result As New StringQueue()
+      
+      		Dim objecttype$ 		 
+      		
+      		
+      		' BEGIN CODE
+      		ForAll element In me.contentobjects_
+      			objecttype$ = TypeName(element) 
+      			If UCase(CLASS_NAME) = UCase(objecttype$) Then 
+      				Set node = element
+      				
+      				If node.isVSID_AUTHOR_BLOCK Then result.push node.QN 
+      				Set sq = node.authorNodeFQNs
+      				
+      				While sq.hasContent 
+      					result.push node.QN & |.| & sq.pop() 
+      				Wend	 					
+      			End If
+      		End ForAll
+      		
+      		
+      	ExitPoint: 
+      		Set authorNodeFQNs = result
+      		Exit Property 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, ||
+      		Resume ExitPoint
+      	End Property
+      
+      
+      
+      	
+      	%REM
+      		Property Get QN
+      		Qualified Name of the Object 
+      		
+      		QN is the FQNprefix (a constructor argument) concatenated (using a period character) with the object's Label.
+      		NOTE: All whitespace in the QN Prefix and Label will be removed.   
+      	%END REM
+      	Property Get QN As String
+      		On Error GoTo ErrorTrap
+      		
+      		' exception variables
+      		Dim extendedinfo List As String 
+      		Dim errmsg$
+      		Dim errcode%
+      
+      		Dim node As BSXscriptNode
+      		Dim elements As StringQueue 
+      		Dim tv As StringList 
+      
+      		Dim chunks As Variant 
+      		
+      		Dim label$
+      		Dim signature$ 
+      		Dim signatureelement$ 
+      		Dim result$
+      		Dim code&
+      		Dim ic& 
+      		Dim idx% 
+      		
+      
+      		' BEGIN CODE
+      		If isBlankString(me.qn_) Then
+      			If me.isRemark Then 
+      				result$ = result$ & |remark_| & CStr(me.instance_number_)
+      			ElseIf me.isVSID_AUTHOR_BLOCK Then 
+      				result$ = result$ & me.signature_
+      			Else 
+      				signature$ = FullTrim(me.signature_)
+      				extendedinfo(|signature|) = signature$  
+      				If Not isBlankString(signature$) Then 
+      					code& = getSignatureCode(signature$)
+      					ic& = signatureCodeToInstanceCode(code&) 
+      
+      					If (SIGNATURE_VALUE_VARIABLE = ic&) Then
+      						' get the label as the second or first element in the signature 
+      						chunks = Split(signature$, | |) 
+      						If (UBound(chunks) > 0) Then label$ = chunks(1) Else label$ = chunks(0)   
+      						Call me.setElementValue(|label|, label$)
+      					Else  
+      						' rip of any " As xxx" endings
+      						idx% = InStr(1, LCase$(signature$), | as |, 5) 
+      						If (idx% > 1) Then signature$ = FullTrim(Left$(signature$, idx% -1))
+      						
+      						' rip of any " = xxx" endings
+      						idx% = InStr(1, signature$, |=|, 5) 
+      						If (idx% > 1) Then signature$ = FullTrim(StrToken(signature$, |=|, 1))
+      		
+      						' yank any parameter "(" indicators 
+      						idx% = InStr(1, signature$, |(|, 5) 
+      						If (idx% > 1) Then signature$ = FullTrim(StrToken(signature$, |(|, 1))
+      						
+      						' get the label as the last element in the signature 
+      						chunks = Split(signature$, | |) 
+      						label$ = chunks(UBound(chunks))
+      						Call me.setElementValue(|label|, label$)
+      		
+      						code& = getSignatureCode(signature$)
+      						extendedinfo(|code&|) = CStr(code&)
+      		
+      						ic& = signatureCodeToInstanceCode(code&)
+      						extendedinfo(|ic&|) = CStr(ic&)
+      					End If
+      					
+      					' Strip out Public / Private 
+      					Set elements = getSignatureElements(code&)
+      					While elements.hasContent 
+      						signatureelement$ = elements.pop()
+      						Select Case signatureelement$ 
+      							Case |Public|, |Private| 
+      								' do nothing (Strip out Public / Private)
+      							Case Else 
+      								result$ = result$ & signatureelement$ & |.|		
+      						End Select
+      					Wend 
+      	
+      				End If 
+      
+      				result$ = result$ & me.Label
+      				
+      				me.signature_ = signature$
+      				ic& = me.InstanceCode 
+      				If (0 = code&) Then me.signature_code_ = ic& Else me.signature_code_ = code&   
+      			End If
+      			
+      			While getBaliStrings().beginsWith(result$, |.|)
+      				result$ = Right(result$, Len(result$) -1)
+      			Wend
+      			
+      			me.qn_ = LCase(result$) 
+      		End If
+      		
+      		result$ = me.qn_ 
+      
+      		
+      	ExitPoint: 
+      		If (0 <> errcode%) Then Error errcode%, errmsg$ 
+      		QN = result$
+      		Exit Property 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		errcode% = Err() 
+      		errmsg$ = Error() 
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		Resume ExitPoint
+      	End Property
+      
+      
+      
+      	%REM
+      		Property Set QN
+      		Qualified Name of the Object 
+      		
+      		QN is the FQNprefix (a constructor argument) concatenated (using a period character) with the object's Label.
+      		NOTE: All whitespace in the QN Prefix and Label will be removed.  
+      	%END REM
+      	Property Set QN As String
+      		On Error GoTo ErrorTrap
+      		
+      		' exception variables
+      		Dim extendedinfo List As String 
+      		Dim s$ 	
+      
+      		
+      		' BEGIN CODE
+      		s$ = FullTrim(QN) 
+      		s$ = Join(Split(QN, | |), |.|) 
+      		me.qn_ = LCase(s$) 
+      		
+      	ExitPoint: 
+      		Exit Property 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		Resume ExitPoint
+      	End Property
+      
+      
+      	%REM
+      		Property Get ParentFQN
+      		Fully Qualified Name of the Object's Parent
+      		
+      		@return Fully Qualified Name of the Object's Parent
+      	%END REM
+      	Property Get ParentFQN As String 
+      		ParentFQN = me.parent_fqn_	
+      	End Property
+      
+      
+      	%REM
+      		Property Get FQN
+      		Fully Qualified Name of the Object 
+      		
+      		@return Fully Qualified Name of the Object
+      	%END REM
+      	Property Get FQN As String 
+      		If isBlankString(me.parent_fqn_) Then 
+      			FQN = me.QN 
+      		Else 
+      			FQN = me.parent_fqn_ & |.| & me.QN 	
+      		End If	
+      	End Property
+      	
+      	%REM
+      		Property Get childCount
+      		Number of Child Nodes for this object 
+      	%END REM
+      	Property Get childCount As Integer 
+      		On Error GoTo ErrorTrap
+      		
+      		' exception variables
+      		Dim extendedinfo List As String
+      		
+      		Dim objecttype$  
+      		Dim result%
+      		
+      		
+      		' BEGIN CODE
+      		ForAll element In me.contentobjects_
+      			objecttype$ = TypeName(element) 
+      			If UCase(CLASS_NAME) = UCase(objecttype$) Then result% = result% + 1
+      		End ForAll
+      		
+      
+      		ExitPoint: 
+      		childCount = result%
+      		Exit Property 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		Resume ExitPoint
+      	End Property
+      	
+      	
+      	%REM
+      		Property Get LastChild
+      		The last child BSXscriptNode contained by the object. 
+      	%END REM
+      	Property Get LastChild As BSXscriptNode 
+      		On Error GoTo ErrorTrap
+      
+      		' exception variables
+      		Dim extendedinfo List As String 
+      		Dim errmsg$
+      		Dim errcode%
+      
+      		Dim result As BSXscriptNode
+      		
+      		Dim objecttype$
+      		Dim idx%  
+      		
+      		
+      		' BEGIN CODE
+      		For idx% = UBound(me.contentobjects_) To LBound(me.contentobjects_) Step -1
+      			objecttype$ = UCase(TypeName(me.contentobjects_(idx%)))
+      		
+      			If UCase(CLASS_NAME) = objecttype$ Then  
+      				Set result = me.contentobjects_(idx%)
+      				Exit For 
+      			End If	
+      		Next 
+      		
+      
+      	ExitPoint: 
+      		If (0 <> errcode%) Then Error errcode%, errmsg$ 
+      		Set LastChild = result
+      		Exit Property 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		errcode% = Err() 
+      		errmsg$ = Error() 
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		Resume ExitPoint 
+      	End Property
+      	
+      
+      	%REM
+      		Property Get hasChildNodes
+      		Flag indicating the object has child nodes
+      	%END REM
+      	Property Get hasChildNodes As Boolean
+      		hasChildNodes = Not (me.LastChild Is Nothing)
+      	End Property 
+      
+      	%REM
+      		Property Get InstanceCode
+      		Numeric code indicating the Instance Type (such as Sub, Function, or Property)
+      	%END REM
+      	Property Get InstanceCode As Long
+      		InstanceCode = signatureCodeToInstanceCode(me.signature_code_)  
+      	End Property 
+      
+      	%REM
+      		Property Set InstanceCode
+      		Numeric code indicating the Instance Type (such as Sub, Function, or Property)
+      	%END REM
+      	Property Set InstanceCode As Long 
+      		On Error GoTo ErrorTrap
+      		
+      		Dim extendedinfo List As String 
+      		Dim msg$ 
+      		
+      		Dim instancecode_& 
+      		
+      		Dim tempstr$
+      		
+      		
+      		' BEGIN CODE
+      		extendedinfo(|InstanceCode|) = CStr(InstanceCode)  
+      		tempstr$ = CStr(me.InstanceCode) 
+      		extendedinfo(|Existing Instance Code|) = tempstr$
+      		If IsNumeric(tempstr$) Then instancecode_& = CLng(tempstr$) 
+      		
+      		If (0 = instancecode_&) Then instancecode_& = InstanceCode 
+      		If (instancecode_& <> InstanceCode) Then Error ERR_OPERATION_PROHIBITED, MSG_OPERATION_PROHIBITED & |Once set, InstanceCode has may not be changed.  |
+      		
+      		If (SIGNATURE_VALUE_REMARK = InstanceCode) Then 
+      			me.signature_code_ = SIGNATURE_VALUE_REMARK			
+      		Else 
+      			instancecode_& = 0
+      			ForAll ic In getInstanceCodes() 
+      				If ic = InstanceCode Then 
+      					instancecode_& = ic
+      					Exit ForAll 
+      				End If 
+      			End ForAll
+      			
+      			If (0 = instancecode_&) Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |Unsupported Instance Code: | & CStr(InstanceCode) & |.  |
+      			If (0 = me.signature_code_) Then me.signature_code_ = instancecode_& 
+      		End If
+      		
+      	ExitPoint: 
+      		Exit Property 
+      	ErrorTrap:
+      		On Error GoTo 0 
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		msg$ = || 
+      		ForAll s In extendedinfo
+      			If isBlankString(msg$) Then 
+      				msg$ = ListTag(s) & |: | & s 
+      			Else 
+      				msg$ = msg$ & CRLF & ListTag(s) & |: | & s 
+      			End If 
+      		End ForAll
+      		enhLogException CLASS_PREFIX, msg$ 
+      		Resume ExitPoint 
+      	End Property 
+      
+      	%REM
+      		Property Get Label
+      		Label (Name) for the Object
+      	%END REM
+      	Property Get Label As String
+      		Label = me.getValue(|label|)   
+      	End Property 
+      
+      
+      	%REM
+      		Property Set SignatureCode
+      		Numeric code indicating the Instance Type (such as Sub, Function, or Property)
+      	%END REM
+      	Property Set SignatureCode As Long 
+      		On Error GoTo ErrorTrap 
+      
+      		Dim elements As StringQueue 
+      		
+      		Dim extendedinfo List As String 
+      		Dim msg$
+      
+      		Dim ic&
+      		Dim errmsg$ 
+      		Dim errcode% 
+      		Dim errline%
+      		
+      		
+      		' BEGIN CODE 
+      		extendedinfo(|SignatureCode|) = CStr(SignatureCode) 
+      		
+      		ic& = signatureCodeToInstanceCode(SignatureCode) 
+      		extendedinfo(|InstanceCode|) = CStr(ic&) 
+      		
+      		If (0 = ic&) Then Error ERR_INVALID_SIGNATURE_CODE, MSG_INVALID_SIGNATURE_CODE 
+      		
+      		extendedinfo(|Existing InstanceCode|) = CStr(me.InstanceCode) 
+      		If (0 <> me.InstanceCode) And (ic& <> me.InstanceCode) Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |Instance code does not match existing instance code.  | 
+      		
+      		Set elements = getSignatureElements(SignatureCode)
+      		
+      		' if elements were successfully retrieved then the SignatureCode is an allowed code. 
+      		me.signature_code_ = SignatureCode  
+      
+      	ExitPoint: 
+      		If (0 <> errcode%) Then Error errcode%, errmsg$ & | at line | & CStr(errline%) & | in | & CLASS_PREFIX & |New() Constructor| 
+      		Exit Property  
+      	ErrorTrap:
+      		On Error GoTo 0
+      		errcode% = Err() 
+      		errmsg$ = Error() 
+      		errline% = Erl()
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		msg$ = || 
+      		ForAll s In extendedinfo
+      			If isBlankString(msg$) Then 
+      				msg$ = ListTag(s) & |: | & s 
+      			Else 
+      				msg$ = msg$ & CRLF & ListTag(s) & |: | & s 
+      			End If 
+      		End ForAll
+      		enhLogException CLASS_PREFIX, msg$ 
+      		Resume ExitPoint
+      	End Property 
+      	
+      
+      	%REM
+      		Property Get InstanceNumber
+      		Instance number of the node (relative to sibling nodes)
+      	%END REM
+      	Property Get InstanceNumber As Long
+      		InstanceNumber = me.instance_number_ 
+      	End Property 
+      
+      	%REM
+      		Property Get isClass
+      		Flag indicating if the Object is a Class 
+      	%END REM
+      	Property Get isClass As Boolean 
+      		isClass = (SIGNATURE_VALUE_CLASS = me.InstanceCode)
+      	End Property
+      	
+      
+      	%REM
+      		Property Get isInstanceComplete
+      		Flag indicating the current Instance element being parsed is complete (has reached and read the "End XXX" line)
+      	%END REM
+      	Property Get isInstanceComplete As Boolean
+      		isInstanceComplete = me.instance_complete_ 
+      	End Property 
+      
+      
+      	%REM
+      		Property Get isLastChildComplete
+      		Flag indicating the last child object of the current Instance element is considered complete (has reached and read the "End XXX" line)
+      		
+      		@return if last child exists, the value of lastchild.isInstanceComplete.
+      		
+      		@throws ERR_OPERATION_PROHIBITED if Last Child is Nothing 
+      	%END REM
+      	Property Get isLastChildComplete As Boolean
+      		If Not me.hasChildNodes Then Error ERR_OPERATION_PROHIBITED, MSG_OPERATION_PROHIBITED & |LastChild is Nothing.  |
+      		isLastChildComplete = me.LastChild.isInstanceComplete
+      	End Property
+      
+      
+      	%REM
+      		Property Get isLastChildRemarkComplete
+      		Flag indicating the last child object of the current Instance element is a Remark (%REM...%END REM) and is complete
+      		
+      		@return if the last child exists, the value of (lastchild.isRemark AND lastchild.isInstanceComplete).
+      
+      		@throws ERR_OPERATION_PROHIBITED If Last Child Is Nothing 
+      	%END REM
+      	Property Get isLastChildRemarkComplete As Boolean 
+      		If Not me.hasChildNodes Then Error ERR_OPERATION_PROHIBITED, MSG_OPERATION_PROHIBITED & |LastChild is Nothing.  |
+      		isLastChildRemarkComplete = (me.LastChild.isRemark And me.LastChild.isInstanceComplete)
+      	End Property 
+      
+      
+      	%REM
+      		Property Get isLibrary
+      		Flag indicating if the Object is a Library 
+      	%END REM
+      	Property Get isLibrary As Boolean 
+      		isLibrary = (SIGNATURE_VALUE_LIBRARY = me.InstanceCode)
+      	End Property
+      	
+      
+      	%REM
+      		Property Get isVariable
+      		Flag indicating if the Object is a Variable 
+      	%END REM
+      	Property Get isVariable As Boolean 
+      		isVariable = (SIGNATURE_VALUE_VARIABLE = me.InstanceCode)
+      	End Property
+      	
+      
+      	%REM
+      		Property Get isRemark
+      		Flag indicating if this object instance represents a remark 
+      	%END REM
+      	Property Get isRemark As Boolean
+      		isRemark = (SIGNATURE_VALUE_REMARK = me.InstanceCode)
+      	End Property 
+      
+      	%REM
+      		Property Get isVSID_AUTHOR_BLOCK
+      		Flag indicating if this object instance a VSID Author Block
+      	%END REM
+      	Property Get isVSID_AUTHOR_BLOCK As Boolean
+      		isVSID_AUTHOR_BLOCK = me.is_vsid_author_block_
+      	End Property 
+      
+      
+      	%REM
+      		Property Get isGetter
+      		Flag indicating if the Object represents a Getter 
+      	%END REM
+      	Property Get isGetter As Boolean 
+      		isGetter = (SIGNATURE_VALUE_GET = (Me.signature_code_ And SIGNATURE_VALUE_GET))
+      	End Property
+      	
+      
+      	%REM
+      		Property Get isSetter
+      		Flag indicating if the Object represents a Setter 
+      	%END REM
+      	Property Get isSetter As Boolean 
+      		isSetter = (SIGNATURE_VALUE_SET = (Me.signature_code_ And SIGNATURE_VALUE_SET))
+      	End Property
+      	
+      
+      	%REM
+      		Property Get isSub
+      		Flag indicating if the Object represents a Sub 
+      	%END REM
+      	Property Get isSub As Boolean 
+      		isSub = (SIGNATURE_VALUE_SUB = (Me.signature_code_ And SIGNATURE_VALUE_SUB))
+      	End Property
+      	
+      	
+      	%REM
+      		Property Get isFunction
+      		Flag indicating if the Object represents a Function 
+      	%END REM
+      	Property Get isFunction As Boolean 
+      		isFunction = (SIGNATURE_VALUE_FUNCTION = (Me.signature_code_ And SIGNATURE_VALUE_FUNCTION))
+      	End Property
+      	
+      	
+      	%REM
+      		Property Get isEvent
+      		Flag indicating if the Object represents a Function 
+      	%END REM
+      	Property Get isEvent As Boolean 
+      		isEvent = (SIGNATURE_VALUE_EVENT = (Me.signature_code_ And SIGNATURE_VALUE_EVENT))
+      	End Property
+      	
+      	
+      	%REM
+      		Property Get isProperty
+      		Flag indicating if the Object represents a Property 
+      	%END REM
+      	Property Get isProperty As Boolean 
+      		isProperty = (SIGNATURE_VALUE_PROPERTY = (Me.signature_code_ And SIGNATURE_VALUE_PROPERTY))
+      	End Property
+      	
+      	
+      	%REM
+      		Property Get isType
+      		Flag indicating if the Object represents a Type 
+      	%END REM
+      	Property Get isType As Boolean 
+      		isType = (SIGNATURE_VALUE_TYPE = (Me.signature_code_ And SIGNATURE_VALUE_TYPE))
+      	End Property
+      	
+      	
+      
+      
+      
+      	%REM
+      		Property Get InstanceType
+      		String representing the Instance Type (such as Sub, Function, or Property)
+      	%END REM
+      	Property Get InstanceType As String
+      		On Error GoTo ErrorTrap
+      		
+      		Dim extendedinfo List As String 
+      		Dim result$ 
+      		Dim ic& 
+      		
+      		
+      		' BEGIN CODE
+      		ic& = me.InstanceCode 
+      		extendedinfo(|me.InstanceCode|) = CStr(ic&) 
+      		If (0 <> ic&) Then result$ = getCodeElementInstanceType(ic&) 
+      		
+      	ExitPoint:
+      		InstanceType = result$ 
+      		Exit Property 
+      	ErrorTrap:
+      		On Error GoTo 0 
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		Resume ExitPoint
+      	End Property 
+      	
+      	
+      
+      	%REM
+      		Property Get MethodType
+      		String representation of the Method Type (Sub, Function, or Property) 
+      	%END REM
+      	Property Get MethodType As String 
+      		Dim result$ 
+      		
+      		If me.isSub Then 
+      			result$ = |Sub| 
+      		ElseIf me.isFunction Then 
+      			result$ = |Function|
+      		ElseIf me.isProperty Then
+      			result$ = |Property| 
+      		End If
+      
+      		MethodType = result$
+      		
+      	End Property
+      
+      
+      
+      
+      
+      
+      	%REM
+      		Property Get nodeTags
+      		Tags for all nodes (and child nodes) contained within this object. 
+      		
+      		@return StringQueue containing tags for all nodes.  If no nodes exist, StringQueue will be empty. 
+      	%END REM
+      	Property Get nodeTags As StringQueue 
+      		On Error GoTo ErrorTrap
+      		
+      		Dim node As BSXscriptNode 
+      		
+      		Dim sq As StringQueue
+      		Dim result As New StringQueue()
+      
+      		Dim objecttype$ 		 
+      		
+      		
+      		' BEGIN CODE
+      		ForAll element In me.contentobjects_
+      			objecttype$ = TypeName(element) 
+      			If UCase(CLASS_NAME) = UCase(objecttype$) Then 
+      				Set node = element
+      								
+      				result.push node.QN 
+      				Set sq = node.nodeTags
+      				While sq.hasContent 
+      					result.push node.QN & |.| & sq.pop() 
+      				Wend				
+      			End If
+      		End ForAll
+      		
+      
+      	ExitPoint: 
+      		Set nodeTags = result
+      		Exit Property 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, ||
+      		Resume ExitPoint
+      	End Property
+      
+      
+      
+      	
+      	%REM
+      		Property Get LineCount
+      		Total Lines of Code for the object (and all children)
+      		
+      		@return Number of lines of code for the object, including all children
+      	%END REM
+      	Property Get LineCount As Long 
+      		On Error GoTo ErrorTrap
+      		
+      		' exception variables
+      		Dim extendedinfo List As String 
+      		
+      		Dim sq As StringQueue
+      		Dim slq As ScriptLineQueue
+      		Dim children_() As BSXscriptNode 
+      
+      		Dim objecttype$
+      		
+      		Dim result&
+      		Dim haschild As Boolean 
+      		
+      		
+      		' BEGIN CODE
+      		ReDim children_(0) As BSXscriptNode 
+      		
+      		ForAll element In me.contentobjects_ 
+      			objecttype$ = UCase(TypeName(element))
+      			extendedinfo(|objecttype|) = objecttype$ 
+      			Select Case objecttype$
+      				Case |STRING|, |SCRIPTLINE|: 
+      					result& = result& + 1 
+      					
+      				Case |STRINGQUEUE|: 
+      					Set sq = element
+      					result& = result& + sq.size 
+      					
+      				Case |SCRIPTLINEQUEUE| 
+      					Set slq = element
+      					result& = result& + slq.size 
+      					
+      				Case UCase(CLASS_NAME)
+      					If haschild Then ReDim Preserve children_(UBound(children_) + 1) As BSXscriptNode
+      					Set children_(UBound(children_)) = element
+      					haschild = True   
+      					
+      				Case Else 
+      					Error ERR_OPERATION_FAILED, MSG_OPERATION_FAILED & |Unsupported Object Type: | & objecttype$ & |.  |
+      					
+      			End Select
+      		End ForAll
+      
+      		
+      		If hasChild Then 
+      			ForAll child In children_
+      				result& = result& + child.LineCount
+      			End ForAll
+      		End If
+      		
+      		
+      	ExitPoint: 
+      		LineCount = result&
+      		Exit Property 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		Resume ExitPoint
+      	End Property
+      
+      
+      
+      
+      
+      	%REM
+      		Property Get Script
+      		Generated Script Source Code for the object
+      	%END REM
+      	Property Get Script As StringQueue
+      		On Error GoTo ErrorTrap
+      
+      		' exception variables
+      		Dim extendedinfo List As String 
+      
+      		Dim child As BSXscriptNode 
+      		Dim sq As StringQueue 
+      		Dim sl As ScriptLine 
+      		Dim slq As ScriptLineQueue 
+      		
+      		Dim values As Variant 
+      		
+      		Dim result As StringsCarrier
+      
+      		Dim i%
+      		Dim objecttype$ 
+      		
+      		' BEGIN CODE
+      		Set result = New StringQueue()
+      	
+      		For i% = LBound(me.contentobjects_) To UBound(me.contentobjects_)
+      			objecttype$ = UCase(TypeName(me.contentobjects_(i%)))
+      			extendedinfo(|objecttype|) = objecttype$ 
+      			Select Case objecttype$
+      				Case |STRING|:
+      					result.push CStr(me.contentobjects_(i%))
+      					
+      					
+      				Case |STRINGQUEUE|: 
+      					Set sq = me.contentobjects_(i%) 
+      					result.load sq.values 
+      					
+      					
+      				Case |SCRIPTLINE|: 
+      					Set sl = me.contentobjects_(i%) 
+      					result.push sl.SourceLine 
+      					
+      					
+      				Case |SCRIPTLINEQUEUE| 
+      						Set slq = me.contentobjects_(i%) 
+      						values = slq.values 
+      						ForAll element In values 
+      							Set sl = element 
+      							If Not (sl Is Nothing) Then result.push sl.SourceLine
+      						End ForAll
+      				
+      						
+      				Case UCase(CLASS_NAME)
+      					Set child = me.contentobjects_(i%)
+      					result.load child.Script
+      		
+      		
+      				Case Else 
+      					Error ERR_OPERATION_FAILED, MSG_OPERATION_FAILED & |Unsupported Object Type: | & objecttype$ & |.  |
+      						
+      			End Select
+      		Next
+      
+      
+      	ExitPoint:
+      		Set Script = result
+      		Exit Property
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		Resume ExitPoint
+      	End Property
+      
+      
+      
+      	%REM
+      		Property Get JSON
+      		JSON representation of the object
+      	%END REM
+      	Property Get JSON As String 
+      		On Error GoTo ErrorTrap
+      		
+      		Dim tv As StringList 
+      		
+      		Dim node As BSXscriptNode 
+      		Dim sq As StringQueue 
+      
+      		Dim objecttype$ 	
+      		Dim result$
+      		Dim idx%
+      		
+      		
+      		
+      		' BEGIN CODE
+      		me.setElementValue |QN|, me.QN
+      		If (0 <> me.instance_number_) Then me.setElementValue |instancenumber|, CStr(me.instance_number_)
+      		If (0 <> me.LineCount) Then me.setElementValue |linecount|,  CStr(me.LineCount)
+      		
+      		Set tv = me.TaggedValues 
+      		Call tv.clearBlanks() 
+      
+      		result$ = tv.JSON
+      
+      		' rip of the trailing } 
+      		If getBaliStrings().endsWith(result$, |}|) Then result$ = Left$(result$, Len(result$) -1) 
+      		
+      
+      		Set sq = New StringQueue() 
+      		ForAll element In me.contentobjects_
+      			objecttype$ = TypeName(element) 
+      			If UCase(CLASS_NAME) = UCase(objecttype$) Then 
+      				Set node = element
+      								
+      				sq.push node.json  
+      			End If
+      		End ForAll
+      		If sq.hasContent Then result$ = result$ & |,"nodes":[| & sq.joinContent(|,|) & |]|
+      		
+      		result$ = result$ & |}| 
+      		
+      	ExitPoint:
+      		JSON = result$
+      		Exit Property
+      	ErrorTrap: 
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, ||
+      		Resume ExitPoint 
+      	End Property
+      
+      
+      	%REM
+      		Constructor
+      
+      		@param parent BSXscriptNode for the Object
+      		@param FQNprefix Fully Qualified Name Prefix for the Object
+      		@param Comment Comment about the Object
+      	%END REM 
+      	Sub New(parent As BSXscriptNode, FQNprefix As String, Comment As String), ValuedElement(FQNprefix, ||, ||, Comment) 
+      		On Error GoTo ErrorTrap
+      		
+      		
+      		' exception variables
+      		Dim extendedinfo List As String 
+      		Dim msg$ 
+      		Dim errmsg$
+      		Dim errcode%
+      		Dim errline%
+      		
+      		
+      		' BEGIN CODE 
+      		extendedinfo(|FQNprefix|) = FQNprefix 
+      		extendedinfo(|Comment|) = Comment 
+      		
+      		ReDim me.contentobjects_(0) As Variant 
+      		Set me.contentobjects_(0) = Nothing 
+      		
+      		ReDim me.arguments_(0) As ValuedElement 
+      		Set me.arguments_(0) = Nothing 
+      		
+      		If Not (parent Is Nothing) Then
+      			me.instance_number_ = parent.childCount
+      			me.parent_fqn_ = parent.FQN
+      		End If  
+      
+      	ExitPoint: 
+      		If (0 <> errcode%) Then Error errcode%, errmsg$ & | at line | & CStr(errline%) & | in | & CLASS_PREFIX & |New() Constructor| 
+      		Exit Sub 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		errcode% = Err() 
+      		errmsg$ = Error() 
+      		errline% = Erl()
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		msg$ = || 
+      		ForAll s In extendedinfo
+      			If isBlankString(msg$) Then 
+      				msg$ = ListTag(s) & |: | & s 
+      			Else 
+      				msg$ = msg$ & CRLF & ListTag(s) & |: | & s 
+      			End If 
+      		End ForAll
+      		enhLogException CLASS_PREFIX, msg$ 
+      		Resume ExitPoint
+      	End Sub 
+      
+      
+      	%REM
+      		Sub appendArgument
+      		Appends an Argument to the Object 
+      	%END REM
+      	Sub appendArgument(source As ValuedElement)
+      		If Not (source Is Nothing) Then 
+      			If me.hasArguments Then ReDim Preserve me.arguments_(UBound(me.arguments_) + 1) As ValuedElement  
+      		End If 
+      		
+      		Set me.arguments_(UBound(me.arguments_)) = source 
+      	End Sub
+      
+      
+      	
+      	%REM
+      		Sub clearInstanceCode
+      		Sets the object's InstanceCode to zero 
+      	%END REM
+      	Sub clearInstanceCode() 
+      		me.signature_code_ = 0
+      	End Sub
+      
+      
+      	%REM
+      		Sub markIncomplete
+      		Sets the object's isInstanceComplete flag to False 
+      	%END REM
+      	Sub markIncomplete() 
+      		me.instance_complete_ = False 
+      	End Sub
+      
+      
+      	%REM
+      		Sub addContentObject
+      		Adds a content object (ScriptLine, BSXscriptNode, ScriptLineQueue) to the object
+      		
+      		@param source content object to add
+      		
+      		@throws ERR_PARAMETER_INVALID is source is something other than String, StringQueue, ScriptLine, BSXscriptNode, ScriptLineQueue  
+      	%END REM
+      	Private Function addContentObject(source As Variant) As Boolean   
+      		On Error GoTo ErrorTrap 
+      				
+      		' exception variables
+      		Dim extendedinfo List As String 
+      		Dim errmsg$
+      		Dim errcode%
+      
+      
+      		Dim sl As ScriptLine
+      		Dim objecttype$
+      		Dim lasttype$
+      		Dim result As Boolean 
+      		
+      		
+      		' BEGIN CODE
+      		objecttype$ = UCase(TypeName(source)) 
+      		extendedinfo(|objecttype|) = objecttype$ 
+      		Select Case objecttype$ 
+      			Case UCase(CLASS_NAME), |STRING|, |STRINGQUEUE|, |SCRIPTLINE|, |SCRIPTLINEQUEUE|:
+      				' do nothing
+      				
+      			Case Else
+      				Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |Source Type: | & objecttype$ & |.  |   
+      		End Select 
+      		
+      		
+      		lasttype$ = UCase(TypeName(me.contentobjects_(UBound(me.contentobjects_))))
+      		extendedinfo(|lasttype|) = lasttype$
+      		Select Case lasttype$ 
+      			Case UCase(CLASS_NAME), |STRING|, |STRINGQUEUE|, |SCRIPTLINE|, |SCRIPTLINEQUEUE|:
+      				ReDim Preserve me.contentobjects_(UBound(me.contentobjects_) + 1) As Variant
+      				
+      			Case Else
+      				' do nothing  
+      		End Select 
+      
+      		
+      		If IsObject(source) Then 
+      			Set me.contentobjects_(UBound(me.contentobjects_)) = source
+      			result = True 
+      		Else 
+      			me.contentobjects_(UBound(me.contentobjects_)) = source
+      			result = True 
+      		End If
+      		
+      		Call me.setElementValue(|valuetype|, me.ValueType) 
+      		
+      	ExitPoint: 
+      		If (0 <> errcode%) Then Error errcode%, errmsg$ 
+      		addContentObject = result
+      		Exit Function 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		errcode% = Err() 
+      		errmsg$ = Error() 
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		Resume ExitPoint
+      	End Function	
+      
+      
+      
+      
+      	%REM
+      		Function spawnChild
+      		Spawns a child BSXscriptNode and parses a line of text 
+      		
+      		@param source ScriptLine object instance containing the content parse, sent to the child object.
+      		@param targetinstancecode Instance code of the expected child target type 
+      				
+      		@throws ERR_PARAMETER_BLANK if source is Nothing 
+      	%END REM
+      	Private Function spawnChild(source As ScriptLine, targetinstancecode As Long) As BSXscriptNode  
+      		If (source Is Nothing) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK 
+      		On Error GoTo ErrorTrap 
+      		
+      		Dim extendedinfo List As String 
+      		
+      		Dim result As BSXscriptNode  
+      	
+      	
+      		' BEGIN CODE
+      		Select Case targetinstancecode 
+      			Case SIGNATURE_VALUE_CLASS, SIGNATURE_VALUE_TYPE, SIGNATURE_VALUE_PROPERTY, SIGNATURE_VALUE_EVENT, SIGNATURE_VALUE_FUNCTION, SIGNATURE_VALUE_SUB
+      				Set result = New BSXscriptNode(Me, Me.FQN, ||)
+      				If Not me.is_lastremcontentused_ Then 
+      					If Not strCmp(me.FirstRemContent, me.LastRemContent) Then Call result.setElementValue(|comment|, me.LastRemContent)
+      					me.is_lastremcontentused_ = True 
+      				End If  
+      				
+      			Case SIGNATURE_VALUE_VARIABLE
+      				If source.hasComment Then 
+      					Set result = New BSXscriptNode(Me, Me.FQN, source.Comment)
+      				Else 
+      					Set result = New BSXscriptNode(Me, Me.FQN, ||)
+      					If Not me.is_lastremcontentused_ Then 
+      						If Not strCmp(me.FirstRemContent, me.LastRemContent) Then Call result.setElementValue(|comment|, me.LastRemContent)
+      						me.is_lastremcontentused_ = True 
+      					End If  
+      				End If 
+      				
+      			Case Else 
+      				Set result = New BSXscriptNode(Me, Me.FQN, ||)
+      							
+      		End Select
+      
+      
+      		
+      		Call result.parse_ScriptLine(source) 	
+      		Call me.addContentObject(result) 
+      		
+      	ExitPoint:
+      		Set spawnChild = result  
+      		Exit Function
+      	ErrorTrap:
+      		On Error GoTo 0 
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo	
+      		enhLogException CLASS_PREFIX, me.signature_ 
+      		Resume ExitPoint 
+      	End Function
+      
+      
+      
+      	%REM
+      		Sub parseLine
+      		Parses a line of text (script sourcecode) into the object 
+      		
+      		@param source$ Line of text to parse. 
+      	%END REM
+      	Sub parseLine(source$) 
+      		On Error GoTo ErrorTrap
+      		
+      		' exception variables
+      		Dim extendedinfo List As String 
+      		Dim errmsg$
+      		Dim errcode%
+      		
+      		Dim sl As ScriptLine 
+      
+      		
+      		' BEGIN CODE 
+      		extendedinfo(|source|) = source$
+      		If me.isInstanceComplete Then Error ERR_OPERATION_PROHIBITED, MSG_OPERATION_PROHIBITED & |Additional content cannot be added to a completed instance.  |
+      		
+      		Set sl = New ScriptLine(source$) 
+      		Call me.parse_ScriptLine(sl)
+      		
+      	ExitPoint: 
+      		If (0 <> errcode%) Then Error errcode%, errmsg$ 
+      		me.previous_trimmed_ = FullTrim(source$) 
+      		Exit Sub 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		errcode% = Err() 
+      		errmsg$ = Error() 
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		enhLogException CLASS_PREFIX, |source: | & source$
+      		Resume ExitPoint
+      	End Sub
+      
+      	
+      	%REM
+      		Sub parse_ScriptLine
+      		Parses a ScriptLine instance into the object 
+      		
+      		@param source ScriptLine object instance containing the content to parse.
+      		
+      		@throws ERR_PARAMETER_BLANK if source is Nothing 
+      		@throws ERR_PARAMETER_INVALID if source is neither an instance of ScriptLine nor ScriptLineQueue 
+      		@throws ERR_OPERATION_PROHIBITED if the object's isInstanceComplete property is true. 
+      	%END REM
+      	Private Sub parse_ScriptLine(source As ScriptLine)
+      		If (source Is Nothing) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK 
+      		On Error GoTo ErrorTrap
+      		
+      		' exception variables
+      		Dim extendedinfo List As String 
+      		Dim errmsg$
+      		Dim errcode%
+      		
+      
+      		' BEGIN CODE 
+      		If me.isInstanceComplete Then Error ERR_OPERATION_PROHIBITED, MSG_OPERATION_PROHIBITED & |Additional content cannot be added to a completed instance.  |
+      		
+      		' conditionally pass the source to the last child 
+      		If me.hasChildNodes Then
+      			If Not me.isLastChildComplete Then 
+      				Call me.LastChild.parse_ScriptLine(source)
+      				GoTo ExitPoint 
+      			End If 
+      		End If 
+      
+      		If source.isBlank Then 
+      			Call me.addContentObject(||) ' add a blank line
+      			 
+      		ElseIf (0 = me.InstanceCode) And (Not me.isVSID_AUTHOR_BLOCK) Then 
+      			' object instance has NOT yet been instantiated 
+      			Call me.parse_Uninstantiated(source) 
+      			
+      		Else 
+      			' object instance has been instantiated
+      			Call me.parse_Instantiated(source) 
+      		End If  
+      
+      
+      	ExitPoint: 
+      		If (0 <> errcode%) Then Error errcode%, errmsg$  
+      		Exit Sub 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		errcode% = Err() 
+      		errmsg$ = Error() 
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		Resume ExitPoint
+      	End Sub
+      	
+      
+      
+      
+      
+      	%REM
+      		Sub parse_Uninstantiated
+      		Parses script sourcecode into the not-yet instantiated object (0 = InstanceCode) And (Not isVSID_AUTHOR_BLOCK)
+      
+      		@param source ScriptLine or ScriptLineQueue object instance containing the content parse.
+      		
+      		@throws ERR_PARAMETER_BLANK if source is Nothing 
+      		@throws ERR_PARAMETER_INVALID if source is neither an instance of ScriptLine nor ScriptLineQueue 
+      	%END REM
+      	Private Sub parse_Uninstantiated(source As ScriptLine) 
+      		If (source Is Nothing) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK 
+      		On Error GoTo ErrorTrap
+      	
+      		' exception variables
+      		Dim extendedinfo List As String 
+      		Dim msg$ 
+      		Dim errmsg$
+      		Dim errcode%
+      
+      		Dim sl As ScriptLine 
+      
+      		Dim words As Variant
+      		Dim chunks As Variant 
+      		Dim sourceline$ 
+      		Dim trimmed$ 
+      		Dim code$ 
+      		Dim comment$ 
+      		Dim objecttype$
+      		
+      		Dim ic&
+      		Dim signaturecode& 
+      		
+      		Dim checkforvariable As Boolean 
+      		
+      		
+      		' BEGIN CODE
+      		sourceline$ = source.SourceLine 
+      		extendedinfo(|sourceline|) = sourceline$
+      		
+      		
+      		' get trimmed from sourceline		
+      		trimmed$ = FullTrim(sourceline$) 
+      			
+      		' get the individual words 
+      		words = Split(trimmed$, | |) 
+      
+      		' check for author code begin lock marker 
+      		If getBaliStrings().beginsWith(trimmed$, AUTHOR_CODE_BEGIN) Then 
+      			me.is_vsid_author_block_ = True  
+      			me.signature_ = Right(words(0), Len(words(0)) -Len(AUTHOR_CODE_OPEN)) 
+      			Call me.addContentObject(source.SourceLine) 
+      			GoTo ExitPoint 
+      		End If 
+      		
+      		' check for no code comment
+      		If Not source.hasCode Then 
+      			' line represents a comment 
+      			Call me.addContentObject(source.SourceLine) 
+      			GoTo ExitPoint			
+      		End If 
+      
+      		' get trimmed from Code		
+      		trimmed$ = FullTrim(source.Code) 
+      		
+      		' get the individual words 
+      		words = Split(trimmed$, | |) 
+      
+      
+      		' check for continuation marker 
+      		If getBaliStrings().endsWith(trimmed$, SPAN_LINE_INDICATOR) Then 
+      			' line continues with next line.   
+      			If me.spanned_lines_ Is Nothing Then Set me.spanned_lines_ = New ScriptLineQueue()
+      			me.spanned_lines_.push source 
+      			GoTo ExitPoint
+      		End If  
+      			
+      
+      		If Not (me.spanned_lines_ Is Nothing) Then
+      			' join all the prior continuation lines and process as a single string  
+      			me.spanned_lines_.push source 
+      			Set sl = me.spanned_lines_.MergedScriptLine
+      			Set me.spanned_lines_ = Nothing 
+      			Call me.parse_ScriptLine(sl)
+      			GoTo ExitPoint 			
+      		End If 
+      		
+      		
+      		' get the signature & instance codes 
+      		signaturecode& = getSignatureCode(trimmed$)
+      		extendedinfo(|signaturecode|) = CStr(signaturecode&) 
+      		ic& = signatureCodeToInstanceCode(signaturecode&) 
+      		extendedinfo(|ic|) = CStr(ic&) 
+      		
+      		
+      		' examine the words 
+      		checkforvariable = (0 = signaturecode&) 
+      		If (0 = ic&) Then 
+      			' instance code not determined
+      			Select Case LCase(words(LBound(words)))
+      				Case |%rem|: 
+      					' line represents a remark 
+      					signaturecode& = SIGNATURE_VALUE_REMARK
+      					
+      				Case |dec|, |dim| 
+      					' line represents a variable
+      					signaturecode& = signaturecode& + SIGNATURE_VALUE_VARIABLE
+      					
+      				Case |final|, |static|, |private|, |public|
+      					checkforvariable = True 
+      	
+      				Case Else
+      					If Not checkforvariable Then Error ERR_OPERATION_FAILED, MSG_OPERATION_FAILED & |Cannot resolve source.  | 
+      			End Select
+      			
+      			If checkforvariable Then 
+      				' check for variable
+      				If (InStr(LCase$(trimmed$), | as |) > 0) Then
+      					chunks = Split(LCase(trimmed$), | as |) 
+      					If (UBound(chunks) > 0) Then 
+      						If (0 = signaturecode&) Or (signaturecode& = getSignatureCode(chunks(LBound(chunks)))) Then 
+      							' line represents a variable object
+      							signaturecode& = signaturecode& + SIGNATURE_VALUE_VARIABLE 
+      							ic& = SIGNATURE_VALUE_VARIABLE 
+      						Else 
+      							Error ERR_OPERATION_FAILED, MSG_OPERATION_FAILED & |Cannot resolve source.  | 
+      						End If 
+      						
+      					Else 
+      						Error ERR_OPERATION_FAILED, MSG_OPERATION_FAILED & |Cannot resolve source.  | 
+      					End If
+      				End If
+      			End If 
+      			
+      		End If
+      
+      
+      		me.SignatureCode = signaturecode&
+      		ic& = signatureCodeToInstanceCode(signaturecode&) ' signature code may have changed. 
+      		If (SIGNATURE_VALUE_VARIABLE = ic&) _ 
+      			And isBlankString(me.getValue(|comment|)) _ 
+      			And source.hasComment _ 
+      		Then Call me.setElementValue(|comment|, source.Comment)
+      		
+      		me.InstanceCode = ic&
+      		me.signature_ = trimmed$
+      
+      		If (0 = ic&) Then 
+      			Call me.addContentObject(source.SourceLine)
+      		Else 
+      			Call me.addContentObject(source) 
+      		End If 
+      		
+      		' constants and variables can only span a single line 
+      		If (ic& = (ic& And (SIGNATURE_VALUE_CONST + SIGNATURE_VALUE_VARIABLE))) Then me.instance_complete_ = True  
+      
+      	ExitPoint: 
+      		If (0 <> errcode%) Then Error errcode%, errmsg$  
+      		Exit Sub 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		errcode% = Err() 
+      		errmsg$ = Error() 
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		msg$ = || 
+      		ForAll s In extendedinfo
+      			If isBlankString(msg$) Then 
+      				msg$ = ListTag(s) & |: | & s 
+      			Else 
+      				msg$ = msg$ & CRLF & ListTag(s) & |: | & s 
+      			End If 
+      		End ForAll
+      		enhLogException CLASS_PREFIX, msg$ 
+      		Resume ExitPoint
+      	End Sub
+      
+      
+      
+      	%REM
+      		Sub parse_Instantiated
+      		Parses script sourcecode into the already instantiated object (0 <> InstanceCode) Or (isVSID_AUTHOR_BLOCK)
+      
+      		@param source ScriptLine or ScriptLineQueue object instance containing the content parse.
+      		
+      		@throws ERR_PARAMETER_BLANK if source is Nothing 	
+      		@throws ERR_PARAMETER_INVALID if source is neither an instance of ScriptLine nor ScriptLineQueue 
+      	%END REM
+      	Private Sub parse_Instantiated(source As ScriptLine) 
+      		If (source Is Nothing) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK 
+      		On Error GoTo ErrorTrap
+      	
+      		' exception variables
+      		Dim extendedinfo List As String 
+      		Dim msg$ 
+      		Dim errmsg$
+      		Dim errcode%
+      
+      		Dim lastchild_ As BSXscriptNode 
+      		Dim sl As ScriptLine 
+      
+      		Dim words As Variant
+      		Dim chunks As Variant 
+      		Dim sourceline$
+      		Dim trimmed$ 
+      		Dim firstword$ 
+      		
+      		Dim ic&
+      		Dim wordcount%
+      		Dim signaturecode& 
+      		
+      		Dim checkforvariable As Boolean 
+      		
+      		
+      		
+      		' BEGIN CODE 
+      		sourceline$ = source.SourceLine 
+      		extendedinfo(|sourceline|) = sourceline$
+      		extendedinfo(|me.InstanceCode|) = CStr(me.InstanceCode) 
+      
+      
+      		' get trimmed from Source Line		
+      		trimmed$ = FullTrim(source.SourceLine) 
+      		extendedinfo(|trimmed|) = trimmed$
+      
+      
+      		' check author block or remark  
+      		If me.isVSID_AUTHOR_BLOCK _ 
+      		Or me.isRemark Then  
+      			Call me.addContentObject(source.SourceLine) 
+      
+      			' conditionally close the node
+      			If (me.isVSID_AUTHOR_BLOCK And getBaliStrings().beginsWith(trimmed$, AUTHOR_CODE_END)) _ 
+      			Or (me.isRemark And getBaliStrings().beginsWith(UCase$(trimmed$), |%END REM|))_
+      			Then me.instance_complete_ = True
+      			
+      			GoTo ExitPoint 
+      		End If  
+      
+      
+      		' check for an opening author block 
+      		If getBaliStrings().beginsWith(trimmed$, AUTHOR_CODE_BEGIN) Then   
+      			Call me.spawnChild(source, 0)
+      		Else 
+      
+      			' get trimmed from Code		
+      			trimmed$ = FullTrim(source.Code) 
+      			extendedinfo(|trimmed|) = trimmed$
+      
+      
+      			' check for continuation marker 
+      			If getBaliStrings().endsWith(trimmed$, SPAN_LINE_INDICATOR) Then 
+      				' line continues with next line.   
+      				If me.spanned_lines_ Is Nothing Then Set me.spanned_lines_ = New ScriptLineQueue()
+      				me.spanned_lines_.push source 
+      				GoTo ExitPoint
+      			End If  
+      				
+      	
+      			If Not (me.spanned_lines_ Is Nothing) Then
+      				' join all the prior continuation lines and process as a single string  
+      				me.spanned_lines_.push source 
+      				Set sl = me.spanned_lines_.MergedScriptLine
+      				Set me.spanned_lines_ = Nothing 
+      				Call me.parse_ScriptLine(sl)
+      				GoTo ExitPoint 			
+      			End If 
+      			
+      
+      			words = Split(trimmed$,| |) 
+      			wordcount% = UBound(words) + 1
+      			extendedinfo(|words|) = Join(words, |, |)
+      			firstword$ = LCase(words(LBound(words)))
+      			Select Case firstword$ 
+      				Case |end|, |exit|
+      					extendedinfo(|TypeName(me)|) = TypeName(Me)  
+      					' end of instance or exit instance indicator, next word should indicate what is ending
+      					If strCmp(|end|, firstword$) And (wordcount% > 1) Then 
+      						' only close the node on end of instance indicators 
+      						extendedinfo(|wordcount%|) = CStr(wordcount%)
+      						If (0 = StrComp(words(1), me.InstanceType, 5)) Then me.instance_complete_ = True ' close the current node.
+      					End If 
+      					 
+      					Call me.addContentObject(source.SourceLine) 	
+      					GoTo ExitPoint 					
+      			End Select
+      			
+      
+      			' get the signature code 
+      			signaturecode& = getSignatureCode(trimmed$)
+      			extendedinfo(|signaturecode|) = CStr(signaturecode&) 
+      			ic& = signatureCodeToInstanceCode(signaturecode&) 
+      			extendedinfo(|ic|) = CStr(ic&) 
+      			
+      			If (0 = ic&) Then 
+      				Select Case firstword$  
+      					Case |%rem|:
+      						ic& = SIGNATURE_VALUE_REMARK
+      					
+      					Case |dec|, |dim| 
+      						ic& = SIGNATURE_VALUE_VARIABLE
+      							
+      					Case |final|, |static|, |private|, |public|
+      						checkforvariable = True 
+      				End Select
+      				
+      				If checkforvariable Or me.isType Then 
+      					' check for variable
+      					If (InStr(LCase$(trimmed$), | as |) > 0) Then
+      						chunks = Split(LCase(trimmed$), | as |) 
+      						If (UBound(chunks) > 0) Then 
+      							If (0 = signaturecode&) Or (signaturecode& = getSignatureCode(chunks(LBound(chunks)))) Then 
+      								' line represents a variable object
+      								signaturecode& = signaturecode& + SIGNATURE_VALUE_VARIABLE 
+      								ic& = SIGNATURE_VALUE_VARIABLE 
+      							Else 
+      								Error ERR_OPERATION_FAILED, MSG_OPERATION_FAILED & |Cannot resolve source.  | 
+      							End If 
+      							
+      						Else 
+      							Error ERR_OPERATION_FAILED, MSG_OPERATION_FAILED & |Cannot resolve source.  | 
+      						End If
+      					End If
+      				End If 
+      				
+      			End If 
+      			
+      			
+      			Select Case ic& 
+      				Case SIGNATURE_VALUE_CLASS, SIGNATURE_VALUE_TYPE, SIGNATURE_VALUE_PROPERTY, SIGNATURE_VALUE_EVENT, SIGNATURE_VALUE_FUNCTION, SIGNATURE_VALUE_SUB
+      					' line represents an object instance.
+      					If Not me.hasChildNodes Then 
+      						Call me.spawnChild(source, ic&)
+      						
+      					Else
+      						Set lastchild_ = me.LastChild
+      	
+      						' check first previous remark node
+      						If me.isLastChildRemarkComplete And getBaliStrings().beginsWith(UCase$(me.previous_trimmed_), |%END REM|) Then
+      							Call lastchild_.clearInstanceCode()
+      							Call lastchild_.markIncomplete()
+      							
+      							' clear the current last child QN
+      							lastchild_.QN = ||  
+      							
+      							' pass the source to the last child for parsing  
+      							Call lastchild_.parse_ScriptLine(source)
+      							
+      						Else
+      							Call me.spawnChild(source, ic&)  
+      						End If 
+      					End If 					
+      					
+      					
+      				Case SIGNATURE_VALUE_VARIABLE, SIGNATURE_VALUE_CONST
+      					If (me.isLibrary Or me.isClass Or me.isType) Then 
+      						' constants and variables at library, class, and type levels are treated as individual instance nodes. 
+      						Call me.spawnChild(source, ic&)
+      					Else
+      						' constants and variables at all other levels are treated as a simple line of code 
+      						Call me.addContentObject(source.SourceLine) 								
+      					End If
+      					
+      					
+      				Case SIGNATURE_VALUE_REMARK				
+      					' child remark node 
+      					Call me.spawnChild(source, SIGNATURE_VALUE_REMARK)
+      				
+      				Case Else 
+      					' just a normal line of code					 
+      					Call me.addContentObject(source.SourceLine) 					
+      			End Select
+      		End If 
+      		
+      
+      	ExitPoint: 
+      		If (0 <> errcode%) Then Error errcode%, errmsg$  
+      		Exit Sub 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		errcode% = Err() 
+      		errmsg$ = Error() 
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		msg$ = || 
+      		ForAll s In extendedinfo
+      			If isBlankString(msg$) Then 
+      				msg$ = ListTag(s) & |: | & s 
+      			Else 
+      				msg$ = msg$ & CRLF & ListTag(s) & |: | & s 
+      			End If 
+      		End ForAll
+      		enhLogException CLASS_PREFIX, msg$ 
+      		Resume ExitPoint
+      	End Sub
+      
+      
+      
+      	%REM
+      		Function stripPrefix
+      		Conditionally removes the Object's FQN or QN from the beginning of a string
+      		
+      		@param source String from which to remove the FQN or QN prefix 
+      		
+      		@return source with FQN or QN prefix removed.  
+      	%END REM
+      	Private Function stripPrefix(source$) As String 
+      		On Error GoTo ErrorTrap
+      		
+      		' exception variables
+      		Dim extendedinfo List As String 
+      		
+      		Dim result$
+      
+      		extendedinfo(|source|) = source$
+      		
+      		' BEGIN CODE
+      		If getBaliStrings().beginsWith(source$, me.FQN & |.|) Then 
+      			
+      			If Len(source$) > Len(me.FQN) Then result$ = StrRight(source$, me.FQN & |.|, 5) 
+      			
+      		ElseIf getBaliStrings().beginsWith(source$, me.QN & |.|) Then 
+      			
+      			If Len(source$) > Len(me.QN) Then result$ = StrRight(source$, me.QN & |.|, 5) 
+      			
+      		Else 
+      			result$ = source$
+      		End If
+      		
+      	ExitPoint: 
+      		stripPrefix = result
+      		Exit Function 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		Resume ExitPoint
+      	End Function
+      	
+      
+      
+      	%REM
+      		Function getNode
+      		Retrieves the child node matching the associated key. 
+      		
+      		Searches for direct child node first, if none found then searches in all partially matched child nodes.  
+      		
+      		@param key 	QN identifier of the child node to retrive
+      		
+      		@return child node matching key.  Nothing if no exact match is found.
+      		
+      		@throws ERR_PARAMETER_BLANK if key is blank.  
+      	%END REM
+      	Function getNode(ByVal key$) As BSXscriptNode
+      		If isBlankString(key$) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK
+      		On Error GoTo ErrorTrap
+      		
+      		' exception variables
+      		Dim extendedinfo List As String 
+      		
+      		Dim node As BSXscriptNode 
+      		Dim result As BSXscriptNode
+      
+      		Dim objecttype$ 
+      
+      		Dim idx%
+      		
+      		
+      		' BEGIN CODE
+      		key$ = me.stripPrefix(key$)
+      		If isBlankString(key$) Then GoTo ExitPoint 
+      		
+      		extendedinfo(|key|) = key$
+      		ReDim nodes(0) As BSXscriptNode 
+      		
+      		For idx% = LBound(me.contentobjects_) To UBound(me.contentobjects_) 
+      			objecttype$ = TypeName(me.contentobjects_(idx%))
+      			extendedinfo(|ObjectType|) = objecttype$
+      			
+      			If UCase(CLASS_NAME) = UCase(objecttype$) Then 
+      				Set node = me.contentobjects_(idx%) 
+      				If (0 = StrComp(node.FQN, key$, 5)) _
+      				Or (0 = StrComp(node.QN, key$, 5)) Then
+      					' found the node
+      					Set result = node
+      
+      				ElseIf getBaliStrings().beginsWith(key$, node.FQN & |.|) _
+      				Or getBaliStrings().beginsWith(key$, node.QN & |.|) Then 
+      					' check for child node 
+      					Set result = node.getNode(key$)
+      				End If
+      				
+      				If Not (result Is Nothing) Then Exit For
+      			End If
+      		Next
+      			
+      		
+      	ExitPoint: 
+      		Set getNode = result
+      		Exit Function 
+      	ErrorTrap:
+      		On Error GoTo 0 
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		Resume ExitPoint
+      	End Function
+      
+      
+      
+      	%REM
+      		Function hasNode
+      		Indicates if the object has a child node matching the specified key. 
+      		
+      		Searches for direct child node first, if none found then searches in all partially matched child nodes.  
+      		
+      		@param key 	QN identifier of the child node for which to search
+      		
+      		@return Flag indicating if the child node exists. 
+      		
+      		@throws ERR_PARAMETER_BLANK if key is blank.  
+      	%END REM
+      	Function hasNode(ByVal key$) As Boolean 
+      		If isBlankString(key$) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK
+      		On Error GoTo ErrorTrap
+      		
+      		' exception variables
+      		Dim extendedinfo List As String 
+      		
+      		Dim node As BSXscriptNode 
+      		Dim result As Boolean
+      
+      		Dim objecttype$ 
+      
+      		Dim idx%
+      		
+      		
+      		' BEGIN CODE
+      		key$ = me.stripPrefix(key$)
+      		If isBlankString(key$) Then GoTo ExitPoint 
+      		
+      		extendedinfo(|key|) = key$
+      		ReDim nodes(0) As BSXscriptNode  
+      
+      		For idx% = LBound(me.contentobjects_) To UBound(me.contentobjects_) 
+      			objecttype$ = TypeName(me.contentobjects_(idx%))
+      			extendedinfo(|ObjectType|) = objecttype$
+      			
+      			If UCase(CLASS_NAME) = UCase(objecttype$) Then 
+      				Set node = me.contentobjects_(idx%) 
+      				If (0 = StrComp(node.FQN, key$, 5)) _ 
+      				Or (0 = StrComp(node.QN, key$, 5)) Then
+      					' found the node
+      					result = True 
+      
+      				ElseIf getBaliStrings().beginsWith(key$, node.FQN & |.|) _ 
+      				Or getBaliStrings().beginsWith(key$, node.QN & |.|) Then 
+      					' check for child node 
+      					result = node.hasNode(key$)
+      
+      				End If
+      				
+      				If result Then Exit For
+      			End If
+      		Next
+      
+      				
+      	ExitPoint: 
+      		hasNode = result
+      		Exit Function 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		Resume ExitPoint
+      	End Function
+      
+      
+      
+      	%REM
+      		Function insertNode
+      		Inserts the specified node to the object. 
+      		
+      		Uses the node's QN to determine the appropritate location to place the node (either as a direct child or as a descendent within the appropriate childe node).  
+      		If the new node does not have an appropriate matching node to replace it will be added as a new child node.  
+      		
+      		@param source 	Node to be added to the object. 		
+      
+      		@return Flag indicating if source Node was successfully added. 
+      		
+      		@throws ERR_PARAMETER_BLANK if source Node is Nothing
+      		@throws ERR_OPERATION_PROHIBITED if source Node's QN matches the QN of the object. 
+      	%END REM
+      	Function insertNode(source As BSXscriptNode) As Boolean 
+      		If (source Is Nothing) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK
+      		If (0 = StrComp(source.QN, me.QN, 5)) Then Error ERR_OPERATION_PROHIBITED, MSG_OPERATION_PROHIBITED & |Cannot replace self. | 
+      
+      		On Error GoTo ErrorTrap
+      		
+      		' exception variables
+      		Dim extendedinfo List As String 
+      
+      		Dim node As BSXscriptNode 
+      		
+      		Dim key$
+      		
+      		Dim idx%
+      		Dim instancenumberidx% 
+      		Dim result As Boolean
+      
+      
+      		' BEGIN CODE
+      		key$ = me.stripPrefix(source.QN)
+      		key$ = source.QN 
+      		extendedinfo(|key|) = key$
+      
+      		ReDim nodes(0) As BSXscriptNode
+      		instancenumberidx% = -1
+      			
+      		For idx% = LBound(me.contentobjects_) To UBound(me.contentobjects_) 
+      
+      			If UCase(CLASS_NAME) = UCase(TypeName(me.contentobjects_(idx%))) Then 
+      				Set node = me.contentobjects_(idx%)
+      
+      				If (instancenumberidx% < 0) Then 
+      					If node.InstanceNumber >= source.InstanceNumber Then instancenumberidx% = idx% 
+      				End If   
+      				 
+      				If (0 = StrComp(node.FQN, key$, 5)) _ 
+      				Or (0 = StrComp(node.QN, key$, 5)) Then
+      					' found the node
+      					Set me.contentobjects_(idx%) = source 
+      					result = True  
+      
+      				ElseIf getBaliStrings().beginsWith(key$, node.FQN & |.|) _ 
+      				Or getBaliStrings().beginsWith(key$, node.QN & |.|) Then
+      					' check for child node 
+      					result = node.insertNode(source)
+      
+      				End If 
+      
+      				If result Then Exit For
+      			End If
+      		Next
+      
+      
+      		If Not result Then 
+      			' failed to find and replace matching node (either as a direct object or a descendant)
+      			' shuffle the appropriate content objects up one position, 
+      			' then insert the source node at the appropriate position (based on instance number0 
+      			
+      			ReDim Preserve me.contentobjects_(UBound(me.contentobjects_) + 1) As Variant
+      			If (instancenumberidx% < 0) Then instancenumberidx% = 0 
+      
+      			For idx% = UBound(me.contentobjects_) -1 To instancenumberidx% Step -1 
+      
+      				If IsObject(me.contentobjects_(idx%)) Then 
+       					Set me.contentobjects_(idx% + 1) = me.contentobjects_(idx%)
+       					
+      					If UCase(CLASS_NAME) = UCase(TypeName(me.contentobjects_(idx% + 1))) Then 
+      						' increment the node's instance number  
+      						Set node = me.contentobjects_(idx% + 1)
+      						node.instance_number_ = node.instance_number_ + 1 
+      					End If 
+       					
+      				Else 
+       					me.contentobjects_(idx% + 1) = me.contentobjects_(idx%)
+      				End If
+      			Next 
+      			
+      			' insert the source node.
+      			Set me.contentobjects_(instancenumberidx%) = source
+      			result = True  
+      		End If
+      	
+      		
+      	ExitPoint: 
+      		insertNode = result
+      		Exit Function 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		Resume ExitPoint
+      	End Function
+      
+      
+      
+      	%REM
+      		Function removeNode
+      		Removes a child node matching the associated key. 
+      		
+      		Searches for direct child node first, if none found then searches in all partially matched child nodes.
+      		If a matching node is found it will be removed.   
+      		
+      		@param key 	QN identifier of the child node to retrive
+      		
+      		@return Flag indicating if the associated node was removed. 
+      		
+      		@throws ERR_PARAMETER_BLANK if key is blank.  
+      	%END REM
+      	Function removeNode(ByVal key$) As Boolean
+      		If isBlankString(key$) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK
+      		On Error GoTo ErrorTrap
+      		
+      
+      		' exception variables
+      		Dim extendedinfo List As String 
+      		
+      		Dim node As BSXscriptNode 
+      		Dim result As Boolean
+      
+      		Dim objecttype$ 
+      
+      		Dim idx%
+      		Dim i% 
+      		
+      		
+      		' BEGIN CODE
+      		key$ = me.stripPrefix(key$)
+      		If isBlankString(key$) Then GoTo ExitPoint 
+      		
+      		extendedinfo(|key|) = key$
+      		ReDim nodes(0) As BSXscriptNode  
+      
+      		For idx% = LBound(me.contentobjects_) To UBound(me.contentobjects_) 
+      			objecttype$ = TypeName(me.contentobjects_(idx%))
+      			extendedinfo(|ObjectType|) = objecttype$
+      			
+      			If UCase(CLASS_NAME) = UCase(objecttype$) Then 
+      				Set node = me.contentobjects_(idx%) 
+      		
+      				If (0 = StrComp(node.FQN, key$, 5)) _ 
+      				Or (0 = StrComp(node.QN, key$, 5)) Then
+      					' found the node
+      					If UBound(me.contentobjects_) > idx% Then 
+      						
+      						' shift subsequent content objects to one less ordinal position 
+      						For i% = idx% + 1 To UBound(me.contentobjects_) 
+      							If IsObject(me.contentobjects_(i%)) Then 
+      								Set me.contentobjects_(i% -1) = me.contentobjects_(i%) 
+      								If UCase(CLASS_NAME) = UCase(TypeName(me.contentobjects_(i% -1))) Then
+      									' need to decrement the shuffling node's instance number  
+      									Set node = me.contentobjects_(i% -1) 
+      									node.instance_number_ = node.instance_number_ - 1 
+      								End If
+      							Else 
+      								me.contentobjects_(i% -1) = me.contentobjects_(i%) 
+      							End If
+      						Next
+      					End If
+      					
+      					' remove the last element from content objects 
+      					ReDim Preserve me.contentobjects_(UBound(me.contentobjects_) -1) As Variant  
+      					result = True  
+      
+      				ElseIf getBaliStrings().beginsWith(key$, node.FQN & |.|) _ 
+      				Or getBaliStrings().beginsWith(key$, node.QN & |.|) Then 
+      					' check for child node 
+      					result = node.removeNode(key$)
+      					
+      				End If 
+      				
+      				If result Then Exit For
+      			End If
+      		Next
+      
+      
+      	ExitPoint: 
+      		removeNode = result
+      		Exit Function 
+      	ErrorTrap:
+      		On Error GoTo 0 
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		Resume ExitPoint
+      	End Function
+      
+      
+      	%REM
+      		Function spawnBSXScriptCodeObject
+      		Spawns a CodeOjbect from the Script Node. 
+      		
+      		@param objParent Parent Object for the Object
+      
+      		@return Approriate descendent object of the CodeObject (Library, ObjectClass, Method, etc..) 
+      		
+      		@throws ERR_PARAMETER_BLANK if objParent is Nothing
+      	%END REM
+      	Function spawnBSXScriptCodeObject(objParent As CodeElement) As Variant 
+      		If (objParent Is Nothing) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |objParent CodeElement is Nothing.  | 
+      		
+      		On Error GoTo ErrorTrap
+      
+      		Dim objLibrary 	As Library 
+      		Dim objClass 	As ObjectClass 
+      		Dim objType 	As ObjectType 
+      		Dim objMethod 	As Method
+      		Dim objVariable As Variable 
+      		Dim objConstant As Constant 
+      		Dim objRemark 	As BSXscriptNode 
+      		Dim argument 	As ValuedElement 
+      		Dim node 		As BSXscriptNode 
+      		Dim sc 			As StringsCarrier 
+      		Dim sq 			As StringQueue 
+      		Dim sl 			As ScriptLine  
+      
+      
+      		' exception variables
+      		Dim extendedinfo List As String 
+      		Dim msg$ 
+      		Dim errmsg$ 
+      		Dim errcode%
+      		Dim errline% 
+      
+      		Dim chunks As Variant 
+      		Dim result As Variant 
+      
+      		Dim objecttype$
+      		Dim objectname$ 
+      		Dim objectvalue$
+      		Dim tempstr$
+      		
+      		Dim ic& 
+      
+      		 	
+      
+      		' BEGIN CODE
+      		extendedinfo(|me.Label|) = me.Label
+      		extendedinfo(|me.ValueType|) = me.ValueType
+      		extendedinfo(|me.signature_code_|) = CStr(me.signature_code_)
+      		extendedinfo(|me.InstanceCode|) = CStr(me.InstanceCode)
+      		
+      		extendedinfo(|TypeName(objParent)|) = TypeName(objParent) 
+      		extendedinfo(|objParent.Label|) = objParent.Label
+      		extendedinfo(|objParent.ValueType|) = objParent.ValueType
+      		extendedinfo(|objParent.signature_code_|) = CStr(objParent.SignatureCode)
+      				
+      		tempstr$ = me.Script.pop() 
+      		Select Case Me.InstanceCode 
+      			Case SIGNATURE_VALUE_CONST 
+      				extendedinfo(|Me is|) = |Constant| 
+      				Set sl = me.contentobjects_(0)
+      				chunks = Split(sl.Code, | = |) 
+      
+      				If (UBound(chunks) > 0) Then
+      					objectvalue$ = Trim$(chunks(1))
+      					chunks = Split(FullTrim(chunks(0)), | |)
+      					objectname$ = chunks(UBound(chunks))  
+      				End If
+      				
+      				Set objConstant = New Constant(objParent, objectname$, objectvalue, sl.Comment, Me.signature_code_)
+      				Call objConstant.setElementValue(|BSXscriptNodeFQN|, me.FQN)
+      				Set result = objConstant
+      
+      							
+      			Case SIGNATURE_VALUE_VARIABLE 
+      				extendedinfo(|Me is|) = |Variable|
+      				enhLogWarning CLASS_PREFIX, |Generating a Variable| 
+      				Set objVariable = New Variable(objParent, me.Label, me.ValueType, me.Comment, me.CodeSample, Me.signature_code_)
+      				If me.isAList Then Call objVariable.appendAttribute(|List|)
+      				If me.isAnArray Then Call objVariable.appendAttribute(|Array|)
+      				Call objVariable.setElementValue(|BSXscriptNodeFQN|, me.FQN)
+      				Set result = objVariable
+      
+      								
+      			Case SIGNATURE_VALUE_SUB, SIGNATURE_VALUE_FUNCTION, SIGNATURE_VALUE_PROPERTY 
+      				extendedinfo(|Me is|) = |Sub, Function, or Property|
+      				Set objMethod = New Method(objParent, me.Label, me.ValueType, me.Comment, me.CodeSample, Me.signature_code_) 
+      				If me.hasArguments Then 
+      					chunks = me.Arguments 
+      					ForAll element In chunks 
+      						Set argument = element 
+      						Call objMethod.appendArgument(argument)
+      					End ForAll
+      				End If
+      				If me.isAList Then Call objMethod.appendAttribute(|List|)
+      				If me.isAnArray Then Call objMethod.appendAttribute(|Array|)
+      				Call objMethod.setElementValue(|BSXscriptNodeFQN|, me.FQN)
+      				Set result = objMethod
+      
+      				
+      			Case SIGNATURE_VALUE_TYPE
+      				extendedinfo(|Me is|) = |Type|
+      				Set objType = New ObjectType(objParent, me.Label, me.ValueType, me.Comment, me.CodeSample, Me.signature_code_)
+      				If me.isAList Then Call objType.appendAttribute(|List|)
+      				If me.isAnArray Then Call objType.appendAttribute(|Array|)
+      				Call objType.setElementValue(|BSXscriptNodeFQN|, me.FQN)
+      				Set result = objType
+      
+      								
+      			Case SIGNATURE_VALUE_CLASS 
+      				extendedinfo(|Me is|) = |Class|
+      				If objParent.isClass Then 
+      					Set objClass = New ObjectClass(objParent, me.Label, objParent.Label, me.Comment, me.CodeSample, Me.signature_code_)  
+      				Else 
+      					Set objClass = New ObjectClass(objParent, me.Label, ||, me.Comment, me.CodeSample, Me.signature_code_)  
+      				End If
+      				
+      				Call objClass.setElementValue(|BSXscriptNodeFQN|, me.FQN)
+      				Set result = objClass
+      
+      				
+      			Case SIGNATURE_VALUE_LIBRARY 
+      				extendedinfo(|Me is|) = |Library|
+      				Set sc = New StringsCarrier() 
+      				If isBlankString(me.Filename) Then 
+      					Set objLibrary = New Library(objParent, me.FQN, ||, ||)		
+      				Else 
+      					Call sc.load(Split(me.Filename, |.|))
+      					If sc.size > 1 Then Call sc.pop()
+      					Set objLibrary = New Library(objParent, sc.joinContent(|.|), me.Comment, me.CodeSample)
+      				End If
+      				Call objLibrary.setElementValue(|BSXscriptNodeFQN|, me.FQN)
+      				Set result = objLibrary
+      				
+      				
+      	  		Case Else 
+      				Set result = Nothing  
+      				GoTo ExitPoint 
+      		End Select
+      		extendedinfo(|TypeName(result)|) = TypeName(result)
+      
+      		If (objLibrary Is Nothing) And (|LIBRARY| = TypeName(objParent)) Then Set objLibrary = objParent  
+      		If (objClass Is Nothing) And (|OBJECTCLASS| = TypeName(objParent)) Then Set objClass = objParent  
+      		If (objType Is Nothing) And (|OBJECTTYPE| = TypeName(objParent)) Then Set objType = objParent  
+      		
+      		ForAll element In me.contentobjects_
+      			objecttype$ = TypeName(element) 
+      			If UCase(CLASS_NAME) = UCase(objecttype$) Then 
+      				Set node = element
+      				extendedinfo(|objecttype|) = objecttype$
+      				extendedinfo(|node.Label|) = node.Label
+      				extendedinfo(|node.InstanceCode|) = CStr(node.InstanceCode)
+      				extendedinfo(|node.FQN|) = node.FQN
+      				extendedinfo(|node.QN|) = node.QN
+      				extendedinfo(|node Instance Type|) = getCodeElementInstanceType(node.InstanceCode) 
+      				
+      				Select Case node.InstanceCode 
+      					Case SIGNATURE_VALUE_CLASS
+      						Set objClass = node.spawnBSXScriptCodeObject(objLibrary)
+      						Call objLibrary.appendClass(objClass)
+      						
+      					Case SIGNATURE_VALUE_TYPE
+      						Set objType = node.spawnBSXScriptCodeObject(objLibrary)
+      						Call objLibrary.appendType(objType)
+      						
+      					Case SIGNATURE_VALUE_PROPERTY, SIGNATURE_VALUE_EVENT, SIGNATURE_VALUE_SUB, SIGNATURE_VALUE_FUNCTION
+      						If me.isClass Then 
+      							If (objClass Is Nothing) Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & extendedinfo(|Node|) & | must be child of a Class.  |
+      							Set objMethod = node.spawnBSXScriptCodeObject(objClass)	
+      							Call objClass.appendMethod(objMethod) 
+      						End If
+      						
+      						If me.isLibrary Then 
+      							If (objLibrary Is Nothing) Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & extendedinfo(|Node|) & | must be child of a Library.  |
+      							Set objMethod = node.spawnBSXScriptCodeObject(objLibrary)	
+      							Call objLibrary.appendMethod(objMethod) 
+      						End If
+      						
+      					Case SIGNATURE_VALUE_VARIABLE
+      						If me.isClass Then 
+      							If (objClass Is Nothing) Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & extendedinfo(|Node|) & | must be child of a Class.  |
+      							Set objVariable = node.spawnBSXScriptCodeObject(objClass)	
+      							Call objClass.appendVariable(objVariable) 
+      						End If
+      						
+      						If me.isType Then 
+      							If (objType Is Nothing) Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & extendedinfo(|Node|) & | must be child of a Type.  |
+      							Set objVariable = node.spawnBSXScriptCodeObject(objType)	
+      							Call objType.appendVariable(objVariable) 
+      						End If
+      						
+      						If me.isLibrary Then 
+      							If (objLibrary Is Nothing) Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & extendedinfo(|Node|) & | must be child of a Library.  |
+      							Set objVariable = node.spawnBSXScriptCodeObject(objLibrary)	
+      							Call objLibrary.appendVariable(objVariable) 
+      						End If
+      						
+      					Case SIGNATURE_VALUE_CONST
+      						extendedinfo(|Node is|) = |Constant|
+      						If (objLibrary Is Nothing) Then 
+      							Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & extendedinfo(|Node|) & | must be child of Library.  |
+      						Else 
+      							Set objConstant = node.spawnBSXScriptCodeObject(objLibrary)	
+      							Call objLibrary.appendConstant(objConstant)
+      						End If
+      						
+      				End Select				
+      			End If
+      		End ForAll
+      		
+      	ExitPoint:
+      		If (0 <> errcode%) Then Error errcode%, errmsg$ & | at line #| & CStr(errline%) 
+      		Set spawnBSXScriptCodeObject = result
+      		Exit Function 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		errcode% = Err() 
+      		errline% = Erl()  
+      		errmsg$ = Error$()
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		msg$ = || 
+      		ForAll s In extendedinfo
+      			If isBlankString(msg$) Then 
+      				msg$ = ListTag(s) & |: | & s 
+      			Else 
+      				msg$ = msg$ & CRLF & ListTag(s) & |: | & s 
+      			End If 
+      		End ForAll
+      		enhLogException CLASS_PREFIX, msg$ 
+      		Resume ExitPoint
+      	End Function
+      
+      End Class
+      
+      
+      
+      
+      
+      
+      %REM
+      	Class ScriptLinesCarrier
+      	Carrier class for ScriptLines 
+      %END REM
+      Class ScriptLinesCarrier 
+      	Private content_() As ScriptLine 
+      	Private hascontent_ As Boolean 
+      
+      
+      	Private Property Get CLASS_NAME As String 
+      		CLASS_NAME = |ScriptLinesCarrier|
+      	End Property
+      	
+      	
+      	Private Property Get CLASS_PREFIX As String 
+      		CLASS_PREFIX = MODULE_NAME & |.| & CLASS_NAME & |.|
+      	End Property
+      	
+      	
+      	%REM
+      		Property Get JSON
+      		JSON representation of the object
+      	%END REM
+      	Property Get JSON As String 
+      		
+      		Dim sl As ScriptLine
+      		
+      		Dim scriptlines As Variant
+      		Dim result$
+      		Dim idx%
+      		
+      		' BEGIN CODE
+      		result$ = |[| 
+      		If me.hasContent Then
+      			scriptlines = me.values 
+      			For idx% = LBound(scriptlines) To UBound(scriptlines) 
+      				Set sl = scriptlines(idx%)
+      				result$ = result$ & sl.JSON 
+      				If idx% < UBound(scriptlines) Then result$ = result$ & |.|
+      			Next
+      		End If  
+      		result$ = |]| 
+      
+      		JSON = result$
+      	End Property
+      	
+      	Public Sub New() 
+      		Call me.clear() 
+      	End Sub
+      
+      
+      	%REM
+      		Property Get hasContent
+      		Flag indicating if the object has content 
+      	%END REM
+      	Public Property Get hasContent As Boolean 
+      		hasContent = me.hascontent_ 
+      	End Property
+      	
+      
+      	%REM
+      		Property Get size
+      		Number of elements in the object
+      	%END REM
+      	Property Get size As Long 
+      		If me.hasContent Then size = UBound(me.content_) - LBound(me.content_) + 1 
+      	End Property
+      
+      
+      
+      	%REM
+      		Property Get values
+      		Values carried by the object. 
+      		
+      		@return Array of ScriptLines containing the values of the object.   
+      			If the object has no values then an array with a single Nothing instance will be returned.  
+      	%END REM
+      	Property Get values As Variant
+      		
+      		Dim scriptlines() As ScriptLine 
+      		Dim result As Variant 
+      		
+      		Dim i% 
+      		  
+      		If me.hasContent Then
+      			ReDim scriptlines(UBound(me.content_))
+      			For i% = LBound(me.content_) To UBound(me.content_) 
+      				Set scriptlines(i%) = me.content_(i%) 
+      			Next
+      			result = scriptlines 
+      		Else 
+      			result = Null 
+      		End If
+      		
+      	ExitPoint: 
+      		values = result
+      	End Property
+      
+      
+      	%REM
+      		Property Get first
+      		Gets the first element in the carrier 
+      	%END REM
+      	Property Get first As ScriptLine 
+      		Set first = me.content_(0) 
+      	End Property
+      
+      
+      	%REM
+      		Property Get last
+      		Gets the last element in the carrier 
+      	%END REM
+      	Property Get last As ScriptLine 
+      		Set last = me.content_(UBound(me.content_)) 
+      	End Property
+      
+      
+      	%REM
+      		Property Get MergedScriptLine
+      		All internal ScriptLine objects merged into a single ScriptLine 
+      	%END REM
+      	Property Get MergedScriptLine As ScriptLine 
+      		On Error GoTo ErrorTrap
+      	
+      		' exception variables
+      		Dim extendedinfo List As String
+      		
+      		Dim result As New ScriptLine(||)   
+      	
+      
+      		' BEGIN CODE
+      		If me.hasContent Then
+      			ForAll element In me.content_ 
+      				If Not (element Is Nothing) Then Call result.appendScriptLine(element)
+      			End ForAll
+      		End If
+      
+      	ExitPoint: 
+      		Set MergedScriptLine = result
+      		Exit Property 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		Resume ExitPoint
+      	End Property
+      
+      
+      
+      	%REM
+      		Property Get SourceLine
+      		Merged SourceLine property of all internal ScriptLine objects.   
+      	%END REM
+      	Property Get SourceLine As String
+      		On Error GoTo ErrorTrap
+      	
+      		' exception variables
+      		Dim extendedinfo List As String
+      		
+      		Dim sl As ScriptLine 
+      	
+      	
+      		Dim result$
+      		Dim i% 
+      		
+      		
+      		' BEGIN CODE
+      		If me.hasContent Then
+      			Set sl = me.mergedScriptLine 
+      			If Not (sl Is Nothing) Then result$ = sl.SourceLine 			
+      		End If
+      
+      	ExitPoint: 
+      		SourceLine = result$
+      		Exit Property 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, CLASS_NAME, extendedinfo
+      		Resume ExitPoint
+      	End Property
+      
+      	
+      	%REM
+      		Sub clear
+      		Clears the carrier
+      	%END REM
+      	Public Sub clear() 
+      		ReDim me.content_(0) As ScriptLine 
+      		Set me.content_(0) = Nothing 
+      		me.hascontent_ = False 
+      	End Sub
+      
+      
+      	%REM
+      		Sub push
+      		Adds a ScriptLine to the top of the carrier
+      	%END REM
+      	Public Sub push(source As ScriptLine)
+      		If me.hasContent Then 
+      			ReDim Preserve me.content_(UBound(me.content_) + 1) As ScriptLine
+      			Set me.content_(UBound(me.content_)) = source
+      		Else 
+      			ReDim me.content_(0) As ScriptLine 
+      			Set me.content_(0) = source
+      			me.hascontent_ = True 
+      		End If
+      	End Sub
+      	
+      	
+      	
+      	%REM 
+      		Function pop
+      		Gets the top (last added) object from the stack, then removes it from the stack.
+      		
+      		@return last added object from the stack, or throws exception if stack is empty 
+      		
+      		@throws ERR_OPERATION_PROHIBITED if called when the Carrier has no content
+      	%END REM
+      	Public Function pop() As ScriptLine 
+      		If Not me.hasContent Then Error ERR_OPERATION_PROHIBITED, MSG_OPERATION_PROHIBITED & |Carrier has no content.  |
+      		
+      		Set pop = me.content_(UBound(me.content_)) 
+      		If (UBound(me.content_) > 0) Then 
+      			ReDim Preserve me.content_(UBound(me.content_) -1) As ScriptLine
+      		Else 
+      			Call me.clear() 
+      		End If
+      	End Function	
+      
+      
+      	%REM
+      		Sub load
+      		Loads the object with content from source 
+      		
+      		@param source ScriptLinesCarrier OR Array of ScriptLines.   
+      		
+      		@throws ERR_PARAMETER_INVALID if Source is neither a ScriptLinesCarrier nor an Array of ScriptLines.
+      	%END REM
+      	Public Sub load(source As Variant)
+      		
+      		On Error GoTo InvalidParameter 
+      		
+      		Dim sl As ScriptLine 
+      		Dim sc As ScriptLinesCarrier 
+      		Dim lc As azlwListCarrier  
+      		
+      		Dim values As Variant 
+      		
+      		Dim sourcetype$
+      		
+      		
+      		' BEGIN CODE 
+      		sourcetype$ = TypeName(source) 
+      		
+      		If IsObject(source) Then
+      			On Error Resume Next 
+      			
+      			Select Case sourcetype$ 
+      				Case |ScriptLineQUEUE|, |ScriptLineSTACK|, |ScriptLinesCARRIER|
+      					Set sc = source
+      					If sc.hasContent Then Call me.load(sc.values)
+      					
+      				Case |ScriptLineLIST|, |SINGLELIST|, |LONGLIST|, |ScriptLineLIST|, |DOUBLELIST|, |CURRENCYLIST|, |BOOLEANLIST|
+      					Set lc = source 
+      						If lc.hasContent Then 
+      						values = lc.getContent() 
+      						ForAll s In values
+      							Set sl = s 
+      							me.push sl
+      						End ForAll
+      					End If  
+      	
+      			End Select
+      			 
+      		ElseIf IsArray(source) Then 
+      			ForAll element In source
+      				Set sl = element 
+      				me.push sl  
+      			End ForAll
+      
+      		Else 
+      			Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID
+      		End If
+      		
+      	ExitPoint: 
+      		Exit Sub
+      	InvalidParameter: 
+      		 On Error GoTo 0
+      		 Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |Source is neither a ScriptLinesCarrier nor an Array of ScriptLines.  Source Type: | _ 
+      		 	& sourcetype$ & |.  |
+      		
+      	End Sub
+      End Class
+      
+      
+      
+      %REM
+      	Class ScriptLineQueue
+      	Queue implementation for ScriptLines 
+      %END REM
+      Class ScriptLineQueue As ScriptLinesCarrier
+      	
+      	Private Property Get CLASS_NAME As String 
+      		CLASS_NAME = |ScriptLineQueue|
+      	End Property
+      
+      
+      	%REM 
+      		Function pop
+      		Gets the first (first added) object from the queue, then removes it from the queue.
+      		
+      		@return first added object from the queue,, or throws exception if stack is empty 
+      		
+      		@throws ERR_OPERATION_PROHIBITED if called when the Carrier has no content
+      
+      		@overrides ScriptLinesCarrier.pop()
+      	 %END REM
+      	Public Function pop() As ScriptLine 
+      		If Not me.hasContent Then Error ERR_OPERATION_PROHIBITED, MSG_OPERATION_PROHIBITED & |Carrier has no content.  |
+      	
+      		Dim i As Integer 
+      		
+      	 	Set pop = me.content_(0) 
+      	 	Set me.content_(0) = Nothing  
+      	 	If (UBound(me.content_) > 0) Then 
+      	 		' shuffle all elements to the previous location in the array 
+      	 		For i = 1 To UBound(me.content_) 
+      	 			Set me.content_(i -1) = me.content_(i)
+      	 		Next
+      		 	ReDim Preserve me.content_(UBound(me.content_) -1) As ScriptLine
+      	 	Else 
+      		 	Call me.clear()  
+      	 	End If
+      	End Function
+       	 
+      End Class
+      '++LotusScript Development Environment:2:1:mergeScriptSource:21:8
+      
+      
+      %REM
+      	Function mergeScriptSource
+      	Merges source script script object with existing content. 
+      
+      	@param source 			Source Script object 
+      	@param projectname	 	Name of the Project 	
+      	@param filepath 		Filepath of the existing source script file 
+      	@param instance_code%  	instance_codeInteger code indicating the type of code block this object (Library, Function, Class, etc) represents.
+      	@param unmerged 		StringQueue containing unmerged script (code that could not be matched) 
+      	@param duplicateoutput	Flag indicating if the existing source script file should be duplicated (extension "output.vss" will be added) 
+      	@param writeJSON 		Flag indicating if the JSON generated from the source script should be written to a file (extension ".json" will be added) 
+      				
+      	@return StringQueue object containing the merged code.  
+      		If existing content does not exist the source will be returned.  
+      		
+      	@throws ERR_PARAMETER_BLANK if project is Nothing. 
+      	@throws ERR_PARAMETER_BLANK if source is Nothing. 
+      %END REM
+      Function mergeScriptSource(source As StringQueue, projectname$, filepath$, instance_code&, unmerged As StringQueue, duplicateoutput As Boolean, generatejson As Boolean) As StringQueue  
+      	If (source Is Nothing) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK 
+      	On Error GoTo ErrorTrap
+      	
+      	Const TAG_UNMERGED = |SETI_AUTHOR_CODE_UNMERGED_SCRIPT|
+      	
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	
+      	Dim parser As BSXScriptParser
+      	Dim sbsource As BSXscriptNode 
+      	Dim sbexisting As BSXscriptNode 
+      	
+      	Dim node As BSXscriptNode 
+      	
+      	Dim result As New StringQueue()
+      	Dim sq As StringQueue 
+      
+      	
+      
+      	Dim key$
+      	Dim nodeqn$  
+      	Dim qnprefix$ 
+      
+      	' BEGIN CODE
+      	Set unmerged = Nothing
+      	Set sbexisting = spawnScriptNodeFromFile(projectname$, filepath$, instance_code&, duplicateoutput, generatejson)
+      	If (sbexisting Is Nothing) Then   
+      		Set result = source
+      	Else 
+      		' get the source script node 
+      		Set parser = New BSXscriptParser(projectname$, sbexisting.Filename, instance_code&)
+      		While source.hasContent
+      			parser.parseline source.pop() 
+      		Wend
+      
+      		Set sbsource = parser.ScriptNode  
+      		Set parser = Nothing 
+      			
+      		' conditionally remove existing unmerged script node
+      		If sbexisting.hasNode(TAG_UNMERGED) Then Call sbexisting.removeNode(TAG_UNMERGED)
+      		
+      		' move author nodes from existing to source.
+      		Set sq = sbexisting.authorNodeFQNs
+      
+      		If Not isBlankString(sbexisting.QN) Then qnprefix$ = sbexisting.QN & |.|  
+      		While sq.hasContent 
+      			key$ = qnprefix$ & sq.pop()
+      
+      			Set node = sbexisting.getNode(key$)
+      
+      			' Temporarily set the node's QN so that it matches the structure, while holding onto the original QN 
+      			nodeqn$ = node.QN 
+      			node.QN = node.FQN
+      						 
+      			If sbsource.insertNode(node) Then
+      				' set the node's QN back to the original! 
+      				node.QN = nodeqn$ 		
+      
+      			Else 
+      				' something went wrong
+      				enhLogWarning LIB_PREFIX, |Failed to insert node for key: | & key$ 
+      				enhLogExtendedContent ||, ||, |Node.QN: | & nodeqn$ 
+      				enhLogExtendedContent ||, ||, |Node.FQN: | & node.FQN 
+       
+      			End If 
+      		Wend
+      		
+      
+      		' load the merged script into the result 
+      		result.load sbsource.Script 
+      		
+      		If sbexisting.hasContent Or sbexisting.hasChildNodes Then 
+      			' load the unmerged script
+      			Set unmerged = New StringQueue() 
+      			
+      			unmerged.push AUTHOR_CODE_BEGIN & |UNMERGED_SCRIPT|
+      			unmerged.push |' ************************************************** |
+      			unmerged.push |' ************************************************** |
+      
+      			unmerged.load sbexisting.Script 
+      
+      			unmerged.push |' ************************************************** |
+      			unmerged.push |' ************************************************** |
+      			unmerged.push AUTHOR_CODE_END 
+      			unmerged.push CRLF
+      		End If		
+      	End If
+      	
+      	
+      ExitPoint: 
+      	Set mergeScriptSource = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:3:AS_DELIMS Get:5:8
+      %REM
+      	Property Get AS_DELIMS
+      	String array containing all case permutations of ")as " 
+      %END REM
+      Private Property Get AS_DELIMS As Variant 
+      		On Error GoTo ErrorTrap
+      	
+      		Static result(3) As String
+      		Static instantiated_ As Boolean 
+      			
+      		' exception variables
+      		Dim extendedinfo List As String 
+      	
+      		' BEGIN CODE
+      		If Not instantiated_ Then 
+      			result(0) = |)as | 
+      			result(1) = |)As | 
+      			result(2) = |)aS | 
+      			result(3) = |)AS |
+      			instantiated_ = True 
+      		End If 
+      	
+      	
+      	ExitPoint: 
+      		AS_DELIMS = result
+      		Exit Property 
+      	ErrorTrap:
+      		On Error GoTo 0
+      		pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      		Resume ExitPoint
+      End Property
+      
+      '++LotusScript Development Environment:2:1:getBeginIndices:13:8
+      
+      
+      %REM
+      	Function getBeginIndices
+      	Returns an array of Integers containing the beginning index positions of all instances of a substring within a source string. 
+      	
+      	@param source$ 		String to search 
+      	@param substring$  	Substring to search for for instances within source
+      	@param maxindex% 	The maximum index number allowed to be returned.  
+      	
+      	@return array of integers contining the beginning index positions.  If none are found returns an array of one element within a single value of zero. 
+      %END REM
+      Function getBeginIndices(source$, substring$, maxindex%) As IntegerQueue  
+      	On Error GoTo ErrorTrap
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	
+      	
+      	Dim result As New IntegerQueue() 
+      	
+      	Dim idx% 
+      	
+      	' BEGIN CODE
+      	If isBlankString(source$) Or isBlankString(substring$) Then GoTo ExitPoint 
+      	extendedinfo(|source|) = source$ 
+      	extendedinfo(|Len(source)|) = CStr(Len(source$))
+      	extendedinfo(|substring|) = substring$ 
+      	extendedinfo(|maxindex|) = CStr(maxindex%) 
+      
+      	Do 
+      		idx% = InStr(idx% + 1, source$, substring$)
+      		If (idx% > maxindex%) Then GoTo ExitPoint 
+      		If (idx% > 0) Then result.push(idx%)  
+      	Loop Until (idx% < 1)
+      
+      ExitPoint: 
+      	Set getBeginIndices = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:getScriptLine:11:8
+      
+      %REM
+      	Function getLineElements(source$) as ScriptLine
+      	
+      	Breaks a line of code into the Code and In-Line Comment components. 
+      	
+      	@param source$ String to process
+      	 
+      	@return ScriptLine object contining the Code and In-Line comment parts of the source string. 
+      %END REM
+      Private Function getScriptLine(source$) As ScriptLine
+      	On Error GoTo ErrorTrap
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      
+      	Dim indices_Apos As IntegerQueue 
+      	Dim indices_Quote As IntegerQueue 
+      	Dim indices_Pipe As IntegerQueue 
+      	Dim indices_Brace_Open As IntegerQueue 
+      	Dim indices As IntegerQueue 
+      	
+      	Dim opencharacter$ 
+      	Dim currentcharacter$ 
+      	Dim code$ 
+      	Dim comment$ 
+      	
+      	Dim sourcelength% 
+      	Dim idx%
+      	Dim idxApos%
+      	
+      	Dim isOpen As Boolean ' indicates if the current processing is within an open quote/pipe/brace instance
+      
+      	
+      	' BEGIN CODE
+      	extendedinfo(|source|) = source$ 
+      	If isBlankString(source$) Then GoTo ExitPoint ' bail out if blank 
+      	
+      	sourcelength% = Len(source$) 
+      	Set indices_Apos = getBeginIndices(source$, |'|, sourcelength%) 
+      	
+      	If Not indices_Apos.hasContent Then
+      		' no apostrophe, set code to source and bail out. 
+      		code$ = source$ 
+      		GoTo ExitPoint 
+      	End If
+      	
+      	idxApos% = indices_Apos.pop()
+      	If (1 = idxApos%) Then 
+      		' entire line is a comment.  set comment to source an bail out. 
+      		comment$ = Right$(source$, Len(source$ -1)) 
+      		GoTo ExitPoint 
+      	End If
+      	 
+      	If isBlankString(Left$(source$, idxApos% -1)) Then 
+      		' indented comment.  set code and comment and bail out. 
+      		code$ = Left$(source$, idxApos%) 
+      		comment$ = Right$(source$, sourcelength - idxApos%) 
+      		GoTo ExitPoint
+      	End If
+      	 
+      	
+      	' found apostrophe character with preceeding text. 
+      	' find the the appropriate apostrophe that is not contained within string delimiters	
+      	' find the index positions for quote, pipe, and braceopen  
+      	Set indices_Quote = getBeginIndices(source$, |"|, sourcelength%) 
+      	Set indices_Pipe = getBeginIndices(source$, "|", sourcelength%) 
+      	Set indices_Brace_Open = getBeginIndices(source$, |{|, sourcelength%)
+      	
+      	If Not (indices_Quote.hasContent And indices_Pipe.hasContent And indices_Brace_Open.hasContent) Then 
+      		' No opening Quotes, Pipes, or Braces found. 
+      		code$ = Left$(source$, idxApos%) 
+      		comment$ = Right$(source$, sourcelength - idxApos%) 
+      		GoTo ExitPoint		
+      	End If 
+      	
+      	' merge and sort all the indices (including brace-close characters  
+      	Set indices = getBeginIndices(source$, |}|, sourcelength%)
+      	indices.load indices_Pipe 
+      	indices.load indices_Pipe 
+      	indices.load indices_Brace_Open
+      	
+      	' sort the indices 
+       	Call indices.sort() 
+       
+       
+       	' step through the indices and check the character at each position. 
+       	isOpen = False 
+       	While indices.hasContent 
+       		idx% = indices.pop()
+       		While (idxApos% < idx%)
+      	 		If indices_Apos.hasContent Then 
+      				idxApos% = indices_Apos.pop() 
+      	 		Else 
+      		 		idxApos% = sourcelength%
+      	 		End If 
+      		Wend
+      
+       		currentcharacter$ = Mid$(source$, idx%, 1)
+       		If isOpen Then 
+      	 		' currently within an open quote/pipe/brace instance
+      			If (|}| = currentcharacter$) And (|{| = opencharacter$) Then 
+      				' closing brace
+      				isOpen = False 
+      			ElseIf currentcharacter$ = opencharacter$ Then 
+      				' closing quote or pipe 
+      				isOpen = False 
+      			End If 	
+      			
+      		Else 
+      			opencharacter$ = currentcharacter$ 
+      			isOpen = True 			
+       		End If
+        	Wend
+      
+      	If (idxApos% < sourcelength%) Then 
+      		code$ = Left$(source$, idxApos%) 
+      		comment$ = Right$(source$, sourcelength - idxApos%) 
+      	Else 
+      		code$ = source$ 
+      	End If
+        	
+      	
+      ExitPoint: 
+      	Set getScriptLine = New ScriptLine(source$)
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:spawnScriptNodeFromFile:18:8
+      
+      
+      %REM
+      	Function spawnScriptNodeFromFile
+      	Loads a script source library file into a new BSXscriptNode
+      	
+      	@param projectname	 	Name of the Project 	
+      	@param filepath 		Filepath of the existing source script file 
+      	@param instance_code%  	Integer code indicating the type of code block this object (Library, Function, Class, etc) represents.
+      	@param duplicateoutput	Flag indicating if the existing source script file should be duplicated (extension "output.vss" will be added) 
+      	@param writeJSON 		Flag indicating if the JSON generated from the source script should be written to a file (extension ".json" will be added) 
+      				
+      	@return BSXscriptNode object spawned from the source script file
+      		If existing content does not exist the source will be returned.  
+      		
+      	@throws ERR_PARAMETER_BLANK if source is Nothing. 
+      %END REM
+      Function spawnScriptNodeFromFile(projectname$, filepath$, instance_code&, duplicateoutput As Boolean, generatejson As Boolean) As BSXscriptNode  
+      	On Error GoTo ErrorTrap
+      
+      	Const TAG_UNMERGED = |SETI_AUTHOR_CODE_UNMERGED_SCRIPT|
+      	
+      	
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	
+      	Dim parser As BSXScriptParser
+      	Dim result As BSXscriptNode 
+      	
+      	Dim chunks As Variant 
+      
+      	Dim filename$
+      	Dim sourceline$
+      
+      	Dim bytes&
+      
+      	Dim linecount As Long 
+      	Dim inputFile As Integer
+      	Dim outputFile As Integer 
+      	
+      	
+      	Dim isInputOpen As Boolean 
+      	Dim isOutputOpen As Boolean 
+      
+      
+      	' BEGIN CODE
+      	extendedinfo(|Filepath|) = filepath$ 
+      	extendedinfo(|instance_code|) = CStr(instance_code&) 
+      	
+      	If fileExists(filepath$) Then
+      		chunks = Split(filepath$, DIRECTORY_DELIMITER)
+      		filename$ = chunks(UBound(chunks)) 
+      		
+      		' get the source script node 
+      		Set parser = New BSXscriptParser(projectname$, filename$, instance_code&)
+      		
+      		' parse the existing file into the script parser
+      		Call parser.clear() 
+      
+      		inputFile% = FreeFile() 
+      		Open filepath$ For Input As inputFile%
+      		isInputOpen = True 
+      		
+      		If duplicateoutput Then 
+      			outputFile% = FreeFile() 
+      			Open filepath$ & |.output.vss| For Output Access Write As #outputFile% 
+      			isOutputOpen = True 
+      		End If 
+      		
+      		Do While Not EOF(inputFile%) 
+      			Line Input #inputFile%, sourceline$ 
+      			If duplicateoutput Then Print #outputFile, sourceline$ 
+      			linecount = linecount + 1 
+      			Call parser.parseLine(sourceline$)
+      			If parser.isInstanceComplete Then Exit Do 
+      		Loop
+      		
+      
+      		' get the new "existing" script node from the parser
+      		Set result = parser.ScriptNode 
+      		result.Filename = filename$ 
+      		result.SignatureCode = signatureCodeToInstanceCode(instance_code&)
+      		
+      		If generatejson Then
+      			bytes& = writeTextFile(result.JSON, filepath$ & |.json|) 
+      			If (bytes& > 0) Then enhlogAction LIB_PREFIX, |Wrote | & Format$(bytes&, FORMAT_WHOLE_THOUSANDS) & | to | & filepath$ & |.json.|
+      		End If 
+      	End If 
+      		
+      	
+      ExitPoint: 
+      	Set spawnScriptNodeFromFile = result
+      	If isInputOpen Then 
+      		isInputOpen = False 
+      		Close #inputFile% 
+      	End If
+      	If isOutputOpen Then 
+      		isOutputOpen = False 
+      		Close #outputFile% 
+      	End If
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      
+      
+      
+      
+      '++LotusScript Development Environment:2:1:fixSourceCodeLine:5:8
+      %REM
+      	Function fixSourceCodeLine
+      	Formats a line of sourcecode and returns the result 
+      %END REM
+      Private Function fixSourceCodeLine(source As String) As String 
+      	On Error GoTo ErrorTrap
+      	
+      	' exception variables
+      	Dim extendedinfo List As String
+      	extendedinfo(|source|) = source  
+      
+      	Dim delim$
+      	Dim result$
+      	
+      	' BEGIN CODE
+      	result$ = FullTrim(source)
+      	If isBlankString(result$) Then GoTo ExitPoint  
+      	
+      	' replace instances of ")as " with ") As "
+      	ForAll element In AS_DELIMS 
+      		delim$ = CStr(element) 
+      		If (InStr(result$, delim$) > 0) Then result$ = Join(Split(result$, delim$), |) As |)
+      	End ForAll
+      	
+      ExitPoint: 
+      	fixSourceCodeLine = result
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+    signed: true
+    nonsummary: true
+  - name: $TITLE
+    type: text
+    data: BSXparsingUtils
+    signed: true
+remaining: []

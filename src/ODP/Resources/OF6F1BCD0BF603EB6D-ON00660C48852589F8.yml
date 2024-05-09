@@ -1,0 +1,27 @@
+---
+class: 1
+flags: 0x0100
+unid: OF6F1BCD0BF603EB6D-ON00660C48852589F8
+items:
+  - name: Form
+    type: text
+    data: Skeleton
+  - name: FormId
+    type: number
+    data: 7
+  - name: FormName
+    type: text
+    data: Clean - Make for Intel
+  - name: TheCodeAbstract
+    type: text
+    data: "$(ECHO_IT) Deleting $(OBJ_DIR)\\%1%.$(OBJX)"
+  - name: TheCode
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: |
+      hf82AAEAAAogICAkKEVDSE9fSVQpIERlbGV0aW5nICQoT0JKX0RJUilcJTElLiQoT0JKWCkAhf8vAAEA
+      AAogICAkKERFTEVURV9JVCkgJChPQkpfRElSKVwlMSUuJChPQkpYKQAghf83AAEAAAogICAkKEVDSE9f
+      SVQpIERlbGV0aW5nICQoT0JKX0RJUilcaSUxJS4kKE9CSlgpACCF/y8AAQAACiAgICQoREVMRVRFX0lU
+      KSAkKE9CSl9ESVIpXGklMSUuJChPQkpYKSA=
+remaining: []

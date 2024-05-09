@@ -1,0 +1,38 @@
+---
+class: 1
+flags: 0x0100
+unid: OF85EC40FB83EB6FFE-ON0047E64600258B0B
+items:
+  - name: Authors
+    type: text
+    data:
+      - CN=Rocky Oliver/OU=USA/O=PNPHCL
+      - "[Admin]"
+    authors: true
+    names: true
+  - name: CreatedOn
+    type: time
+    data: "2024-04-24T09:25:43.60-04:00"
+    dst: true
+  - name: F_LSXCreator
+    type: text
+    data: Rocky Oliver
+  - name: Form
+    type: text
+    data: keyword
+  - name: LastModified
+    type: time
+    data: "2024-04-24T09:26:50.37-04:00"
+    dst: true
+  - name: keywordComments
+    type: text
+    data: Used by the File Resource form
+  - name: keywordName
+    type: text
+    data: FileResUsage
+  - name: keywordValues
+    type: text
+    data:
+      - VSE File Generation|VSE
+      - Other|Other
+remaining: []

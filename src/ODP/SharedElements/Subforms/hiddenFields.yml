@@ -1,0 +1,1264 @@
+---
+class: 4
+flags: 0x0000
+unid: OFF3EBE8C5882B8081-ON006819FF852588E7
+items:
+  - name: $$ScriptName
+    type: text
+    data: hiddenFields
+    signed: true
+    nonsummary: true
+  - name: $DesignerVersion
+    type: text
+    data: 8.5.3
+  - name: $Fields
+    type: text
+    data:
+      - F_DerivedFromClassUNID
+      - F_DerivedFromClassName
+      - F_TypeID
+      - F_ClassID
+      - F_ProjectID
+      - $ParentUNID
+  - name: $Flags
+    type: text
+    data: CU3xA
+  - name: $ParentUNID
+    type: iou
+    type_num: 0
+    nonsummary: true
+    ph: true
+  - name: $TITLE
+    type: text
+    data: hiddenFields
+  - name: F_ClassID
+    type: iou
+    type_num: 0
+    nonsummary: true
+    ph: true
+  - name: F_DerivedFromClassName
+    type: iou
+    type_num: 0
+    nonsummary: true
+    ph: true
+  - name: F_DerivedFromClassUNID
+    type: iou
+    type_num: 0
+    nonsummary: true
+    ph: true
+  - name: F_ProjectID
+    type: iou
+    type_num: 0
+    nonsummary: true
+    ph: true
+  - name: F_TypeID
+    type: iou
+    type_num: 0
+    nonsummary: true
+    ph: true
+  - name: $Body
+    type: composite
+    signed: true
+    nonsummary: true
+    data:
+      - type: 0x0081
+      - type: 0xff82
+        FirstLineLeftMargin: 1440
+        Flags: 0x8100
+        Flags2: 0x8095
+        JustifyMode: 0
+        LeftMargin: 1440
+        LineSpacing: 0
+        PABID: 1
+        ParagraphSpacingAfter: 0
+        ParagraphSpacingBefore: 0
+        RightMargin: 0
+        Tab:
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+        TabTypes: 0x00000000
+        Tabs: 0
+        data:
+          - 1440
+          - 12
+          - 1440
+          - 12
+          - 12240
+          - 100
+          - 0x00000001
+          - 0x00000006
+      - type: 0x0083
+        PABID: 1
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090101
+        data: "=================================================="
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x0081
+      - type: 0x0083
+        PABID: 1
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090101
+        data: " BEGIN Subform hiddenFields"
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x0081
+      - type: 0x0083
+        PABID: 1
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090101
+        data: "=================================================="
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x0081
+      - type: 0x0083
+        PABID: 1
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090101
+        data: "dspUNID\t\t\t"
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff8a
+        Version: 0
+      - type: 0xfffe
+        opaque: |
+          /v9QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          AAAAAAAAAAAAAAAAAAAAAAAAAAA=
+      - type: 0xff8a
+        opaque: |
+          iv9EAIABAAUAAAAAAAAAAAAAAQEJCBgAAAAAAAAABwAAAAAAGAAAAAoAkABWAQMABwAMAAUACTBTMEUA
+          ZHNwVU5JRAA=
+      - type: 0x0062
+        opaque: Yg4BAIQAAAAAAAAAAAA=
+      - type: 0x00de
+        Signature: 0xff8a
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090101
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x0081
+      - type: 0xff82
+        FirstLineLeftMargin: 1440
+        Flags: 0x8100
+        Flags2: 0x8495
+        JustifyMode: 0
+        LeftMargin: 1440
+        LineSpacing: 0
+        PABID: 2
+        ParagraphSpacingAfter: 0
+        ParagraphSpacingBefore: 0
+        RightMargin: 0
+        Tab:
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+        TabTypes: 0x00000000
+        Tabs: 0
+        data:
+          - 1440
+          - 12
+          - 1440
+          - 12
+          - 0
+          - 0
+          - 0x00000001
+          - 0x00000006
+      - type: 0x0083
+        PABID: 2
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090001
+        data: "$ParentUNID \t\t\t"
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff8a
+        Version: 0
+      - type: 0xfffe
+        opaque: |
+          /v9QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          AAAAAAAAAAAAAAAAAAAAAAAAAAA=
+      - type: 0xff8a
+        opaque: |
+          iv+QAYoAAAUAMAAAAAAAAAAAAQAACLAAsAAAAAAACwAAAAAAsAAKAAQABwBsAGUAIElucHV0IFRyYW5z
+          bGF0aW9uIEZvcm11bGEgdXNlZCBhcyBDb21wdXRlZCBWYWx1ZSBzbyB0aGF0IGl0IGdldHMgcGlja2Vk
+          IHVwIGJ5IENvbXB1dGVXaXRoRm9ybSBjYWxscyAABwAKAAMACTFTAAAAJgCJAK8AGgAKAPsAMQGuABAA
+          BQAEACRSRUauAAQAtQNWAQMABwAOAAcACTBSNlM4UwCwAAoABAAHAGwAZQAgSW5wdXQgVHJhbnNsYXRp
+          b24gRm9ybXVsYSB1c2VkIGFzIENvbXB1dGVkIFZhbHVlIHNvIHRoYXQgaXQgZ2V0cyBwaWNrZWQgdXAg
+          YnkgQ29tcHV0ZVdpdGhGb3JtIGNhbGxzIAAHAAoAAwAJMVMAAAAmAIkArwAaAAoA+wAxAa4AEAAFAAQA
+          JFJFRq4ABAC1A1YBAwAHAA4ABwAJMFI2UzhTACRQYXJlbnRVTklEAA==
+      - type: 0x0062
+        opaque: Yg4BAIQAAAAAAAAAAAA=
+      - type: 0x00de
+        Signature: 0xff8a
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090001
+        data: " Parent document UniversalID "
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x0081
+      - type: 0xff82
+        FirstLineLeftMargin: 1440
+        Flags: 0x8100
+        Flags2: 0x8495
+        JustifyMode: 0
+        LeftMargin: 1440
+        LineSpacing: 0
+        PABID: 3
+        ParagraphSpacingAfter: 0
+        ParagraphSpacingBefore: 0
+        RightMargin: 0
+        Tab:
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+        TabTypes: 0x00000000
+        Tabs: 0
+        data:
+          - 1440
+          - 12
+          - 1440
+          - 12
+          - 0
+          - 0
+          - 0x00000001
+          - 0x00000006
+      - type: 0xffbb
+        PABID: 0x0003
+        Reserverd: AABAd29mJwA=
+        data: "1"
+      - type: 0x0083
+        PABID: 3
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090001
+        data: "F_ProjectID \t\t\t"
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff8a
+        Version: 0
+      - type: 0xfffe
+        opaque: |
+          /v9QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          AAAAAAAAAAAAAAAAAAAAAAAAAAA=
+      - type: 0xff8a
+        opaque: |
+          iv/oBIoAAAUAMAAAAAAAAAAAAQAACCgCkAIAAAAACwAAAAAAKAIKAAQABwBsAGUAIElucHV0IFRyYW5z
+          bGF0aW9uIEZvcm11bGEgdXNlZCBhcyBDb21wdXRlZCBWYWx1ZSBzbyB0aGF0IGl0IGdldHMgcGlja2Vk
+          IHVwIGJ5IENvbXB1dGVXaXRoRm9ybSBjYWxscyAABwAKAAMACTFTAAgAOAAFAAQARm9ybWEBAQAHAHBy
+          b2plY3QARgKvABgADACQAFYBwgGuAAwAAQAAAK4ABAC1AwMABwASAAwACTBSUjlTMTJTMjBTAQAmAAsA
+          dlBhcmVudFVOSUQABQALACRQYXJlbnRVTklEAF4BAwAHAA4ACAAJMFJSMVMyUwEAGAALAHZQYXJlbnRG
+          b3JtAAEAAAADAAcADgAHAAkwUjFTMlMACADAAAEAAAAFAAsAdlBhcmVudFVOSUQACwIFAAsAdlBhcmVu
+          dEZvcm0ABQALAHZQYXJlbnRVTklEAAEABABGb3Jt4gJhAQkCBQALAHZQYXJlbnRGb3JtAAEABwBwcm9q
+          ZWN0AEYCrwAmABoABQALAHZQYXJlbnRVTklEAFYBwgGuAAwAAQAAAK4ABAC1AwUACwB2UGFyZW50VU5J
+          RAAFAAsAdlBhcmVudFVOSUQAAQAEACRSZWbiAgkC+wRGAQMABwA2AC8ACTBSUjNTNFM2UlQ3UzhTMTRT
+          MThSVDI0UzI3UzM1UzM4UlQzOVM0MFM0NFM0NlIAAAAIACgAAwAHAAoAAwAJMFIAkAIKAAQABwBsAGUA
+          IElucHV0IFRyYW5zbGF0aW9uIEZvcm11bGEgdXNlZCBhcyBDb21wdXRlZCBWYWx1ZSBzbyB0aGF0IGl0
+          IGdldHMgcGlja2VkIHVwIGJ5IENvbXB1dGVXaXRoRm9ybSBjYWxscyAABwAKAAMACTFTAAgAOAAFAAQA
+          Rm9ybWEBAQAHAHByb2plY3QARgKvABgADACQAFYBwgGuAAwAAQAAAK4ABAC1AwMABwASAAwACTBSUjlT
+          MTJTMjBTAQASAAYAdlZhbHVl+wAxAQMABwAOAAgACTBSUjFTMlMIADYAAQAAAAUABgB2VmFsdWUKAq8A
+          HgAKAAEAAACuABQABQAGAHZWYWx1ZcIBrgAEALUDAwAHABIACwAJMFIzUzRTNlM4UwABACYACwB2UGFy
+          ZW50VU5JRAAFAAsAJFBhcmVudFVOSUQAXgEDAAcADgAIAAkwUlIxUzJTAQAYAAsAdlBhcmVudEZvcm0A
+          AQAAAAMABwAOAAcACTBSMVMyUwAIAMAAAQAAAAUACwB2UGFyZW50VU5JRAALAgUACwB2UGFyZW50Rm9y
+          bQAFAAsAdlBhcmVudFVOSUQAAQAEAEZvcm3iAmEBCQIFAAsAdlBhcmVudEZvcm0AAQAHAHByb2plY3QA
+          RgKvACYAGgAFAAsAdlBhcmVudFVOSUQAVgHCAa4ADAABAAAArgAEALUDBQALAHZQYXJlbnRVTklEAAUA
+          CwB2UGFyZW50VU5JRAABAAQAJFJlZuICCQL7BEYBAwAHADYALwAJMFJSM1M0UzZSVDdTOFMxNFMxOFJU
+          MjRTMjdTMzVTMzhSVDM5UzQwUzQ0UzQ2UgAAAAgAKAADAAcACgADAAkwUgBGX1Byb2plY3RJRAA=
+      - type: 0x0062
+        opaque: Yg4BAIQAAAAAAAAAAAA=
+      - type: 0x00de
+        Signature: 0xff8a
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090001
+        data: " UNID of Project"
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x0081
+      - type: 0x0083
+        PABID: 3
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090001
+        data: "F_ClassID \t\t\t"
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff8a
+        Version: 0
+      - type: 0xfffe
+        opaque: |
+          /v9QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          AAAAAAAAAAAAAAAAAAAAAAAAAAA=
+      - type: 0xff8a
+        opaque: |
+          iv9yBYoAAAUAMAAAAAAAAAAAAQAACG4C1gIAAAAACQAAAAAAbgIKAAQABwBsAGUAIElucHV0IFRyYW5z
+          bGF0aW9uIEZvcm11bGEgdXNlZCBhcyBDb21wdXRlZCBWYWx1ZSBzbyB0aGF0IGl0IGdldHMgcGlja2Vk
+          IHVwIGJ5IENvbXB1dGVXaXRoRm9ybSBjYWxscyAABwAKAAMACTFTAAgAOAAFAAQARm9ybWEBAQAHAHBy
+          b2plY3QARgKvABgADAABAAAAwgGuAAwAAQAAAK4ABAC1AwMABwASAAwACTBSUjlTMTJTMTdTCAA2AAUA
+          BABGb3JtYQEBAAUAY2xhc3MARgKvABgADACQAFYBwgGuAAwAAQAAAK4ABAC1AwMABwASAAsACTBSOVMx
+          MlMyMFMAAQAmAAsAdlBhcmVudFVOSUQABQALACRQYXJlbnRVTklEAF4BAwAHAA4ACAAJMFJSMVMyUwEA
+          GAALAHZQYXJlbnRGb3JtAAEAAAADAAcADgAHAAkwUjFTMlMACAC+AAEAAAAFAAsAdlBhcmVudFVOSUQA
+          CwIFAAsAdlBhcmVudEZvcm0ABQALAHZQYXJlbnRVTklEAAEABABGb3Jt4gJhAQkCBQALAHZQYXJlbnRG
+          b3JtAAEABQBjbGFzcwBGAq8AJgAaAAUACwB2UGFyZW50VU5JRABWAcIBrgAMAAEAAACuAAQAtQMFAAsA
+          dlBhcmVudFVOSUQABQALAHZQYXJlbnRVTklEAAEABAAkUmVm4gIJAvsERgEDAAcANgAvAAkwUlIzUzRT
+          NlJUN1M4UzE0UzE4UlQyNFMyN1MzNVMzOFJUMzlTNDBTNDRTNDZSAAAACAAoAAMABwAKAAMACTBSANYC
+          CgAEAAcAbABlACBJbnB1dCBUcmFuc2xhdGlvbiBGb3JtdWxhIHVzZWQgYXMgQ29tcHV0ZWQgVmFsdWUg
+          c28gdGhhdCBpdCBnZXRzIHBpY2tlZCB1cCBieSBDb21wdXRlV2l0aEZvcm0gY2FsbHMgAAcACgADAAkx
+          UwAIADgABQAEAEZvcm1hAQEABwBwcm9qZWN0AEYCrwAYAAwAAQAAAMIBrgAMAAEAAACuAAQAtQMDAAcA
+          EgAMAAkwUlI5UzEyUzE3UwgANgAFAAQARm9ybWEBAQAFAGNsYXNzAEYCrwAYAAwAkABWAcIBrgAMAAEA
+          AACuAAQAtQMDAAcAEgALAAkwUjlTMTJTMjBTAAEAEgAGAHZWYWx1ZfsAMQEDAAcADgAIAAkwUlIxUzJT
+          CAA2AAEAAAAFAAYAdlZhbHVlCgKvAB4ACgABAAAArgAUAAUABgB2VmFsdWXCAa4ABAC1AwMABwASAAsA
+          CTBSM1M0UzZTOFMAAQAmAAsAdlBhcmVudFVOSUQABQALACRQYXJlbnRVTklEAF4BAwAHAA4ACAAJMFJS
+          MVMyUwEAGAALAHZQYXJlbnRGb3JtAAEAAAADAAcADgAHAAkwUjFTMlMACAC+AAEAAAAFAAsAdlBhcmVu
+          dFVOSUQACwIFAAsAdlBhcmVudEZvcm0ABQALAHZQYXJlbnRVTklEAAEABABGb3Jt4gJhAQkCBQALAHZQ
+          YXJlbnRGb3JtAAEABQBjbGFzcwBGAq8AJgAaAAUACwB2UGFyZW50VU5JRABWAcIBrgAMAAEAAACuAAQA
+          tQMFAAsAdlBhcmVudFVOSUQABQALAHZQYXJlbnRVTklEAAEABAAkUmVm4gIJAvsERgEDAAcANgAvAAkw
+          UlIzUzRTNlJUN1M4UzE0UzE4UlQyNFMyN1MzNVMzOFJUMzlTNDBTNDRTNDZSAAAACAAoAAMABwAKAAMA
+          CTBSAEZfQ2xhc3NJRAA=
+      - type: 0x0062
+        opaque: Yg4BAIQAAAAAAAAAAAA=
+      - type: 0x00de
+        Signature: 0xff8a
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090001
+        data: "  If document is a Class or the child of a Class, the UNID of the Class.  "
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x0081
+      - type: 0x0083
+        PABID: 3
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090001
+        data: "F_TypeID \t\t\t"
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff8a
+        Version: 0
+      - type: 0xfffe
+        opaque: |
+          /v9QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          AAAAAAAAAAAAAAAAAAAAAAAAAAA=
+      - type: 0xff8a
+        opaque: |
+          iv/6BYoAAAUAMAAAAAAAAAAAAQAACLQCGgMAAAAACAAAAAAAtAIKAAQABwBsAGUAIElucHV0IFRyYW5z
+          bGF0aW9uIEZvcm11bGEgdXNlZCBhcyBDb21wdXRlZCBWYWx1ZSBzbyB0aGF0IGl0IGdldHMgcGlja2Vk
+          IHVwIGJ5IENvbXB1dGVXaXRoRm9ybSBjYWxscyAABwAKAAMACTFTAAgAOAAFAAQARm9ybWEBAQAHAHBy
+          b2plY3QARgKvABgADAABAAAAwgGuAAwAAQAAAK4ABAC1AwMABwASAAwACTBSUjlTMTJTMTdTCAA2AAUA
+          BABGb3JtYQEBAAUAY2xhc3MARgKvABgADAABAAAAwgGuAAwAAQAAAK4ABAC1AwMABwASAAsACTBSOVMx
+          MlMxN1MACAA0AAUABABGb3JtYQEBAAQAdHlwZUYCrwAYAAwAkABWAcIBrgAMAAEAAACuAAQAtQMDAAcA
+          EgALAAkwUjlTMTJTMjBTAAEAJgALAHZQYXJlbnRVTklEAAUACwAkUGFyZW50VU5JRABeAQMABwAQAAkA
+          CTBSUlIxUzJTAAEAGAALAHZQYXJlbnRGb3JtAAEAAAADAAcADgAHAAkwUjFTMlMACAC8AAEAAAAFAAsA
+          dlBhcmVudFVOSUQACwIFAAsAdlBhcmVudEZvcm0ABQALAHZQYXJlbnRVTklEAAEABABGb3Jt4gJhAQkC
+          BQALAHZQYXJlbnRGb3JtAAEABAB0eXBlRgKvACYAGgAFAAsAdlBhcmVudFVOSUQAVgHCAa4ADAABAAAA
+          rgAEALUDBQALAHZQYXJlbnRVTklEAAUACwB2UGFyZW50VU5JRAABAAQAJFJlZuICCQL7BEYBAwAHADYA
+          LwAJMFJSM1M0UzZSVDdTOFMxNFMxOFJUMjRTMjdTMzVTMzhSVDM5UzQwUzQ0UzQ2UgAAAAgAKAADAAcA
+          CgADAAkwUgAaAwoABAAHAGwAZQAgSW5wdXQgVHJhbnNsYXRpb24gRm9ybXVsYSB1c2VkIGFzIENvbXB1
+          dGVkIFZhbHVlIHNvIHRoYXQgaXQgZ2V0cyBwaWNrZWQgdXAgYnkgQ29tcHV0ZVdpdGhGb3JtIGNhbGxz
+          IAAHAAoAAwAJMVMACAA4AAUABABGb3JtYQEBAAcAcHJvamVjdABGAq8AGAAMAAEAAADCAa4ADAABAAAA
+          rgAEALUDAwAHABIADAAJMFJSOVMxMlMxN1MIADYABQAEAEZvcm1hAQEABQBjbGFzcwBGAq8AGAAMAAEA
+          AADCAa4ADAABAAAArgAEALUDAwAHABIACwAJMFI5UzEyUzE3UwAIADQABQAEAEZvcm1hAQEABAB0eXBl
+          RgKvABgADACQAFYBwgGuAAwAAQAAAK4ABAC1AwMABwASAAsACTBSOVMxMlMyMFMAAQASAAYAdlZhbHVl
+          +wAxAQMABwAOAAgACTBSUjFTMlMIADYAAQAAAAUABgB2VmFsdWUKAq8AHgAKAAEAAACuABQABQAGAHZW
+          YWx1ZcIBrgAEALUDAwAHABIACwAJMFIzUzRTNlM4UwABACYACwB2UGFyZW50VU5JRAAFAAsAJFBhcmVu
+          dFVOSUQAXgEDAAcADgAIAAkwUlIxUzJTAQAYAAsAdlBhcmVudEZvcm0AAQAAAAMABwAOAAcACTBSMVMy
+          UwAIALwAAQAAAAUACwB2UGFyZW50VU5JRAALAgUACwB2UGFyZW50Rm9ybQAFAAsAdlBhcmVudFVOSUQA
+          AQAEAEZvcm3iAmEBCQIFAAsAdlBhcmVudEZvcm0AAQAEAHR5cGVGAq8AJgAaAAUACwB2UGFyZW50VU5J
+          RABWAcIBrgAMAAEAAACuAAQAtQMFAAsAdlBhcmVudFVOSUQABQALAHZQYXJlbnRVTklEAAEABAAkUmVm
+          4gIJAvsERgEDAAcANgAvAAkwUlIzUzRTNlJUN1M4UzE0UzE4UlQyNFMyN1MzNVMzOFJUMzlTNDBTNDRT
+          NDZSAAAACAAoAAMABwAKAAMACTBSAEZfVHlwZUlE
+      - type: 0x0062
+        opaque: Yg4BAIQAAAAAAAAAAAA=
+      - type: 0x00de
+        Signature: 0xff8a
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090001
+        data: "  If document is a Type or the child of a Type, the UNID of the Type.  "
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x0081
+      - type: 0x0083
+        PABID: 2
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090001
+        data: "F_AppName \t\t\t"
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff8a
+        Version: 0
+      - type: 0xfffe
+        opaque: |
+          /v9QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          AAAAAAAAAAAAAAAAAAAAAAAAAAA=
+      - type: 0xffb0
+        opaque: sP8UAAAAAAAEAAAAAAAAAAAAAAA=
+      - type: 0xff8a
+        opaque: |
+          iv88AYABAAUAAAAAAAAAAAAAAQAACLAAAAAAAAAACQBeAAAAsAABAFgABgB2VmFsdWUFAAsARl9Qcm9q
+          ZWN0SUQAAQAAAAsCrwAyACYABQALAEZfUHJvamVjdElEAAEACQBGX0FwcE5hbWUA4gKuAAwAAQAAAK4A
+          BAC1AwMABwAYABEACTFTMlM1UzZTOFMxMlMxNVMAAAAwAAUABgB2VmFsdWVaAa8AHAAKAAEAAACuABIA
+          BQAGAHZWYWx1Za4ABAC1AwMABwAOAAcACTBSN1M5UwBGX0FwcE5hbWVOYW1lIG9mIHlvdXIgTFNYIHBy
+          b2plY3QgZGlyZWN0b3J5IGFuZCB0aGUgTFNYIHNoYXJlZCBsaWJyYXJ5IHRoYXQgd2lsbCBiZSBjcmVh
+          dGVkLiAocmVxdWlyZWQpAA==
+      - type: 0xffe9
+        opaque: |
+          6f9sAF4AAAAAAAAAAABOYW1lIG9mIHlvdXIgTFNYIHByb2plY3QgZGlyZWN0b3J5IGFuZCB0aGUgTFNY
+          IHNoYXJlZCBsaWJyYXJ5IHRoYXQgd2lsbCBiZSBjcmVhdGVkLiAocmVxdWlyZWQp
+      - type: 0x0062
+        opaque: Yg4BAIQAAAAAAAAAAAA=
+      - type: 0x00de
+        Signature: 0xff8a
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090001
+        data: " (CFD) App/Project Name (pulled from parent based on F_ProjectID)"
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x0081
+      - type: 0x0083
+        PABID: 1
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090001
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x0081
+      - type: 0x0083
+        PABID: 1
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090001
+        data: "F_DerivedFromClassName \t\t"
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff8a
+        Version: 0
+      - type: 0xfffe
+        opaque: |
+          /v9QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          AAAAAAAAAAAAAAAAAAAAAAAAAAA=
+      - type: 0xff8a
+        opaque: |
+          iv8SBIoAAQUMQAAAAAAAAAAAAQAACOwB7AEAAAAAFgAAAAAA7AEHAGwAZQAgSW5wdXQgVHJhbnNsYXRp
+          b24gRm9ybXVsYSB1c2VkIGFzIENvbXB1dGVkIFZhbHVlIHNvIHRoYXQgaXQgZ2V0cyBwaWNrZWQgdXAg
+          YnkgQ29tcHV0ZVdpdGhGb3JtIGNhbGxzIAAHAAoAAwAJMVMAAQAYAAUAdkZvcm0ABQAEAEZvcm1eAQMA
+          BwAOAAgACTBSUjFTMlMIAIoABQAFAHZGb3JtAAEABQBjbGFzcwABAAwAY2xhc3Nfc2NyaXB0HwJ0Aq8A
+          WgBOAAEABwBEZXJpdmVkAAUACwBGX0NsYXNzVHlwZQAKAq8AJgAcAAUAEQBGX0NsYXNzRGVyaXZlVHlw
+          ZQCuAAoAKACuAAQAtQPCAa4ADAABAAAArgAEALUDAwAHAB4AFwAJMFI2UzExUzE2UzE3UzE5UzIxUzI1
+          UwABAB4ACAB2Q2xhc3NJRAUACQBGX0NsYXNzSUQAAwAHAA4ACAAJMFJSMVMyUwgAMgABAAAABQAIAHZD
+          bGFzc0lECgKvABgADAABAAAAwgGuAAwAAQAAAK4ABAC1AwMABwASAAwACTBSM1M0UzZTMTFTAAAqAAUA
+          CAB2Q2xhc3NJRAEAEQBGX0NsYXNzRGVyaXZlVHlwZQDiAgMABwAMAAYACTBSUjRT7AEHAGwAZQAgSW5w
+          dXQgVHJhbnNsYXRpb24gRm9ybXVsYSB1c2VkIGFzIENvbXB1dGVkIFZhbHVlIHNvIHRoYXQgaXQgZ2V0
+          cyBwaWNrZWQgdXAgYnkgQ29tcHV0ZVdpdGhGb3JtIGNhbGxzIAAHAAoAAwAJMVMAAQAYAAUAdkZvcm0A
+          BQAEAEZvcm1eAQMABwAOAAgACTBSUjFTMlMIAIoABQAFAHZGb3JtAAEABQBjbGFzcwABAAwAY2xhc3Nf
+          c2NyaXB0HwJ0Aq8AWgBOAAEABwBEZXJpdmVkAAUACwBGX0NsYXNzVHlwZQAKAq8AJgAcAAUAEQBGX0Ns
+          YXNzRGVyaXZlVHlwZQCuAAoAKACuAAQAtQPCAa4ADAABAAAArgAEALUDAwAHAB4AFwAJMFI2UzExUzE2
+          UzE3UzE5UzIxUzI1UwABAB4ACAB2Q2xhc3NJRAUACQBGX0NsYXNzSUQAAwAHAA4ACAAJMFJSMVMyUwgA
+          MgABAAAABQAIAHZDbGFzc0lECgKvABgADAABAAAAwgGuAAwAAQAAAK4ABAC1AwMABwASAAwACTBSM1M0
+          UzZTMTFTAAAqAAUACAB2Q2xhc3NJRAEAEQBGX0NsYXNzRGVyaXZlVHlwZQDiAgMABwAMAAYACTBSUjRT
+          Rl9EZXJpdmVkRnJvbUNsYXNzTmFtZQ==
+      - type: 0x0062
+        opaque: Yg4BAIQAAAAAAAAAAAA=
+      - type: 0x00de
+        Signature: 0xff8a
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090001
+        data: " If this object's class is derived from another class, the name of that class. "
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x0081
+      - type: 0x0083
+        PABID: 1
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090001
+        data: "F_DerivedFromClassUNID \t\t"
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff8a
+        Version: 0
+      - type: 0xfffe
+        opaque: |
+          /v9QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          AAAAAAAAAAAAAAAAAAAAAAAAAAA=
+      - type: 0xff8a
+        opaque: |
+          iv9iBIoAAQUMQAAAAAAAAAAAAQAACBQCFAIAAAAAFgAAAAAAFAIHAGwAZQAgSW5wdXQgVHJhbnNsYXRp
+          b24gRm9ybXVsYSB1c2VkIGFzIENvbXB1dGVkIFZhbHVlIHNvIHRoYXQgaXQgZ2V0cyBwaWNrZWQgdXAg
+          YnkgQ29tcHV0ZVdpdGhGb3JtIGNhbGxzIAAHAAoAAwAJMVMAAQAyABAAdkRlcml2ZWRGcm9tTmFtZQUA
+          FgBGX0Rlcml2ZWRGcm9tQ2xhc3NOYW1lAwAHAA4ACAAJMFJSMVMyUwgAOgABAAAABQAQAHZEZXJpdmVk
+          RnJvbU5hbWUKAq8AGAAMAAEAAADCAa4ADAABAAAArgAEALUDAwAHABIADAAJMFIzUzRTNlMxMVMBADwA
+          BAB2S2V5BQALAEZfUHJvamVjdElEAAUAEAB2RGVyaXZlZEZyb21OYW1lHwJeAQEAAQAuAIUCAwAHABIA
+          CwAJMFJSMVMyUzExUwABAGQABwB2TG9va3VwAAEAAAABAAAAHwIBAAAAAQAAAB8CAQAeAGxrcC1jbGFz
+          c2VzX3Byb2plY3RpZGNsYXNzbmFtZQUABAB2S2V5AAAAAAAAAADwPwIADAEAAAAAAACDBgMABwAcABUA
+          CTBSMVMyUzhTMTJTMTRTMTZTMThTAAAANAAFAAcAdkxvb2t1cABaAa8AHgAKAAEAAACuABQABQAHAHZM
+          b29rdXAArgAEALUDAwAHAA4ABwAJMFI3UzlTABQCBwBsAGUAIElucHV0IFRyYW5zbGF0aW9uIEZvcm11
+          bGEgdXNlZCBhcyBDb21wdXRlZCBWYWx1ZSBzbyB0aGF0IGl0IGdldHMgcGlja2VkIHVwIGJ5IENvbXB1
+          dGVXaXRoRm9ybSBjYWxscyAABwAKAAMACTFTAAEAMgAQAHZEZXJpdmVkRnJvbU5hbWUFABYARl9EZXJp
+          dmVkRnJvbUNsYXNzTmFtZQMABwAOAAgACTBSUjFTMlMIADoAAQAAAAUAEAB2RGVyaXZlZEZyb21OYW1l
+          CgKvABgADAABAAAAwgGuAAwAAQAAAK4ABAC1AwMABwASAAwACTBSM1M0UzZTMTFTAQA8AAQAdktleQUA
+          CwBGX1Byb2plY3RJRAAFABAAdkRlcml2ZWRGcm9tTmFtZR8CXgEBAAEALgCFAgMABwASAAsACTBSUjFT
+          MlMxMVMAAQBkAAcAdkxvb2t1cAABAAAAAQAAAB8CAQAAAAEAAAAfAgEAHgBsa3AtY2xhc3Nlc19wcm9q
+          ZWN0aWRjbGFzc25hbWUFAAQAdktleQAAAAAAAAAA8D8CAAwBAAAAAAAAgwYDAAcAHAAVAAkwUjFTMlM4
+          UzEyUzE0UzE2UzE4UwAAADQABQAHAHZMb29rdXAAWgGvAB4ACgABAAAArgAUAAUABwB2TG9va3VwAK4A
+          BAC1AwMABwAOAAcACTBSN1M5UwBGX0Rlcml2ZWRGcm9tQ2xhc3NVTklE
+      - type: 0x0062
+        opaque: Yg4BAIQAAAAAAAAAAAA=
+      - type: 0x00de
+        Signature: 0xff8a
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090001
+        data: " If this object's class is derived from another class, and the class Document exists in this database, the UNID of that document."
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x0081
+      - type: 0x0083
+        PABID: 1
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090001
+        data: "dspDataTypes \t\t\t"
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff8a
+        Version: 0
+      - type: 0xfffe
+        opaque: |
+          /v9QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          AAAAAAAAAAAAAAAAAAAAAAAAAAA=
+      - type: 0xff8a
+        opaque: |
+          iv+4AYABAQUMQAAAAAAAAAAAAQAACIgBAAAAAAAADAAAAAAAiAEKAAQAAQASAAYAdlZhbHVl+wAxAQMA
+          BwAMAAUACTFTMlMACAA2AAEAAAAFAAYAdlZhbHVlCgKvAB4ACgABAAAArgAUAAUABgB2VmFsdWXCAa4A
+          BAC1AwMABwASAAsACTBSM1M0UzZTOFMAAQBsAAkAdlZpZXdOYW1lAAUABABGb3JtAQAHAF9zY3JpcHQA
+          SAKvAEIAHgABABQAbGtwLWRhdGF0eXBlc19zY3JpcHSuACQAAQAXAGxrcC1kYXRhdHlwZXNfZXh0ZW5z
+          aW9uAK4ABAC1AwMABwAWABAACTBSUjFTMlM4UzExUzEzUwEAQAAHAHZMb29rdXAAAQAAAAEABwBSZUNh
+          Y2hlAB8CAQAAAAUACQB2Vmlld05hbWUAAAAAAAAAAAAAQKoEAwAHABYADwAJMFIxUzJTOFMxMFMxMlMA
+          AAA2AAUABwB2TG9va3VwAFoBrwAgAAoAAQAAAK4AFgAFAAcAdkxvb2t1cABeAa4ABAC1AwMABwAOAAcA
+          CTBSN1M5UwBkc3BEYXRhVHlwZXM=
+      - type: 0x0062
+        opaque: Yg4BAIQAAAAAAAAAAAA=
+      - type: 0x00de
+        Signature: 0xff8a
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090001
+        data: " (CFD) - All Data Types"
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x0081
+      - type: 0x0083
+        PABID: 1
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090001
+        data: "dspScalarDataTypes  \t\t"
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff8a
+        Version: 0
+      - type: 0xfffe
+        opaque: |
+          /v9QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          AAAAAAAAAAAAAAAAAAAAAAAAAAA=
+      - type: 0xff8a
+        opaque: |
+          iv++AYABAQUMQAAAAAAAAAAAAQAACIgBAAAAAAAAEgAAAAAAiAEKAAQAAQASAAYAdlZhbHVl+wAxAQMA
+          BwAMAAUACTFTMlMACAA2AAEAAAAFAAYAdlZhbHVlCgKvAB4ACgABAAAArgAUAAUABgB2VmFsdWXCAa4A
+          BAC1AwMABwASAAsACTBSM1M0UzZTOFMAAQBsAAkAdlZpZXdOYW1lAAUABABGb3JtAQAHAF9zY3JpcHQA
+          SAKvAEIAHgABABQAbGtwLWRhdGF0eXBlc19zY3JpcHSuACQAAQAXAGxrcC1kYXRhdHlwZXNfZXh0ZW5z
+          aW9uAK4ABAC1AwMABwAWABAACTBSUjFTMlM4UzExUzEzUwEAQAAHAHZMb29rdXAAAQAAAAEABwBSZUNh
+          Y2hlAB8CAQAAAAUACQB2Vmlld05hbWUAAAAAAAAAAAAQQKoEAwAHABYADwAJMFIxUzJTOFMxMFMxMlMA
+          AAA2AAUABwB2TG9va3VwAFoBrwAgAAoAAQAAAK4AFgAFAAcAdkxvb2t1cABeAa4ABAC1AwMABwAOAAcA
+          CTBSN1M5UwBkc3BTY2FsYXJEYXRhVHlwZXM=
+      - type: 0x0062
+        opaque: Yg4BAIQAAAAAAAAAAAA=
+      - type: 0x00de
+        Signature: 0xff8a
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090001
+        data: " (CFD) - Scalar Data Types "
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x0081
+      - type: 0x0083
+        PABID: 1
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090001
+        data: "dspNotesDataTypes \t\t"
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff8a
+        Version: 0
+      - type: 0xfffe
+        opaque: |
+          /v9QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          AAAAAAAAAAAAAAAAAAAAAAAAAAA=
+      - type: 0xff8a
+        opaque: |
+          iv9GAYABAQUMQAAAAAAAAAAAAQAACBABAAAAAAAAEQAAAAAAEAEKAAQAAQASAAYAdlZhbHVl+wAxAQMA
+          BwAMAAUACTFTMlMACAA2AAEAAAAFAAYAdlZhbHVlCgKvAB4ACgABAAAArgAUAAUABgB2VmFsdWXCAa4A
+          BAC1AwMABwASAAsACTBSM1M0UzZTOFMAAQBKAAcAdkxvb2t1cAABAAAAAQAHAFJlQ2FjaGUAHwIBAAAA
+          AQATAGxrcC1kYXRhdHlwZXNfbm90ZXMAAAAAAAAAAAAAQKoEAwAHABYAEAAJMFJSMVMyUzhTMTBTMTJT
+          AAA2AAUABwB2TG9va3VwAFoBrwAgAAoAAQAAAK4AFgAFAAcAdkxvb2t1cABeAa4ABAC1AwMABwAOAAcA
+          CTBSN1M5UwBkc3BOb3Rlc0RhdGFUeXBlcwA=
+      - type: 0x0062
+        opaque: Yg4BAIQAAAAAAAAAAAA=
+      - type: 0x00de
+        Signature: 0xff8a
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090001
+        data: " (CFD) - Notes (NSLX) Data Types "
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x0081
+      - type: 0xff82
+        FirstLineLeftMargin: 1440
+        Flags: 0x8100
+        Flags2: 0x8094
+        JustifyMode: 0
+        LeftMargin: 1440
+        LineSpacing: 0
+        PABID: 4
+        ParagraphSpacingAfter: 0
+        ParagraphSpacingBefore: 0
+        RightMargin: 0
+        Tab:
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+        TabTypes: 0x00000000
+        Tabs: 0
+        data:
+          - 1440
+          - 12
+          - 1440
+          - 12
+          - 12240
+          - 100
+          - 0x00000001
+          - 0x00000006
+      - type: 0x0083
+        PABID: 4
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090001
+        data: "dspProjectIDs\t\t\t"
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff8a
+        Version: 0
+      - type: 0xfffe
+        opaque: |
+          /v9QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          AAAAAAAAAAAAAAAAAAAAAAAAAAA=
+      - type: 0xff8a
+        opaque: |
+          iv/iA4ABAQUMQAAAAAAAAAAAAQAACLADAAAAAAAADQAAAAAAsAMKAAQAAQASAAYAdlZhbHVl+wAxAQMA
+          BwAMAAUACTFTMlMACAA2AAEAAAAFAAYAdlZhbHVlCgKvAB4ACgABAAAArgAUAAUABgB2VmFsdWXCAa4A
+          BAC1AwMABwASAAsACTBSM1M0UzZTOFMABwA2ADAAIEdldCBhbnkgZGVjbGFyZWQgbGlicmFyaWVzLCBM
+          U1hzLCBvciBFeHRlcm5hbHMgBwAMAAYACTBSUjFTAQAkAAsAdlByb2plY3RJRHMABQALAEZfUHJvamVj
+          dElEAAMABwAOAAcACTBSMVMyUwABACIACgB2UmVtYWluaW5nBQALAHZQcm9qZWN0SURzAAMABwAOAAcA
+          CTBSMVMyUwABABoACAB2Q291bnRlcgAAAAAAAAAA8D8DAAcADgAHAAkwUjFTMlMACACoAQEAAAAFAAoA
+          dlJlbWFpbmluZwsCBQAHAHZOZXdJRHMABQAKAHZSZW1haW5pbmcBAAMAdklEAAUAAwB2SUQAAQAUAFJl
+          ZmVyZW5jZWRQcm9qZWN0SURz4gL7AzcBXgGrAQkCBQAKAHZSZW1haW5pbmcFAAoAdlJlbWFpbmluZwUA
+          BwB2TmV3SURzAB8CXgGrAQkCBQAHAHZUb0xpc3QABQAHAHZOZXdJRHMAAQADAHZJRAABAAAA+wM3AQkC
+          BQAKAHZSZW1haW5pbmcFAAoAdlJlbWFpbmluZwUACwB2UHJvamVjdElEcwAFAAcAdlRvTGlzdACNA14B
+          CQIFAAsAdlByb2plY3RJRHMABQALAHZQcm9qZWN0SURzAAUABwB2TmV3SURzAB8CXgGrAQkCBQAIAHZD
+          b3VudGVyBQAIAHZDb3VudGVyAAAAAAAAAADwPyICCQIFAAoAdlJlbWFpbmluZwUACAB2Q291bnRlcgAA
+          AAAAAAAAOEAPAq8AIAAKAAEAAACuABYABQAKAHZSZW1haW5pbmeuAAQAtQMJAvsIRgEDAAcAfAB1AAkw
+          UjNTNFM2UlQ3UzhTMTZTMThTMjJTMjhSVDI5UzMwUzQwUlQ0MVM0MlM0NlM0OFM1MVJUNTJTNTNTNTlT
+          NjFTNjVSVDY2UzY3Uzc3UlJUNzhTNzlTODBTODFTODNSVDg0Uzg1Uzg4Uzg5UzkxUzkzUzk1UgAHACQA
+          HQAgcmV0dXJuIHNvcnRlZCB1bmlxdWUgdmFsdWVzIAAHAAwABgAJMFJSMVMAABoABQALAHZQcm9qZWN0
+          SURzAPsBPAEDAAcACgADAAkwUgBkc3BQcm9qZWN0SURzAA==
+      - type: 0x0062
+        opaque: Yg4BAIQAAAAAAAAAAAA=
+      - type: 0x00de
+        Signature: 0xff8a
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090001
+        data: " (CFD) - ProjectID and ids of all referenced Libraries, LSXs, and External Libraries (within this database) "
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x0081
+      - type: 0x0083
+        PABID: 4
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090001
+        data: "classList \t\t\t\t"
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff8a
+        Version: 0
+      - type: 0xfffe
+        opaque: |
+          /v9QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          AAAAAAAAAAAAAAAAAAAAAAAAAAA=
+      - type: 0xff8a
+        opaque: |
+          iv9gBIABAQUMQAAAAAAAAAAAAQAACDIEAAAAAAAACQAAAAAAMgQKAAQAAQASAAYAdlZhbHVl+wAxAQMA
+          BwAMAAUACTFTMlMACAA2AAEAAAAFAAYAdlZhbHVlCgKvAB4ACgABAAAArgAUAAUABgB2VmFsdWXCAa4A
+          BAC1AwMABwASAAsACTBSM1M0UzZTOFMABwBEAD0AIEdldCB0aGUgY2xhc3NlcyAvIHR5cGVzIGV4cGxp
+          Y2l0aWx5IGZvciB0aGUgY3VycmVudCBwcm9qZWN0IAAHAAwABgAJMFJSMVMBACIABQB2VmlldwABABAA
+          Y2xhc3Nlc0J5UHJvamVjdAMABwAOAAcACTBSMVMyUwABABYABAB2Q29sAAAAAAAAAAAAQAMABwAOAAcA
+          CTBSMVMyUwABACIACgB2UHJvamVjdElEBQALAEZfUHJvamVjdElEAAMABwAOAAcACTBSMVMyUwABAE4A
+          BwB2TG9va3VwAAEAAAABAAcATm9DYWNoZQAfAgEAAAABAAAAHwIFAAUAdlZpZXcABQAKAHZQcm9qZWN0
+          SUQFAAQAdkNvbIMFAwAHABgAEgAJMFIxUzJTOFMxMlMxNFMxNlMBAEYACAB2Q2xhc3NlcwUABwB2TG9v
+          a3VwAFoBrwAeAAoAAQAAAK4AFAAFAAcAdkxvb2t1cACuAAQAtQNeAasB+wE8AQMABwAUAA0ACTBSMVMy
+          UzE1UzE3UwAHAC4AJwAgQmFpbCBvdXQgaWYgbm8gb3RoZXIgUHJvamVjdElEcyBleGlzdCAABwAMAAYA
+          CTBSUjFTAQA8AAsAdlByb2plY3RJRHMABQANAGRzcFByb2plY3RJRHMABQAKAHZQcm9qZWN0SUQBAAAA
+          jQNeAQMABwASAAwACTBSMVMyUzhTMTBTCAA+AAEAAAAFAAsAdlByb2plY3RJRHMACgKvACAAFAAFAAgA
+          dkNsYXNzZXPCAa4ADAABAAAArgAEALUDAwAHABIADAAJMFIzUzRTNlMxMVMHADoAMwAgR2V0IHRoZSBj
+          bGFzc2VzIC8gdHlwZXMgZm9yIGFsbCBvdGhlciBQcm9qZWN0SURzICAABwAMAAYACTBSUjFTAQCgAA0A
+          dk90aGVyQ2xhc3NlcwAFAAsAdlByb2plY3RJRHMAAQADAHZJRAAFAAcAdkxvb2t1cAABAAAAAQAAAB8C
+          AQAAAAEAAAAfAgUABQB2VmlldwAFAAMAdklEAAUABAB2Q29sgwUJAgUABwB2TG9va3VwAFoBrwAeAAoA
+          AQAAAK4AFAAFAAcAdkxvb2t1cACuAAQAtQOzAvsDNwEDAAcAPAA1AAkwUjFTMlM2UzhSVDEwUlRUMTFT
+          MTJTMThTMjJTMjRTMjZTMjlSVFQzNlMzOFM0MFJUNDFSAAAALgAFAAgAdkNsYXNzZXMFAA0Adk90aGVy
+          Q2xhc3NlcwAfAl4BqwH7ATwBAwAHAAoABAAJMFJSY2xhc3NMaXN0AA==
+      - type: 0x0062
+        opaque: Yg4BAIQAAAAAAAAAAAA=
+      - type: 0x00de
+        Signature: 0xff8a
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090001
+        data: " (CFD) - pulled from keywords; list of platforms"
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x0081
+      - type: 0x0083
+        PABID: 1
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090001
+        data: "dspDataTypesClasses \t\t"
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff8a
+        Version: 0
+      - type: 0xfffe
+        opaque: |
+          /v9QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          AAAAAAAAAAAAAAAAAAAAAAAAAAA=
+      - type: 0xff8a
+        opaque: |
+          iv92AIABAQUMQAAAAAAAAAAAAQAACD4AAAAAAAAAEwAAAAAAPgAKAAQAAAAsAAUADABkc3BEYXRhVHlw
+          ZXMFAAkAY2xhc3NMaXN0AB8CXgH7ATwBAwAHAAwABQAJMFMwRQBkc3BEYXRhVHlwZXNDbGFzc2VzAA==
+      - type: 0x0062
+        opaque: Yg4BAIQAAAAAAAAAAAA=
+      - type: 0x00de
+        Signature: 0xff8a
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090001
+        data: " (CFD) - Data Types and Classes"
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x0081
+      - type: 0x0083
+        PABID: 1
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090001
+        data: "dspDataTypesClassesNonScalar \t"
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff8a
+        Version: 0
+      - type: 0xfffe
+        opaque: |
+          /v9QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          AAAAAAAAAAAAAAAAAAAAAAAAAAA=
+      - type: 0xff8a
+        opaque: |
+          iv8IAYABAQUMQAAAAAAAAAAAAQAACMgAAAAAAAAAHAAAAAAAyAAKAAQAAQAmAAcAdlNlYXJjaAAFABIA
+          ZHNwU2NhbGFyRGF0YVR5cGVzAwAHAAwABQAJMVMyUwABACoACAB2UmVwbGFjZQUABwB2U2VhcmNoAAEA
+          AQB4AAEAAAD7AzcBAwAHABIACwAJMFIxUzJTNlM4UwAAAEYABQAMAGRzcERhdGFUeXBlcwUABwB2U2Vh
+          cmNoAAUACAB2UmVwbGFjZY0DBQAJAGNsYXNzTGlzdAAfAl4B+wE8AQMABwAOAAgACTBSOFMxMFNkc3BE
+          YXRhVHlwZXNDbGFzc2VzTm9uU2NhbGFy
+      - type: 0x0062
+        opaque: Yg4BAIQAAAAAAAAAAAA=
+      - type: 0x00de
+        Signature: 0xff8a
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090001
+        data: " (CFD) - Data Types and Classes with Scalars Removed"
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x0081
+      - type: 0x0083
+        PABID: 1
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090001
+        data: "chxClassDeriveType \t\t"
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff8a
+        Version: 0
+      - type: 0xfffe
+        opaque: |
+          /v9QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          AAAAAAAAAAAAAAAAAAAAAAAAAAA=
+      - type: 0xff8a
+        opaque: |
+          iv9yAYABAQUMQAAAAAAAAAAAAQAACDwBAAAAAAAAEgAAAAAAPAEKAAQAAQAwAAgAdkRlZmF1bHQFABwA
+          ZHNwRGF0YVR5cGVzQ2xhc3Nlc05vblNjYWxhcgMABwAMAAUACTFTMlMACAA+AAUABABGb3JtAQAHAF9z
+          Y3JpcHQASAKvACAACgABAAAArgAWAAUACAB2RGVmYXVsdMIBrgAEALUDAwAHABAACgAJMFI2UzlTMTFT
+          AQAmAAcAdlNlYXJjaAAFABEAZHNwTm90ZXNEYXRhVHlwZXMAAwAHAA4ACAAJMFJSMVMyUwEAKgAIAHZS
+          ZXBsYWNlBQAHAHZTZWFyY2gAAQABAHgAAQAAAPsDNwEDAAcAEgALAAkwUjFTMlM2UzhTAAAALgAFAAgA
+          dkRlZmF1bHQFAAcAdlNlYXJjaAAFAAgAdlJlcGxhY2WNA14BAwAHAA4ABwAJMFI2UzhTAGNoeENsYXNz
+          RGVyaXZlVHlwZQ==
+      - type: 0x0062
+        opaque: Yg4BAIQAAAAAAAAAAAA=
+      - type: 0x00de
+        Signature: 0xff8a
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090001
+        data: " (CFD) - Choices for the F_ClassDeriveType field."
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090001
+        data: " "
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x0081
+      - type: 0x0083
+        PABID: 1
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090101
+        data: "=================================================="
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x0081
+      - type: 0x0083
+        PABID: 1
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090101
+        data: " END Subform hiddenFields"
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+      - type: 0x0081
+      - type: 0x0083
+        PABID: 1
+      - type: 0x00dd
+        Signature: 0xff85
+        Version: 0
+      - type: 0xff85
+        FontID: 0x8090101
+        data: "=================================================="
+      - type: 0x00d2
+        Color:
+          Flags: 0x0001
+          rgb: 0x008000
+      - type: 0x00de
+        Signature: 0xff85
+        Version: 0
+  - name: $HTMLCode
+    signed: true
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: X/8QAAIADwAHAAAAAAAAAA==
+  - name: $Info
+    signed: true
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+remaining: []

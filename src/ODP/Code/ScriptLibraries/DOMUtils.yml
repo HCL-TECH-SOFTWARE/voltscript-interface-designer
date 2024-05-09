@@ -1,0 +1,331 @@
+---
+class: 512
+flags: 0x2000
+unid: OF212467D79FAB6DEF-ON003763AE862588C6
+items:
+  - name: $Comment
+    type: text
+    data: Utility functions used in XML processing.
+  - name: $DesignerVersion
+    type: text
+    data: 8.5.2
+    signed: true
+  - name: $Flags
+    type: text
+    data: s34Q
+  - name: $PublicAccess
+    type: text
+    data: "1"
+    signed: true
+  - name: $ScriptLib
+    type: text
+    data: |
+      '++LotusScript Development Environment:2:5:(Options):0:74
+      %REM
+      	Library DOMUtils
+      	Created Mar 8, 2010 by Andre Guirard/Cambridge/IBM
+      	Description: Various useful functions for working with the built-in DOM
+      		parser of LotusScript. Function names all start with DU_ to help in
+      		context assist.
+      %END REM
+      %REM
+      	**********************************************************************
+      	**********************************************************************
+      		
+          Copyright 2010 IBM Corporation
+      
+         	Licensed under the Apache License, Version 2.0 (the "License");
+          you may not use this file except in compliance with the License.
+          You may obtain a copy of the License at
+      
+              http://www.apache.org/licenses/LICENSE-2.0
+      
+          Unless required by applicable law or agreed to in writing, software
+          distributed under the License is distributed on an "AS IS" BASIS,
+          WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+          See the License for the specific language governing permissions and
+         	limitations under the License.
+      
+      	**********************************************************************
+      	**********************************************************************
+      %END REM
+      Option Public
+      Option Declare
+      
+      
+      
+      
+      '++LotusScript Development Environment:2:5:(Forward):0:1
+      Declare Function StreamToText(streamIn As NotesStream, ByVal chrset$)
+      Declare Function DU_GetDocNode(node As NotesDOMNode) As NotesDOMDocumentNode
+      Declare Function DU_GetNextElement(elCur As NotesDOMElementNode) As NotesDOMElementNode
+      Declare Function TextToStream(szText$, ByVal chrset$) As NotesStream
+      Declare Function DU_GetChildNamed(ByVal target$, dome As NotesDOMElementNode) As NotesDOMElementNode
+      Declare Function DU_GetChildWithAttr(elParent As NotesDOMElementNode, ByVal targetElement$, ByVal attrName$, ByVal attrValue$, ByVal flags%) As NotesDOMElementNode
+      Declare Function DU_GetChildOfType(elParent As NotesDOMElementNode, seekType As Long) As NotesDOMNode
+      Declare Sub Base64ToBinary(strBase64$, streamOut As NotesStream)
+      Declare Function DU_GetTextChild(el As NotesDOMElementNode) As NotesDOMTextNode
+      Declare Function DU_GetTextFromNode(dome As NotesDOMElementNode) As String
+      Declare Function StreamToBase64(streamIn As NotesStream) As String
+      
+      '++LotusScript Development Environment:2:5:(Declarations):0:2
+      
+      '++LotusScript Development Environment:2:1:StreamToText:7:8
+      %REM
+      	Function StreamToText
+      	Description: Convert a NotesStream to text in a specified character set.
+      		The default is to interpret NotesStreams as Unicode unless they are
+      		attached to a file; this lets you override that. 
+      %END REM
+      Function StreamToText(streamIn As NotesStream, ByVal chrset$)
+      	Dim session As New NotesSession
+      	Dim db As NotesDatabase
+      	Dim doc As NotesDocument
+      	Dim mime As NotesMIMEEntity
+      	
+      	Set db = session.CurrentDatabase
+      	Set doc = db.CreateDocument
+      	Set mime = doc.CreateMIMEEntity("Body")
+      	streamIn.Position = 0
+      	Call mime.SetContentFromBytes(streamIn, "text/plain; charset=" & chrset, ENC_NONE)
+      	StreamToText = mime.ContentAsText
+      End Function
+      
+      
+      '++LotusScript Development Environment:2:1:DU_GetDocNode:6:8
+      %REM
+      	Function DU_GetDocNode
+      	Description: Find the DOM "document" node from which a given node was derived.
+      		The doc node is needed to create new nodes.
+      %END REM
+      Function DU_GetDocNode(node As NotesDOMNode) As NotesDOMDocumentNode
+      	Dim par As NotesDOMNode
+      	Set par = node
+      	Do Until par.Nodetype = DOMNODETYPE_DOCUMENT_NODE
+      		Set par = par.Parentnode
+      	Loop
+      	Set DU_GetDocNode = par
+      End Function
+      
+      
+      
+      
+      '++LotusScript Development Environment:2:1:DU_GetNextElement:6:8
+      %REM
+      	Function DU_GetNextElement
+      	Description: Given a DOM element, find its next sibling that's an element
+      		(in other words, skip over text and other nodes).
+      %END REM
+      Function DU_GetNextElement(elCur As NotesDOMElementNode) As NotesDOMElementNode
+      	Dim nTmp As NotesDOMNode
+      	Set nTmp = elCur.Nextsibling
+      	Do Until nTmp.isnull
+      		If nTmp.Nodetype = DOMNODETYPE_ELEMENT_NODE Then
+      			Set DU_GetNextElement = nTmp
+      			Exit function
+      		End If
+      		Set nTmp = nTmp.Nextsibling
+      	Loop 
+      End Function
+      
+      '++LotusScript Development Environment:2:1:TextToStream:8:8
+      %REM
+      	Function TextToStream
+      	Description: Produce a stream in a specified character set without opening a file.
+      		Unfortunately the NotesStream.charset attribute will still be the default Unicode,
+      		but the bytes in the stream will be correct. At some point we may be able to do
+      		this by assigning the Charset property and then adding text, but not yet.
+      %END REM
+      Function TextToStream(szText$, ByVal chrset$) As NotesStream
+      	Dim session As New NotesSession
+      	Dim streamTmp As NotesStream, doc As NotesDocument, mime As NotesMIMEEntity
+      	Set streamTmp = session.Createstream()
+      	streamTmp.Writetext szText
+      	Set doc = session.Currentdatabase.Createdocument
+      	Set mime = doc.Createmimeentity("Body")
+      	mime.Setcontentfromtext streamTmp, "text/plain; charset=" & chrset, ENC_NONE
+      	Set TextToStream = session.Createstream
+      	mime.Getcontentasbytes TextToStream, false
+      End Function
+      
+      '++LotusScript Development Environment:2:1:DU_GetChildNamed:6:8
+      %REM
+      	Function DU_GetChildNamed
+      	Description: given a name and an element, find the first child of that element with the
+      		given tag name.
+      %END REM
+      Function DU_GetChildNamed(ByVal target$, dome As NotesDOMElementNode) As NotesDOMElementNode
+      	Dim domn As NotesDOMNode
+      	Set domn = dome.Firstchild
+      	Do Until domn.Isnull
+      		If domn.Nodetype = DOMNODETYPE_ELEMENT_NODE Then
+      			If domn.Nodename = target Then
+      				Set DU_GetChildNamed = domn
+      				Exit Function
+      			End If
+      		End If
+      		Set domn = domn.Nextsibling
+      	Loop
+      End Function
+      
+      
+      
+      
+      '++LotusScript Development Environment:2:1:DU_GetChildWithAttr:15:8
+      %REM
+      	Function DU_GetChildWithAttr
+      	Description: Find a child DOM node with an attribute that has a particular value.
+      		Does not recurse into the tree; looking only for immediate descendants. 
+      	Parameters:
+      		elParent: node whose children you want to search.
+      		targetElement: element name of desired child node.
+      		attrName: attribute name you want to check.
+      		attrValue: attribute value of element you're looking for.
+      		flags: string-matching flags to compare attribute, e.g. 1 for case insensitive.
+      	Example:
+      		Set titleItem = DU_GetChildWithAttr(elView, "item", "name", "$title", 1)
+      		finds the first <item> element where name='$title' (case insensitive). 
+      %END REM
+      Function DU_GetChildWithAttr(elParent As NotesDOMElementNode, ByVal targetElement$, ByVal attrName$, ByVal attrValue$, ByVal flags%) As NotesDOMElementNode
+      	Dim node As NotesDOMNode, elTmp As NotesDOMElementNode
+      	Set node = elParent.Firstchild
+      	Do Until node.Isnull
+      		If node.Nodetype = DOMNODETYPE_ELEMENT_NODE Then
+      			If node.Nodename = targetElement Then
+      				Set elTmp = node
+      				If StrComp(elTmp.Getattribute(attrName), attrValue, flags) = 0 Then
+      					Set DU_GetChildWithAttr = elTmp
+      					Exit Function
+      				End If
+      			End If
+      		End If
+      		Set node = node.Nextsibling
+      	Loop
+      End Function
+      
+      
+      
+      
+      
+      '++LotusScript Development Environment:2:1:DU_GetChildOfType:14:8
+      %REM
+      	Function DU_GetChildOfType
+      	Description: Get the first child of an element node that has a particular type.
+      	Arguments:
+      		elParent: node whose child we seek.
+      		seekType: the node type we want. Legal values:
+      			DOMNODETYPE_ELEMENT_NODE (1) 
+      			DOMNODETYPE_TEXT_NODE (3) 
+      			DOMNODETYPE_CDATASECTION_NODE (4) 
+      			DOMNODETYPE_COMMENT_NODE (8) 
+      			...and others but you're unlikely to use them.
+      	Returns: the matching node or Nothing if there was no match.	
+      %END REM
+      Function DU_GetChildOfType(elParent As NotesDOMElementNode, seekType As Long) As NotesDOMNode
+      	Dim node As NotesDOMNode
+      	Set node = elParent.Firstchild
+      	Do Until node.isnull
+      		If node.Nodetype = seekType Then
+      			Set DU_GetChildOfType = node
+      			Exit function
+      		End If
+      		Set node = node.Nextsibling
+      	Loop
+      End Function
+      
+      '++LotusScript Development Environment:2:2:Base64ToBinary:7:8
+      %REM
+      	Sub Base64ToBinary
+      	Description: Given a string of base64-encoded data, write into a binary stream we are passed.
+      		This is done rather than creating the stream here and returning it, so that you can
+      		stream directly into a file if you choose.
+      %END REM
+      Sub Base64ToBinary(strBase64$, streamOut As NotesStream)
+      	' Given a string of base64 encoded data, this routine decodes and writes the original binary data into a NotesStream
+      	Dim doc As NotesDocument
+      	Dim mime As NotesMIMEEntity
+      	Dim streamIn As NotesStream
+      	Dim db As NotesDatabase
+      	Dim session As New NotesSession
+      	
+      	Set db = session.CurrentDatabase
+      	Set doc = db.CreateDocument
+      	Set mime = doc.CreateMIMEEntity("Body")	' the mime classes already know how to do this conversion,
+      	Set streamIn = session.CreateStream  
+      	Call streamIn.WriteText(strBase64)
+      	streamIn.Position = 0
+      	Call mime.SetContentFromText(streamIn, "binary", ENC_BASE64)
+      	Call mime.GetContentAsBytes(streamOut, True) ' decode as you stream out the data.
+      End Sub
+      
+      
+      '++LotusScript Development Environment:2:1:DU_GetTextChild:5:8
+      %REM
+      	Function DU_GetTextChild
+      	Description: Return the first DOM text node which is a child of the specified node. 
+      %END REM
+      Function DU_GetTextChild(el As NotesDOMElementNode) As NotesDOMTextNode
+      	Dim domn As NotesDOMNode
+      	Set domn = el.FirstChild
+      	Do Until domn.IsNull
+      		If domn.NodeType = DOMNODETYPE_TEXT_NODE Then
+      			Set DU_GetTextChild = domn
+      			Exit Function
+      		End If
+      		Set domn = domn.NextSibling
+      	Loop
+      End Function
+      
+      '++LotusScript Development Environment:2:1:DU_GetTextFromNode:6:8
+      %REM
+      	Function DU_GetTextFromNode
+      	Description: Passed a DOM element node that has a text node as one of its children,
+      		return the text from that node.
+      %END REM
+      Function DU_GetTextFromNode(dome As NotesDOMElementNode) As String
+      	' 
+      	Dim domn As NotesDOMNode
+      	Set domn = dome.FirstChild
+      	Do Until domn.IsNull
+      		If domn.NodeType = DOMNODETYPE_TEXT_NODE Then
+      			DU_GetTextFromNode = domn.NodeValue
+      			Exit Function
+      		End If
+      		Set domn = domn.NextSibling
+      	Loop
+      End Function
+      
+      
+      '++LotusScript Development Environment:2:1:StreamToBase64:6:8
+      %REM
+      	Function StreamToBase64
+      	Description: Convert a binary NotesStream to a string of Base64 data.
+      		The output can be used as part of DXL data for importing.
+      %END REM
+      Function StreamToBase64(streamIn As NotesStream) As String
+      	On Error GoTo theOldWay
+      	' ReadEncoded function is not documented. In case it doesn't work have a backup.
+      	StreamToBase64 = Replace(streamIn.ReadEncoded(ENC_BASE64, 76), Chr$(13), "")
+      	Exit Function
+      	
+      theOldWay:
+      	Dim session As New NotesSession
+      	Dim db As NotesDatabase
+      	Dim doc As NotesDocument
+      	Dim mime As NotesMIMEEntity
+      	
+      	Set db = session.CurrentDatabase
+      	Set doc = db.CreateDocument
+      	Set mime = doc.CreateMIMEEntity("Body")
+      	streamIn.Position = 0
+      	Call mime.SetContentFromBytes(streamIn, "image/gif", ENC_NONE)
+      	mime.EncodeContent(ENC_BASE64)
+      	StreamToBase64 = Replace(mime.ContentAsText, Chr$(13), "")
+      End Function
+    signed: true
+    nonsummary: true
+  - name: $TITLE
+    type: text
+    data: DOMUtils
+    signed: true
+remaining: []

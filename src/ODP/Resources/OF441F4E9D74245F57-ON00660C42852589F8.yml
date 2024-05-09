@@ -1,0 +1,34 @@
+---
+class: 1
+flags: 0x0100
+unid: OF441F4E9D74245F57-ON00660C42852589F8
+items:
+  - name: Form
+    type: text
+    data: Skeleton
+  - name: FormId
+    type: number
+    data: 56
+  - name: FormName
+    type: text
+    data: SLN_FILE
+  - name: TheCodeAbstract
+    type: text
+    data: "Microsoft Visual Studio Solution File, Format Version 9.00"
+  - name: TheCode
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: |
+      hf9DAAEAAApNaWNyb3NvZnQgVmlzdWFsIFN0dWRpbyBTb2x1dGlvbiBGaWxlLCBGb3JtYXQgVmVyc2lv
+      biA5LjAwACCF/x0AAQAACiMgVmlzdWFsIFN0dWRpbyAyMDA1ACCF/zgAAQAAClByb2plY3QoInslMyV9
+      IikgPSAiJTElIiwgIiUxJS52Y3Byb2oiLCAieyUyJX0iAIX/EwABAAAKRW5kUHJvamVjdAAghf8PAAEA
+      AApHbG9iYWwAIIX/RQABAAAKCUdsb2JhbFNlY3Rpb24oU29sdXRpb25Db25maWd1cmF0aW9uUGxhdGZv
+      cm1zKSA9IHByZVNvbHV0aW9uACCF/yQAAQAACgkJRGVidWd8V2luMzIgPSBEZWJ1Z3xXaW4zMgCF/xoA
+      AQAACglFbmRHbG9iYWxTZWN0aW9uAIX/RQABAAAKCUdsb2JhbFNlY3Rpb24oUHJvamVjdENvbmZpZ3Vy
+      YXRpb25QbGF0Zm9ybXMpID0gcG9zdFNvbHV0aW9uACCF/zQAAQAACgkJeyUyJX0uRGVidWd8V2luMzIu
+      QWN0aXZlQ2ZnID0gRGVidWd8V2luMzIAhf8yAAEAAAoJCXslMiV9LkRlYnVnfFdpbjMyLkJ1aWxkLjAg
+      PSBEZWJ1Z3xXaW4zMgCF/xoAAQAACglFbmRHbG9iYWxTZWN0aW9uAIX/OQABAAAKCUdsb2JhbFNlY3Rp
+      b24oU29sdXRpb25Qcm9wZXJ0aWVzKSA9IHByZVNvbHV0aW9uACCF/yMAAQAACgkJSGlkZVNvbHV0aW9u
+      Tm9kZSA9IEZBTFNFACCF/xoAAQAACglFbmRHbG9iYWxTZWN0aW9uAIX/EQABAAAKRW5kR2xvYmFsIA==
+remaining: []

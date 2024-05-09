@@ -1,0 +1,56 @@
+---
+class: 8
+flags: 0x2000
+unid: OF8083B17F03936480-ON006E865C85258A43
+items:
+  - name: $Collation
+    type_num: 2
+    type: opaque
+    opaque: FQABAABEAGYAAAAIAERhdGFUeXBl
+  - name: $Comment
+    type: text
+    data: ""
+    signed: true
+  - name: $DesignerVersion
+    type: text
+    data: 8.5.3
+  - name: $Flags
+    type: text
+    data: Y
+  - name: $Formula
+    type: formula
+    data: " (Form = \"DataType\")"
+    opaque: |
+      vgACAGQAAgAkMQUACABDYXRlZ29yeQEAAQAxAAoCrwBEABAAAQAGAFNjYWxhcq4ANAAFAAgAQ2F0ZWdv
+      cnkBAAEAMgAKAq8AHAAQAAEABQBOb3RlcwCuAAwAAQAAAK4ABAC1BQMABQAoACMABAAIAAIACQAEAERh
+      dGFUeXBlJDEkQ29uZmxpY3QkUkVGAAQABAAAAB4ABQAEAEZvcm0BAAgARGF0YVR5cGUKAgQAAwAHAA4A
+      CAAJTDFTM1M0Uw==
+    signed: true
+  - name: $FormulaClass
+    type: text
+    data: "1"
+    signed: true
+  - name: $Index
+    type: text
+    data: /O
+    signed: true
+  - name: $PublicAccess
+    type: text
+    data: "1"
+  - name: $TITLE
+    type: text
+    data: (codeDataTypesByName)|dataTypesByName
+    signed: true
+  - name: $ViewFormat
+    type_num: 5
+    type: opaque
+    opaque: |
+      AQACAAAACAAAAFZDAQAIAAAAAAAAAFAAAQAACgAAAAAAAAAAAAICAAAAVkMAAAIAAAByAAAAUgABAAAK
+      AgAAAAAAAAAAAgIAAABEYXRhVHlwZSQxcgACAGQAAgAkMQUACABDYXRlZ29yeQEAAQAxAAoCrwBEABAA
+      AQAGAFNjYWxhcq4ANAAFAAgAQ2F0ZWdvcnkBAAEAMgAKAq8AHAAQAAEABQBOb3RlcwCuAAwAAQAAAK4A
+      BAC1BQMABwAMAAUACTBTMEUAJgABAAAAAQEACQEAAAoBAQ4KAAABAK0rAQABAAEAAAAAAAAAAABXQwEB
+      AAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wAAAAAAAAAAAAAAAAAAV0MBAQAJAAAAAAAAAAAAAAAA
+      AAAAAAAAAAAAAAAA//8AAAAAAAAAAAAAAAAAAEIAEAAAAAEA////AAUA////AAEAAAAAAAAAAAAAAAAA
+      AQD///8AAQD///8AAAABAAAAAAABAICAgAABAAAAAAAAAAgAAAAAAAEA
+    signed: true
+remaining: []

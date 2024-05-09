@@ -1,0 +1,26 @@
+---
+class: 1
+flags: 0x0100
+unid: OF79E3B10D1DA30082-ON00660C2E852589F8
+items:
+  - name: Form
+    type: text
+    data: Skeleton
+  - name: FormId
+    type: number
+    data: 38
+  - name: FormName
+    type: text
+    data: METHOD_ITEM_TAB
+  - name: TheCodeAbstract
+    type: text
+    data: "{(LSPLTSTR)LSNULL, C%1%_%2%METHOD_%3%, %2%%4%Args, (LSREGNAME *) %7%, N_%2%_%3%_ARGS, LSX_%5%_PROC%"
+  - name: TheCode
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: |
+      hf+BAAEAAAogICB7KExTUExUU1RSKUxTTlVMTCwgQyUxJV8lMiVNRVRIT0RfJTMlLCAlMiUlNCVBcmdz
+      LCAoTFNSRUdOQU1FICopICU3JSwgTl8lMiVfJTMlX0FSR1MsIExTWF8lNSVfUFJPQyU2JSwgTFNJX05P
+      X0hFTFBJRH0sIA==
+remaining: []

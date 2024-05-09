@@ -1,0 +1,105 @@
+---
+class: 1
+flags: 0x0100
+unid: OFDCE6C019C371948C-ON0047D42C00258B0B
+items:
+  - name: $FILE
+    type: object
+    obj_type: 0x0000
+    obj_class: 0x0001
+    obj_privs: 0x0000
+    file_name: lspkpop.h
+    HostType: 0
+    CompressionType: 1
+    FileAttributes: 0
+    Flags: 0x0002
+    FileCreated:
+      data: "2024-04-22T13:52:19.51-04:00"
+      dst: true
+    FileModified:
+      data: "2024-04-22T13:52:19.51-04:00"
+      dst: true
+    opaque: |
+      GzMBACAB///h//7/7P/9//f//P9pAPv/+v9tAE8A+f/4/00ALwB5AGIA9v/w//X/dAD0//H/KADz/zkA
+      8v9CADMAVABOAHIA7/9nAO7/RQDt/zAAKgDr/yAA6v/o/3MA6f9sAGgA5//l/2QA5v9SAFAA5P9TAOP/
+      4v8yADEAXwBXAOD/x//f/8r/3v9lAN3/0P/c/9j/2/93ANr/2f9LAEQAVgBVANf/0//W/2sA1f/U/zsA
+      NgAAAXEA0v/R/1wAWQB4AHYASQDP/87/QQAiAM3/JADM/y0Ay/81ADQAyf/I/24ADQAKAGEAPQDG/8X/
+      vv/E/8L/TADD/3UALgDB/28ACQDA/zoAv/9IAEYAvf+5/7z/uv9mALv/LAApAEMAIwBwAGMA9YBJJJJJ
+      JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJOA81JUmSBRAfOexs1BSFHjj9s8AgNjqwBkpt3d3Q2U+DT7hSVJ
+      kg/AMu7VwautszVjRwCgCxoPwDLuwbH62b8IuU4zBm/VjRzH4Bl3ZzDHvUmSeRBs/R5ixNQbdpqzrwP1
+      rRniAwOpy4AJ+DbyFgNH3asmrGg/AMu7DFJkjyEGz9HmCeNI5cRABAfMEDzVjQfgGXdojSkqTJJJZrQI
+      r69Pnz4YgFAFjDBM4+reAZd2v6HdC4dlGFyacZgqSpMkfi7WveZZ7BvZauePMQCDbwCPFrS1D6CZiMcs
+      1c0JOXH2e1y8Q2XED6fIyykySvr6z3gbpq4NXW2ZqxoPwDLu068r6+s94G6auCLiFxzcUR2hzm5cUO0B
+      qkySkd2in5+bZSOKtVxs2u4aJ9VgX7Y/ndrv2yifCiONjyj/d2P4NjdqxsxniDlr3gmZ34NvNWMUmSUM
+      01Y0H4Bl3aBxMzVjS4LAcH4CWoXiNRi0xEeDZXy8YC2f+vfhF3iF1qTJLe/7SNcIu8GrrbM1Y0H4Bl3Y
+      YpKkyQUdawrJB6Kj/qfVBgpUlSZJUfoWgVjlqs8OvwixWSORGU0jlUlSXngEkkkkkkkkkkkkkkkkkkkk
+      kkkkkkkkkkkkkkk4HpSVJCcHg9AX73UdHw1aX26Fq/UfCjapIQWDlGP6I+RlfLx319dHi1hVyFNg7gMU
+      kIL4PB6HFR2lpHdlM9ykhBYsHKMf0QFAD1vDFJCC2tuykhBYsHKMf0QFAD1vBEBDFJCC2XXwdSQjW8Hg
+      9AX73UdHw1aV3c+wtGHapIQWDlGP6ICgB63hikhGt4PB6Av3uo6Phq0tI42hfvYVSQgsHKMf0QFAD1vD
+      FJCMuvg6kqS9oA==
+    signed: true
+    encrypted: true
+  - name: Authors
+    type: text
+    data:
+      - CN=Rocky Oliver/OU=USA/O=PNPHCL
+      - "[Admin]"
+    authors: true
+    names: true
+  - name: CreatedOn
+    type: time
+    data: "2024-04-22T15:31:54.21-04:00"
+    dst: true
+  - name: F_LSXCreator
+    type: text
+    data: Rocky Oliver
+  - name: FileComments
+    type: text
+    data: ""
+  - name: Form
+    type: text
+    data: file_res
+  - name: LastModified
+    type: time
+    data: "2024-04-22T15:32:10.14-04:00"
+    dst: true
+  - name: fileCountValidation
+    type: text
+    data: ""
+  - name: fileName
+    type: text
+    data: lspkpop.h
+  - name: fileTargetPath
+    type: text
+    data: "\\src\\inc\\"
+  - name: fileUsage
+    type: text
+    data: VSE
+  - name: fileUsageEdit
+    type: text
+    data: VSE
+  - name: fileAttach
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: |
+      gv9aAAEAAAAAAAEAAQB7Dyw4ew8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      AACGAQAAAACVhEgAAQBIAAEAAAAAAAEAAAAGAAAAgwQBAN0GAACF/4X/CAABAM8K0ggBAE9PTwDeBgAA
+      hf/dBgAArf+p/yAABAAIAAAAFABsc3BrcG9wLmgAbHNwa3BvcC5oAJkAHAAAAAAAAAAAAAAAAAAAAAAA
+      AAAAAAEAAACVACYAAAAAAAAAAAAAAAEAAAAAAAAAPQAiAAgAAQAIAAEAIAABAJYAtwIAAAAAAAAAAAAA
+      IgClAkAHAMUAQAcAxQBAAgDDAMcCyQQBDkADAAEAQAIAwwABAs4AAwIPDkADAEACAMMAAQLOAAQCHw8O
+      QAIAxwBAAgDDAAECzgABAsITAg8OQAIAxgBAAgDDAAECzgACAhPCDwIeDkACAMUAQAIAwwABAs4AAQLE
+      AwEHQAIAxQBAAgDDAAECQAIAwwABFkACAMUAQAIAwwABAkACAMMAARVAAgDFAEACAMMAAQRAAgDDAAED
+      QAIAxQBAAgDDAAEExgAEGBwGCcIBAxkSCMQAAQNAAgDFAEACAMMAAQTFAAIRCsgBAQjDAAEDQAIAxQBA
+      AgDDAAEExAACCAnDAQEJwgYBCsIBAQjDAAEDQAIAxQBAAgDDAAEExAABCsMBAhAYwwADERIIwwABA0AC
+      AMUAQAIAwwABBMMAAQvDAQESywABA0ACAMUAQAIAwwABBMMAARDDAQELywABA0ACAMUAQAIAwwABBMMA
+      AQbDAcwAAQ1AAgDFAEACAMMAAQTDAAEGwwHMAAENQAIAxQBAAgDDAAEXwwABFMMBzAABDUACAMUAQAIA
+      wwABF8MAARDDAQELywABBUACAMUAQAIAwwABB8MAAQvDAQEUywABBUACAMUAQAIAwwABB8QAAQbDAQEb
+      xAADCwYIwwABBUACAMUAQAIAwwABB8QAAhEJwwEBCcIGAQrCAQEIwwABBUACAMUAQAIAwwABB8UAAhEK
+      yAEBCMMAAQVAAgDFAEACAMMAAQfHAAMdBgnCAQMKEAvEAAEFQAIAxQBAAgDDAAEHQAIAwwABBUACAMUA
+      QAIAwwABB0ACAMMAAQxAAgDFAEACAMMAAQdAAgDDAAEMQAIAxQBAAgDDAAIWFccDwg0BGsYFwwxAAgDF
+      AEAHAMUAQAcAxQBABwDFAEAHAMUAAJcAZgAAAP///0iIoKCgoIiIiJiYmICAgHCguJCQkODo8FCQqFiY
+      sMjY4HiAgICIiKioqODg4JC4yNjg6IiwwOjo6ICowIiIkIiQkJCQmOjw8GigsICAiKDA0KjI0LDQ2NjY
+      2PDw8JgAHgAAAAAAAAAAAAAA/v8AABoAAAD+/y5uc2YAAHb/JQAJAAABAAAJAQAAAAAAAAAAAAAAAAAA
+      AABsc3BrcG9wLmgAqgLeBgAArgDdBgAAhf+F/wgAAQDPCtIIAQBPT08A3gYAAIX/
+remaining: []

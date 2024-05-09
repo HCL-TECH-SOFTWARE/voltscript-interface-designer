@@ -1,0 +1,33 @@
+---
+class: 1
+flags: 0x0100
+unid: OF973427E3236F291E-ON00660C25852589F8
+items:
+  - name: Form
+    type: text
+    data: Skeleton
+  - name: FormId
+    type: number
+    data: 3
+  - name: FormName
+    type: text
+    data: TEXTSTR_4H
+  - name: TheCodeAbstract
+    type: text
+    data: const LSUSHORT LSX_FIRST_CLASS = CNOTES_CLASS_FIRST_ID; const LSUSHORT LSX_LAST_CLASS  = C%1%_%3%_I
+  - name: TheCode
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: |
+      hf9AAAEAAApjb25zdCBMU1VTSE9SVCBMU1hfRklSU1RfQ0xBU1MgPSBDTk9URVNfQ0xBU1NfRklSU1Rf
+      SUQ7AIX/NgABAAAKY29uc3QgTFNVU0hPUlQgTFNYX0xBU1RfQ0xBU1MgID0gQyUxJV8lMyVfSUQ7AIX/
+      CQABAAAKACCF/yMAAQAACiNpZiBkZWZpbmVkIChPTEVfUExBVEZPUk0pACCF/wkAAQAACgAghf8+AAEA
+      AAovLyB0aGlzIGNsYXNzIGlkIGlzIGZvciB0aGUgaGlkZGVuIE9MRSBTZXNzaW9uIG9iamVjdACF/wkA
+      AQAACgAghf86AAEAAApjb25zdCBMU1VTSE9SVCBMU1hfT0xFX0NMQVNTID0gTFNYX0xBU1RfQ0xBU1Mg
+      KzE7AIX/CQABAAAKACCF/1IAAQAACi8vIHNpbmNlIHdlIGRvbid0IGV4cG9zZSB0aGUgU0VTU0lPTiBv
+      YmplY3QsIHdlIG5lZWQgdG8gdXNlIHRoZSB0b3AtbGV2ZWwAhf8nAAEAAAovLyBjbGFzcyBJRCBmb3Ig
+      T0xFIGF1dG9tYXRpb24AIIX/CQABAAAKACCF/zgAAQAACmNvbnN0IExTVVNIT1JUIExTWF9PTEVNQUlO
+      X0NMQVNTID0gQyUxJV8lMiVfSUQ7AIX/CQABAAAKACCF/yIAAQAACiNlbmRpZiAgIC8vIChPTEVfUExB
+      VEZPUk0p
+remaining: []

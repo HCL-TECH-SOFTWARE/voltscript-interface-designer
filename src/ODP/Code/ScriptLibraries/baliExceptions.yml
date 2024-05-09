@@ -1,0 +1,638 @@
+---
+class: 512
+flags: 0x2000
+unid: OF442CF8883210E780-ON0035936280258939
+items:
+  - name: $Comment
+    type: text
+    data: Exception Carrier classes
+  - name: $DesignerVersion
+    type: text
+    data: 8.5.3
+  - name: $Flags
+    type: text
+    data: s34Q
+  - name: $PublicAccess
+    type: text
+    data: "1"
+    signed: true
+  - name: $ScriptLib
+    type: text
+    data: |
+      '++LotusScript Development Environment:2:5:(Options):0:74
+      %REM
+      	Library baliExceptions
+      	Created Oct 2022 by Devin Olson/USA/PNPHCL
+      	Exceptions Handling Utilities
+      %END REM
+      %REM
+      	**********************************************************************
+      	**********************************************************************
+      		
+          Copyright HCL America, Inc. 1999, 2023
+      
+         	Licensed under the Apache License, Version 2.0 (the "License");
+          you may not use this file except in compliance with the License.
+          You may obtain a copy of the License at
+      
+              http://www.apache.org/licenses/LICENSE-2.0
+      
+          Unless required by applicable law or agreed to in writing, software
+          distributed under the License is distributed on an "AS IS" BASIS,
+          WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+          See the License for the specific language governing permissions and
+         	limitations under the License.
+      
+      	**********************************************************************
+      	**********************************************************************
+      %END REM
+      Option Public
+      Option Declare
+      Use "baliCoreUtils"
+      
+      
+      '++LotusScript Development Environment:2:5:(Forward):0:1
+      Declare Class ExceptionCarrier 
+      Declare Public Class ExceptionCarrierStack 
+      Declare Function pushExceptionCarrier(module$, classname$, extendedinfo As Variant) As ExceptionCarrier 
+      Declare Function dumpExceptionStackToFile(target$) As Long 
+      Declare Function popExceptionCarrier() As ExceptionCarrier 
+      Declare Public Function getExceptionCarrierStack() As ExceptionCarrierStack
+      
+      '++LotusScript Development Environment:2:5:(Declarations):0:10
+      
+      Private Const MODULE_NAME = |baliExceptions|   
+      
+      
+      %REM ***************************************************************************
+       ************************************************************************************
+      	LSI_THREAD_xxxxx CONSTANTS  
+      	LSI constants declared here to avoid conflicts with 
+      	other libraries using lsconst.lss; which has its own 
+      	%INCLUDE "lsprcval.lss" command.
+       ************************************************************************************
+      %END REM *********************************************************************
+      Private Const LIB_LSI_THREAD_LINE = 0
+      Private Const LIB_LSI_THREAD_PROC = 1
+      Private Const LIB_LSI_THREAD_MODULE = 2
+      Private Const LIB_LSI_THREAD_VERSION = 3
+      Private Const LIB_LSI_THREAD_LANGUAGE = 4
+      Private Const LIB_LSI_THREAD_COUNTRY = 5
+      Private Const LIB_LSI_THREAD_TICKS = 6
+      Private Const LIB_LSI_THREAD_TICKS_PER_SEC = 7
+      Private Const LIB_LSI_THREAD_PROCESS_ID = 8
+      Private Const LIB_LSI_THREAD_TASK_ID = 9
+      Private Const LIB_LSI_THREAD_CALLPROC = 10
+      Private Const LIB_LSI_THREAD_CALLMODULE = 11
+      Private Const LIB_LSI_THREAD_STACKINFO = 14 
+      
+      
+      
+      
+      %REM
+      	Class ExceptionCarrier
+      	Carrier for Exception information
+      %END REM
+      Class ExceptionCarrier 
+      	Private classname_ As String 
+      	Private module_ As String
+      	Private procedure_ As String
+      	Private errmsg_ As String  
+      	Private timestamp_ As Double  
+      	Private errcode_ As Integer 
+      	Private errline_ As Integer 
+      	Private extendedinfo_() As String 
+      	
+      	%REM
+      		Property Get CLASS_NAME
+      		Name of the Class
+      	%END REM
+      	Private Property Get CLASS_NAME As String 
+      		CLASS_NAME = |ExceptionCarrier|
+      	End Property
+      	
+      	%REM
+      		Property Get CLASS_PREFIX
+      		Prefix of the Class:  MODULE_NAME.CLASS_NAME.
+      	%END REM
+      	Private Property Get CLASS_PREFIX As String 
+      		CLASS_PREFIX = MODULE_NAME & |.| & CLASS_NAME & |.|
+      	End Property
+      	
+      	%REM
+      		Property Get RawTime
+      		Date and Time the object was instantiated, as a Variant of DataType 7 (Date/Time).
+      		A date/time value is an eight-byte floating-point value. 
+      		The integer part represents a serial day counted from the date January 1, 100 AD. 
+      		The fractional part represents the time as a fraction of a day, measured from midnight on the preceding day.
+      		
+      		@return date/time of instantiation
+      	%END REM
+      	Public Property Get RawTime As Double 
+      		RawTime = me.timestamp_ 
+      	End Property
+      	
+      	%REM
+      		Property Get Timestamp
+      		Date and Time of instantiation, represented as a string with a trailing blank space.
+      		
+      		@return String representation of object's RawTime 
+      	%END REM
+      	Public Property Get Timestamp As String 
+      		Timestamp = Format$(me.timestamp_, "yyyy/mm/dd hh:mm:ss") & | |
+      	End Property
+      	
+      	
+      	%REM
+      		Property Get ErrorCode
+      		The Error Number 
+      	%END REM
+      	Public Property Get ErrorCode As Integer 
+      		ErrorCode = me.errcode_ 
+      	End Property
+      	
+      	%REM
+      		Property Get ErrorLine
+      		The Error Line Number 
+      	%END REM
+      	Public Property Get ErrorLine As Integer 
+      		ErrorLine = me.errline_ 
+      	End Property
+      	
+      	%REM
+      		Property Get ErrorMessage
+      		The Error Message
+      	%END REM
+      	Public Property Get ErrorMessage As String 
+      		ErrorMessage = me.errmsg_ 
+      	End Property
+      	
+      	%REM
+      		Property Get Module
+      		The Module (Agent, Library, Form, etc.) within which the exception occurred
+      	%END REM
+      	Public Property Get Module As String 
+      		Module = me.Module_
+      	End Property
+      	
+      	%REM
+      		Property Get ClassName
+      		Name of the Class (if any) within which the exception occurred
+      	%END REM
+      	Public Property Get ClassName As String 
+      		Classname = me.classname_ 
+      	End Property
+      	
+      	%REM
+      		Property Get Procedure
+      		The Procedure (Sub, Function, Property, Event, etc.) within which the exception occurred
+      	%END REM
+      	Public Property Get Procedure As String 
+      		Procedure = me.procedure_
+      	End Property
+      	
+      	%REM
+      		Property Get ModuleClassProcedure
+      		Concatenation of the Module, ClassName, and Procedure, delimited by a period character.
+      	%END REM
+      	Public Property Get MCP As String 
+      
+      		Dim chunks() As String
+      		Dim i% 		
+      		Dim result$ 
+      		
+      		If isBlankString(me.Module) And isBlankString(me.ClassName) And isBlankString(me.Procedure) Then GoTo ExitPoint 
+      		
+      		ReDim chunks(i%) As String 
+      		If Not isBlankString(me.Module) Then
+      			ReDim Preserve chunks(i%) As String  
+      			chunks(i%) = me.Module 
+      			i% = i% + 1
+      		End If
+      		If Not isBlankString(me.ClassName) Then
+      			ReDim Preserve chunks(i%) As String  
+      			chunks(i%) = me.ClassName 
+      			i% = i% + 1
+      		End If
+      		If Not isBlankString(me.Procedure) Then
+      			ReDim Preserve chunks(i%) As String  
+      			chunks(i%) = me.Procedure 
+      			i% = i% + 1
+      		End If
+      		
+      		result$ = Join(chunks, |.|) 
+      		
+      	ExitPoint:
+      		MCP = result$
+      		Exit Property
+      	End Property
+      	
+      	
+      	%REM
+      		SummaryShort
+      		Summary consisting of the ModuleClassProcedure and  ErrorLine
+      		Ex: Module.Class.Procedure Line(nn) 
+      	%END REM
+      	Public Property Get SummaryShort As String 
+      		
+      		Dim tempmcp$
+      		Dim result$ 
+      		
+      		tempmcp$ = me.MCP 
+      		If isBlankString(tempmcp$) And (0 = me.ErrorLine) Then GoTo ExitPoint
+      		
+      		If isBlankString(tempmcp$) Then 
+      			If (0 = me.ErrorLine) Then GoTo ExitPoint
+      			result$ = |Line(|
+      		Else 
+      			result$ = tempmcp$ & |(|
+      		End If
+      		
+      		If (0 <> me.ErrorLine) Then result$ = result$ & CStr(me.ErrorLine)
+      		result$ = result$ & |)|
+      		
+      	ExitPoint:
+      		SummaryShort = result$
+      		Exit Property
+      	End Property
+      	
+      	
+      	%REM
+      		Property Get SummaryMedium
+      		Summary consisting of Timestamp and SummaryShort
+      		Ex: Timestamp Module.Class.Procedure Line(nn)
+      	%END REM
+      	Public Property Get SummaryMedium As String 
+      		SummaryMedium = me.Timestamp & me.SummaryShort 
+      	End Property
+      	
+      	
+      	%REM
+      		Property Get SummaryLong
+      		Summary consisting of SummaryMedium, ErrorCode, and ErrorMessage
+      		Ex: Timestamp Module.Class.Procedure Line(nn) #ErrCode: ErrorMessage
+      	%END REM
+      	Public Property Get SummaryLong As String 
+      		
+      		Dim result$ 
+      		result$ = me.SummaryMedium 
+      		If (0 = me.ErrorCode) Then GoTo ExitPoint 
+      		
+      		result$ = result$ & | #| & CStr(me.ErrorCode) 
+      		If isBlankString(me.ErrorMessage) Then GoTo ExitPoint 
+      		
+      		result$ = result$ & |: | & me.ErrorMessage 
+      		
+      	ExitPoint:
+      		SummaryLong = result$
+      		Exit Property
+      	End Property
+      
+      	
+      	%REM
+      		Property Get ExtendedInfo
+      		String Array contining extended information about the exception. 
+      	%END REM
+      	Public Property Get ExtendedInfo As Variant 
+      		ExtendedInfo = me.extendedinfo_ 		
+      	End Property
+      	
+      	
+      	
+      	
+      	%REM 
+      		Constructor 
+      		Creates a new Exception Carrier instance 
+      		
+      		@param errcode% 	Error Code number for the exception.
+      		@param errmsg$ 		Error Message describing the exception. 
+      		@param module$ 		Module (Library, Agent, etc) within which the exception has occurred.
+      		@param classname$ 	Name of the Class within which the exception has occurred.
+      		@param procedure$ 	Name of the Procedure (Sub, Function, Property, etc) within which the exception has occurred.
+      		@param errorline% 	Line number where the exception occurred. 
+      		@param extendedinfo String, List of Strings, or Array of Strings containing extended information about the exception.
+      	%END REM
+      	Public Sub New(errcode%, errmsg$, module$, classname$, procedure$, errorline%, extendedinfo As Variant)  
+      		Dim s$ 
+      		
+      		me.timestamp_ = Now() 
+      		me.errcode_ = errcode% 
+      		me.Module_ = module$
+      		me.classname_ = classname$
+      		me.procedure_ = procedure$
+      		me.errmsg_ = errmsg$
+      		me.errline_ = errorline%
+      
+      		ReDim me.extendedinfo_(0) As String 
+      		
+      		If IsArray(extendedinfo) Then
+      			ForAll element In extendedinfo 
+      				s$ = CStr(element) 
+      				If Not isBlankString(s$) Then 
+      					If isBlankString(me.extendedinfo_(UBound(me.extendedinfo_))) Then ReDim Preserve me.extendedinfo_(UBound(me.extendedinfo_) + 1)
+      					me.extendedinfo_(UBound(me.extendedinfo_)) = s$  
+      				End If
+      			End ForAll
+      			
+      		ElseIf IsList(extendedinfo) Then 
+      			ForAll element In extendedinfo
+      				If Not isBlankString(me.extendedinfo_(UBound(me.extendedinfo_))) Then ReDim Preserve me.extendedinfo_(UBound(me.extendedinfo_) + 1)
+      				me.extendedinfo_(UBound(me.extendedinfo_)) = ListTag(element) & |: | & CStr(element)  
+      			End ForAll
+      
+      		Else 
+      			me.extendedinfo_(0) = CStr(extendedinfo) 
+      		End If
+      		
+      	ExitPoint: 
+      		Exit Sub 
+      	End Sub
+      	
+      End Class
+      %REM
+      	Class ExceptionCarrierStack
+      	Stack Implementation ExceptionCarrier objects.
+      %END REM
+      Public Class ExceptionCarrierStack 
+      	Private content_() As ExceptionCarrier 
+      	Private hasContent_ As Boolean 
+      	
+      	
+      	%REM
+      		Property Get CLASS_NAME
+      		Name of the Class
+      	%END REM
+      	Private Property Get CLASS_NAME As String 
+      		CLASS_NAME = |ExceptionCarrierStack|
+      	End Property
+      	
+      	%REM
+      		Property Get CLASS_PREFIX
+      		Prefix of the Class:  MODULE_NAME.CLASS_NAME.
+      	%END REM
+      	Private Property Get CLASS_PREFIX As String 
+      		CLASS_PREFIX = MODULE_NAME & |.| & CLASS_NAME & |.|
+      	End Property
+      	
+      	
+      	Public Sub New() 
+      	End Sub
+      
+      	%REM
+      		Property Get hasContent
+      		Flag indicating if the object has content 
+      	%END REM
+      	Public Property Get hasContent As Boolean 
+      		hasContent = me.hasContent_ 
+      	End Property
+      	
+      
+      	%REM
+      		Property Get size
+      		Number of ExceptionCarrier instances contained by the object. 
+      	%END REM
+      	Public Property Get size As Long
+      		Dim result&
+      		
+      		If me.hasContent_ Then 
+      			result& = UBound(me.content_) + 1
+      			If (result& < 2) Then 
+      				If (me.content_(0) Is Nothing) Then result& = 0			
+      			End If 
+      		End If 
+      		
+      	ExitPoint: 
+      		size = result& 
+      		Exit Property 
+      	End Property
+      	
+      
+      	%REM
+      		Sub Push
+      		Adds an object to the top of the stack
+      		
+      		@param source ExceptionCarrier to be added to the stack
+      	%END REM
+      	Public Sub push(source As ExceptionCarrier)
+      		If me.hasContent Then 
+      			ReDim Preserve me.content_(UBound(me.content_) + 1) As ExceptionCarrier
+      			Set me.content_(UBound(me.content_)) = source
+      		Else 
+      			ReDim me.content_(0) As ExceptionCarrier 
+      			Set me.content_(0) = source
+      			me.hasContent_ = True 
+      		End If
+      	End Sub
+      	
+      	
+      	%REM 
+      		Function Pop
+      		Gets the top (last added) object from the stack, then removes it from the stack.
+      		
+      		@return last added object from the stack, or nothing if stack is empty 
+      	%END REM
+      	Public Function pop() As ExceptionCarrier 
+      		If me.hasContent Then 
+      			Set pop = me.content_(UBound(me.content_)) 
+      			If (UBound(me.content_) > 0) Then 
+      				ReDim Preserve me.content_(UBound(me.content_) -1) As ExceptionCarrier
+      			Else 
+      				me.hasContent_ = False 
+      				ReDim me.content_(0) As ExceptionCarrier 
+      			End If
+      		Else 
+      			Set pop = Nothing 
+      		End If
+      	End Function
+      	 
+      End Class
+      '++LotusScript Development Environment:2:1:pushExceptionCarrier:11:8
+      %REM
+      	Sub pushExceptionCarrier
+      	If an error exists, spawns a new ExceptionCarrier and pushes it onto the stack.
+      	
+      	@param module$ 		Module (Library, Agent, etc) within which the exception has occurred.
+      	@param classname$ 	Name of the Class within which the exception has occurred.
+      	@param extendedinfo String, List of Strings, or Array of Strings containing extended information about the exception.
+      	
+      	@return New ExceptionCarrier (if an Error exists), Nothing if no Error Exists.
+      %END REM
+      Function pushExceptionCarrier(module$, classname$, extendedinfo As Variant) As ExceptionCarrier 
+      	On Error GoTo ErrorTrap
+      	
+      	Dim procedure$
+      	Dim errmsg$ 
+      	Dim errcode%
+      	Dim errorline%
+      	Dim result As ExceptionCarrier
+      
+      	errcode% = Err() 
+      	If (0 = errcode%) Then GoTo ExitPoint
+      	
+      	errorline% = Erl() 
+      	errmsg$ = Error() 
+      	procedure$ = GetThreadInfo(LIB_LSI_THREAD_CALLPROC)
+      	
+      	Set result = New ExceptionCarrier(errcode%, errmsg$, module$, classname$, procedure$, errorline%, extendedinfo)
+      	
+      	Call getExceptionCarrierStack().push(result) 
+      	
+      ExitPoint: 
+      	Set pushExceptionCarrier = result
+      	Exit Function  
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, ||
+      	Resume ExitPoint 
+      End Function
+      
+      '++LotusScript Development Environment:2:1:dumpExceptionStackToFile:14:8
+      %REM
+      	Function dumpExceptionStackToFile
+      	Writes Exception information to a text file until there are no exceptions left in the ExceptionCarrierStack  
+      	
+      	THIS METHOD WILL EMPTY THE ExceptionCarrierStack
+      	
+      	@param target$ Filepath of file to be written. 
+      	
+      	@return Number of bytes written to the target file.   
+      
+      	@throws ERR_PARAMETER_BLANK if target filepath is blank.
+      	@throws ERR_OPERATION_FAILED or other file system exception on failure.  
+      %END REM
+      Function dumpExceptionStackToFile(target$) As Long 
+      	If isBlankString(target$) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |Target filepath is blank.  |
+      
+      	On Error GoTo ErrorTrap 
+      	
+      	Dim ec As ExceptionCarrier 
+      
+      	Dim directory$
+      	Dim filepath$ 	
+      	Dim textline$
+      
+      	Dim errmsg$ 
+      	Dim errcode%
+      
+      	Dim file%
+      
+      	Dim result& 
+      	Dim idx& 
+      
+      	Dim isOpen As Boolean 
+      
+      	
+      	' BEGIN CODE
+      	idx& = getExceptionCarrierStack().size 
+      	If idx& < 1 Then GoTo ExitPoint ' no exceptions to dump 
+      
+      	directory$ = StrLeftBack(target$, DIRECTORY_DELIMITER) 
+      	If Not makeDirectory(directory$) Then GoTo ExitPoint  ' The directory does not exist and could not be created.
+      	
+      	' Check for existence 	
+      	filepath$ = Dir$(target$, 0) 
+      	If Not isBlankString(filepath$) Then Kill target$
+      	
+      	file% = FreeFile() 
+      	Open target$ For Output Access Write As #file% 
+      	isOpen = True 
+      	
+      	textline$ = |Exceptions| 
+      	result& = result& + LenB(textline$) 
+      	Print #file%, textline$ 
+      
+      	textline$ = ||
+      	result& = result& + LenB(textline$) 
+      	Print #file%, textline$ 
+      		
+      	Set ec = popExceptionCarrier()
+      	While Not (ec Is Nothing) 
+      		textline$ = |[| & CStr(idx&) & |] | & HT & ec.Timestamp & ec.MCP & |()|
+      		result& = result& + LenB(textline$) 
+      		Print #file%, textline$ 
+      
+      		If Not isBlankString(CStr(ec.ErrorCode) & ec.ErrorMessage) Then 
+      			textline$ = HT & HT & |Exception #| & CStr(ec.ErrorCode) & |: | & ec.ErrorMessage
+      			result& = result& + LenB(textline$) 
+      			Print #file%, textline$ 
+      		End If
+      
+      		If Not isBlankString(CStr(ec.ErrorLine)) Then 
+      			textline$ = HT & HT & |Line #| & CStr(ec.ErrorLine)
+      			result& = result& + LenB(textline$) 
+      			Print #file%, textline$ 
+      		End If
+      		
+      		ForAll element In ec.ExtendedInfo 
+      			textline$ = CStr(element) 
+      			If Not isBlankString(textline$) Then 
+      				textline$ = HT & HT & textline$ 
+      				result& = result& + LenB(textline$) 
+      				Print #file%, textline$ 				
+      			End If
+      		End ForAll 
+      
+      		textline$ = ||
+      		result& = result& + LenB(textline$) 
+      		Print #file%, textline$ 
+      		
+      		Set ec = popExceptionCarrier() 
+      		idx& = idx& -1 
+      	Wend
+      		
+      ExitPoint: 
+      	If isOpen Then 
+      		isOpen = False 
+      		Close #file% 
+      	End If
+      	dumpExceptionStackToFile = result&
+      	If (0 <> errcode%) Then Error ERR_OPERATION_FAILED, MSG_OPERATION_FAILED & errmsg$
+      	Exit Function 
+      ErrorTrap: 
+      	On Error GoTo 0
+      	errcode% = Err()
+      	errmsg$ = Error$()
+      	pushExceptionCarrier MODULE_NAME, ||, |Target Filepath = "| & target$ & |"| 
+      	Resume ExitPoint 
+      End Function
+      
+      
+      '++LotusScript Development Environment:2:1:popExceptionCarrier:8:8
+      
+      %REM
+      	Function popExceptionCarrier
+      	Gets the top (last added) ExceptionCarrier from the stack, then removes it from the stack.
+      	
+      	@return last added ExceptionCarrier from the stack, or nothing if stack is empty 
+      %END REM
+      Function popExceptionCarrier() As ExceptionCarrier 
+      	Set popExceptionCarrier = getExceptionCarrierStack().pop()
+      End Function
+      
+      
+      '++LotusScript Development Environment:2:1:getExceptionCarrierStack:5:8
+      %REM
+      	Function getExceptionCarrierStack
+      	Gets the global ExceptionCarrierStack 
+      %END REM
+      Public Function getExceptionCarrierStack() As ExceptionCarrierStack
+      	On Error GoTo ErrorTrap 
+      	Static result As ExceptionCarrierStack 
+      		
+      	If (result Is Nothing) Then Set result = New ExceptionCarrierStack() 
+      	
+      ExitPoint: 
+      	Set getExceptionCarrierStack = result	
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, ||
+      	Resume ExitPoint 
+      End Function 
+    signed: true
+    nonsummary: true
+  - name: $TITLE
+    type: text
+    data: baliExceptions
+    signed: true
+remaining: []

@@ -1,0 +1,111 @@
+---
+class: 1
+flags: 0x2100
+unid: OF8C469913B632B262-ON004A17E500258B0B
+items:
+  - name: $PublicAccess
+    type: text
+    data: "1"
+  - name: $Revisions
+    type: time
+    data: "2024-04-26T13:29:38.74-00:00"
+  - name: A$ACTION
+    type: text
+    data: "enhLogClassLiteDUMPEXCEPTIONSTACKTOLOG(): Additional Exception Information"
+  - name: A$AUTHORS
+    type: text
+    data: CN=Rocky Oliver/OU=USA/O=PNPHCL
+    authors: true
+    names: true
+  - name: A$DBFILEPATH
+    type: text
+    data: "projects\\vsid\\vsid.ntf"
+  - name: A$DBREPID
+    type: text
+    data: 85258AFB0058AB0C
+  - name: A$DBTITLE
+    type: text
+    data: VoltScript Interface Designer 1.0.0
+  - name: A$ENDTIME
+    type: time
+    data: "2024-04-26T09:29:39.00-04:00"
+    dst: true
+  - name: A$ERRCODE
+    type: text
+    data: "1199"
+  - name: A$ERRMSG
+    type: text
+    data: "A required parameter is blank or missing.  "
+  - name: A$LOGID
+    type: text
+    data: B632B2628C46991300258B0B004A17E5
+  - name: A$LOGTIME
+    type: time
+    data: "2024-04-26T09:29:18.00-04:00"
+    dst: true
+  - name: A$LOGTYPE
+    type: text
+    data: Error
+  - name: A$NOTESVERSION
+    type: text
+    data: "Release 14.0FP1; April 08, 2024; Build 485"
+  - name: A$PROGNAME
+    type: text
+    data: "Generate...\\Extension Project Files|generateLSXFiles"
+  - name: A$SERVER
+    type: text
+    data: cascade/hcllabs
+  - name: A$USER
+    type: text
+    data: Rocky Oliver/USA/PNPHCL
+  - name: A$USERACCESS
+    type: text
+    data: Manager
+  - name: A$USERROLES
+    type: text
+    data: "[Admin]"
+  - name: A$description
+    type: text
+    data: BSXnotesUtils.ISVALIDGUID(36)
+  - name: Form
+    type: text
+    data: Events
+  - name: HasErrors
+    type: number
+    data: 1
+  - name: Subject
+    type: text
+    data: "generateLSXFiles on (cascade/hcllabs:projects\\vsid\\vsid.ntf) at 04/26/2024 09:29:18 AM EDT by Rocky Oliver/USA/PNPHCL"
+  - name: VERSION
+    type: text
+    data: "1.99"
+  - name: hasWarnings
+    type: number
+    data: 1
+  - name: Body
+    signed: true
+    encrypted: true
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: |
+      gv9GAAIAAAAAAAAAAACgBQAAoAUGABAORxB+ErUU7BYjGQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      AAAAAKoKAAAAAKYsAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgQKDBAIA
+      hf8IAAAAAACC/0YAAwAAAAAAAAAAAKAFAACgBQYAEA5HEH4StRTsFiMZAAAAAAAAAAAAAAAAAAAAAAAA
+      AAAAAAAAAAAAAAAAqgoAAAAApiwAAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      AACBAoMEAwCF/xwAAQANCTIwMjQvMDQvMjYgMDk6Mjk6MTgghf8dAAEADQkJCUxvdHVzU2NyaXB0IFN0
+      YXJ0ZWQggQKDBAMAgQKDBAMAhf8cAAQBAAgyMDI0LzA0LzI2IDA5OjI5OjE4IIX/ZgABAAAJTGlicmFy
+      eTogTFNYV2l6YXJkVXRpbHMuQ1JFQVRFUFJPSkVDVCgpOiBHZW5lcmF0aW5nIGZpbGVzIGZvciBwcm9q
+      ZWN0OiBTcG5ha3lQcm9qZWN0IGluIEM6XGxzeIECgwQDAIX/HAAEAQoIMjAyNC8wNC8yNiAwOToyOTox
+      OCCF/0QAAQAKCUxpYnJhcnk6IExTWFdpemFyZFV0aWxzLkNSRUFURVBST0pFQ1QoKTogR2VuZXJhdGlu
+      ZyBuZXcgR1VJRIECgwQDAIX/IAABAAoJCQlBcHBOYW1lOiBTcG5ha3lQcm9qZWN0gQKDBAMAhf80AAEA
+      CgkJCUdVSUQ6IDBENjFCQkQ3LTI1MDctNEI3MC04OUE4LTAwNENGRjMzNDA2N4ECgwQDAIX/HAAEAQAI
+      MjAyNC8wNC8yNiAwOToyOTozOSCF/zwAAQANCUlOSVRJQUxJWkUoKTogTFNYIEZpbGVzIHdlcmUgZ2Vu
+      ZXJhdGVkIHN1Y2Nlc3NmdWxseS6BAoMEAwCF/wgAAQANCYECgwQDAIX/HAAEAQsIMjAyNC8wNC8yNiAw
+      OToyOTozOSCF/1sAAQELCVdhcm5pbmc6IGVuaExvZ0NsYXNzTGl0ZURVTVBFWENFUFRJT05TVEFDS1RP
+      TE9HKCk6IEFkZGl0aW9uYWwgRXhjZXB0aW9uIEluZm9ybWF0aW9uIIECgwQDAIX/CAABAQsJgQKDBAMA
+      hf8cAAQBAggyMDI0LzA0LzI2IDA5OjI5OjE4IIX/FAABAQIJRXJyb3IgMTE5OToghf8zAAEBAglBIHJl
+      cXVpcmVkIHBhcmFtZXRlciBpcyBibGFuayBvciBtaXNzaW5nLiAgIIECgwQDAIX/KwABAQIJQlNYbm90
+      ZXNVdGlscy5JU1ZBTElER1VJRCgpIGxpbmUgMzYggQKDBAMAhf8QAAEACglzb3VyY2U6IIECgwQDAIX/
+      GAABAAoJc291cmNlIGxlbmd0aDogMIECgwQDAIX/CAABAAoJgQKDBAMAhf8IAAEACgk=
+remaining: []

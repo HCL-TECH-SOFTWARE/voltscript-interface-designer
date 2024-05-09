@@ -1,0 +1,33 @@
+---
+class: 1
+flags: 0x0100
+unid: OF62BEDC438F30AB93-ON00660C16852589F8
+items:
+  - name: Form
+    type: text
+    data: Skeleton
+  - name: FormId
+    type: number
+    data: 16
+  - name: FormName
+    type: text
+    data: New Client Object_CPP
+  - name: TheCodeAbstract
+    type: text
+    data: "case C%1%_%2%_ID: // force a new scope so we can use the same variable names"
+  - name: TheCode
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: |
+      hf8gAAEAAAogICAgICBjYXNlIEMlMSVfJTIlX0lEOgCF/xAAAQAACiAgICAgIHsAhf9MAAEAAAogICAg
+      ICAgICAvLyBmb3JjZSBhIG5ldyBzY29wZSBzbyB3ZSBjYW4gdXNlIHRoZSBzYW1lIHZhcmlhYmxlIG5h
+      bWVzAIX/KAABAAAKICAgICAgICAgLy8gaW4gZGlmZmVyZW50IGNhc2VzLgCF/xUAAQAACiAgICAgICAg
+      ICU1JQAghf85AAEAAAogICAgICAgICBwJTMlID0gbmV3IChoSW5zdCkgJTMlKHBBcHBTZXNzaW9uJTYl
+      KTsAIIX/UgABAAAKICAgICAgICAgcEluc3REZXNjLT5oZGxDbGllbnQgPShwJTMlKSA/IHAlMyUtPkdl
+      dEludGVyZmFjZVB0cigpIDogTFNOVUxMOwCF/xUAAQAACiAgICAgICAgICU3JQAghf8JAAEAAAoAIIX/
+      VQABAAAKICAgICAgICAgLy8gSWYgdGhlIGNyZWF0aW9uIG9mIHRoZSAlMyUgb2JqZWN0IGZhaWxlZCwg
+      cmV0dXJuIGFuIGVycm9yIHRvIExTLgAghf9MAAEAAAogICAgICAgICByZXR2YWwgPSAocCUzJSkgPyBw
+      JTMlLT5MU1hHZXRFcnJvckNvZGUoKSA6IExTSV9FUlJfQUJPUlQ7AIX/EgABAAAKICAgICAgfSAgAIX/
+      FQABAAAKICAgICAgYnJlYWs7ACA=
+remaining: []

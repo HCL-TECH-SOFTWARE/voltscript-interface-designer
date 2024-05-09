@@ -1,0 +1,25 @@
+---
+class: 1
+flags: 0x0100
+unid: OFBF79672857EF95BE-ON00660C2D852589F8
+items:
+  - name: Form
+    type: text
+    data: Skeleton
+  - name: FormId
+    type: number
+    data: 37
+  - name: FormName
+    type: text
+    data: GMETHOD_TAB
+  - name: TheCodeAbstract
+    type: text
+    data: "static LSADTMETHODDESCR %3%_gmethods[N_%2%_METHODS] = %5%"
+  - name: TheCode
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: |
+      hf8+AAEAAApzdGF0aWMgTFNBRFRNRVRIT0RERVNDUiAlMyVfZ21ldGhvZHNbTl8lMiVfTUVUSE9EU10g
+      PQCF/woAAQAACnsAhf8MAAEAAAolNSUAhf8LAAEAAAp9OwAg
+remaining: []

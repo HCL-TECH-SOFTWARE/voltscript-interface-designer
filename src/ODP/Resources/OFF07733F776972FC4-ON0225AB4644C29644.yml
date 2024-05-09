@@ -1,0 +1,95 @@
+---
+class: 1
+flags: 0x0800
+unid: OFF07733F776972FC4-ON0225AB4644C29644
+items:
+  - name: $Revisions
+    type: time
+    data:
+      - data: "2023-01-19T16:28:07.22-00:00"
+      - data: "2023-01-19T16:28:15.43-00:00"
+      - data: "2023-03-16T09:41:20.21-04:00"
+        dst: true
+      - data: "2023-03-16T09:42:42.94-04:00"
+        dst: true
+      - data: "2023-03-31T10:57:17.50-04:00"
+        dst: true
+      - data: "2023-03-31T12:11:39.31-04:00"
+        dst: true
+      - data: "2023-04-20T10:08:59.37-04:00"
+        dst: true
+      - data: "2023-04-20T10:16:40.90-04:00"
+        dst: true
+      - data: "2023-04-24T16:55:32.15-04:00"
+        dst: true
+      - data: "2023-04-24T17:07:49.35-04:00"
+        dst: true
+      - data: "2023-06-21T11:14:05.46-04:00"
+        dst: true
+      - data: "2023-06-27T12:07:01.26-04:00"
+        dst: true
+      - data: "2023-06-27T17:09:30.23-04:00"
+        dst: true
+      - data: "2023-07-24T11:02:07.38-04:00"
+        dst: true
+      - data: "2023-10-02T11:12:27.29-04:00"
+        dst: true
+      - data: "2024-02-21T15:19:52.27-05:00"
+  - name: Form
+    type: text
+    data: enhLogConfig
+  - name: enhLogActions
+    type: text
+    data: "Yes"
+  - name: enhLogAutoSave
+    type: text
+    data: ""
+  - name: enhLogEnableMethodProfiling
+    type: text
+    data: ""
+  - name: enhLogEnableScheduledPurge
+    type: text
+    data: ""
+  - name: enhLogEnabled
+    type: text
+    data: "Yes"
+  - name: enhLogErrors
+    type: text
+    data: "Yes"
+  - name: enhLogIncludeMethodNames
+    type: text
+    data: "Yes"
+  - name: enhLogLocalEcho
+    type: text
+    data: ""
+  - name: enhLogMethodResults
+    type: text
+    data: "Yes"
+  - name: enhLogProfileMethodCount
+    type: text
+    data: Method Name | Count
+  - name: enhLogPurgeAge
+    type: number
+    data: 0
+  - name: enhLogResumeOnFail
+    type: text
+    data: ""
+  - name: enhLogStackExceptions
+    type: text
+    data: ""
+  - name: enhLogTargetFilepath
+    type: text
+    data: ""
+  - name: enhLogTargetServer
+    type: text
+    data: ""
+    names: true
+  - name: enhLogWarnings
+    type: text
+    data: "Yes"
+  - name: $Fonts
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: i/8oAAEABSZWZXJkYW5hAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+remaining: []

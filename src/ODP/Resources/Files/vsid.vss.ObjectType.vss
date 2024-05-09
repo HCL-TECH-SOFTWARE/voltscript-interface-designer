@@ -1,0 +1,12 @@
+
+
+%REM
+	{{instancetype}} {{label}} 
+	{{comment}} 
+%END REM
+{{signature}} 
+
+	{{variablesvss}}
+	
+End Type 
+

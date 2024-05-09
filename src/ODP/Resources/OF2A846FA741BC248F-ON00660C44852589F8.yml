@@ -1,0 +1,49 @@
+---
+class: 1
+flags: 0x0100
+unid: OF2A846FA741BC248F-ON00660C44852589F8
+items:
+  - name: Form
+    type: text
+    data: Skeleton
+  - name: FormId
+    type: number
+    data: 58
+  - name: FormName
+    type: text
+    data: IDL_FILE
+  - name: TheCodeAbstract
+    type: text
+    data: "Copyright HCL America, Inc. 1999, 2023 Licensed under the Apache License, Version 2.0 (the \"License"
+  - name: TheCode
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: |
+      hf9SAAEAAAovKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
+      KioqKioqKioqKioqKioqKioqKioqAIX/MgABAAAKICAgQ29weXJpZ2h0IEhDTCBBbWVyaWNhLCBJbmMu
+      IDE5OTksIDIwMjMAhf8JAAEAAAoAIIX/SwABAAAKICAgTGljZW5zZWQgdW5kZXIgdGhlIEFwYWNoZSBM
+      aWNlbnNlLCBWZXJzaW9uIDIuMCAodGhlICJMaWNlbnNlIik7ACCF/0wAAQAACiAgIHlvdSBtYXkgbm90
+      IHVzZSB0aGlzIGZpbGUgZXhjZXB0IGluIGNvbXBsaWFuY2Ugd2l0aCB0aGUgTGljZW5zZS4Ahf8zAAEA
+      AAogICBZb3UgbWF5IG9idGFpbiBhIGNvcHkgb2YgdGhlIExpY2Vuc2UgYXQAIIX/CQABAAAKACCF/zkA
+      AQAACiAgICAgIGh0dHA6Ly93d3cuYXBhY2hlLm9yZy9saWNlbnNlcy9MSUNFTlNFLTIuMAAghf8JAAEA
+      AAoAIIX/TwABAAAKICAgVW5sZXNzIHJlcXVpcmVkIGJ5IGFwcGxpY2FibGUgbGF3IG9yIGFncmVlZCB0
+      byBpbiB3cml0aW5nLCBzb2Z0d2FyZQAghf9NAAEAAAogICBkaXN0cmlidXRlZCB1bmRlciB0aGUgTGlj
+      ZW5zZSBpcyBkaXN0cmlidXRlZCBvbiBhbiAiQVMgSVMiIEJBU0lTLAAghf9UAAEAAAogICBXSVRIT1VU
+      IFdBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBBTlkgS0lORCwgZWl0aGVyIGV4cHJlc3Mgb3IgaW1w
+      bGllZC4Ahf9PAAEAAAogICBTZWUgdGhlIExpY2Vuc2UgZm9yIHRoZSBzcGVjaWZpYyBsYW5ndWFnZSBn
+      b3Zlcm5pbmcgcGVybWlzc2lvbnMgYW5kACCF/yoAAQAACiAgIGxpbWl0YXRpb25zIHVuZGVyIHRoZSBM
+      aWNlbnNlLgCF/x8AAQAACiAgIEZpbGUgTmFtZSA6ICUzJS5pZGwAIIX/JAABAAAKICAgICAgICAgICAg
+      ICAgICAgICAgICAgICAgAIX/HQABAAAKICAgRGVzY3JpcHRpb246IAkJCQkAIIX/TAABAAAKICAgVGhp
+      cyBpcyBhbiBJREwgZmlsZSBmb3IgY3JlYXRpbmcgeW91ciBMU1gncyBDT00vT0xFIHR5cGUgbGlicmFy
+      eQCF/yIAAQAACiAgICAgICAgICAgICAgICAgICAgICAgICAAhf8fAAEAAAogICBSZXZpc2lvbiBIaXN0
+      b3J5OgkJACCF/yQAAQAACiAgIDA1LzA5Lzk5ICAgc3RhICAgQ3JlYXRlZACF/0sAAQAACiAgIDA3LzI0
+      LzA3ICAgcmVvICAgQWRkZWQgYXV0by1nZW5lcmF0ZSBjYXBhYmlsaXRpZXMgdG8gTFNYIHdpemFyZAAg
+      hf8fAAEAAAogICAgICAgICAgICAgICAgICAgICAgACCF/1MAAQAACi8qKioqKioqKioqKioqKioqKioq
+      KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKiovACCF/wkA
+      AQAACgAghf8nAAEAAAovLyAlMyUgdHlwZSBsaWJyYXJ5IGRlZmluaXRpb24AIIX/FQABAAAKW3V1aWQo
+      JTElKSwgACCF/xcAAQAACiB2ZXJzaW9uKCUyJSksACCF/xIAAQAACiBsY2lkKDApLACF/ysAAQAACiBo
+      ZWxwc3RyaW5nKCIlMyUgTFNYIFR5cGVMaWJyYXJ5IikAIIX/CgABAAAKXQCF/xUAAQAACmxpYnJhcnkg
+      JTMlIAAghf8KAAEAAAp7AIX/JAABAAAKICAgaW1wb3J0bGliKCJTVERPTEUuVExCIik7AIX/DAABAAAK
+      ICAgAIX/DQABAAAKJTQlfTsg
+remaining: []

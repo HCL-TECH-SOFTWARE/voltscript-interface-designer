@@ -1,0 +1,42 @@
+---
+class: 1
+flags: 0x0100
+unid: OF4298F86912A66D77-ON00660C38852589F8
+items:
+  - name: Form
+    type: text
+    data: Skeleton
+  - name: FormId
+    type: number
+    data: 47
+  - name: FormName
+    type: text
+    data: DEF File Mac PPC
+  - name: TheCodeAbstract
+    type: text
+    data: This file is an input to the build process for PPC
+  - name: TheCode
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: |
+      hf8LAAEAAAovKgAghf88AAEAAAoJVGhpcyBmaWxlIGlzIGFuIGlucHV0IHRvIHRoZSBidWlsZCBwcm9j
+      ZXNzIGZvciBQUEMAhf9GAAEAAAoJWW91IHdpbGwgbmVlZCB0byBzdWJzdGl0dXRlIHRoZSBhcHBsaWNh
+      dGlvbiBmaWxlIG5hbWUgYmVsb3cuAIX/RAABAAAKCVRoZSBvdXRwdXQgaXMgdGhlbiBzZW50IGludG8g
+      dGhlIHJlc291cmNlIGNvbXBpbGVyIGFuZCB0aGUAhf9GAAEAAAoJcmVzdWx0aW5nIHJlc291cmNlIGlz
+      IGFkZGVkIHRvIHRoZSBzaGFyZWQgbGlicmFyeSBleGVjdXRhYmxlAIX/NgABAAAKCShyZXF1aXJlZCBi
+      eSBQb3dlck1hYyBydW50aW1lIGFyY2hpdGVjdHVyZSkuAIX/CwABAAAKKi8AIIX/CQABAAAKACCF/xsA
+      AQAACmluY2x1ZGUgIiUxJS5yZXMiOwAghf8JAAEAAAoAIIX/JwABAAAKI2luY2x1ZGUgIkNvZGVGcmFn
+      bWVudFR5cGVzLnIiACCF/wkAAQAACgAghf8eAAEAAApyZXNvdXJjZSAnY2ZyZycgKDApIHsAhf8LAAEA
+      AAoJewAghf85AAEAAAoJCWtQb3dlclBDLAkJCS8qIGluc3RydWN0aW9uIHNldCBhcmNoaXRlY3R1cmUg
+      Ki8AIIX/LwABAAAKCQlrRnVsbExpYiwJCQkvKiBiYXNlLWxldmVsIGxpYnJhcnkgKi8AIIX/QQABAAAK
+      CQlrTm9WZXJzaW9uTnVtLAkJLyogbm8gaW1wbGVtZW50YXRpb24gdmVyc2lvbiBudW1iZXIgKi8AIIX/
+      PQABAAAKCQlrTm9WZXJzaW9uTnVtLAkJLyogbm8gZGVmaW5pdGlvbiB2ZXJzaW9uIG51bWJlciAqLwAg
+      hf85AAEAAAoJCWtEZWZhdWx0U3RhY2tTaXplLC8qIHVzZSBkZWZhdWx0IHN0YWNrIHNpemUgKi8AIIX/
+      NgABAAAKCQlrTm9BcHBTdWJGb2xkZXIsCS8qIG5vIGxpYnJhcnkgZGlyZWN0b3J5ICovAIX/MQABAAAK
+      CQlrSXNMaWIsCQkJCS8qIGZyYWdtZW50IGlzIGEgbGlicmFyeSAqLwAghf8yAAEAAAoJCWtPbkRpc2tG
+      bGF0LAkJLyogZnJhZ21lbnQgaXMgb24gZGlzayAqLwCF/zwAAQAACgkJa1plcm9PZmZzZXQsCQkvKiBm
+      cmFnbWVudCBzdGFydHMgYXQgZm9yayBzdGFydCAqLwCF/zwAAQAACgkJa1dob2xlRm9yaywJCQkvKiBm
+      cmFnbWVudCBvY2N1cGllcyBlbnRpcmUgZm9yayAqLwCF/zIAAQAACgkJIiUxJWxzeCIJCS8qIG5hbWUg
+      b2YgdGhlIGFwcGxpY2F0aW9uICovAIX/CwABAAAKCX0AIIX/CgABAAAKfTs=
+remaining: []

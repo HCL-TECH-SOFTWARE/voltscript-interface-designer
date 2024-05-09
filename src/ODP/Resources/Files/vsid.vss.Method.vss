@@ -1,0 +1,12 @@
+
+%REM
+	{{instancetype}} {{label}} 
+	{{comment}}	
+	{{argumentsremarks}}{{returnsremarks}}{{exceptionsremarks}}
+%END REM
+{{signature}} 
+	'{{SETI_AUTHOR_CODE_{{qn}}_implementation
+	'}}
+	
+End {{instancetype}}
+

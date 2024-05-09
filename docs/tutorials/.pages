@@ -1,0 +1,5 @@
+nav:
+  - index.md
+  - setup.md
+  - Invoice library example: invoicelibrarysample.md
+  - "VoltScript Extension samples": vsesamples

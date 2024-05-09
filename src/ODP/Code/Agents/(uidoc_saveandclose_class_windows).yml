@@ -1,0 +1,197 @@
+---
+class: 512
+flags: 0x0000
+unid: OF01FE07D0B2895113-ON0072FF9685258ACB
+items:
+  - name: $AssistAction
+    type: action
+    code_type: 65413
+    data: |
+      '++LotusScript Development Environment:2:5:(Options):0:74
+      %REM
+      	Agent uidoc_saveandclose_class_windows
+      	Created Feb 22, 2024 by Devin Olson/USA/PNPHCL
+      	Adds a constant to the currently open Project document. 
+      %END REM
+      Option Public
+      Option Declare
+      
+      Use "BSXnotesUtilsUI"
+      Use "LSXWizardUtils"
+      
+      
+      '++LotusScript Development Environment:2:5:(Forward):0:1
+      Declare Sub Initialize
+      Declare Function qs(nuiwsp As NotesUIWorkspace, source As NotesUIDocument) As Boolean 
+      
+      '++LotusScript Development Environment:2:5:(Declarations):0:10
+      Private Const MODULE_NAME = |Agent: uidoc_saveandclose_class_windows|
+      
+      
+      
+      
+      '++LotusScript Development Environment:2:2:Initialize:1:10
+      Sub Initialize
+      	On Error GoTo ErrorTrap
+      	
+      	Dim nuiwsp As New NotesUIWorkspace() 
+      	Dim nuidoc As NotesUIDocument 
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	
+      	
+      	' BEGIN CODE 
+      	Set nuidoc = nuiwsp.CurrentDocument 
+      	If qs(nuiwsp, nuidoc) Then 
+      		Call nuidoc.Save()
+      		Call nuidoc.Close(True)
+      	End If
+      	
+      	
+      ExitPoint: 
+      	Exit Sub 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	enhLogException MODULE_NAME, ||
+      	MsgBox Error$(), WIZARD_ERR, "VSID Error"
+      	Resume ExitPoint
+      End Sub
+      
+      
+      
+      
+      
+      '++LotusScript Development Environment:2:1:qs:11:8
+      
+      %REM
+      	Function qs
+      	Performs QuerySave validation for a document 
+      	
+      	@param nuiwsp 		NotesUIWorkspace for the Form. 
+      	@param source 		NotesUIDocument representing the document being edited. 
+      	
+      	@return Flag indicating of the QuerySave validation is successful 
+      %END REM
+      Function qs(nuiwsp As NotesUIWorkspace, source As NotesUIDocument) As Boolean 
+      	On Error GoTo ErrorTrap
+      
+      	Dim thisDoc As NotesDocument
+      	Dim currProject As NotesDocument 
+      
+      	Dim extendedinfo List As String 
+      
+      	Dim className As String
+      	Dim fieldname As String
+      	
+      	Dim result As Boolean 
+      	
+      	
+      	
+      	' BEGIN CODE 
+      	fieldname = |F_ClassName|      
+      	className = source.FieldGetText(fieldname) 
+      	extendedinfo(fieldname) = className 
+      
+      	Set thisDoc = source.Document   
+      	If Not querysave_class_pt1(source, thisDoc, currProject) Then GoTo ExitPoint 
+      	
+      	' Make sure class name is not a LS keyword. 
+      	If isPlatFormWindows Then 
+      		If(getWizard().IsLSIKeyword(className)) Then Error ERR_PARAMETER_INVALID, |Class "| & className & |" is a reserved LotusScript / VoltScript keyword.  |
+      	End If 	
+      	
+      	result = querysave_class_pt2(nuiwsp, source, thisDoc, currProject) 
+      	
+      ExitPoint:
+      	qs = result 
+      	Exit Function
+      	
+      ErrorTrap:
+      	On Error GoTo 0 
+      	result = False
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	enhLogException MODULE_NAME, ||
+      	MsgBox Error$(), WIZARD_ERR, |VSID Error|
+      	If fieldname <> || Then Call source.GotoField(fieldname)
+      	Resume ExitPoint 	
+      End function
+    dwFlags: 0x00000000
+    signed: true
+    nonsummary: true
+  - name: $AssistDocCount
+    type: number
+    data: 0
+    signed: true
+  - name: $AssistFlags
+    type: text
+    data: Es
+    signed: true
+  - name: $AssistInfo
+    type_num: 17
+    type: opaque
+    opaque: |
+      AQAEAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    signed: true
+    nonsummary: true
+  - name: $AssistLastRun
+    type: time
+    signed: true
+  - name: $AssistQuery
+    type_num: 15
+    type: opaque
+    opaque: gQYAAAAA
+    signed: true
+    nonsummary: true
+  - name: $AssistRunInfo
+    type: object
+    obj_type: 0x0008
+    obj_class: 0x0200
+    obj_privs: 0x0000
+    opaque: |
+      AAAAAAUAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      udVpAOSKJYXgZVsAOYolhQAAAAAAAAAAAAAAAAAAAAAAAAAAqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqq
+  - name: $AssistTrigger
+    type: text
+    data: "4"
+  - name: $AssistType
+    type: number
+    data: 65413
+    signed: true
+  - name: $DesignerVersion
+    type: text
+    data: 8.5.3
+  - name: $Flags
+    type: text
+    data: fL3
+  - name: $FlagsExt
+    type: text
+    data: ""
+    signed: true
+  - name: $Restricted
+    type: number
+    data: 1
+    signed: true
+  - name: $TITLE
+    type: text
+    data: (uidoc_saveandclose_class_windows)|uidoc_saveandclose_class_windows
+    signed: true
+remaining: []

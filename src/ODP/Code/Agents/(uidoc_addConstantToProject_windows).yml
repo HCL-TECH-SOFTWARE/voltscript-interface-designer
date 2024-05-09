@@ -1,0 +1,174 @@
+---
+class: 512
+flags: 0x0000
+unid: OFA431F55E0CA6DAAA-ON005EE32D85258ACB
+items:
+  - name: $AssistAction
+    type: action
+    code_type: 65413
+    data: |
+      '++LotusScript Development Environment:2:5:(Options):0:74
+      %REM
+      	Agent uidoc_addConstantToProject_windows
+      	Created Feb 22, 2024 by Devin Olson/USA/PNPHCL
+      	Adds a constant to the currently open Project document. 
+      %END REM
+      Option Public
+      Option Declare
+      
+      Use "BSXnotesUtilsUI"
+      Use "LSXWizardUtils"
+      
+      
+      '++LotusScript Development Environment:2:5:(Forward):0:1
+      Declare Sub Initialize
+      Declare Sub addConstant(source As NotesUIDocument)
+      
+      '++LotusScript Development Environment:2:5:(Declarations):0:10
+      Private Const MODULE_NAME = |Agent: uidoc_addConstantToProject_windows|
+      
+      
+      
+      
+      '++LotusScript Development Environment:2:2:Initialize:1:10
+      Sub Initialize
+      	On Error GoTo ErrorTrap
+      	Dim ws As New NotesUIWorkspace()
+      	Dim nuidoc As NotesUIDocument 
+      	
+      	' BEGIN CODE 
+      	Set nuidoc = ws.CurrentDocument 
+      	Call addConstant(nuidoc) 
+      	
+      		
+      ExitPoint: 
+      	Exit Sub 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, ||
+      	MsgBox Error$(), 16, "VSID Error"
+      	Resume ExitPoint
+      End Sub
+      
+      
+      
+      
+      
+      '++LotusScript Development Environment:2:2:addConstant:1:8
+      Sub addConstant(source As NotesUIDocument)
+      	On Error GoTo ErrorTrap
+      
+      	Dim thisdoc As NotesDocument
+      	Dim newlist As Variant
+      	
+      	Dim extendedinfo List As String 
+      	
+      	Dim newval As String 
+      	Dim token As String
+      	Dim value As String
+      	Dim fieldname As String 
+      	
+      	
+      	' BEGIN CODE 
+      	Set thisdoc = source.Document 
+      	If Not validateProjectConstants(source, thisdoc, token, value, newval) Then GoTo ExitPoint 
+      	 
+      	' make sure it's not an LSI Keyword
+      	If isPlatformWindows Then
+      		fieldname = |C_Token| 
+      		If getWizard().IsLSIKeyword(token) Then Error ERR_PARAMETER_INVALID, |Constant token "| & token & |" is a reserved LotusScript / VoltScript keyword.  |
+      	End If
+      
+      	If addConstantToProject(source, thisdoc, newval) Then 
+      		MessageBox |Due to platform limitations, the new constant "| & token & |" cannot be checked for a conflict with LotsScript / VoltScript keywords.|, 48, |Warning| 
+      	End If
+      	
+      ExitPoint:
+      	Exit Sub
+      	
+      ErrorTrap:
+      	On Error GoTo 0 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	MsgBox Error$(), 16, |VSID Error|
+      	If Not isBlankString(fieldname) Then Call source.gotoField(fieldname) 
+      	Resume ExitPoint 
+      	
+      End Sub
+    dwFlags: 0x00000000
+    signed: true
+    nonsummary: true
+  - name: $AssistDocCount
+    type: number
+    data: 0
+    signed: true
+  - name: $AssistFlags
+    type: text
+    data: Es
+    signed: true
+  - name: $AssistInfo
+    type_num: 17
+    type: opaque
+    opaque: |
+      AQAEAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    signed: true
+    nonsummary: true
+  - name: $AssistLastRun
+    type: time
+    signed: true
+  - name: $AssistQuery
+    type_num: 15
+    type: opaque
+    opaque: gQYAAAAA
+    signed: true
+    nonsummary: true
+  - name: $AssistRunInfo
+    type: object
+    obj_type: 0x0008
+    obj_class: 0x0200
+    obj_privs: 0x0000
+    opaque: |
+      AAAAAAUAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      yHprAMyKJYXgZVsAOYolhQAAAAAAAAAAAAAAAAAAAAAAAAAAqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+      qqqqqqqqqqqqqqqq
+  - name: $AssistTrigger
+    type: text
+    data: "4"
+  - name: $AssistType
+    type: number
+    data: 65413
+    signed: true
+  - name: $DesignerVersion
+    type: text
+    data: 8.5.3
+  - name: $Flags
+    type: text
+    data: fL3
+  - name: $FlagsExt
+    type: text
+    data: ""
+    signed: true
+  - name: $Restricted
+    type: number
+    data: 1
+    signed: true
+  - name: $TITLE
+    type: text
+    data: (uidoc_addConstantToProject_windows)|uidoc_addConstantToProject_windows
+    signed: true
+remaining: []

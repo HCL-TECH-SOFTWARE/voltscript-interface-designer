@@ -1,0 +1,41 @@
+---
+class: 1
+flags: 0x0100
+unid: OF64741DA2C739C9DF-ON006EB1D485258AE2
+items:
+  - name: Authors
+    type: text
+    data:
+      - CN=Devin Olson/OU=USA/O=PNPHCL
+      - "[Admin]"
+    authors: true
+    names: true
+  - name: Category
+    type: text
+    data: "2"
+  - name: CreatedOn
+    type: time
+    data: "2024-03-16T16:09:04.84-04:00"
+    dst: true
+  - name: DataType
+    type: text
+    data: NotesMIMEHeader
+  - name: F_LSXCreator
+    type: text
+    data: Devin Olson
+  - name: Form
+    type: text
+    data: DataType
+  - name: LastModified
+    type: time
+    data: "2024-03-16T16:09:42.44-04:00"
+    dst: true
+  - name: ProjectType
+    type: text
+    data:
+      - "1"
+      - "2"
+  - name: keywordComments
+    type: text
+    data: Represents a header in a MIME (Multipurpose Internet Mail Extensions) document.
+remaining: []

@@ -1,0 +1,21 @@
+
+
+%REM
+	{{instancetype}} {{label}} 
+	{{comment}} 
+%END REM
+{{signature}} 
+
+	{{variablesvss}}
+	'{{SETI_AUTHOR_CODE_{{label}}_Private_Variables
+	'}}
+
+	{{propertiesvss}}
+	'{{SETI_AUTHOR_CODE_{{label}}_Private_Properties
+	'}}
+	
+	{{methodsvss}} 
+	'{{SETI_AUTHOR_CODE_{{label}}_Private_Methods
+	'}} 
+	
+End Class 

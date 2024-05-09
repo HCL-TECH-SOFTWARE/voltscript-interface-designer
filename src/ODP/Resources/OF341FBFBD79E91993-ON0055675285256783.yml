@@ -1,0 +1,29 @@
+---
+class: 1
+flags: 0x0100
+unid: OF341FBFBD79E91993-ON0055675285256783
+items:
+  - name: $Revisions
+    type: time
+    data:
+      - data: "1999-06-01T11:32:50.09-04:00"
+        dst: true
+      - data: "1999-06-01T11:32:58.13-04:00"
+        dst: true
+      - data: "2023-07-18T11:36:44.84-04:00"
+        dst: true
+  - name: Category
+    type: text
+    data: "2"
+  - name: DataType
+    type: text
+    data: NotesRichTextTab
+  - name: Form
+    type: text
+    data: DataType
+  - name: ProjectType
+    type: text
+    data:
+      - "2"
+      - "1"
+remaining: []

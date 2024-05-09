@@ -1,0 +1,1041 @@
+---
+class: 512
+flags: 0x2000
+unid: OFFA695F1FB1A16F8C-ON0037573C862588C6
+items:
+  - name: $Comment
+    type: text
+    data: Core Utilities
+  - name: $DesignerVersion
+    type: text
+    data: 8.5.3
+    signed: true
+  - name: $Flags
+    type: text
+    data: s34Q
+  - name: $PublicAccess
+    type: text
+    data: "1"
+    signed: true
+  - name: $ScriptLib
+    type: text
+    data: |
+      '++LotusScript Development Environment:2:5:(Options):0:74
+      %REM ***************************************************************************
+       ************************************************************************************
+      	baliCoreUtils Lotusscript Library
+      
+      	Core utilities Library
+      
+      	Created May 2022 by Devin Olson/USA/PNPHCL
+      	Includes enhancements and methods from Rocky Oliver/USA/PNPHCL
+      	
+       ************************************************************************************
+      %END REM *********************************************************************
+      %REM
+      	**********************************************************************
+      	**********************************************************************
+      		
+          Copyright HCL America, Inc. 1999, 2023
+      
+         	Licensed under the Apache License, Version 2.0 (the "License");
+          you may not use this file except in compliance with the License.
+          You may obtain a copy of the License at
+      
+              http://www.apache.org/licenses/LICENSE-2.0
+      
+          Unless required by applicable law or agreed to in writing, software
+          distributed under the License is distributed on an "AS IS" BASIS,
+          WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+          See the License for the specific language governing permissions and
+         	limitations under the License.
+      
+      	**********************************************************************
+      	**********************************************************************
+      %END REM
+      Option Public
+      Option Explicit 
+      Use "baliConstants" 
+      
+      
+      '++LotusScript Development Environment:2:5:(Forward):0:1
+      Declare Public Class IntegerPair 
+      Declare Static Property Get DIRECTORY_DELIMITER As String 
+      Declare Function strCmp( ByVal string1 As String, ByVal string2 As String) As Boolean
+      Declare Function columnValArray(doc As NotesDocument, colnum As Integer) As Variant
+      Declare Public Function getListTags(source As Variant) As Variant  
+      Declare Function makeDirectory(target$) As Boolean 
+      Declare Private Sub DoQS_A( sA() As String, bottom As Long, top As Long )
+      Declare 	Public Sub shellSortIntegers(source As Variant)
+      Declare Function isEven(source%) As Boolean 
+      Declare Public Function fileExists (filepath$) As Boolean
+      Declare Public Sub trimString (target$)
+      Declare Function columnValStr(doc As NotesDocument, colnum As Integer) As String
+      Declare Function isTrue(source As Variant) As Boolean 
+      Declare Function writeTextFile(source$, target$) As Long 
+      Declare Public Function getElementCount(source As Variant) As Long 
+      Declare Private Sub DoInsertSort_A ( sA() As String, ByVal bottom As Long, ByVal top As Long )
+      Declare Private Sub DoInsertSort_D ( sA() As String, ByVal bottom As Long, ByVal top As Long )
+      Declare Function getScalar(source As Variant) As Variant 
+      Declare Private Sub DoQS_D( sA() As String, bottom As Long, top As Long )
+      Declare Function sortArray(sArray As Variant, orderflag As String) As Boolean
+      Declare Public Function isBlankString(source$) As Boolean 
+      Declare Public Function getListSize(source As Variant) As Long 
+      
+      '++LotusScript Development Environment:2:5:(Declarations):0:10
+      
+      Private Const MODULE_NAME = |baliCoreUtils|
+      Private Const LIB_PREFIX = |Library:| & MODULE_NAME & |.|  ' used for exception handling 
+      
+      
+      
+      %REM
+      	Class IntegerPair
+      	Carrier for a pair of Integers
+      %END REM
+      Public Class IntegerPair 
+      	Private first_ As Integer 
+      	Private last_ As Integer
+      	
+      	%REM
+      		Property Get CLASS_NAME
+      		Name of the Class
+      	%END REM
+      	Private Property Get CLASS_NAME As String 
+      		CLASS_NAME = |IntegerPair|
+      	End Property
+      	
+      	%REM
+      		Property Get CLASS_PREFIX
+      		Prefix of the Class:  MODULE_NAME.CLASS_NAME.
+      	%END REM
+      	Private Property Get CLASS_PREFIX As String 
+      		CLASS_PREFIX = MODULE_NAME & |.| & CLASS_NAME & |.|
+      	End Property
+      	
+      	Public Property Get First As Integer
+      		First = me.first_ 
+      	End Property
+      
+      	Public Property Get Last As Integer
+      		Last = me.last_ 
+      	End Property
+      			
+      	%REM
+      		Constructor
+      	%END REM
+      	Public Sub New(first%, last%)  
+      		me.first_ = first% 
+      		me.last_ = last% 
+      	End Sub
+      End Class
+      '++LotusScript Development Environment:2:3:DIRECTORY_DELIMITER Get:9:8
+      %REM
+      	Property Get DIRECTORY_DELIMITER 
+      	Returns the appropriate Directory Delimiter for the current Operating System. 
+      
+      	Checks the current directory in order to determine the DIRECTORY_DELIMITER. 
+      			
+      	@return extracted directory delimiter.  
+      %END REM
+      Static Property Get DIRECTORY_DELIMITER As String 
+      	
+      	Dim result$
+      	Dim currentdir$
+      	
+      	' BEGIN CODE
+      	If isBlankString(result$) Then 
+      		DIRECTORY_DELIMITER = |/|
+      
+      		currentdir$ = CurDir$(||) 
+      		If isBlankString(currentdir$) Then GoTo ExitPoint
+      		
+      		result$ = |/|
+      		If InStr(CurDir$(||), |\|) > 0 Then result$ = |\| ' change proper delimiter to stupid windows delimiter. 
+      	End If  
+      	
+      	DIRECTORY_DELIMITER = result
+      	
+      ExitPoint: 
+      	
+      	Exit Property 
+      End Property
+      
+      '++LotusScript Development Environment:2:1:strCmp:12:8
+      %REM
+      	Function strCmp
+      	
+      	Shorthand method for a Case Insensitive, Pitch insensitive StrCompare call. 
+      	 
+      	@param string1 	Any String expression.
+      	@param string2 	Any String expression. 
+      	
+      	@return Flag indicating result of Case-insensitive, Pitch-insensitive comparison 
+      		Flag = (0 = strCompare(string1, string2, 5)) 
+      %END REM
+      Function strCmp( ByVal string1 As String, ByVal string2 As String) As Boolean
+      	strCmp = (0 = StrCompare(string1, string2, 5)) 
+      End Function
+      
+      '++LotusScript Development Environment:2:1:columnValArray:12:8
+      %REM
+      	Function columnValArray
+      
+      	One annoying trait of the NotesDocument.columnValues property is that 
+      	it can return either a scalar or an array. This is annoying, and introduces 
+      	a potential failure point if you aren't studious enough to make sure you fix 
+      	this every time you use the columnValues property.
+      	
+      	This little function takes the column value, and makes sure to always 
+      	return it as an array, no matter what.
+      %END REM
+      Function columnValArray(doc As NotesDocument, colnum As Integer) As Variant
+      	Dim vtmp1 As Variant, vtmp2 As Variant
+      	Dim errtxt As String
+      	
+      	On Error GoTo errHandler
+      
+      	vtmp1 = doc.Columnvalues(colnum)
+      	If IsArray(vtmp1) Then
+      		columnValArray = vtmp1
+      	Else
+      		ReDim vtmp2(0)
+      		vtmp2(0) = vtmp1
+      		columnValArray = vtmp2
+      	End If
+      	
+      getOut:
+      	Exit Function
+      errHandler:
+      	columnValArray = Null
+      	errtxt = Error$ & " [in: " & GetThreadInfo(1) & "; err: " & Err & "; line: " & Erl & "]"
+      	On Error GoTo 0
+      
+      	Error Err, errtxt
+      	Resume getOut
+      End Function
+      
+      '++LotusScript Development Environment:2:1:getListTags:8:8
+      %REM
+      	Function getListTags
+      	Gets the listTags for a list 
+      	
+      	@param source: List object from which to get the list tags 
+      	@return array of listTags from the list. 
+      %END REM
+      Public Function getListTags(source As Variant) As Variant  
+      
+      	Dim result As Variant 
+      
+      	result = Null 
+      	If Not IsList(source) Then GoTo ExitPoint 
+      	
+      	Dim valuesArray() As String
+      	Dim i#
+      	
+      	' get the size first!  faster than multiple redim calls.
+      	i# = getListSize(source) 
+      	If (i# < 1) Then GoTo ExitPoint 
+      
+      	ReDim valuesArray(i# - 1) As String 
+      
+      	' populate the array with the listTags
+      	i# = 0
+      	ForAll element In source 
+      		valuesArray(i#) = ListTag(element) 
+      		i# = i# + 1
+      	End ForAll
+      
+      	result = valuesArray 
+      	
+      ExitPoint: 
+      	getListTags = result 
+      End Function
+      
+      '++LotusScript Development Environment:2:1:makeDirectory:13:8
+      %REM
+      	Function makeDirectory
+      	Conditionally attempts to create a directory in the filesystem.
+      	
+      	Checks for the existence of a directory, and if it does not exist attempts to create it. 
+      
+      	@param target$ Directory to create. 
+      	
+      	@return Flag indicating success / failure. True indicates either the directory already exists or was successfully created. 
+      	
+      	@throws ERR_PARAMETER_BLANK if the target direcotry is blank.
+      %END REM
+      Function makeDirectory(target$) As Boolean 
+      	If isBlankString(target$) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |Target directory may not be blank.|
+      	On Error 76 Resume Next ' Ignore path not found exceptions
+      	
+      	
+      	Dim folders As Variant 
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	Dim msg$
+      	
+      	Dim delimiter$ 
+      	Dim filepath$
+      	Dim directory$
+      	
+      	Dim i%
+      	
+      	Dim result As Boolean
+      	
+      	' BEGIN CODE
+      	extendedinfo(|target|) = target$
+      	
+      	' Initial check for entire directory 
+      	directory$ = Dir$(target$, 16)
+      	If isBlankString(directory$) Then 
+      
+      		' Target directory does not exist.  Attempt to create it. 
+      		delimiter$ = DIRECTORY_DELIMITER 
+      
+      		folders = Split(target$, delimiter$)
+      		
+      		If (LBound(folders) < UBound(folders)) Then 
+      			For i% = LBound(folders) To UBound(folders)
+      				If isBlankString(filepath$) Then 
+      					filepath$ = folders(i) 
+      				Else 
+      					filepath$ = filepath$ & delimiter$ & folders(i)
+      				End If
+      				
+      				extendedinfo(|filepath|) = filepath$	
+      				directory$ = ||
+      				directory$ = Dir$(filepath$, 16) 
+      				extendedinfo(|directory|) = directory$ 
+      				If isBlankString(directory$) Then MkDir filepath$ 
+      			Next
+      		End If
+      		
+      		' Verify the target directory was successfully created. 
+      		result = Not IsBlankString(Dir$(target$, 16))
+      		
+      	Else
+      		' The directory exists 
+      		result = True 
+      	End If
+      
+      
+      
+        
+      	
+      ExitPoint: 
+      	makeDirectory = result
+      	Exit Function 
+      End Function
+      
+      '++LotusScript Development Environment:2:2:DoQS_A:13:8
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      Private Sub DoQS_A( sA() As String, bottom As Long, top As Long )
+      	' PRIVATE - used by SortArray
+      	On Error GoTo errHandler
+      
+      	Dim length As Long
+      	Dim i As Long
+      	Dim j As Long
+      	Dim Pivot As Long
+      	Dim PivotValue As String
+      	Dim t As String
+      	Dim LastSmall As Long
+      	length = top - bottom + 1
+      	
+           ' Only do the QuickSort if the sublist is at least 10 items long
+      	If length > 10 Then
+                ' Pivot is chosen approx. halfway through sublist.
+                ' This gives us best speed if list is almost sorted already, and is no worse than any
+                ' other choice if the list is in random order.
+      		Pivot = bottom + (length \ 2)   
+      		
+                ' Move PivotValue out of the way
+      		PivotValue = sA( Pivot )
+      		sA ( Pivot ) = sA ( bottom )
+      		sA ( bottom ) = PivotValue
+      		
+                ' LastSmall is the location of the last value smaller than PivotValue
+      		LastSmall = bottom
+      		For i = bottom + 1 To top 
+      			If sA ( i ) < PivotValue Then 
+      				LastSmall = LastSmall + 1
+      				t = sA ( i )
+      				sA ( i ) = sA ( LastSmall )
+      				sA ( LastSmall ) = t
+      			End If
+      		Next
+      		
+                ' Move the PivotValue back
+      		t = sA ( LastSmall )
+      		sA ( LastSmall ) = sA ( bottom )
+      		sA ( bottom ) = t
+      		Pivot = LastSmall
+      		
+                ' Now sort each side
+      		Call DoQS_A( sA, bottom, Pivot - 1 )
+      		Call DoQS_A( sA, Pivot + 1, top )
+      	End If
+      getOut:
+      	Exit Sub
+      errHandler:
+      	On Error GoTo 0
+      	Error Err, Error$ & " [in DoQS_A]"
+      	Resume getOut
+      End Sub
+      
+      '++LotusScript Development Environment:2:2:shellSortIntegers:8:8
+      	%REM
+      		Function shellSortIntegers
+      		Performs a "divide and conquer" sort of a Integer Array, based on an insertion sort algorithm.
+      		
+      		@param source: Array of Integers to be sorted.  This is an IN-OUT argument, passed by reference.  
+      
+      	%END REM
+      	Public Sub shellSortIntegers(source As Variant)
+      		Dim insertionValue$
+      		
+      		Dim errmsg$
+      		Dim errcode%
+      		
+      		Dim lowerbound&
+      		Dim upperbound&
+      		Dim elementcount&
+      		
+      		Dim idxOuter&
+      		Dim idxInner&
+      		
+      		Dim interval&
+      		
+      		If Not IsArray(source) Then GoTo ExitPoint 
+      
+      		lowerbound& = LBound(source)
+      		upperbound& = UBound(source)
+      		elementcount& = upperbound& - lowerbound& + 1
+      		
+      		interval& = 1
+      
+      		
+      		' Determine the interval 
+      		While (interval& < (elementcount& / 3)) 
+      			interval& = (3 * interval&) + 1
+      		Wend
+      
+      		' Perform the sort		
+      		While (interval& > 0) 
+      			idxOuter& = interval&
+      			While idxOuter& < elementcount&
+      				
+      				' get the insertion value 
+      				insertionValue$ = source(idxOuter&) 
+      				
+      				idxInner& = idxOuter& 
+      				
+      				' shift the element to the right
+      				Do While (idxInner& > (interval& -1)) 
+      					If (StrCompare(source(idxInner& - interval&), insertionValue$) < 0) Then Exit Do 
+      					source(idxInner&) = source(idxInner& - interval&) 
+      					idxInner& = idxInner& - interval& 
+      				Loop
+      				
+      				' insert the value 
+      				source(idxInner&) = insertionValue$ 
+      				
+      				idxOuter& = idxOuter& + 1
+      			Wend
+      
+      			' recompute the interval 
+      			interval& = (interval& -1) / 3		
+      		Wend
+      		
+      		
+      	ExitPoint:
+      		If (errcode% <> 0) Then Error errcode%, errmsg$
+      		Exit Sub
+      	End Sub
+      
+      '++LotusScript Development Environment:2:1:isEven:12:8
+      
+      
+      
+      %REM
+      	Function isEven
+      	Tests and integer to determine if it is evenly divisible by 2 
+      	
+      	@param source% Integer value to test 
+      	
+      	@return Flag indicating if source% is even 
+      %END REM
+      Function isEven(source%) As Boolean 
+      	If (0 = source%) Then 
+      		isEven = True 
+      	Else 
+      		isEven = (0 = source% Mod 2) 
+      	End If
+      End Function
+      
+      '++LotusScript Development Environment:2:1:fileExists:11:8
+      
+      
+       
+      %REM 
+      	Checks to see if a file exists.
+      	
+      	@param filepath$ filepath to check for existence. 
+      	
+      	@return Flag indicating if filepath was found.
+      %END REM
+      Public Function fileExists (filepath$) As Boolean
+      	Dim extendedInfo As String
+      	Dim result As Boolean
+      	
+      	On Error GoTo ErrorTrap
+      	extendedInfo$ = |"| & filepath$ & |"|
+      	result = (Len(Dir(filepath$, 14)) > 0) ' ATTR_NORMAL + ATTR_HIDDEN + ATTR_SYSTEM + ATTR_VOLUME
+      	
+      ExitPoint:
+      	fileExists = result
+      	Exit Function
+      ErrorTrap:
+      	On Error GoTo 0
+      	result = False
+      	Resume ExitPoint
+      End Function   
+      
+      '++LotusScript Development Environment:2:2:trimString:10:8
+      
+      
+      %REM
+      	Removes leading and trailing spaces from a string.
+      	
+      	Pattern replacement for mystring$ = Trim$(mystring$) 
+      	
+      	@param target$ String to be trimmed.	
+      %END REM
+      Public Sub trimString (target$)
+      	target$ = Trim$(target$)
+      End Sub 
+      
+      '++LotusScript Development Environment:2:1:columnValStr:12:8
+      %REM
+      	Function columnValStr
+      
+      	One annoying trait of the NotesDocument.columnValues property is that 
+      	it can return either a scalar or an array. This is annoying, and introduces 
+      	a potential failure point if you aren't studious enough to make sure you fix 
+      	this every time you use the columnValues property.
+      	
+      	This little function takes the column value, and makes sure to always 
+      	return it as a string, no matter what.
+      %END REM
+      Function columnValStr(doc As NotesDocument, colnum As Integer) As String
+      	Dim vtmp1 As Variant
+      	Dim errtxt As String
+      	
+      	On Error GoTo errHandler
+      
+      	vtmp1 = doc.Columnvalues(colnum)
+      	If IsArray(vtmp1) Then
+      		columnValStr = FullTrim(CStr(Implode(vtmp1)))
+      	Else
+      		columnValStr = FullTrim(CStr(vtmp1))
+      	End If
+      	
+      getOut:
+      	Exit Function
+      errHandler:
+      	columnValStr = ""
+      	errtxt = Error$ & " [in: " & GetThreadInfo(1) & "; err: " & Err & "; line: " & Erl & "]"
+      	On Error GoTo 0
+      
+      	Error Err, errtxt
+      	Resume getOut
+      End Function
+      
+      
+      
+      '++LotusScript Development Environment:2:1:isTrue:12:8
+      %REM
+      	Function isTrue
+      	Tests a variable to see if it represents a True value.
+      	
+      	@param source Variant that can be interpreted as either a true or a false value.
+      	Tests the scalar value of source.  
+      	
+      	@return Flag indicating if source represents a True value.
+      	
+      	@throws ERR_PARAMETER_INVALID if source cannot be tested (such as an object)  
+      %END REM
+      Function isTrue(source As Variant) As Boolean 
+      	On Error GoTo ErrorTrap
+      
+      	Dim extendedinfo List As String 
+      	Dim temparray As Variant
+      	
+      	Dim condition$
+      	Dim errmsg$ 
+      	Dim errcode%
+      	
+      	 
+      	Dim result As Boolean 
+      	
+      	extendedinfo(|typename(source)|) = TypeName(source) 
+      
+      	condition$ = LCase$(Trim$(CStr(getScalar(source))))
+      	extendedinfo(|condition|) = condition$ 
+      	
+      	If (InStr(condition$, |.|) > 0) Then
+      		temparray = Split(condition$, |.|) 
+      		condition$ = temparray(0) 
+      	End If
+      	
+      	Select Case condition$ 
+      		Case |1|		: result = True 
+      		Case |true|		: result = True 
+      		Case |yes|		: result = True 
+      		Case |y|		: result = True 
+      		Case |t|		: result = True 
+      		Case |enabled| 	: result = True 
+      	End Select
+      	
+      ExitPoint:
+      	If (0 <> errcode%) Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & errmsg$
+      	isTrue = result 
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	errcode% = Err() 
+      	errmsg$ = Error$() 
+      	ForAll s In extendedinfo
+      		errmsg$ = errmsg$ & CRLF & HT & ListTag(s) & |: | & s 
+      	End ForAll
+      	Resume ExitPoint 
+      End Function
+      
+      '++LotusScript Development Environment:2:1:writeTextFile:21:8
+      
+      
+      
+      
+      
+      %REM
+      	Function writeTextFile
+      	Writes text to a file.
+      	
+      	IMPORTANT NOTE: Existing files will be OVERWRITTEN!  It is up to the calling code to pre-check for existence of file.
+      	
+      	@param source$ Text to be written to a file. 
+      	@param target$ Filepath of file to be written. 
+      
+      			
+      	@return Number of bytes written to the target file.   
+      
+      	@throws ERR_PARAMETER_BLANK if target filepath is blank.
+      	@throws ERR_OPERATION_FAILED or other file system exception on failure.  
+      %END REM
+      Function writeTextFile(source$, target$) As Long 
+      	If isBlankString(target$) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |Target filepath is blank.  |
+      	On Error GoTo ErrorTrap 
+      
+      
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	
+      	Dim directory$
+      	Dim filepath$ 	
+      	Dim errcode%    
+      	Dim errmsg$
+      
+      	Dim file As Integer 
+      	
+      	Dim i%
+      
+      	Dim result& 
+      
+      	Dim isOpen As Boolean 
+      
+      	
+      	' BEGIN CODE
+      	
+      	extendedinfo(|Target Filepath|) = target$
+      	extendedinfo(|Source Text|) = source$ 
+      	If isBlankString(target$) Then GoTo ExitPoint 
+      	
+      	directory$ = StrLeftBack(target$, DIRECTORY_DELIMITER) 
+      	If Not makeDirectory(directory$) Then GoTo ExitPoint  ' The directory does not exist and could not be created.
+      	
+      	' Check for existence 	
+      	filepath$ = Dir$(target$, 0) 
+      	If Not isBlankString(filepath$) Then Kill target$
+      	
+      	file% = FreeFile() 
+      	Open target$ For Output Access Write As #file% 
+      	isOpen = True 
+      
+      	Print #file%, source$
+      	
+      	' Success! 
+      	result& = LenB(source$)  
+      	
+      
+      ExitPoint: 
+      	If isOpen Then 
+      		isOpen = False 
+      		Close #file% 
+      	End If
+      	If (0 <> errcode%) Then Error ERR_OPERATION_FAILED, MSG_OPERATION_FAILED & |Error #| & CStr(errcode%) &  |: | & errmsg$
+      	writeTextFile = result&
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	errcode% = Err() 
+      	errmsg$ = Error$()
+      	Resume ExitPoint
+      End Function
+      
+      
+      
+      '++LotusScript Development Environment:2:1:getElementCount:17:8
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      %REM
+      	Function getElementCount
+      	Gets the number of elements in a list or array
+      %END REM
+      Public Function getElementCount(source As Variant) As Long 
+      	Dim result&
+      	
+      	If IsList(source) Then 
+      		ForAll element In source
+      			result& = result& + 1
+      		End ForAll
+      		
+      	ElseIf IsArray(source) Then 
+      		result& = (UBound(source) = LBound(source)) + 1
+      	Else 
+      		result& = 0 
+      	End If 
+      	
+      	getElementCount& = result&	
+      End Function
+      
+      '++LotusScript Development Environment:2:2:DoInsertSort_A:1:8
+      Private Sub DoInsertSort_A ( sA() As String, ByVal bottom As Long, ByVal top As Long )
+      	' PRIVATE - used by SortArray
+      	On Error GoTo errHandler
+      	Dim i As Long
+      	Dim j As Long
+      	Dim t As String
+      	Dim Found As Integer
+      	For i = bottom + 1 To top
+      		If sA ( i ) < sA ( i - 1 ) Then
+      			j = i
+      			t = sA ( i )
+      			Do
+      				j = j - 1
+      				sA ( j + 1 ) = sA ( j )
+      				If j = bottom Then
+      					Found = True
+      				Else
+      					Found = ( sA ( j - 1 ) <= t )
+      				End If
+      			Loop Until Found
+      			sA ( j ) = t
+      		End If
+      	Next
+      getOut:
+      	Exit Sub
+      errHandler:
+      	On Error GoTo 0
+      	Error Err, Error$ & " [in DoInsertSort_A]"
+      	Resume getOut
+      End Sub
+      
+      '++LotusScript Development Environment:2:2:DoInsertSort_D:3:8
+      
+      
+      Private Sub DoInsertSort_D ( sA() As String, ByVal bottom As Long, ByVal top As Long )
+      	' PRIVATE - used by SortArray
+      	On Error GoTo errHandler
+      	Dim i As Long
+      	Dim j As Long
+      	Dim t As String
+      	Dim Found As Integer
+      	For i = bottom + 1 To top
+      		If sA ( i ) > sA ( i - 1 ) Then
+      			j = i
+      			t = sA ( i )
+      			Do
+      				j = j - 1
+      				sA ( j + 1 ) = sA ( j )
+      				If j = bottom Then
+      					Found = True
+      				Else
+      					Found = ( sA ( j - 1 ) >= t )
+      				End If
+      			Loop Until Found
+      			sA ( j ) = t
+      		End If
+      	Next
+      getOut:
+      	Exit Sub
+      errHandler:
+      	On Error GoTo 0
+      	Error Err, Error$ & " [in DoInsertSort_D]"
+      	Resume getOut
+      End Sub
+      
+      '++LotusScript Development Environment:2:1:getScalar:14:8
+      
+      
+      %REM
+      	Function getScalar
+      	Gets the scalar value of a variable. 
+      	If an array or a list gets the first value.  
+      	
+      	@param source 	Variable from which to get the scalar value. 
+      	
+      	@return Scalar value of a variable.  
+      	
+      	@throws ERR_OPERATION_FAILED if unable to resolve 
+      %END REM
+      Function getScalar(source As Variant) As Variant 
+      	On Error GoTo ErrorTrap
+      	
+      	Dim errmsg$
+      	Dim errcode%
+      	Dim result As Variant
+      	
+      	If IsScalar(source) Then
+      		If IsObject(source) Then
+      			Set result = source
+      		Else
+      			result = source
+      		End If 
+      	Else
+      		If IsArray(source) Then 
+      			If IsObject(source(LBound(source))) Then
+      				Set result = source(LBound(source))
+      			Else
+      				result = source(LBound(source))
+      			End If
+      		ElseIf IsList(source) Then 
+      			ForAll listelement In source 
+      				If IsObject(listelement) Then 
+      					Set result = listelement 
+      				Else 
+      					result = listelement 
+      				End If
+      				GoTo ExitPoint 
+      			End ForAll	
+      		ElseIf IsObject(source) Then 
+      			Set result = source
+      			
+      		Else 
+      			result = False 
+      		End If
+      		
+      	End If 
+      	
+      ExitPoint:
+      	If (0 <> errcode%) Then Error ERR_OPERATION_FAILED, MSG_OPERATION_FAILED & errmsg$ 
+      	If IsObject(result) Then
+      		Set getScalar = result
+      	Else
+      		getScalar = result
+      	End If 
+      	Exit Function
+      ErrorTrap:
+      	On Error GoTo 0
+      	errcode% = Err() 
+      	errmsg$ = Error$() & |  Typename(source): | & TypeName(source) 
+      	Resume ExitPoint
+      End Function 
+      
+      '++LotusScript Development Environment:2:2:DoQS_D:1:8
+      Private Sub DoQS_D( sA() As String, bottom As Long, top As Long )
+      	' PRIVATE - used by SortArray
+      	On Error GoTo errHandler
+       
+      	Dim length As Long
+      	Dim i As Long
+      	Dim j As Long
+      	Dim Pivot As Long
+      	Dim PivotValue As String
+      	Dim t As String
+      	Dim LastSmall As Long
+      	length = top - bottom + 1
+      	
+           ' Only do the QuickSort if the sublist is at least 10 items long
+      	If length > 10 Then
+                ' Pivot is chosen approx. halfway through sublist.
+                ' This gives us best speed if list is almost sorted already, and is no worse than any
+                ' other choice if the list is in random order.
+      		Pivot = bottom + (length \ 2)   
+      		
+                ' Move PivotValue out of the way
+      		PivotValue = sA( Pivot )
+      		sA ( Pivot ) = sA ( bottom )
+      		sA ( bottom ) = PivotValue
+      		
+                ' LastSmall is the location of the last value smaller than PivotValue
+      		LastSmall = bottom
+      		For i = bottom + 1 To top 
+      			If sA ( i ) > PivotValue Then 
+      				LastSmall = LastSmall + 1
+      				t = sA ( i )
+      				sA ( i ) = sA ( LastSmall )
+      				sA ( LastSmall ) = t
+      			End If
+      		Next
+      		
+                ' Move the PivotValue back
+      		t = sA ( LastSmall )
+      		sA ( LastSmall ) = sA ( bottom )
+      		sA ( bottom ) = t
+      		Pivot = LastSmall
+      		
+                ' Now sort each side
+      		Call DoQS_D( sA, bottom, Pivot - 1 )
+      		Call DoQS_D( sA, Pivot + 1, top )
+      getOut:
+      		Exit Sub
+      errHandler:
+      		On Error GoTo 0
+      		Error Err, Error$ & " [in DoQS_D]"
+      		Resume getOut
+      	End If	
+      End Sub
+      
+      '++LotusScript Development Environment:2:1:sortArray:18:8
+      
+      
+      %REM
+      	SortArray(sArray As Variant, orderflag As String) As Boolean
+      		>> Sorts the provided array in either ascending or descending order,
+      		   based on the order flag: A sorts ascending, D sorts descending.
+      		   It is also optimized to use a Bubble sort for smaller arrays, 
+      		   and an Insertion Sort for larger arrays.
+      		>> This function uses four private subs to do the "work": 
+      			-- DoQS_A == Quick, or Bubble Sort - ascending;
+      			-- DoQS_D == Quick, or Bubble Sort - descending;
+      			-- DoInsertSort_A == Insertion Sort, ascending;
+      			-- DoInsertSort_D == Insertion Sort - descending;
+      			
+      	Original QuickSort function written by Richard Dickinson, and used with permission.
+      	Modified by Rocky Oliver (Sapphire Oak Technologies) to optimize code and add descending choice
+      %END REM
+      Function sortArray(sArray As Variant, orderflag As String) As Boolean
+      
+      	On Error GoTo errHandler
+      	sortArray = True
+      	Dim sA() As String    
+      	Dim j As Long
+      	Dim bottom As Long, top As Long
+      	bottom = LBound (sArray)
+      	top = UBound (sArray)
+      	ReDim sA(bottom To top) As String     
+      	For j = bottom To top
+      		sA ( j ) = sArray ( j )
+      	Next
+      REM First determine if the user chose ascending or descending, then sort the list
+      REM DoQS_x does a QuickSort if the Sublist is longer than 10 elements
+      REM Thus, when DoQS_x finishes, all elements are within 10 spots of their correct location.
+      REM For lists that are close to being in order, an Insertion Sort is much faster than a QuickSort, so we
+      REM run through the whole thing once doing an Insertion Sort to finish tidying up the order.
+      	Select Case orderflag
+      	Case "A"
+      		Call DoQS_A(sA, bottom, top)
+      		Call DoInsertSort_A(sA, bottom, top)
+      	Case "D", ""
+      		Call DoQS_D(sA, bottom, top)
+      		Call DoInsertSort_D(sA, bottom, top)
+      	End Select
+      	
+      	ReDim sArray(bottom To top) As String     
+      	For j = bottom To top
+      		sArray ( j ) = sA ( j )
+      	Next
+      getOut:
+      	Exit Function
+      errHandler:
+      
+      	sortArray = False
+      	On Error GoTo 0
+      	Error Err, Error$ & " [in " & GetThreadInfo(1) & "]"
+      	
+      	Resume getOut
+      End Function
+      
+      '++LotusScript Development Environment:2:1:isBlankString:10:8
+      %REM
+      	Function isBlankString
+      	Tests a string for "blankness"  
+      	Whitespace is counts a blank  
+      	
+      	@param source String to test 
+      	
+      	@return Flag indicating if the source is considered a blank string. 
+      %END REM
+      Public Function isBlankString(source$) As Boolean 
+      	Dim result As Boolean 
+      	
+      	result = (Len(FullTrim(source$)) < 1) 
+      	
+      ExitPoint:
+      	isBlankString = result 
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	result = True 
+      	Resume ExitPoint 
+      End Function
+      
+      '++LotusScript Development Environment:2:1:getListSize:5:8
+      %REM
+      	Function getListSize
+      	Gets the size number of elements in a list
+      %END REM
+      Public Function getListSize(source As Variant) As Long 
+      	Dim result&
+      	
+      	If IsList(source) Then 
+      		ForAll element In source
+      			result& = result& + 1
+      		End ForAll
+      	Else 
+      		result& = 0 
+      	End If 
+      	
+      	getListSize& = result&
+      	
+      End Function
+    signed: true
+    nonsummary: true
+  - name: $TITLE
+    type: text
+    data: baliCoreUtils
+    signed: true
+remaining: []

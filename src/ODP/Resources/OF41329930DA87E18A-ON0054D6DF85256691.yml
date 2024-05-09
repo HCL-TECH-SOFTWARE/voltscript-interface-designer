@@ -1,0 +1,61 @@
+---
+class: 1
+flags: 0x0100
+unid: OF41329930DA87E18A-ON0054D6DF85256691
+items:
+  - name: $Revisions
+    type: time
+    data:
+      - data: "1998-10-02T11:26:51.31-04:00"
+        dst: true
+      - data: "1998-10-10T19:49:33.17-04:00"
+        dst: true
+      - data: "1998-12-29T13:42:10.89-05:00"
+      - data: "1998-12-29T14:09:55.58-05:00"
+      - data: "1998-12-29T14:13:48.81-05:00"
+      - data: "2023-07-18T11:36:18.34-04:00"
+        dst: true
+      - data: "2023-07-18T11:52:53.11-04:00"
+        dst: true
+      - data: "2023-07-24T10:41:55.41-04:00"
+        dst: true
+      - data: "2023-07-24T10:44:35.74-04:00"
+        dst: true
+      - data: "2023-07-24T10:45:27.84-04:00"
+        dst: true
+  - name: Authors
+    type: text
+    data:
+      - CN=Devin Olson/OU=USA/O=PNPHCL
+      - "[Admin]"
+    authors: true
+    names: true
+  - name: Category
+    type: text
+    data: "1"
+  - name: CreatedOn
+    type: time
+    data: "1998-10-02T11:26:40.31-04:00"
+    dst: true
+  - name: DataType
+    type: text
+    data: Currency
+  - name: F_LSXCreator
+    type: text
+    data: Devin Olson
+  - name: Form
+    type: text
+    data: DataType
+  - name: LastModified
+    type: time
+    data: "2023-07-24T10:41:55.38-04:00"
+    dst: true
+  - name: ProjectType
+    type: text
+    data:
+      - "2"
+      - "1"
+  - name: keywordComments
+    type: text
+    data: ""
+remaining: []

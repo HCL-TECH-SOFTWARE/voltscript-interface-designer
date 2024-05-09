@@ -1,0 +1,111 @@
+---
+class: 1
+flags: 0x0100
+unid: OF457CA136A24E39B5-ON0047D44200258B0B
+items:
+  - name: $FILE
+    type: object
+    obj_type: 0x0000
+    obj_class: 0x0001
+    obj_privs: 0x0000
+    file_name: lsxnotes.inc
+    HostType: 0
+    CompressionType: 1
+    FileAttributes: 0
+    Flags: 0x0002
+    FileCreated:
+      data: "2024-04-22T13:52:19.64-04:00"
+      dst: true
+    FileModified:
+      data: "2024-04-22T13:52:19.64-04:00"
+      dst: true
+    opaque: |
+      6AwCADgB///i//7/9v/9//f//P8NAGEA+/9TAPr/LgD5/zkA+P8pACgACgB0APX/6f/0/+//8//x/2gA
+      8v9PAEEAZADw/1IARQDu/04A7f9sAOz/dwDr/+r/OgA3AEgARgDo/+f/JgBuAAkA5v/l/+T/dQBmAOP/
+      eQBWAEQA4f+6/+D/xv/f/97/XwAsAN3/2f/c/9v/QwAzANr/ZwA0ADAA2P/X/20AVADW/8n/1f/O/9T/
+      0f/T/9L/SwBHAFAATQDQ/8//OAA1AEIAOwDN/8z/XABZAMv/yv9rAGoAAAFxAMj/x/9YAFUAeAB2AGUA
+      xf/E/2kAw/+7/8L/v//B/8D/IwAiADEAKgC+/2IAvf+8/y0AIQBXADYAcABMALn/t/+4/z0AbwBzACAA
+      tv+1/2MAtP9yAEkAs/8yAC8ADE4REREREREREREREREREREREREREREREREREREREREREREREREnGL7e
+      0RFudLACQ0vwa63SDcZqEgH3CHkDyKd8fHxcIa1Brbt7REUiALIy2jDlaoQ5eo3EvwXqKRAFkZXDBqEZ
+      B5CG+WofBl6inkiALIyp7wsY7REYB4Ys/wBkfBhmUcvQYYSKlFWCBUuCiQgOzS1I/ICjWRl45eopEAWR
+      l89oiLFHhiz/AE6Zn0SH4gOlgCeEOXqKRAFkZR/nb2iIiI35iWvhgZWrVvP0vwXr5OE0DKkAWRlMGJA7
+      exT2wm4b5au3tERYUqlMYQlYhDQEtopkAfpUtSAfTKlGr9YThD9oEq2jhxRIawSMRJo4THhZW+EvaIja
+      g2BITIeLaMOVqhDl6ikQBZGUUGG1BsCQmQ8W0TyH8hT1z0Q/qeFjNz0P67tERTUOyrt1hMhTW5Zs3KMg
+      9j0btkW92kEHZB7tPRu1wblGKFj4ekE4VRl6hCrBShKYwnCFDNLUhbfPaIj6qjl6ikQBZGUYRwhy9RMl
+      UCISADV+TSH9ootDsBQpIk0FKoTNBjIPIw/lb2iI1IZoz+IPIww5WqEOXqKRAFkZfPb2iI1xFS18RFJ6
+      w6XWVj3yHo37e0RGCUwAkJcQeVf7REREWV6DDCRUogPLPokYcvUWPMIPBGGEcIcvUaHxTCmfAxNN1laI
+      KvmMpvPb2iI2VYCDIPIa6g2HCgdoiLVXgxOtQZ414azEvi3CX+Lb29rFpwiIiIiIiIiIiIiIiIiIiIiI
+      iIiIiIiIiIiIiIiIiIiIiIiIiJOBnb2p9EIU2tWEiS2j4EnrDpdZWPXh6N/D2p+1YSJKKT1h0usrHrw9
+      G/b2xmB9D4pvVMZB5O7YzA+h8U0F/PpnzK7tjMD6HxTQaFrO7YzA+h8U1D4ru2MwPofFMHxWbu2MwPof
+      FNZZB8Vm7tjMD6HxTWVSnCx3bGYH0PimZIZq7tjMD6HxTMc+AI7u2MwPofFN6oTAUJ3bGYH0Pimgjgbn
+      qqd2xmB9D4prjRZYkO0d2xmB9D4prjdI7tjMD6HxTXG6SxLAoDu2MwPofFNBtz1Q2cndsZgfQ+KawzTF
+      tW13bGYH0PimYVlWju2MwPofFNcq+Ezd2xmB9D4pqfZq7tjMD6HxTVw4TN3bGYH0PimDyyp3bGYH0Pim
+      gv4tmTR3bGYHhoa7tjMDw1s7tjMDw1rd2xmB9D4prLL3IFSu7YzA+h8U0Gha1iWBQHdsZgfQ+KaDQtax
+      LAoDc9VSgxB5O7YzA+h8U1lAL2SsHGO/C+0C+lv9yBUru2MwPofFNZQC9krBxl9Md2xmB7Zqd2xmB7ZO
+      u7YzA9sGu7YzA9s2d2xmB7Zrd2xmB7ZjTu2MwPbJo7tjMD21ed2xmB7Zjbu2MwPbeLu2MwPa2p3bGYHt
+      add2xmB7WGu7YzA9rbO7YzA+h8U1lUtSAfxB5O7YzA+h8U0Gha1PsBDT+HCd2xmB7Wmju2MwPofFNdh5
+      UiS2JYFAd2xmB9D4prsPKkSV3b29qfWVqIUQwMin0QhTa1YSJLaPgSesOl1lY9eHo38Pb2sR
+    signed: true
+    encrypted: true
+  - name: Authors
+    type: text
+    data:
+      - CN=Rocky Oliver/OU=USA/O=PNPHCL
+      - "[Admin]"
+    authors: true
+    names: true
+  - name: CreatedOn
+    type: time
+    data: "2024-04-22T15:38:35.96-04:00"
+    dst: true
+  - name: F_LSXCreator
+    type: text
+    data: Rocky Oliver
+  - name: FileComments
+    type: text
+    data: ""
+  - name: Form
+    type: text
+    data: file_res
+  - name: LastModified
+    type: time
+    data: "2024-04-22T15:38:52.02-04:00"
+    dst: true
+  - name: fileCountValidation
+    type: text
+    data: ""
+  - name: fileName
+    type: text
+    data: lsxnotes.inc
+  - name: fileTargetPath
+    type: text
+    data: "\\src\\inc\\"
+  - name: fileUsage
+    type: text
+    data: VSE
+  - name: fileUsageEdit
+    type: text
+    data: VSE
+  - name: fileAttach
+    nonsummary: true
+    type: opaque
+    type_num: 1
+    opaque: |
+      gv9aAAEAAAAAAAEAAQB7Dyw4ew8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      AACGAQAAAACVhEgAAQBIAAEAAAAAAAEAAAAGAAAAgwQBAN0GAACF/4X/CAABAM8K0ggBAE9PTwDeBgAA
+      hf/dBgAArf+p/yYABAAIAAAAGgBsc3hub3Rlcy5pbmMAbHN4bm90ZXMuaW5jAJkAHAAAAAAAAAAAAAAA
+      AAAAAAAAAAAAAAEAAACVACYAAAAAAAAAAAAAAAEAAAAAAAAASAAiAAgAAQAIAAEAFQACAJYASgIAAAAA
+      AAAAAAAAIgA4AkAJAEAJAEADAAEAyATIBQIECUADAMUAQAMAAgAEzgAEBBEECUADAMQAQAMAAgAEzgAF
+      BAIQEwlAAwDDAEADAAIABM4AAQTCCQMQBQlAAwDCAEADAAIABM4AAQTCCQMRFAVAAwDCAEADAAIABM4A
+      AQTEBgEIQAMAwgBAAwACAATOAAEJwwwCCQhAAwDCAEADAAIABM4AwwMDAQAPQAMAwgBAAwACAAXOAMMD
+      AwEADkADAMIAQAMAAgAFzQDEAwMBAAZAAwDCAEADAAIABc0AwwPCAQIABkADAMIAQAMAAgAFzADEA8IB
+      AgAGQAMAwgBAAwACAAXLAMQDwwECAAZAAwDCAEADAAIABcoAxAPEAQIABkADAMIAQAMAAgAFyQDEA8UB
+      AgAGQAMAwgBAAwACAAXHAMUDxgECAAZAAwDCAEADAAIABcUAxgPGAQMCAApAAwDCAEADAAMAEgDJA8YB
+      wgICAApAAwDCAEADAAMACADHA8cBwwICAA1AAwDCAEADAAMACADFA8gBxAICAAdAAwDCAEADAAMACADM
+      AcUCAgAHQAMAwgBAAwADAAgAygHHAgIAB0ADAMIAQAMAAwAIAMgByQICAAdAAwDCAEADAAMACADFAcwC
+      AgAHQAMAwgBAAwADAAgAQAIBAwIAB0ADAMIAQAMAAwAIAEACAQMCAAdAAwDCAEADAAIACEACAMMAAQtA
+      AwDCAEADAAMADw7HBsIKAQ3HB8ILQAMAwgBACQBACQBACQBACQCXAEUAAAD////w8Pjw8PDw+PigoKCY
+      mJiIiIiAgICQkJDo6OiAiIh4gIDg6OiAgIiIiJCIkJDY2Njg4OCQmJiYoKDQ0NAAmAA2AAAAAAAAAAAA
+      AAD+/3NmAD/+//7//v9zZgAAAgICAgICAgIAAAAAAAAAAAAAAAAAAAAAdv8oAAwAAAEAAAkBAAAAAAAA
+      AAAAAAAAAAAAAGxzeG5vdGVzLmluY6oC3gYAAK4A3QYAAIX/hf8IAAEAzwrSCAEAT09PAN4GAACF/w==
+remaining: []

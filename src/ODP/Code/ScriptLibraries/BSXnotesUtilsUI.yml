@@ -1,0 +1,2292 @@
+---
+class: 512
+flags: 0x2000
+unid: OFDA3EFA1F431D4A51-ON0063F9B6852589EC
+items:
+  - name: $DesignerVersion
+    type: text
+    data: 8.5.3
+  - name: $Flags
+    type: text
+    data: s34Q
+  - name: $PublicAccess
+    type: text
+    data: "1"
+    signed: true
+  - name: $ScriptLib
+    type: text
+    data: |
+      '++LotusScript Development Environment:2:5:(Options):0:74
+      %REM
+      	Library BSXnotesUtilsUI
+      	Created Jul 2023 by Devin Olson/USA/PNPHCL
+      	Notes UI Utilities specifically for BaliScript operations
+      %END REM
+      %REM
+      	**********************************************************************
+      	**********************************************************************
+      		
+          Copyright HCL America, Inc. 1999, 2023
+      
+         	Licensed under the Apache License, Version 2.0 (the "License");
+          you may not use this file except in compliance with the License.
+          You may obtain a copy of the License at
+      
+              http://www.apache.org/licenses/LICENSE-2.0
+      
+          Unless required by applicable law or agreed to in writing, software
+          distributed under the License is distributed on an "AS IS" BASIS,
+          WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+          See the License for the specific language governing permissions and
+         	limitations under the License.
+      
+      	**********************************************************************
+      	**********************************************************************
+      %END REM
+      Option Public
+      Option Declare
+      Use "BSXnotesUtils"
+      
+      
+      '++LotusScript Development Environment:2:5:(Forward):0:1
+      Declare Sub ArgDataType_Exiting(fieldsuffix%) 
+      Declare Sub checkForceEditMode(source As NotesUIDocument) 
+      Declare Property Set CurrentDataType As String 
+      Declare Function querysave_class_pt2(nuiwsp As NotesUIWorkspace, source As NotesUIDocument, ndoc As NotesDocument, currProject As NotesDocument) As Boolean
+      Declare Function querysave_project(source As NotesUIDocument, ndoc As NotesDocument) As Boolean
+      Declare Function querysave_class_pt1(source As NotesUIDocument, ndoc As NotesDocument, currProject As NotesDocument) As Boolean
+      Declare Function validateNonDuplicateSiblings(source As NotesUIDocument, parent As NotesDocument, ndoc As NotesDocument, label As String, fieldname As String, fieldvalue As String) As Boolean 
+      Declare Property Get CurrentDataType As String 
+      Declare Public Sub setArgumentOptions(idx As Integer)
+      Declare Sub ArgByVal_Entering(fieldsuffix%) 
+      Declare Function querysave_type(source As NotesUIDocument, ndoc As NotesDocument) As Boolean
+      Declare Public Sub RenameClasses (projectUNID As String, classUNID As String, classOldName As String, classNewName As String)
+      Declare Sub ArgDataType_Entering(fieldsuffix%) 
+      Declare Public Sub clearArgumentOptions(source As NotesUIDocument, idx As Integer)
+      Declare Public Sub UpdateClassList()
+      Declare Function getTargetDirectory_APIdoc() As String
+      Declare Function getCurrentUIDocument() As NotesUIDocument 
+      Declare Function composeElementDocument(targetForm As String) As Boolean
+      Declare Function getTargetDirectory_VSS() As String
+      Declare Function querysave_variable(source As NotesUIDocument, ndoc As NotesDocument, parentname As String) As Boolean
+      Declare Public Function UpdateArgList() As Integer
+      Declare Public Sub exportSkeletonsAsFiles
+      Declare Sub PlatformLimitationAdvisory(label As String, elementname As String) 
+      Declare Function querysave_event(source As NotesUIDocument, ndoc As NotesDocument, classname As String) As Boolean
+      Declare Function addConstantToProject(source As NotesUIDocument, ndoc As NotesDocument, newconstant As String) As Boolean 
+      Declare Function querysave_property(source As NotesUIDocument, ndoc As NotesDocument, classname As String) As Boolean
+      Declare Function getTargetDirectory_VSE() As String
+      Declare Function validateNameField(source As NotesUIDocument, ndoc As NotesDocument, label As String, fieldname As String, fieldvalue As String, parentname As String, maxlen As Integer, skipValidateSiblings As Boolean) As Boolean 
+      Declare Function getCurrentUIWorkspace() As NotesUIWorkspace 
+      Declare Function validateProjectConstants(source As NotesUIDocument, ndoc As NotesDocument, token As String, value As String, tokenvalue As String) As Boolean  
+      Declare Public Sub SetConfiguration()
+      Declare Function querysave_method(source As NotesUIDocument, ndoc As NotesDocument, classname As String) As Boolean
+      Declare Sub refreshArguments()
+      Declare Public Sub importSkeletonsAsFiles
+      
+      '++LotusScript Development Environment:2:5:(Declarations):0:10
+      Private Const MODULE_NAME = |BSXnotesUtilsUI| 
+      Private Const LIB_PREFIX = |Library: | & MODULE_NAME & |.|
+      
+      
+      Private currentDataType_ As String 
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      '++LotusScript Development Environment:2:2:ArgDataType_Exiting:11:8
+      
+      
+      %REM
+      	Sub ArgDataType_Exiting
+      	Field Exiting UI logic for Argument Data Type fields
+      	
+      	@param fieldsuffix% Number used to identify the specific Argument field being exited. 
+      	
+      	09 DEC 2022 - Added error trapping (Rock)
+      %END REM
+      Sub ArgDataType_Exiting(fieldsuffix%) 
+      	On Error GoTo ErrorTrap 
+      
+      	Dim extendedinfo List As String
+      	Dim errmsg$ 
+      	Dim errcode%  
+      
+      	Dim thisDataType$
+      
+      	
+      	' BEGIN CODE
+      	extendedinfo(|FieldSuffix|) = CStr(fieldsuffix%) 
+      	
+      	If getCurrentUIDocument().EditMode Then 
+      		thisDataType$ = getCurrentUIDocument().FieldGetText(|F_ArgDataType_| & CStr(fieldsuffix%))
+      		If (thisDataType$ <> CurrentDataType) Then 
+      			Call clearArgumentOptions(getCurrentUIDocument(), fieldsuffix%)
+      			Yield 
+      		End If
+      	End If 
+      
+      ExitPoint:
+      	If (0 <> errcode%) Then Error errcode%, errmsg$ 
+      	Exit Sub
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	errcode% = Err() 
+      	errmsg$ = Error$()  
+      	Resume ExitPoint 
+      End Sub  
+      
+      '++LotusScript Development Environment:2:2:checkForceEditMode:7:8
+      %REM
+      	Sub checkForceEditMode
+      	Conditionally forces a UI document into edit mode 
+      	
+      	@param source UI document to conditionally force into edit mode 
+      %END REM
+      Sub checkForceEditMode(source As NotesUIDocument) 
+      	On Error GoTo ErrorTrap
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	
+      	Dim cDoc As NotesDocument 
+      	Dim editModeFlag$ 
+      	
+      	
+      	' BEGIN CODE 
+      	If source.EditMode Then GoTo ExitPoint ' already in edit mode 
+      	Set cDoc = getToolKitConfigDoc(False) 
+      	
+      	If (0 = StrCompare("Yes", getItemValueText(cdoc, |editModeFlag|, ||, ||))) Then source.EditMode = True 
+      	
+      	
+      ExitPoint: 
+      	Exit Sub 
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Sub
+      
+      
+      '++LotusScript Development Environment:2:4:CurrentDataType Set:5:8
+      %REM
+      	Property Set CurrentDataType
+      	Sets the Current Data Type for the active ui LSX Configuration form.
+      %END REM
+      Property Set CurrentDataType As String 
+      	currentDataType_ = Trim(CurrentDataType) 
+      End Property
+      
+      '++LotusScript Development Environment:2:1:querysave_class_pt2:14:8
+      %REM
+      	Function querysave_class_pt2
+      	Performs Part 2 of QuerySave validation for a class or class_script document 
+      	
+      	@param nuiwsp 		NotesUIWorkspace for the class_script Form. 
+      	@param source 		NotesUIDocument representing the class_script document being edited. 
+      	@param ndoc 		NotesDocument backing the source NotesUIDocument  
+      	@param currProject 	Current Project document for which the document is a member
+      		
+      	@return Flag indicating of the QuerySave validation is successful 
+      	
+      	@throws ERR_PARAMETER_BLANK if nuiwsp, source, ndoc, or currProject is Nothing 
+      %END REM
+      Function querysave_class_pt2(nuiwsp As NotesUIWorkspace, source As NotesUIDocument, ndoc As NotesDocument, currProject As NotesDocument) As Boolean
+      	If (nuiwsp Is Nothing) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |UI Workspace is Nothing.  | 
+      	If (source Is Nothing) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |UI Document is Nothing.  | 
+      	If (ndoc Is Nothing) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |Source document is Nothing.  | 
+      	If (currProject Is Nothing) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |Project document is Nothing.  | 
+      	
+      	On Error GoTo ErrorTrap
+      	
+      	Dim extendedinfo List As String 
+      	   
+      	Dim classID As Long
+      	Dim className As String
+      	Dim classNameOld As String 
+      	Dim fieldname As String
+      	Dim projectid As String 
+      	
+      	Dim result As Boolean 
+      	
+      	
+      	' BEGIN CODE 
+      	fieldname = |F_ClassName|      
+      	className = source.FieldGetText(fieldname) 
+      	extendedinfo(fieldname) = className 
+      	
+      	' Create a document for the "New" method and also obtain an LSXClassID for the class
+      	projectid = getItemValueText(currProject, |F_ProjectID|, ||, ||) 
+      	If (source.IsNewDoc()) Then
+      		Call CreateNewMethodDocument (ndoc)
+      		classID = GenerateLSXClassID(currProject, className, True)
+      
+      		Call ndoc.ReplaceItemValue(ITEMNAME_CLASSID_COUNTER, classID) 		
+      		Call nuiwsp.ViewRefresh ()
+      	End If        
+      	
+      	classNameOld = getItemValueText(ndoc, |F_ClassNameOld|, ||, ||)
+      	If Not isBlankString(classNameOld) Then  
+      		' Perform a case-SENSITIVE, pitch-INSENSITIVE check  
+      		If Not (0 = StrCompare(className, classNameOld, 4)) Then
+      			enhLogAction MODULE_NAME, |Class name change from | & classNameOld & | to | & className & |...Updating project...|
+      			Call RenameClasses (projectID, ndoc.UniversalID, classNameOld, className)
+      		End If     
+      	End If 
+      	
+      	Call ndoc.replaceItemValue(|F_ClassID|, ndoc.UniversalID)  
+      	Call ndoc.replaceItemValue(|F_ClassNameOld|, classNameOld)
+      	
+      	result = True 
+      	
+      ExitPoint: 
+      	querysave_class_pt2 = result
+      	Exit Function 
+      	
+      ErrorTrap:
+      	On Error GoTo 0
+      	result = False 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	MsgBox Error$(), WIZARD_ERR, |VSID Error|
+      	If Not isBlankString(fieldname) Then Call source.gotoField(fieldname) 
+      	Resume ExitPoint 
+      End Function
+      
+      '++LotusScript Development Environment:2:1:querysave_project:10:8
+      %REM
+      	Function querysave_project
+      	Performs QuerySave validation for a project or project_script document 
+      	
+      	@param source 		NotesUIDocument representing the document being edited. 
+      	@param ndoc 		NotesDocument backing the source NotesUIDocument   
+      	
+      	@return Flag indicating of the QuerySave validation is successful 
+      %END REM
+      Function querysave_project(source As NotesUIDocument, ndoc As NotesDocument) As Boolean
+      	On Error GoTo ErrorTrap
+      
+      	Const MinLotusScriptIDBase = 255
+      	Const MaxLotusScriptIDBase = 30000  'Assuming that the user won't have more than 2767 methods and properties
+      
+      	Dim extendedinfo List As String 
+      
+      	Dim fieldname As String
+      	Dim form As String 
+      	Dim placeholder As String 
+      	Dim projectName As String 
+      
+      	Dim BaseValue As Long
+      	
+      	
+      	Dim result As Boolean 
+      	
+      	
+      	' BEGIN CODE 
+           ' Write the UNID to F_ProjectID field.
+      	Call ndoc.replaceItemValue("F_ProjectID", ndoc.UniversalID)  
+      	
+      	' Make sure project name passes standard name validation 	
+      	fieldname = |F_AppName|     
+      	extendedinfo(|fielname|) = fieldname
+      	If Not validateNameField(source, ndoc, |Project name|, fieldname, projectName, placeholder, 32, True) Then GoTo ExitPoint 
+      
+      	form = getItemValueText(ndoc, |Form|, ||, ||) 
+      	extendedinfo(|Form|) = form 
+      	
+      	If strCmp(|project|, form) Then  
+      		' Special validation for Project (VSE, NOT Script) 
+      			     
+      	     ' Make sure a platform is selected.
+      		fieldname = |F_LSXPlatform|
+      		extendedinfo(|fielname|) = fieldname
+      		If isBlankString(source.FieldGetText(fieldname)) Then Error ERR_PARAMETER_BLANK, ERR_PARAMETER_BLANK & |At least one platform must be selected.  |
+      
+           	'Validate that the Base ID Value is greater than 255.  The first 255 is reserved for LotusScript internal use.
+      		fieldname = |F_BaseIDValue|
+      		extendedinfo(|fielname|) = fieldname
+      		If isBlankString(source.FieldGetText(fieldname)) Then Error ERR_PARAMETER_BLANK, ERR_PARAMETER_BLANK & |Base ID value must be between | & CStr(MinLotusScriptIDBase) & | and | & CStr(MaxLotusScriptIDBase)
+      
+      		BaseValue = CInt(source.FieldGetText(fieldname))
+      		If (BaseValue <= MinLotusScriptIDBase) Or (BaseValue > MaxLotusScriptIDBase) Then Error ERR_PARAMETER_INVALID, ERR_PARAMETER_INVALID & |Base ID value must be between | & CStr(MinLotusScriptIDBase) & | and | & CStr(MaxLotusScriptIDBase)
+      
+      	    ' F_BaseGUID Validation handled by agent for windows platforms.  
+      
+      
+      		fieldname = |F_CharacterSet|
+      		If isBlankString(source.FieldGetText(fieldname)) Then Error ERR_PARAMETER_BLANK, ERR_PARAMETER_BLANK & |A Character Set must be selected.  |
+      	End If
+      
+      
+      	result = True 
+      
+      ExitPoint: 
+      	querysave_project = result
+      	Exit Function 
+      	
+      ErrorTrap:
+      	On Error GoTo 0
+      	result = False 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	MsgBox Error$(), WIZARD_ERR, |VSID Error|
+      	If Not isBlankString(fieldname) Then Call source.gotoField(fieldname) 
+      	Resume ExitPoint 
+      End Function
+      
+      '++LotusScript Development Environment:2:1:querysave_class_pt1:11:8
+      %REM
+      	Function querysave_class_pt1
+      	Performs Part 1 of QuerySave validation for a class or class_script document 
+      	
+      	@param source 		NotesUIDocument representing the class_script document being edited. 
+      	@param ndoc 		[OUTBOUND] NotesDocument backing the source NotesUIDocument  
+      	@param currProject 	[OUTBOUND] Current Project document for which the document is a member
+      		
+      	@return Flag indicating of the QuerySave validation is successful 
+      %END REM
+      Function querysave_class_pt1(source As NotesUIDocument, ndoc As NotesDocument, currProject As NotesDocument) As Boolean
+      	On Error GoTo ErrorTrap
+      	
+      	Dim currClass As NotesDocument 
+      	Dim derivedFromClass As NotesDocument 
+      	Dim referencedProject As NotesDocument 
+      	
+      	Dim extendedinfo List As String 
+      	
+      	Dim referencedUNIDs As StringStack 
+      	   
+      	Dim	placeholder As String 
+      	Dim currClassUNID As String
+      	Dim unidDerivedFrom As String 
+      	Dim className As String
+      	Dim classType As String 
+      	Dim fieldname As String
+      	Dim form As String 
+      	Dim projectid As String 
+      	Dim currContainerClassType As String  
+      	Dim derivedFromClassType As String 
+      	Dim currClassName As String 
+      	Dim currClassColItemType As String
+      	Dim currClassAttrib As String 
+      	
+      	
+      	Dim result As Boolean 
+      	
+      	
+      	' BEGIN CODE 
+      	' Make sure class name passes standard name validation 	
+      	fieldname = |F_ClassName|      
+      	If Not validateNameField(source, ndoc, |Class Name|, fieldname, className, placeholder, 32, False) Then GoTo ExitPoint 
+      
+      	extendedinfo(fieldname) = className 
+      	form = getItemValueText(ndoc, |Form|, ||, ||)       
+      	extendedinfo(|form|) = form 
+      	
+      	
+          ' Make sure class is not derived directly or indirectly by itself
+          fieldname = |F_ClassType| 
+          classtype = getItemValueText(ndoc, fieldname, ||, ||)
+          extendedinfo(|Class Type|) = classtype    
+          
+          ' Get the current project 
+          projectid = getItemValueText(ndoc, |F_ProjectID|, ||, ||) 
+      	extendedinfo(|F_ProjectID|) = projectid 
+          Set currProject = getDocumentByUNID(projectid)
+          
+               
+      	If strCmp(|Derived|, classtype) Then
+      		fieldname = |F_ClassDeriveType|
+      		
+      		derivedFromClassType = getItemValueText(ndoc, fieldname, ||, ||)
+      		extendedinfo(|Derive From Type|) = derivedFromClassType 
+      		If isBlankString(derivedFromClassType) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |Derive From cannot be blank.  | 
+      		If (className = derivedFromClassType) Then Error ERR_PARAMETER_INVALID, ERR_PARAMETER_INVALID & |A class cannot be derived from itself.  | 
+      
+      		
+      		
+      		unidDerivedFrom = getUNIDforClassName(currProject, derivedFromClassType)
+      		extendedinfo(|unidDerivedFrom|) = unidDerivedFrom 
+      		If isBlankString(unidDerivedFrom) Then 
+      			Set referencedUNIDs = New StringStack() 
+      			Call referencedUNIDs.load(currProject.getItemValue(|ReferencedProjectIDs|))
+      			Do While referencedUNIDS.hasContent 
+      				Set referencedProject = getDocumentByUNID(referencedUNIDs.pop()) 
+      				unidDerivedFrom = getUNIDforClassName(referencedProject, derivedFromClassType)
+      				If Not isBlankString(unidDerivedFrom) Then Exit Do  
+      			Loop  
+      		End If 
+      		
+      		If Not isBlankString(unidDerivedFrom) Then 
+      			Set derivedFromClass = getDocumentByUNID(unidDerivedFrom)     
+      			While strCmp(getItemValueText(derivedFromClass, |F_ClassType|, ||, ||), |Derived|) And Not isBlankString(unidDerivedFrom) 
+      				If strCmp(className, getItemValueText(derivedFromClass, |F_ClassName|, ||, ||)) Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |This class cannot be derived by a class which derives from this class.  |
+      				
+      				derivedFromClassType = getItemValueText(derivedFromClass, |F_ClassDeriveType|, ||, ||)
+      				unidDerivedFrom = getUNIDforClassName(currProject, derivedFromClassType)  
+      				If Not isBlankString(unidDerivedFrom) Then Set derivedFromClass = getDocumentByUNID(unidDerivedFrom)
+      			Wend
+      		End If
+      	End If
+      	
+      	
+      	
+      	If strCmp(form, |class|) Then 
+      	    ' Make sure class is not contained directly or indirectly by itself 
+      		fieldname = |F_ContainerClassType|
+      		currContainerClassType = getItemValueText(ndoc, fieldname, ||, ||)
+      		extendedinfo(fieldname) = currContainerClassType
+      	
+      		If Not strCmp(currContainerClassType, |Default|) Then 
+      			If strCmp(className, currContainerClassType) Then Error ERR_OPERATION_PROHIBITED, |A class cannot be contained by itself.  |
+      					
+      				currClassUNID = getUNIDforClassName(currProject, currContainerClassType)
+      				While Not isBlankString(currClassUNID) 
+      					extendedinfo(|currClassUNID|) = currClassUNID 
+      					extendedinfo(|currContainerClassType|) = currContainerClassType
+      					Set currClass = getDocumentByUNID(currClassUNID)
+      					If currClass Is Nothing Then Error ERR_DOCUMENT_NOT_FOUND, ERR_DOCUMENT_NOT_FOUND 
+      					
+      					currClassName = getItemValueText(currClass, |F_ClassName|, ||, ||) 
+      					If strCmp(currClassName, className) Then Error ERR_OPERATION_PROHIBITED, |This class cannot be contained by a class which contains this class.  |  
+      		
+      					currContainerClassType = getItemValueText(currClass, |F_ContainerClassType|, ||, ||)
+      					currClassUNID = getUNIDforClassName(currProject, currContainerClassType)
+      				Wend
+      		End If
+        
+      	    ' Make sure class is not a collection of itself either directly or indirectly. 
+      		fieldname = |F_ColItemType|
+      		If (source.FieldContains(|F_ClassAttrib|, |Collection|)) Then		
+      			currClassColItemType = getItemValueText(ndoc, fieldname, ||, ||)
+      			extendedinfo(fieldname) = currClassColItemType
+      			
+      			If strCmp(classname, currClassColItemType) Then Error ERR_OPERATION_PROHIBITED, |A class cannot be a collection of itself.  |
+               
+      			currClassUNID = getUNIDforClassName(currProject, currClassColItemType)
+      			extendedinfo(|currClassUNID|) = currClassUNID 
+      
+      			If Not isBlankString(currClassUNID) Then 
+      				Set currClass = getDocumentByUNID(currClassUNID)
+      				If currClass Is Nothing Then Error ERR_DOCUMENT_NOT_FOUND, ERR_DOCUMENT_NOT_FOUND 
+      				
+      				currClassAttrib = getItemValueText(currClass, |F_ClassAttrib|, ||, ||) 
+      				extendedinfo(|currClassAttrib|) = currClassAttrib 
+      				While strCmp(currClassAttrib, |Collection|) And Not isBlankString(currClassUNID)
+      					currClassName = getItemValueText(currClass, |F_ClassName|, ||, ||) 
+      					If strCmp(currClassName, className) Then Error ERR_OPERATION_PROHIBITED, |This class cannot have a collection item of type "| & currClassColItemType & |" because that class is a collection which contains this class.  | 
+      					
+      					currClassColItemType = getItemValueText(currClass, fieldname, ||, ||)
+      					currClassUNID = getUNIDforClassName(currProject, currClassColItemType)
+      					If Not isBlankString(currClassUNID) Then Set currClass = getDocumentByUNID(currClassUNID)
+      					If currClass Is Nothing Then Error ERR_DOCUMENT_NOT_FOUND, ERR_DOCUMENT_NOT_FOUND 
+      					
+      					currClassAttrib = getItemValueText(currClass, |F_ClassAttrib|, ||, ||) 
+      					extendedinfo(|currClassAttrib|) = currClassAttrib					
+      				Wend
+      			End If
+      		End If     
+      	End If 
+      	
+      	result = True 
+      	
+      	
+      ExitPoint: 
+      	querysave_class_pt1 = result
+      	Exit Function 
+      	
+      ErrorTrap:
+      	On Error GoTo 0
+      	result = False 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	MsgBox Error$(), WIZARD_ERR, |VSID Error|
+      	If Not isBlankString(fieldname) Then Call source.gotoField(fieldname) 
+      	Resume ExitPoint 
+      End Function
+      
+      '++LotusScript Development Environment:2:1:validateNonDuplicateSiblings:13:8
+      %REM
+      	Function validateNonDuplicateSiblings
+      	Validates that a given document has no duplicate siblings for a specified field value.
+      	
+      	@param source 		NotesUIDocument being worked on. 
+      	@param parent 		Parent document to the source NotesUIDocument  
+      	@param ndoc 		NotesDocument backing the source NotesUIDocument  
+      	@param label 		Label of the Field to validate
+      	@param fieldname 	Name of the Field to validate 
+      	@param fieldvalue 	text value of the field. 
+      
+      %END REM
+      Function validateNonDuplicateSiblings(source As NotesUIDocument, parent As NotesDocument, ndoc As NotesDocument, label As String, fieldname As String, fieldvalue As String) As Boolean 
+      	On Error GoTo ErrorTrap
+      	
+      	Dim children As NotesDocumentCollection 
+      	Dim child As NotesDocument 
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      
+      	Dim result As Boolean
+      	
+      	' BEGIN CODE
+      	extendedinfo(|fieldname|) = fieldname 
+      	extendedinfo(fieldname) = fieldvalue 
+      	If parent Is Nothing Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |Parent document is Nothing.  |
+      
+      	
+          ' For each child in project check the name.
+      	Set children = parent.responses 
+      	Set child = children.GetFirstDocument()
+      	While Not child Is Nothing
+               ' Is the field value name unique.    
+      		If Not strCmp(ndoc.UniversalID, child.UniversalID) Then                
+      			If strCmp(fieldvalue, getItemValueText(child, fieldname, ||, ||)) Then Error ERR_PARAMETER_INVALID, label & |s must be unique.  |
+      '			If strCmp(fieldvalue, getItemValueText(child, |F_TypeName|, ||, ||)) Then Error ERR_PARAMETER_INVALID, label & |s must be unique.  |
+      '			If strCmp(fieldvalue, getItemValueText(child, |F_ClassName|, ||, ||)) Then Error ERR_PARAMETER_INVALID, label & |s must be unique.  |
+      '			If strCmp(fieldvalue, getItemValueText(child, |F_PropName|, ||, ||)) Then Error ERR_PARAMETER_INVALID, label & |s must be unique.  |
+      '			If strCmp(fieldvalue, getItemValueText(child, |F_MethName|, ||, ||)) Then Error ERR_PARAMETER_INVALID, label & |s must be unique.  |
+      '			If strCmp(fieldvalue, getItemValueText(child, |F_VarName|, ||, ||)) Then Error ERR_PARAMETER_INVALID, label & |s must be unique.  |
+      		End If         
+      		
+      		Set child = children.getNextDocument(child)
+      	Wend
+      	
+      	result = True 
+      
+      ExitPoint: 
+      	validateNonDuplicateSiblings = result
+      	Exit Function 
+      	
+      ErrorTrap:
+      	On Error GoTo 0
+      	result = False 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	MsgBox Error$(), WIZARD_ERR, |VSID Error|
+      	If Not isBlankString(fieldname) Then Call source.gotoField(fieldname) 
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:3:CurrentDataType Get:5:8
+      %REM
+      	Property Get CurrentDataType
+      	Gets the Current Data Type for the active ui LSX Configuration form.
+      %END REM
+      Property Get CurrentDataType As String 
+      	CurrentDataType = currentDataType_
+      End Property
+      
+      '++LotusScript Development Environment:2:2:setArgumentOptions:6:8
+      %REM 
+      	Checks and sets options for arguments on the current UI document   
+      	
+      	@param index 	integer indicating the specific instance field names to use 
+      %END REM
+      Public Sub setArgumentOptions(idx As Integer)
+      	
+      	Dim uidoc As NotesUIDocument 
+      	Dim doc As NotesDocument
+      	Dim tempArgName As String
+      	Dim tempArgType As String
+      	
+      	
+      	Dim suffix$ 
+      	
+      	
+      	suffix$ = CStr(idx)
+      	Set uidoc = getCurrentUIDocument() 
+      	Set doc = uidoc.Document
+      
+      
+      	tempArgName = Trim(uidoc.FieldGetText(|F_ArgName_| & suffix$)) 
+      	tempArgType = Trim(uidoc.FieldGetText(|F_ArgDataType_| & suffix$)) 
+      
+      	
+      	If(tempArgName  = "") Then
+      		MsgBox "The argument name must be filled.",,"LSXWizard"
+      		Call uiDoc.GotoField("F_ArgName_" & suffix$)
+      		Exit Sub     
+      	End If
+      	
+      	If(tempArgType = "") Then
+      		MsgBox "The argument type must be filled.",,"LSXWizard"
+      		Call uiDoc.GotoField("F_ArgDataType_" & suffix$)
+      		Exit Sub     
+      	End If      
+      	
+           ' Treat array as its own datatype
+      	If (doc.GetItemValue("F_ArgIsArray_" & suffix$)(0) = "Array") Then
+      		tempArgType = "Array"          
+      	End If  
+      	
+      	
+      	Select Case tempArgType
+      		Case "Array"
+      				Call doc.ReplaceItemValue("F_ArgByVal", "")
+      				
+      		Case "Boolean","Double","Integer","Integer-Signed","Integer-Unsigned","Long","Long-Signed","Single","Variant","String" 
+      			Call doc.ReplaceItemValue("F_ArgByVal",_
+      			doc.getItemValue("F_ArgByVal_" & suffix$)) 
+      			
+      		Case Else     
+      			Call doc.ReplaceItemValue("F_ArgByVal","")
+      		
+      	End Select
+      	
+      	
+      	Call doc.ReplaceItemValue("F_IsConst", _
+      	doc.getItemValue("F_IsConst_" & suffix$))
+      	
+      	Call doc.ReplaceItemValue("F_IsOptional", _
+      	doc.getItemValue("F_IsOptional_" & suffix$))
+      	     
+      	Call doc.ReplaceItemValue("F_OptionalValue", _
+      	doc.getItemValue("F_OptionalValue_" & suffix$))
+      	 
+      	Call doc.ReplaceItemValue("F_ArgDataType", _
+      	doc.getItemValue("F_ArgDataType_" & suffix$))
+      	 
+      	Call doc.ReplaceItemValue("F_ArgIsArray", _
+      	doc.getItemValue("F_ArgIsArray_" & suffix$))
+      	 
+      	Call doc.ReplaceItemValue("F_ArgName", _
+      	doc.getItemValue("F_ArgName_" & suffix$)) 
+      
+      	Call getCurrentUIWorkspace().DialogBox ( "dlgArgOptions", True, True, False, False, _
+      	False, False, "Advanced Options", doc, True )
+      	
+      	Call doc.ReplaceItemValue("F_ArgByVal_" & suffix$, _ 
+      	doc.GetItemValue("F_ArgByVal")) 
+      
+      
+      	Select Case tempArgType
+      			' Can be optional and have an optional value     
+      
+      		Case "Boolean","Double","Integer","Integer-Signed","Integer-Unsigned","Long","Long-Signed","Long-Unsigned","Single","String","Variant" 
+      			Call doc.ReplaceItemValue("F_IsOptional_" & suffix$, _
+      			doc.GetItemValue("F_IsOptional"))  
+      
+      			If(doc.GetItemValue("F_IsOptional")(0) = "")Then
+      				Call doc.ReplaceItemValue("F_OptionalValue_" & suffix$, "") 
+      			Else
+      				Call doc.ReplaceItemValue("F_OptionalValue_" & suffix$, _
+      				doc.GetItemValue("F_OptionalValue"))  
+      			End If
+      
+      			' Currency and Date can be optional but cannot contain an optional value
+      
+      		Case "Array","Currency","Date"
+      			Call doc.ReplaceItemValue("F_IsOptional_" & suffix$, _
+      			doc.GetItemValue("F_IsOptional"))  
+      			Call doc.ReplaceItemValue("F_OptionalValue_" & suffix$, "") 
+      			' Objects cannot be optional therefore they cannot have an optional value     
+      
+      		Case Else     
+      			Call doc.ReplaceItemValue("F_IsOptional_" & suffix$, "")
+      			Call doc.ReplaceItemValue("F_OptionalValue_" & suffix$, "") 
+      
+      	End Select
+      	
+      
+      	If(doc.GetItemValue("F_ArgByVal")(0) = "")Then
+      		If(doc.GetItemValue("F_IsOptional")(0) = "") Then
+      			Call doc.ReplaceItemValue("F_IsConst_" & suffix$,  _
+      			doc.GetItemValue("F_IsConst"))
+      		Else
+      			' By Ref Optional agrs must be const.
+      			Call doc.ReplaceItemValue("F_IsConst_" & suffix$,  "CONST")
+      		End If
+      	Else
+      		Call doc.ReplaceItemValue("F_IsConst_" & suffix$, "")
+      	End If    
+      	
+      	Call uidoc.Refresh()     
+      End Sub
+      
+      '++LotusScript Development Environment:2:2:ArgByVal_Entering:9:8
+      %REM
+      	Sub ArgByVal_Entering
+      	Field Entering UI logic for Argument ByValue fields
+      	
+      	@param fieldsuffix% Number used to identify the specific Argument field being entered. 
+      	
+      	09 DEC 2022 - Added error trapping (Rock)
+      %END REM
+      Sub ArgByVal_Entering(fieldsuffix%) 
+      	On Error GoTo ErrorTrap 
+      
+      	Dim extendedinfo List As String
+      	Dim errmsg$ 
+      	Dim errcode%  
+      	
+      	Dim F_ArgIsArray As Boolean 
+      	Dim F_ArgByVal As Boolean 
+      	
+      	' BEGIN CODE
+      	extendedinfo(|FieldSuffix|) = CStr(fieldsuffix%) 
+      	If getCurrentUIDocument.EditMode Then 
+      		F_ArgIsArray = strCmp(|Array|, getCurrentUIDocument().FieldGetText(|F_ArgIsArray_| & CStr(fieldsuffix%)))
+      		F_ArgByVal = strCmp(|BY_VAL|, getCurrentUIDocument().FieldGetText(|F_ArgByVal_| & CStr(fieldsuffix%)))
+      		
+      		If F_ArgIsArray And Not F_ArgByVal Then Call getCurrentUIDocument().FieldSetText(|F_ArgIsArray_| & CStr(fieldsuffix%), ||) 
+      	End If    
+      
+      ExitPoint:
+      	If (0 <> errcode%) Then Error errcode%, errmsg$ 
+      	Exit Sub
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	errcode% = Err() 
+      	errmsg$ = Error$()  
+      	Resume ExitPoint 
+      End Sub  
+      
+      '++LotusScript Development Environment:2:1:querysave_type:10:8
+      %REM
+      	Function querysave_type
+      	Performs QuerySave validation for a type_script document 
+      	
+      	@param source 		NotesUIDocument representing the class_script document being edited. 
+      	@param ndoc 		NotesDocument backing the source NotesUIDocument  
+      	
+      	@return Flag indicating of the QuerySave validation is successful 
+      %END REM
+      Function querysave_type(source As NotesUIDocument, ndoc As NotesDocument) As Boolean
+      	On Error GoTo ErrorTrap
+      	
+      	Dim extendedinfo List As String 
+      	   
+      	Dim	placeholder As String 
+      	Dim fieldname As String
+      	Dim elementname As String 
+      	Dim propertyName As String 
+      	
+      	
+      	Dim result As Boolean 
+      	
+      	' BEGIN CODE 
+      	' Make sure property name passes standard name validation 	
+      	fieldname = |F_TypeName|      
+      	result = validateNameField(source, ndoc, |Type Name|, fieldname, elementname, placeholder, 32, False)
+      	extendedinfo(fieldname) = elementname 
+      	
+      		
+      ExitPoint: 
+      	querysave_type = result
+      	Exit Function 
+      	
+      ErrorTrap:
+      	On Error GoTo 0
+      	result = False 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	MsgBox Error$(), WIZARD_ERR, |VSID Error|
+      	If Not isBlankString(fieldname) Then Call source.gotoField(fieldname) 
+      	Resume ExitPoint 
+      End Function
+      
+      '++LotusScript Development Environment:2:2:RenameClasses:1:8
+      Public Sub RenameClasses (projectUNID As String, classUNID As String, classOldName As String, classNewName As String)
+      	
+      	' Rename all the Class Names 
+      	
+      	On Error GoTo ERR_HANDLER     
+      	
+      	Dim currProject As NotesDocument
+      	Dim listAllProjectDocs As NotesDocumentCollection 
+      	Dim currDoc As NotesDocument     
+      	Dim dateTime As New NotesDateTime("01/01/96")
+      	Dim p As Integer
+      	Dim query As String
+      	
+      	query = "F_ProjectID = " & """" & projectUNID & """"
+      	'Msgbox query
+      	
+      	' Get all the responce documents 
+      	Set listAllProjectDocs = getCurrentDb().Search(query, dateTime, 0)
+      	If listAllProjectDocs.count = 0 Then Exit Sub
+      	
+      	Set currDoc = listAllProjectDocs.Getfirstdocument()
+      	Do While Not(currDoc Is Nothing)
+      		ForAll item In currDoc.Items
+      			If ( InStr(item.Text,  classOldName)) Then
+      				
+      				' F_ArgDataType_1 F_TempClassList F_PropDataType F_MethReturnType F_ColItemType F_ColIndexType F_ClassDeriveType, "F_ContainerClassType"   
+      				'Msgbox item.Name & "  " & item.Text                    
+      				
+      				Select Case item.Name
+      				Case "F_ArgDataType", "F_ArgDataType_1", "F_ArgDataType_2", "F_ArgDataType_3", "F_ArgDataType_4", "F_ArgDataType_5", "F_ArgDataType_6", "F_ArgDataType_7", "F_ArgDataType_8", "F_ArgDataType_9", "F_ArgDataType_10"
+      					'Print "F_ArgDataType_?" & item.Name & "  " & item.Text    
+      					Call currDoc.ReplaceItemValue(item.Name, classNewName) 
+      				Case "F_PropDataType", "F_MethReturnType", "F_ColItemType", "F_ColIndexType", "F_ClassDeriveType", "F_ContainerClassType"  
+      					'Print "F_OtherType" & item.Name & "  " & item.Text    
+      					Call currDoc.ReplaceItemValue(item.Name, classNewName)                          
+      				Case "F_TempClassList"
+      					'Print "Original " & item.Name & "  " & item.Text 
+      					Call item.AppendToTextList(classNewName)     
+      					'Print "Modified " & item.Name & "  " & item.Text 
+      			End Select 
+      				
+      			End If    
+      		End ForAll  
+      		Set currDoc = listAllProjectDocs.Getnextdocument(currDoc)
+      	Loop
+      
+      	Call getCurrentUIWorkspace.ViewRefresh()
+      	
+      ERR_HANDLER:
+      	
+      	Resume Next
+      	
+      End Sub
+      
+      '++LotusScript Development Environment:2:2:ArgDataType_Entering:10:8
+      
+      %REM
+      	Sub ArgDataType_Entering
+      	Field Entering UI logic for Argument Data Type fields
+      	
+      	@param fieldsuffix% Number used to identify the specific Argument field being entered. 
+      	
+      	09 DEC 2022 - Added error trapping (Rock)
+      %END REM
+      Sub ArgDataType_Entering(fieldsuffix%) 
+      	On Error GoTo ErrorTrap 
+      
+      	Dim extendedinfo List As String
+      	Dim errmsg$ 
+      	Dim errcode%  
+      	
+      	' BEGIN CODE
+      	extendedinfo(|FieldSuffix|) = CStr(fieldsuffix%) 
+      	If getCurrentUIDocument.EditMode Then CurrentDataType = getCurrentUIDocument().FieldGetText(|F_ArgDataType_| & CStr(fieldsuffix%))   
+      
+      ExitPoint:
+      	If (0 <> errcode%) Then Error errcode%, errmsg$ 
+      	Exit Sub
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	errcode% = Err() 
+      	errmsg$ = Error$()  
+      	Resume ExitPoint 
+      End Sub  
+      
+      '++LotusScript Development Environment:2:2:clearArgumentOptions:8:8
+      
+      %REM 
+      	Clears values of options fields for a specific argument on a NotesUIdocument  
+      	
+      	@param source 	NotesUIDocument currently being worked on 
+      	@param index 	integer indicating the specific instance field names to use 
+      %END REM
+      Public Sub clearArgumentOptions(source As NotesUIDocument, idx As Integer)
+      	On Error GoTo ErrorTrap 
+      	
+      	Dim doc As NotesDocument
+      	
+      	Dim suffix$ 
+      
+      	' exception variables
+      	Dim extendedinfo List As String
+      	Dim errmsg$ 
+      	Dim errcode%  
+      
+      
+      	' BEGIN CODE 
+      
+      	
+      	suffix$ = CStr(idx) 
+      	
+      	Set doc = source.Document
+      	
+      	Call doc.Replaceitemvalue("F_ArgByVal_" & suffix$, "")
+      	Call doc.Replaceitemvalue("F_ArgIsArray_" & suffix$, "")
+      	Call doc.Replaceitemvalue("F_IsConst_" & suffix$, "")
+      	Call doc.Replaceitemvalue("F_IsOptional_" & suffix$, "")
+      	Call doc.Replaceitemvalue("F_OptionalValue_" & suffix$, "")
+      	
+      	If doc.hasItem("F_ArgIsList_" & suffix$) Then Call doc.Replaceitemvalue("F_ArgIsList_" & suffix$, "")
+      
+      	' if the argument name is blank then clear the data type and comment field	
+      	If isBlankString(source.FieldGetText(|F_ArgName_| & suffix$)) Then 
+      		Call doc.Replaceitemvalue("F_ArgDataType_" & suffix$, "")
+      		Call doc.Replaceitemvalue("F_ArgComment_" & suffix$, "")
+      	End If 
+      
+      
+      	
+      ExitPoint: 
+      	If (0 <> errcode%) Then Error errcode%, errmsg$
+      	Exit Sub
+      ErrorTrap:
+      	On Error GoTo 0
+      	errcode% = Err()  
+      	errmsg$ = Error() 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo 
+      	Resume ExitPoint 
+      End Sub
+      
+      '++LotusScript Development Environment:2:2:UpdateClassList:2:8
+      
+      Public Sub UpdateClassList()
+      	On Error GoTo ErrorTrap 
+      	' This sub is called from the exit event of all fields on LSX Design Docs     
+      	' Create an up-to-date list of classes for the current project
+      	' Then write the list of an existing temp field - F_TempClassList
+      	
+      	' Added code to clear advanced argument properties 
+      	' when argument name and type are cleared.     
+      	
+      	Dim thisUIDoc As NotesUIDocument 
+      	Dim thisDoc As NotesDocument     
+      	Dim currProject As NotesDocument
+      	Dim listClass As NotesDocumentCollection 
+      	Dim currClass As NotesDocument 
+      	Dim thisUIDocForm As String
+      	Dim tmpClassItem As NotesItem
+      	Dim c As Integer, a As Integer 
+      	
+      	' exception variables
+      	Dim extendedinfo List As String
+      	Dim errmsg$ 
+      	Dim errcode%  
+      
+      
+      	' BEGIN CODE 
+      		
+      	' Is the document in edit mode
+      	Set thisUIDoc = getCurrentUIDocument()
+      	
+      	If thisUIDoc Is Nothing Then Exit Sub		
+      	If Not thisUIDoc.EditMode Then Exit Sub
+      	
+      	Set thisDoc = thisUIDoc.Document
+      	
+      	' Find the current project docuement
+      	Set currProject = getdocumentByUNID(thisDoc.getItemValue("F_ProjectID" )(0)) 
+      	
+      	' Get all the class documents for the project
+      	Set listClass = currProject.Responses
+      	If listClass.Count = 0 Then Exit Sub
+      	
+      	'Msgbox "Casses # " & listClass.count
+      	'	Call thisUIDoc.FieldClear("F_TempClassList")
+      	Set tmpClassItem = thisDoc.Replaceitemvalue("F_TempClassList", "")
+      	
+      	Set currClass = listClass.Getfirstdocument()
+      	Do While Not(currClass Is Nothing)
+      		Call tmpClassItem.Appendtotextlist(currClass.getItemValue("F_ClassName")(0))
+      		Set currClass = listClass.Getnextdocument(currClass)
+      	Loop
+      	
+      	thisUIDocForm = thisDoc.getItemValue("Form")(0)
+      	
+      	If((thisUIDocForm = "Method") Or (thisUIDocForm = "Event")) Then
+      		' Reset the arguments.
+      		For a = 1 To 10 
+      			If thisDoc.getItemValue("F_ArgName_" & CStr(a))(0) = "" Then
+      				Call thisDoc.Replaceitemvalue("F_ArgDataType_" & CStr(a), "")
+      				Call thisDoc.Replaceitemvalue("F_ArgByVal_" & CStr(a), "")
+      				Call thisDoc.Replaceitemvalue("F_IsConst_" & CStr(a), "")
+      				Call thisDoc.Replaceitemvalue("F_IsOptional_" & CStr(a), "")
+      				Call thisDoc.Replaceitemvalue("F_OptionalValue_" & CStr(a), "")
+      			End If
+      		Next a   
+      	End If
+      	
+      	Call thisUIDoc.Refresh()
+      	
+      	
+      ExitPoint: 
+      	If (0 <> errcode%) Then Error errcode%, errmsg$
+      	Exit Sub
+      ErrorTrap:
+      	On Error GoTo 0
+      	errcode% = Err()  
+      	errmsg$ = Error() 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo 
+      	Resume ExitPoint 
+      End Sub
+      
+      '++LotusScript Development Environment:2:1:getTargetDirectory_APIdoc:5:8
+      %REM
+      	Function getTargetDirectory_APIdoc
+      	Conditionally queries the user for the current APIdoc Target Directory.  
+      %END REM
+      Function getTargetDirectory_APIdoc() As String
+      	On Error GoTo ErrorTrap
+      
+      	Static result As String 
+      
+      	Dim workspace As NotesUIWorkspace
+      	Dim configDoc As NotesDocument
+      	Dim currentvalue As String 
+      	
+      
+      	' exception variables
+      	Dim extendedinfo List As String
+      	Dim errmsg$ 
+      	Dim errcode%  
+      	
+      
+      	' BEGIN CODE 
+      	If isBlankString(result) Then 
+      		Set workspace = New NotesUIWorkspace() 
+      		Set configDoc = getToolkitConfigDoc(True)
+      		currentvalue = getItemValueText(configDoc, |TargetDirectory_APIdoc|, ||, ||) 
+      		
+      		Do 
+      			If Not workspace.DialogBox("dlg_APIdocDirectory", True, True, False, False, False, False, "APIdoc Output Directory", configDoc, True, False, False) Then Exit Do 
+      			result = getItemValueText(configDoc, |TargetDirectory_APIdoc|, ||, ||)
+      			If Not isBlankString(result) Then 
+      				extendedinfo(|APIdoc Target Directory|) = result 
+      				If Not makeDirectory(result) Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |Cannot validate APIdoc Target Directory: | & result 
+      				If (0 <> StrCompare(currentvalue, result, 0)) Then 
+      					' User has changed the directory.  Need to save the document. 
+      					Call configDoc.replaceItemValue("Form", FORMNAME_TOOLKIT_CONFIG) ' just to make sure
+      					Call configDoc.save(True, False, True)							
+      				End If 
+      			End If
+      			
+      		Loop Until Not isBlankString(result) 
+      	End If 
+      
+      	
+      ExitPoint: 
+      	If (0 <> errcode%) Then Error errcode%, errmsg$
+      	getTargetDirectory_APIdoc = result 
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	errcode% = Err()  
+      	errmsg$ = Error() 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:getCurrentUIDocument:5:8
+      %REM
+      	Function getCurrentUIDocument
+      	Gets the Current NotesUIDocument 
+      %END REM
+      Function getCurrentUIDocument() As NotesUIDocument 
+      	Set getCurrentUIDocument = getCurrentUIWorkspace().CurrentDocument  
+      End Function
+      
+      '++LotusScript Development Environment:2:1:composeElementDocument:14:8
+      %REM
+      	Function composeElementDocument
+      	Composes an Element (Class, Method, Property, etc) Document and presents it in the UI
+      	
+      	Called from action buttons in the Projects views. 
+      	
+      	@param targetForm Name of the Form to be used for the newly composed document 
+      	
+      	@return Flag indicating if the new document was successfully composed and presented in the UI	
+      	
+      	@throws ERR_PARAMETER_BLANK if targetForm is Blank	
+      	@throws ERR_DOCUMENT_NOT_FOUND if the current selected document in the view is neither a project nor a class, and it's Parent document cannot be found. 
+      %END REM
+      Function composeElementDocument(targetForm As String) As Boolean
+      	If isBlankString(targetForm) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK 
+      
+      	Dim uiview As NotesUIView
+      	Dim nuidoc As NotesUIDocument 
+      	
+      
+      	' exception variables
+      	Dim extendedinfo List As String 
+      
+      
+      	Dim caretDoc As NotesDocument 
+      	Dim parentDoc As NotesDocument
+      
+      	Dim caretId As String
+      	Dim caretForm As String
+      	Dim pfname As String
+      	
+      	Dim result As Boolean 
+      	
+      	
+      
+      	' BEGIN CODE 	
+      	extendedinfo(|targetForm|) = targetForm
+      	On Error GoTo ErrorTrap
+      
+      	If getBaliStrings().beginsWith(targetform, |constant_|) Then 
+      		result = composeElementDocument(|variable_script|)
+      
+      		If result Then 
+      			Set nuidoc = getCurrentUIDocument() 
+      			Call nuidoc.FieldSetText(|F_VarAttribute|, |Const|)
+      			
+      			Select Case targetForm 
+      				Case |constant_integer|
+      					Call nuidoc.FieldSetText(|F_VarDataType|, |Integer|)
+      					 
+      				Case |constant_string|
+      					Call nuidoc.FieldSetText(|F_VarDataType|, |String|)
+      					
+      				Case Else 
+      					' do nothing 
+      			End Select
+      			
+      			
+      			Call nuidoc.Refresh()  
+      		End If
+      		
+      		GoTo ExitPoint  
+      		
+      	End If 
+      	
+      	Set uiview = getCurrentUIWorkspace().CurrentView 
+      	caretId = uiview.CaretNoteID
+      	extendedinfo(|caretId|) = caretId
+      	If isBlankString(caretId) Or strCmp(caretId, |0|) Then Error ERR_DOCUMENT_NOT_FOUND, |No document has been selected.  | 
+      	
+      	Set caretDoc = getCurrentDb().getDocumentByID(caretId) 
+      	caretForm = getItemValueText(caretDoc, |Form|, ||, ||)
+      	extendedinfo(|caretForm|) = caretForm 
+      	
+      	Set parentDoc = getParentAllowedForForm(caretDoc, targetForm) 
+      	If (parentDoc Is Nothing) Then Error ERR_DOCUMENT_NOT_FOUND, MSG_DOCUMENT_NOT_FOUND & |Unable to find appropriate Parent document.| 
+      	
+      	pfname = getItemValueText(parentDoc, |Form|, ||, ||)
+      	extendedinfo(|pfname|) = pfname 
+      	
+      	
+      	Call uiview.Selectdocument(parentDoc)
+      	Call getCurrentUIWorkSpace().ViewRefresh() 
+      	Set nuidoc = getCurrentUIWorkSpace().ComposeDocument("", "", targetForm, True)
+      	Call nuidoc.FieldSetText(|$ParentUNID|, parentDoc.UniversalID) 
+      	Call nuidoc.Refresh() 
+      	  
+      	
+      	' if here then everything worked 
+      	result = True 
+      	
+      	
+      ExitPoint:
+      	composeElementDocument = result 
+      	Exit Function
+      	
+      
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	MessageBox Error$(), WIZARD_ERR, |VSID Error| 
+      	Resume ExitPoint
+      End Function
+      
+      
+      
+      '++LotusScript Development Environment:2:1:getTargetDirectory_VSS:5:8
+      %REM
+      	Function getTargetDirectory_VSS
+      	Conditionally queries the user for the current VSS Target Directory.  
+      %END REM
+      Function getTargetDirectory_VSS() As String
+      	On Error GoTo ErrorTrap
+      
+      	Static result As String 
+      
+      	Dim workspace As NotesUIWorkspace
+      	Dim configDoc As NotesDocument
+      	Dim currentvalue As String 
+      	
+      
+      	' exception variables
+      	Dim extendedinfo List As String
+      	Dim errmsg$ 
+      	Dim errcode%  
+      	
+      
+      	' BEGIN CODE 
+      	If isBlankString(result) Then 
+      		Set workspace = New NotesUIWorkspace() 
+      		Set configDoc = getToolkitConfigDoc(True)
+      		currentvalue = getItemValueText(configDoc, |TargetDirectory_VSS|, ||, ||) 
+      		
+      		Do 
+      			If Not workspace.DialogBox("dlg_VSSDirectory", True, True, False, False, False, False, "VSS Output Directory", configDoc, True, False, False) Then Exit Do 
+      			result = getItemValueText(configDoc, |TargetDirectory_VSS|, ||, ||)
+      			If Not isBlankString(result) Then 
+      				extendedinfo(|VSS Target Directory|) = result 
+      				If Not makeDirectory(result) Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |Cannot validate VSS Target Directory: | & result 
+      				If (0 <> StrCompare(currentvalue, result, 0)) Then 
+      					' User has changed the directory.  Need to save the document. 
+      					Call configDoc.replaceItemValue("Form", FORMNAME_TOOLKIT_CONFIG) ' just to make sure
+      					Call configDoc.save(True, False, True)							
+      				End If 
+      			End If
+      			
+      		Loop Until Not isBlankString(result) 
+      	End If 
+      
+      	
+      ExitPoint: 
+      	If (0 <> errcode%) Then Error errcode%, errmsg$
+      	getTargetDirectory_VSS = result 
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	errcode% = Err()  
+      	errmsg$ = Error() 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:querysave_variable:11:8
+      %REM
+      	Function querysave_variable
+      	Performs QuerySave validation for a variable_script document 
+      	
+      	@param source 		NotesUIDocument representing the variable_script document being edited. 
+      	@param ndoc 		NotesDocument backing the source NotesUIDocument  
+      	@param parentname 	[OUTBOUND] Effective parentname name for the variable 
+      	
+      	@return Flag indicating of the QuerySave validation is successful 
+      %END REM
+      Function querysave_variable(source As NotesUIDocument, ndoc As NotesDocument, parentname As String) As Boolean
+      	On Error GoTo ErrorTrap
+      
+      	Dim librarydoc As NotesDocument 
+      	
+      	Dim extendedinfo List As String 
+      
+      	Dim attributes As Variant 
+      
+      	Dim fieldname As String
+      	Dim projectid As String
+      	Dim variableName As String 
+      	Dim variableDataType As String 
+      	Dim pmeID As String
+      
+      	
+      	Dim result As Boolean 
+      	
+      	
+      	' BEGIN CODE 
+      	' Make sure variable name passes standard name validation 	
+      	fieldname = |F_VarName|      
+      	If Not validateNameField(source, ndoc, |Variable Name|, fieldname, variableName, parentname, 40, False) Then GoTo ExitPoint 
+      
+      	extendedinfo(fieldname) = variableName 
+      
+      	' Make sure variable data type is not blank.
+      	fieldname = |F_VarDataType|
+      	variableDataType = source.FieldGetText(fieldname)
+      	extendedinfo(fieldname) = variableDataType 
+      	If isBlankString(variableDataType) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |Variable Data Type may not be blank.  |
+      			
+      	If (source.IsNewDoc()) Then
+      		projectid = getItemValueText(ndoc, |F_ProjectID|, ||, ||) 
+      		extendedinfo(|F_ProjectID|) = projectid
+      		Set librarydoc = getDocumentByUNID(projectid) 
+      		If librarydoc Is Nothing Then Error ERR_DOCUMENT_NOT_FOUND, |Could not find the parent Library document.  | 
+      		          
+      		pmeID = GenerateLSXMethodID(librarydoc, parentname, variableName, True)	' Get new/archived ID value of the variable
+      		Call ndoc.ReplaceItemValue("F_LSXPMEID", CLng(pmeID)) 
+      	End If    
+      	
+      	attributes = ndoc.getItemValue(|F_VarAttribute|)
+      	If (Not IsNull(ArrayGetIndex(attributes, |Const|))) Then
+      		If isBlankString(getItemValueText(ndoc, |F_InitValue|, ||, ||)) Then
+      			fieldname = |F_InitValue|
+      			Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |Constants require a value.  |
+      		End If
+      	End If
+      	
+      	' Cannot be list and array
+      	If (Not IsNull(ArrayGetIndex(attributes, |List|)) And Not IsNull(ArrayGetIndex(attributes, |Array|))) Then
+      		fieldname = |F_VarAttribute|
+      		Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & | Variables cannot be both List and Array.  |
+      	End If
+      	
+      	result = True 
+      	
+      ExitPoint: 
+      	querysave_variable = result
+      	Exit Function 
+      	
+      ErrorTrap:
+      	On Error GoTo 0
+      	result = False 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	MsgBox Error$(), WIZARD_ERR, |VSID Error|
+      	If Not isBlankString(fieldname) Then Call source.gotoField(fieldname) 
+      	Resume ExitPoint 
+      End Function
+      
+      '++LotusScript Development Environment:2:1:UpdateArgList:1:8
+      Public Function UpdateArgList() As Integer
+      	
+      ' This sub is called from the refresh and on the save of LSX Design Docs     
+      ' It updates the list of arguments for the current method or event
+      ' Then the count is wrtten to an existing temp field - F_TempArgCount
+      	
+      	On Error GoTo ErrorTrap      
+      	
+      	Dim thisUIDoc As NotesUIDocument
+      	Dim thisDoc As NotesDocument
+      	Dim argCount As Integer
+      	Dim tempArgIndex As Integer
+      	Dim argIndexes(10) As Integer
+      	Dim argList(10) As Argument
+      	Dim a As Integer 
+      	
+      	
+      	' exception variables
+      	Dim extendedinfo List As String
+      	Dim errmsg$ 
+      	Dim errcode%  
+      
+      
+      	' BEGIN CODE 
+      
+      	
+      	
+      	
+           ' Is the document in edit mode
+      	Set thisUIDoc = getCurrentUIDocument() 
+      	If Not thisUIDoc.EditMode Then
+      		UpdateArgList = ADT_FAIL     
+      		Exit Function
+      	End If
+      	Set thisDoc = thisUIDoc.Document
+      	
+      	argCount = 0
+      	
+      	For a = 1 To 10          
+      		If(thisDoc.getItemValue("F_ArgName_" & CStr(a))(0) <> "") Then
+      			tempArgIndex = CInt(thisDoc.getItemValue("F_ArgIndex_" & CStr(a))(0))
+      			argCount = argCount + 1
+      			
+                     ' Look for duplicate indexes
+      			If(argIndexes(tempArgIndex) = True) Then
+      				MsgBox "Each argument must have a unique index.", WIZARD_ERR, "LSX Wizard Error"             
+      				UpdateArgList = ADT_FAIL                     
+      				Exit Function
+      			Else
+      				argIndexes(tempArgIndex) = True
+      			End If     
+      			
+      			argList(tempArgIndex).ArgName = thisDoc.getItemValue("F_ArgName_" & CStr(a))(0)
+      			argList(tempArgIndex).ArgType = thisDoc.getItemValue("F_ArgDataType_" & CStr(a))(0)
+      			argList(tempArgIndex).ArgIsArray = thisDoc.getItemValue("F_ArgIsArray_" & CStr(a))(0)    
+      			argList(tempArgIndex).ArgIsByVal = thisDoc.getItemValue("F_ArgByVal_" & CStr(a))(0)                  
+      			argList(tempArgIndex).ArgIndex = tempArgIndex                      
+      			argList(tempArgIndex).ArgIsConst = thisDoc.getItemValue("F_IsConst_" & CStr(a))(0)          
+      			argList(tempArgIndex).ArgIsOptional  = thisDoc.getItemValue("F_IsOptional_" & CStr(a))(0)          
+      			argList(tempArgIndex).ArgOptionalValue  = thisDoc.getItemValue("F_OptionalValue_" & CStr(a))(0)          
+                     'Msgbox thisUIDoc.FieldGetText("F_ArgName_" & a) & " Index:" & thisUIDoc.FieldGetText("F_ArgIndex_" & a)    
+      			
+      		End If               
+      	Next a
+      	
+           ' If there are no arguments we are done here.
+      	If(argCount = 0) Then 
+      		Call thisDoc.replaceItemValue("F_TempArgCount", CStr(argCount)) 
+      		UpdateArgList = ADT_SUCCESS           
+      		Exit Function
+      	End If
+      	
+      	tempArgIndex = 0
+      	
+           ' Pack and rewrite the arguments.
+      	For a = 1 To 10 
+      		If(argList(a).ArgName <> "") Then 
+      			tempArgIndex = tempArgIndex + 1
+      			Call thisDoc.replaceItemValue("F_ArgName_" & CStr(tempArgIndex), argList(a).ArgName)
+      			Call thisUIDoc.Refresh()     
+      			Call thisDoc.replaceItemValue("F_ArgDataType_" & CStr(tempArgIndex), argList(a).ArgType) 
+      			Call thisDoc.replaceItemValue("F_ArgIsArray_" & CStr(tempArgIndex), argList(a).ArgIsArray)
+      			Call thisDoc.replaceItemValue("F_ArgByVal_" & CStr(tempArgIndex), argList(a).ArgIsByVal) 
+      			Call thisDoc.replaceItemValue("F_ArgIndex_" & CStr(tempArgIndex), CStr(tempArgIndex))                
+      			Call thisDoc.replaceItemValue("F_IsConst_" & CStr(tempArgIndex), argList(a).ArgIsConst)
+      			Call thisDoc.replaceItemValue("F_IsOptional_" & CStr(tempArgIndex), argList(a).ArgIsOptional)
+      			Call thisDoc.replaceItemValue("F_OptionalValue_" & CStr(tempArgIndex), argList(a).ArgOptionalValue)
+      		End If    
+      		If(a > argCount) Then
+      			Call thisDoc.replaceItemValue("F_ArgName_" & CStr(a), "")
+      			Call thisDoc.replaceItemValue("F_ArgDataType_" & CStr(a), "") 
+      			Call thisDoc.replaceItemValue("F_ArgIsArray_" & CStr(a), "") 
+      			Call thisDoc.replaceItemValue("F_ArgByVal_" & CStr(a), "BY_VAL") 
+      			Call thisDoc.replaceItemValue("F_ArgIndex_" & CStr(a), CStr(a)) 
+      			Call thisDoc.replaceItemValue("F_IsConst_" & CStr(a), "")
+      			Call thisDoc.replaceItemValue("F_IsOptional_" & CStr(a), "")
+      			Call thisDoc.replaceItemValue("F_OptionalValue_" & CStr(a), "")
+      		End If
+      	Next a   
+      	
+      	Call thisDoc.replaceItemValue("F_TempArgCount", CStr(argCount))    
+      	
+      	Call thisUIDoc.Refresh()        
+      	
+      	UpdateArgList = ADT_SUCCESS   
+      			
+      ExitPoint: 
+      	Exit Function
+      ErrorTrap:
+      	UpdateArgList = ADT_FAIL
+      	On Error GoTo 0
+      	errcode% = Err()  
+      	errmsg$ = Error() 
+      	MsgBox "Error:" & Error & Chr(13) & " Processing arguments on document", WIZARD_ERR, "LSX Wizard Error" 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo 
+      	Resume ExitPoint 
+      	
+      	
+      	
+      End Function
+      
+      '++LotusScript Development Environment:2:2:exportSkeletonsAsFiles:1:8
+      Public Sub exportSkeletonsAsFiles
+      
+      	Dim stream As NotesStream
+      	Dim theView As NotesView
+      	Dim theColl As NotesViewEntryCollection
+      	Dim theEnt As NotesViewEntry
+      	Dim theDoc As NotesDocument
+      	Dim theItem As NotesRichTextItem
+      	Dim exporter As NotesDXLExporter
+      
+      	Dim theFolder As String
+      	Dim theFilename As String
+      	
+      	Dim content As String
+      	
+      	
+      	theFolder = getCurrentUIWorkspace().Prompt(14, "Export Location", "Select Export folder")
+      	If (theFolder = "") Then
+      		Exit Sub
+      	End If
+      	
+      	Set theView = getCurrentDb().GetView("LSX Skeletons")
+      	If (theView Is Nothing) Then 
+      		MessageBox "Can't get the LSX Skeletons View", WIZARD_ERR, "LSX Wizard Error"
+      		Exit Sub
+      	End If
+      	
+      	Set theColl = theView.Allentries
+      	Set theEnt = theColl.Getfirstentry()
+      	If (theEnt Is Nothing) Then
+      		MessageBox "No LSX Skeletons to Export", WIZARD_ERR, "LSX Wizard Error"
+      		Exit Sub
+      	End If
+      	
+      	While (Not theEnt Is Nothing)
+      		Set theDoc = theEnt.Document
+      		Set stream = getCurrentSession().createStream()
+      		theFilename = theFolder & "/LSXSkeleton_" & theDoc.FormId(0) & ".txt"
+      		Call DeleteFileSilently(Thefilename)
+      		If Not (stream.Open(theFilename, "UTF-8")) Then
+      			MessageBox "Cannot create file " & theFilename, WIZARD_ERR, "LSX Wizard Error"
+      			Exit Sub
+      		End If
+      		content = "FormID:" & Chr(10)
+      		content = content & theDoc.FormId(0) & Chr(10)
+      		content = content & "FormName:" & Chr(10)
+      		content = content & theDoc.FormName(0) & Chr(10)
+      		content = content & "Code:" & Chr(10)
+      		Set theItem = theDoc.GetFirstItem("TheCode")
+      		content = content & theItem.GetFormattedText(False, 130)
+      		
+      		Call stream.Writetext(content, EOL_ANY)
+      		Call stream.Close()
+      		Set theEnt = theColl.Getnextentry(theEnt)
+      	Wend
+      End Sub
+      
+      '++LotusScript Development Environment:2:2:PlatformLimitationAdvisory:9:8
+      %REM
+      	Sub PlatformLimitationKeywordAdvisory
+      	Opens a messagebox advising that an an element cannot be check for language keywords. 
+      	
+      	@param label  		Label for the element 
+      	@param elementname 	Name of the element 
+      	
+      %END REM
+      Sub PlatformLimitationAdvisory(label As String, elementname As String) 
+      	MessageBox |Due to platform limitations, the | & label & | "| & elementname & |" cannot be checked for a conflict with LotsScript / VoltScript keywords.|, 64, |Platform Advisory|
+      End Sub
+      
+      '++LotusScript Development Environment:2:1:querysave_event:11:8
+      %REM
+      	Function querysave_event
+      	Performs QuerySave validation for an event document 
+      	
+      	@param source 		NotesUIDocument representing the document being edited. 
+      	@param ndoc 		NotesDocument backing the source NotesUIDocument  
+      	@param classname 	[OUTBOUND] Effective class name for the event 
+      	
+      	@return Flag indicating of the QuerySave validation is successful 
+      %END REM
+      Function querysave_event(source As NotesUIDocument, ndoc As NotesDocument, classname As String) As Boolean
+      	On Error GoTo ErrorTrap
+      
+      	Dim librarydoc As NotesDocument 
+      	
+      	Dim extendedinfo List As String 
+      
+      	Dim fieldname As String
+      	Dim projectid As String
+      	Dim form As String 
+      	Dim eventName As String 
+      	Dim eventDataType As String 
+      	Dim classDerivedType As String
+      	Dim pmeID As String
+      
+      	
+      	Dim result As Boolean 
+      	
+      	
+      	' BEGIN CODE 
+      	form = getItemValueText(ndoc, |Form|, ||, ||) 
+      	extendedinfo(|Form|) = form
+      	If Not UpdateArgList() Then GoTo ExitPoint  
+      	
+      	Call UpdateClassList() ' Must be called after UpdateArgList      
+      	
+      	' Make sure event name passes standard name validation 	
+      	fieldname = |F_EventName|      
+      	If Not validateNameField(source, ndoc, |Event name|, fieldname, eventName, classname, 32, False) Then GoTo ExitPoint 
+      
+      	extendedinfo(fieldname) = eventName 
+      
+      	If (source.IsNewDoc()) Then 
+      		fieldname = |F_EventName| 
+      		projectid = getItemValueText(ndoc, |F_ProjectID|, ||, ||) 
+      		extendedinfo(|F_ProjectID|) = projectid
+      		Set librarydoc = getDocumentByUNID(projectid) 
+      		If librarydoc Is Nothing Then Error ERR_DOCUMENT_NOT_FOUND, |Could not find the parent Library document.  | 
+      		          
+      		pmeID = GenerateLSXMethodID(librarydoc, className, eventName, True)	' Get new/archived ID value of the event
+      		Call ndoc.ReplaceItemValue("F_LSXPMEID", CLng(pmeID)) 
+      	End If   
+      	
+      	result = True
+      	
+      ExitPoint: 
+      	querysave_event = result
+      	Exit Function 
+      	
+      ErrorTrap:
+      	On Error GoTo 0
+      	result = False 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	MsgBox Error$(), WIZARD_ERR, |VSID Error|
+      	If Not isBlankString(fieldname) Then Call source.gotoField(fieldname) 
+      	Resume ExitPoint 
+      End Function
+      
+      '++LotusScript Development Environment:2:1:addConstantToProject:11:8
+      %REM
+      	Function addConstantToProject
+      	Add a new constant to the currently open UI Project document 
+      	
+      	@param source 		NotesUIDocument representing the current UI Document being edited. 
+      	@param ndoc 		NotesDocument backing the source UI Document  (source.Document)
+      	@param newconstant  The new constant to be added 
+      	
+      	@return 	Flag indicating if the constant was successfully added to the document. 	
+      %END REM
+      Function addConstantToProject(source As NotesUIDocument, ndoc As NotesDocument, newconstant As String) As Boolean 
+      	On Error GoTo ErrorTrap
+      
+      	Dim newlist As Variant
+      	
+      	Dim extendedinfo List As String 
+      	
+      	Dim result As Boolean 
+      	
+      	
+      	' BEGIN CODE 
+      	extendedinfo(|newconstant|) = newconstant 
+      
+      	If ndoc.HasItem(|C_Keywords|) Then
+      		newList = ndoc.GetItemValue(|C_Keywords|)
+      		If IsArray(newList) Then
+      			newList = ArrayAppend(newList, newconstant)
+      			newList = ArrayUnique(newList, 5)
+      			newList = FullTrim(newList)
+      		Else
+      			newList = newconstant
+      		End If
+      	Else
+      		newList = newconstant
+      	End If
+      	
+      	Call ndoc.ReplaceItemValue(|C_Keywords|, newList)
+      	Call ndoc.ReplaceItemValue(|C_Token|, ||)
+      	Call ndoc.ReplaceItemValue(|C_Value|, ||)
+      	Call source.Reload()
+      	Call source.Refresh()
+      
+      	result = True 
+      	
+      ExitPoint:
+      	addConstantToProject = result 
+      	Exit Function
+      	
+      ErrorTrap:
+      	On Error GoTo 0 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	MsgBox Error$(), WIZARD_ERR, |VSID Error|
+      	Call source.gotoField(|C_Token|) 
+      	Resume ExitPoint 	
+      End Function
+      
+      '++LotusScript Development Environment:2:1:querysave_property:11:8
+      %REM
+      	Function querysave_property
+      	Performs QuerySave validation for a property_script document 
+      	
+      	@param source 		NotesUIDocument representing the document being edited. 
+      	@param ndoc 		NotesDocument backing the source NotesUIDocument  
+      	@param classname 	[OUTBOUND] Effective class name for the property 
+      	
+      	@return Flag indicating of the QuerySave validation is successful 
+      %END REM
+      Function querysave_property(source As NotesUIDocument, ndoc As NotesDocument, classname As String) As Boolean
+      	On Error GoTo ErrorTrap
+      
+      	Dim librarydoc As NotesDocument 
+      	
+      	Dim extendedinfo List As String 
+      
+      	Dim fieldname As String
+      	Dim projectid As String
+      	Dim propertyName As String 
+      	Dim propertyDataType As String 
+      	Dim pmeID As String
+      
+      	
+      	Dim result As Boolean 
+      	
+      	
+      	' BEGIN CODE 
+      	' Make sure property name passes standard name validation 	
+      	fieldname = |F_PropName|      
+      	If Not validateNameField(source, ndoc, |Property Name|, fieldname, propertyName, classname, 40, False) Then GoTo ExitPoint 
+      
+      	extendedinfo(fieldname) = propertyName 
+      
+      	' Make sure property data type is not blank.
+      	fieldname = |F_PropDataType|
+      	propertyDataType = source.FieldGetText(fieldname)
+      	extendedinfo(fieldname) = propertyDataType 
+      	If isBlankString(propertyDataType) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |Property Data Type may not be blank.  |
+      			
+      	If (source.IsNewDoc()) Then
+      		projectid = getItemValueText(ndoc, |F_ProjectID|, ||, ||) 
+      		extendedinfo(|F_ProjectID|) = projectid
+      		Set librarydoc = getDocumentByUNID(projectid) 
+      		If librarydoc Is Nothing Then Error ERR_DOCUMENT_NOT_FOUND, |Could not find the parent Library document.  | 
+      		          
+      		pmeID = GenerateLSXMethodID(librarydoc, className, propertyName, True)	' Get new/archived ID value of the property
+      		Call ndoc.ReplaceItemValue("F_LSXPMEID", CLng(pmeID)) 
+      	End If    
+      	
+      	fieldname = |F_PropDataType|
+      	extendedinfo(|fieldname|) = fieldname
+      	If (DATATYPE_SCALAR = getDataTypeCategory(getItemValueText(ndoc, fieldname, ||, ||))) Then 
+      		Call ndoc.ReplaceItemValue(|F_PropGetConst|, ||) 
+      		Call ndoc.ReplaceItemValue(|F_PropSetConst|, ||)
+      	End If    
+      	
+      	result = True 
+      	
+      	
+      ExitPoint: 
+      	querysave_property = result
+      	Exit Function 
+      	
+      ErrorTrap:
+      	On Error GoTo 0
+      	result = False 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	MsgBox Error$(), WIZARD_ERR, |VSID Error|
+      	If Not isBlankString(fieldname) Then Call source.gotoField(fieldname) 
+      	Resume ExitPoint 
+      End Function
+      
+      '++LotusScript Development Environment:2:1:getTargetDirectory_VSE:5:8
+      %REM
+      	Function getTargetDirectory_VSE
+      	Conditionally queries the user for the current VSE Target Directory.  
+      %END REM
+      Function getTargetDirectory_VSE() As String
+      	On Error GoTo ErrorTrap
+      
+      	Static result As String 
+      
+      	Dim workspace As NotesUIWorkspace
+      	Dim configDoc As NotesDocument
+      	Dim currentvalue As String 
+      	
+      
+      	' exception variables
+      	Dim extendedinfo List As String
+      	Dim errmsg$ 
+      	Dim errcode%  
+      	
+      
+      	' BEGIN CODE 
+      	If isBlankString(result) Then 
+      		Set workspace = New NotesUIWorkspace() 
+      		Set configDoc = getToolkitConfigDoc(True)
+      		currentvalue = getItemValueText(configDoc, |TargetDirectory_VSE|, ||, ||) 
+      		
+      		Do 
+      			If Not workspace.DialogBox("dlg_VSEDirectory", True, True, False, False, False, False, "VSE Output Directory", configDoc, True, False, False) Then Exit Do 
+      			result = getItemValueText(configDoc, |TargetDirectory_VSE|, ||, ||)
+      			If Not isBlankString(result) Then 
+      				extendedinfo(|VSE Target Directory|) = result 
+      				If Not makeDirectory(result) Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |Cannot validate VSE Target Directory: | & result 
+      				If (0 <> StrCompare(currentvalue, result, 0)) Then 
+      					' User has changed the directory.  Need to save the document. 
+      					Call configDoc.replaceItemValue("Form", FORMNAME_TOOLKIT_CONFIG) ' just to make sure
+      					Call configDoc.save(True, False, True)							
+      				End If 
+      			End If
+      			
+      		Loop Until Not isBlankString(result) 
+      	End If 
+      
+      	
+      ExitPoint: 
+      	If (0 <> errcode%) Then Error errcode%, errmsg$
+      	getTargetDirectory_VSE = result 
+      	Exit Function 
+      ErrorTrap:
+      	On Error GoTo 0
+      	errcode% = Err()  
+      	errmsg$ = Error() 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Function
+      
+      '++LotusScript Development Environment:2:1:validateNameField:17:8
+      %REM
+      	Function validateNameField
+      	Validates a named field from an open NotesUIDocument
+      	
+      	@param source 		NotesUIDocument for which to validate the named field.
+      	@param ndoc 		NotesDocument backing the source NotesUIDocument  
+      	@param label 		Label of the Field to validate
+      	@param fieldname 	Name of the Field to validate 
+      	@param fieldvalue 	[OUTBOUND] text value of the field. 
+      	@param parentname 	[OUTBOUND] name of the parent class / type (if applicable) 
+      	@param maxlen 		Maximum number of characters for the value of the field. 
+      	@param skipValidateSiblings 	Flag indicating if name validation for sibling documents should be skipped. 
+      	
+      	@return Flag indicating if the validation was successful  
+      	
+      %END REM
+      Function validateNameField(source As NotesUIDocument, ndoc As NotesDocument, label As String, fieldname As String, fieldvalue As String, parentname As String, maxlen As Integer, skipValidateSiblings As Boolean) As Boolean 
+      	On Error GoTo ErrorTrap
+      
+      	Dim children As NotesDocumentCollection 
+      	Dim parent As NotesDocument 
+      	Dim child As NotesDocument 
+      	
+      	' exception variables
+      	Dim extendedinfo List As String 
+      	
+      	Dim currentfield As String 
+      	Dim form As String
+      	Dim parentid As String  
+      	Dim parentfieldname As String 
+      	
+      	Dim strChar As String 
+      	
+      	Dim fieldvalueLen As Integer
+      	Dim i As Integer 
+      	
+      	Dim result As Boolean
+      	
+      	
+      	' BEGIN CODE
+      	fieldvalue = source.FieldGetText(fieldname)  
+      	extendedinfo(fieldname) = fieldvalue 
+      	fieldvalueLen = Len(fieldvalue)
+      	
+          ' Make sure field is not blank.
+          If isBlankString(fieldvalue) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |The | & label & | field must contain a value.  |
+      
+         ' Make sure name is neither session nor default
+      	If strCmp(fieldvalue, |Session|) Or strCmp(fieldvalue, |Default|) Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |Invalid | & label & | "| & fieldvalue & |".  |  
+      
+          ' Make sure field name length does not exceeed maxlen characters 
+      	If (fieldvaluelen > maxlen) Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |The | & label & | length may not exceed | & CStr(maxlen) & | characters.  |
+         
+          ' Make sure field name contains valid characters.     
+      	For i = 1 To fieldvalueLen
+      		strChar = Mid$(fieldvalue, i, 1)
+      		
+              ' Include list
+              If strChar Like |[0-9A-Za-z_]| Then 
+              	If (i = 1) And IsNumeric(strChar) Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |The | & label & | is not valid. The first character of an identifier name must be a non-digit.  |
+              Else
+              	Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |The | & label & | contains invalid character(s).  |
+              End If
+      	Next i     
+      
+      
+      	
+      
+      	If skipValidateSiblings Then 
+      		result = True 
+      	Else 
+      		form = LCase$(getItemValueText(ndoc, |Form|, ||, ||))
+      		extendedinfo(|Form|) = form
+      		Select Case form 
+      			Case |property|, |property_script|, |method|, |method_script|, |event|
+      				currentfield = |F_ClassID|
+      		  		parentid = getItemValueText(ndoc, currentfield, ||, ||) 
+      				parentfieldname = |F_ClassName|
+      				
+      			Case |variable_script| 
+      				currentfield = |F_ClassID|
+      		  		parentid = getItemValueText(ndoc, currentfield, ||, ||)
+      		  		If isBlankString(parentid) Then 
+      		  			' ClassID not found, try TypeID 
+      					currentfield = |F_TypeID|
+      			  		parentid = getItemValueText(ndoc, currentfield, ||, ||)
+      			  		parentfieldname = |F_TypeName|
+      		  		End If 
+      				extendedinfo(currentfield) = parentid
+      				
+      			Case Else 
+      				' do nothing
+      				
+      		End Select
+      
+      		extendedinfo(currentfield) = parentid
+      		extendedinfo(|parentfieldname|) = parentfieldname
+      		
+      		If isBlankString(parentid) Then
+      			' Try to use Project Document for parent  
+      			currentfield = |F_ProjectID|
+      	  		parentid = getItemValueText(ndoc, currentfield, ||, ||)
+      	  		extendedinfo(currentfield) = parentid
+      	  		If isBlankString(parentid) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |ProjectID is blank.  | 
+      
+      			Set parent = getDocumentByUNID(parentid) 
+      			If parent Is Nothing Then Error ERR_DOCUMENT_NOT_FOUND, |Could not find the parent document.  |
+      			parentname = |Global| 
+      
+      		Else 
+      			Set parent = getDocumentByUNID(parentid) 
+      			If parent Is Nothing Then Error ERR_DOCUMENT_NOT_FOUND, |Could not find the parent document.  |
+      
+      			parentname = getItemValueText(parent, parentfieldname, ||, ||)
+      			extendedinfo(parentfieldname) = parentname  
+      		End If
+      
+      		result = validateNonDuplicateSiblings(source, parent, ndoc, label, fieldname, fieldvalue)
+      	End If 
+      	
+      	
+      ExitPoint: 
+      	validateNameField = result
+      	Exit Function 
+      	
+      ErrorTrap:
+      	On Error GoTo 0
+      	result = False 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	MsgBox Error$(), WIZARD_ERR, |VSID Error|
+      	If Not isBlankString(fieldname) Then Call source.gotoField(fieldname) 
+      	Resume ExitPoint 
+      End Function
+      
+      '++LotusScript Development Environment:2:1:getCurrentUIWorkspace:6:8
+      
+      %REM
+      	Function getCurrentUIWorkspace
+      	Gets the Current NotesUIWorkspace 
+      %END REM
+      Function getCurrentUIWorkspace() As NotesUIWorkspace 
+      	Static result As NotesUIWorkspace 
+      	If (result Is Nothing) Then Set result = New NotesUIWorkspace() 
+      	Set getCurrentUIWorkspace = result 
+      End Function
+      
+      '++LotusScript Development Environment:2:1:validateProjectConstants:13:8
+      %REM
+      	Function validateProjectConstants
+      	Validates the Token and Value fields of a Project document 
+      	
+      	@param source 		NotesUIDocument representing the Project being edited. 
+      	@param ndoc 		NotesDocument backing the source NotesUIDocument  
+      	@param token 		[OUTBOUND] value of C_Token field. 
+      	@param value 		[OUTBOUND] value of C_Value field 
+      	@param tokenvalue 	[OUTBOUND] Validated formatted token value string (if successful).   Empty string oherwise.
+      	
+      	@return Flag indicating if the validation was successful  
+      %END REM
+      Function validateProjectConstants(source As NotesUIDocument, ndoc As NotesDocument, token As String, value As String, tokenvalue As String) As Boolean  
+      	On Error GoTo ErrorTrap
+      	
+      	Dim tokenarr As Variant
+      	Dim retvar As Variant
+      	
+      	Dim extendedinfo List As String 
+      	
+      	Dim fieldname As String 
+      	Dim result As Boolean 
+      	
+      	Dim retlng As Long
+      	
+      	
+      	' BEGIN CODE 
+      	retvar = CLng(324.45)
+      
+      
+      	' TOKEN VALIDATION 	
+      	fieldname = |C_Token|
+      	token = FullTrim(source.FieldGetText(fieldname)) 
+      	extendedinfo(|token|) = token 
+      	
+      	If isBlankString(token) Then Error 1000, |You must provide a token and value|
+      	
+      	' constant must be < 32 characters
+      	If Len(token) > 32 Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |Constant token may not exceed 32 characters.  |
+      	
+      	' constants can't start with a number
+      	If IsNumeric(Left(token, 1)) Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |Constant token "| & token & |" cannot begin with a number.  |
+      	
+      	' check for invalid characters
+      	If token <> getBaliStrings().fieldNamefy(token) Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |Constant token "| & token & |" contains invalid character(s).  |
+      	
+      	' check to make sure the token isn't already listed
+      	tokenarr = FullTrim(ndoc.GetItemValue(|C_TokenList|))
+      	
+      
+      	retvar = ArrayGetIndex(tokenarr, token, 5)
+      	If Not IsNull(retvar) Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |Constant token "| & token & |" must be unique.  |
+      
+      
+      
+      	' VALUE VALIDATION
+      	fieldname = |C_Value|
+      	value = FullTrim(source.FieldGetText(fieldname)) 
+      	extendedinfo(|value|) = value 
+      
+      	
+      	' make sure value is numeric
+      	If Not IsNumeric(value) Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |Constant value must be an integer.  |
+      	
+      	' make sure it's an integer
+      	If Len(value) > 6 Then Error 1000, |Constant value must be an integer.  |
+      	
+      	retlng = CLng(value)
+      	If retlng < -32768 Or retlng > 32767 Then Error 1000, |Constant value must be an integer.  |
+      	value = CStr(retlng)
+      	
+      	' END VALIDATION 
+      	
+      	
+      	tokenvalue = token & | -- | & value & "|" & token & | | & value
+      	result = True 
+      	
+      ExitPoint:
+      	validateProjectConstants = result
+      	Exit Function 
+      	
+      ErrorTrap:
+      	On Error GoTo 0
+      	result = False 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	MsgBox Error$(), WIZARD_ERR, |VSID Error|
+      	If Not isBlankString(fieldname) Then Call source.gotoField(fieldname) 
+      	Resume ExitPoint 
+      End Function
+      
+      '++LotusScript Development Environment:2:2:SetConfiguration:2:8
+      
+      Public Sub SetConfiguration()
+      	On Error GoTo ErrorTrap 
+      	
+      	Dim ws As New NotesUIWorkspace()
+      	Dim configDoc As NotesDocument
+      	
+      
+      	' exception variables
+      	Dim extendedinfo List As String
+      	Dim errmsg$ 
+      	Dim errcode%  
+      	
+      
+      	' BEGIN CODE 
+      	Set configDoc = getToolkitConfigDoc(True)
+      	If ws.DialogBox("dlgConfig", True, True, False, False, False, False, "VoltScript Interface Designer Setup", configDoc, True, False, False) Then 
+      		Call configDoc.replaceItemValue("Form", FORMNAME_TOOLKIT_CONFIG) ' just to make sure
+      		Call configDoc.save(True, False, True)		
+      	End If
+      
+      ExitPoint: 
+      	If (0 <> errcode%) Then Error errcode%, errmsg$
+      	Exit Sub
+      ErrorTrap:
+      	On Error GoTo 0
+      	errcode% = Err()  
+      	errmsg$ = Error() 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	Resume ExitPoint
+      End Sub
+      
+      '++LotusScript Development Environment:2:1:querysave_method:11:8
+      %REM
+      	Function querysave_method
+      	Performs QuerySave validation for a method or method_script document 
+      	
+      	@param source 		NotesUIDocument representing the document being edited. 
+      	@param ndoc 		NotesDocument backing the source NotesUIDocument  
+      	@param classname 	[OUTBOUND] Effective class name for the method 
+      	
+      	@return Flag indicating of the QuerySave validation is successful 
+      %END REM
+      Function querysave_method(source As NotesUIDocument, ndoc As NotesDocument, classname As String) As Boolean
+      	On Error GoTo ErrorTrap
+      
+      	Dim librarydoc As NotesDocument 
+      	
+      	Dim extendedinfo List As String 
+      
+      	Dim fieldname As String
+      	Dim projectid As String
+      	Dim form As String 
+      	Dim methodName As String 
+      	Dim methodDataType As String 
+      	Dim classDerivedType As String
+      	Dim pmeID As String
+      	
+      	Dim isFormMethod As Boolean 
+      	Dim isFunction As Boolean 
+      
+      	
+      	Dim result As Boolean 
+      	
+      	
+      	' BEGIN CODE 
+      	form = getItemValueText(ndoc, |Form|, ||, ||) 
+      	extendedinfo(|Form|) = form 
+      	If strCmp(|Method|, form) Then
+      		isFormMethod = True  
+      		If Not UpdateArgList() Then GoTo ExitPoint 
+      	End If
+      	
+      	
+      	' Make sure method name passes standard name validation 	
+      	fieldname = |F_MethName|      
+      	If Not validateNameField(source, ndoc, |Method name|, fieldname, methodName, classname, 40, False) Then GoTo ExitPoint 
+      
+      	extendedinfo(fieldname) = methodName 
+      	If strCmp(|Function|, source.FieldGetText(|F_Funct_or_Sub|)) Then 
+      		isFunction = True 
+      
+      		' Make sure method data type is not blank.
+      		fieldname = |F_MethReturnType|
+      		methodDataType = source.FieldGetText(fieldname)
+      		extendedinfo(fieldname) = methodDataType 
+      		If isBlankString(methodDataType) Then Error ERR_PARAMETER_BLANK, MSG_PARAMETER_BLANK & |Functions require a Return Type.  |
+      	End If
+      	
+      	
+      	If isFormMethod Then  
+      		' Source is a Method 
+      		If strCmp(|New|, methodName) Then  
+      		    ' Make sure the method is a function the method is new.
+      		    fieldname = |F_Funct_or_Sub|
+      			If Not isFunction Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |The "New" method must be a Function.  | 
+      			
+      			' Make sure the return type is the class if the method is new.
+      		    fieldname = |F_MethReturnType|
+      			If Not strCmp(methodDataType, classname) Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |The "New" method must return a | & classname & |object instance.  |
+      			
+      		    ' Make sure the first argument type is the same as the derived notes class if the method is new.
+      		    If strCmp(|Derived|, source.FieldGetText(|F_ClassType|)) Then 
+      		    	extendedinfo(|F_ClassType|) = |Derived|
+      				classDerivedType = source.FieldGetText(|F_ClassDeriveType"|)
+      		    	extendedinfo(|F_ClassDeriveType|) = |classDerivedType|
+      		    	If (DATATYPE_NOTES = getDataTypeCategory(classDerivedType)) Then 
+      		    		fieldname = |F_ArgDataType_1|
+      		    		If Not strCmp(classDerivedType, source.FieldGetText(fieldname)) Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |For this Derived class type, the first argument passed to "New" must be a | & classDerivedType  & | object instance.|  	    		
+      		    	End If
+      			End If 			
+      		End If
+      		
+      	Else 
+       		' Source is a Method - Script
+       		If strCmp(|New|, methodName) Then  
+      		    ' Verify the method is a SUB if it is "NEW" (Method_Script forms are the opposite of Method forms) 
+      		    fieldname = |F_Funct_or_Sub|
+      			If isFunction Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |The "New" method must be a Sub.  | 
+      		
+      		
+      		    ' Make sure the return type is the class if the method is new.
+      			fieldname = |F_MethName|
+      			If strCmp(|Global|, methodName) Then Error ERR_PARAMETER_INVALID, MSG_PARAMETER_INVALID & |"New" methods can only be used within a Class.  |
+      		End If 		 
+      	End If
+      
+      
+      	If (source.IsNewDoc()) Then 
+      		fieldname = |F_MethName| 
+      		projectid = getItemValueText(ndoc, |F_ProjectID|, ||, ||) 
+      		extendedinfo(|F_ProjectID|) = projectid
+      		Set librarydoc = getDocumentByUNID(projectid) 
+      		If librarydoc Is Nothing Then Error ERR_DOCUMENT_NOT_FOUND, |Could not find the parent Library document.  | 
+      		          
+      		pmeID = GenerateLSXMethodID(librarydoc, className, methodName, True)	' Get new/archived ID value of the method
+      		Call ndoc.ReplaceItemValue("F_LSXPMEID", CLng(pmeID)) 
+      	End If   
+      	
+      
+      	result = True 
+      	
+      ExitPoint: 
+      	querysave_method = result
+      	Exit Function 
+      	
+      ErrorTrap:
+      	On Error GoTo 0
+      	result = False 
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	MsgBox Error$(), WIZARD_ERR, |VSID Error|
+      	If Not isBlankString(fieldname) Then Call source.gotoField(fieldname) 
+      	Resume ExitPoint 
+      End Function
+      
+      '++LotusScript Development Environment:2:2:refreshArguments:7:8
+      %REM
+      	This sub is called from the refresh and on the save of LSX Design Docs     
+      	It updates the list of arguments for the current method or event
+      	
+      	Then the count is wrtten to an existing temp field - F_TempArgCount	
+      %END REM
+      Sub refreshArguments()
+      	On Error GoTo ErrorTrap     
+      	
+      	Dim thisDoc As NotesDocument
+      	Dim argCount As Integer
+      	Dim a As Integer 
+      
+      	Dim extendedinfo List As String
+      	Dim errmsg$ 
+      	Dim errcode%  
+      	
+      	' BEGIN CODE 
+      	
+      	Set thisDoc = getCurrentUIDocument().Document
+      	
+      	argCount = 0
+      	
+      	For a = 1 To 10          
+      		If(thisDoc.getItemValue("F_ArgName_" & CStr(a))(0) <> "") Then
+      			argCount = argCount + 1
+      		Else
+      			Call clearArgumentOptions(getCurrentUIDocument(), CStr(a))
+      		End If               
+      	Next a
+      	
+      	Call thisDoc.replaceItemValue("F_TempArgCount", CStr(argCount))
+      	
+      	Call getCurrentUIDocument().Refresh(False)
+      	
+      ExitPoint:
+      	If (0 <> errcode%) Then Error errcode%, errmsg$ 
+      	Exit Sub
+      ErrorTrap:
+      	On Error GoTo 0
+      	pushExceptionCarrier MODULE_NAME, ||, extendedinfo
+      	errcode% = Err() 
+      	errmsg$ = Error$()  
+      	Resume ExitPoint 
+      End Sub
+      
+      
+      '++LotusScript Development Environment:2:2:importSkeletonsAsFiles:1:8
+      Public Sub importSkeletonsAsFiles
+      
+      	Dim stream As NotesStream
+      	Dim theView As NotesView
+      	Dim theColl As NotesViewEntryCollection
+      	Dim theEnt As NotesViewEntry
+      	Dim theDoc As NotesDocument
+      	Dim theAbstractItem As NotesItem
+      	Dim theItem As NotesRichTextItem
+      	Dim exporter As NotesDXLExporter
+      
+      	Dim content As String
+      	Dim theFolder As String
+      	Dim searchStr As String
+      	Dim theFilename As String
+      	
+      	theFolder = getCurrentUIWorkspace().Prompt(14, "Import Location", "Select folder with LSX Skeletons")
+      	If (theFolder = "") Then
+      		Exit Sub
+      	End If
+      	
+      	searchStr = theFolder & "/LSXSkeleton*.*"
+      	theFilename = Dir$(searchStr, 0)
+      	
+      	While theFilename <> ""
+      		Set stream = getCurrentSession().Createstream()
+      		If Not (stream.Open(theFolder & "/" & theFilename, "UTF-8")) Then
+      			MessageBox "Cannot create file " & theFilename, WIZARD_ERR, "LSX Wizard Error"
+      			Exit Sub
+      		End If
+      					
+      		If stream.Bytes = 0 Then
+      			MsgBox "File " & theFilename & " is empty", WIZARD_ERR, "LSX Wizard Error"
+      			GoTo nextLoop
+      		End If
+      		
+      		Set theDoc = getCurrentDb().Createdocument()
+      		Call theDoc.replaceItemValue("Form", "Skeleton")
+      		content = stream.Readtext(STMREAD_LINE, EOL_ANY)
+      		If StrLeft(content, ":") <> "FormID" Then
+      			MsgBox "File " & theFilename & " line 1 not FormID: but " & content, WIZARD_ERR, "LSX Wizard Error"
+      			GoTo nextLoop
+      		End If
+      		Call theDoc.replaceItemValue("FormId", CInt(stream.Readtext(STMREAD_LINE, EOL_ANY)))
+      		content = stream.Readtext(STMREAD_LINE, EOL_ANY)
+      		If StrLeft(content, ":") <> "FormName" Then
+      			MsgBox "File " & theFilename & " line 3 not FormName but " & content, WIZARD_ERR, "LSX Wizard Error"
+      			GoTo nextLoop
+      		End If
+      		Call theDoc.replaceItemValue("FormName", Trim(stream.Readtext(STMREAD_LINE, EOL_ANY)))
+      		content = stream.Readtext(STMREAD_LINE, EOL_ANY)
+      		While StrLeft(content, ":") <> "Code"
+      			content = stream.Readtext(STMREAD_LINE, EOL_ANY)
+      		Wend
+      		Set theItem = theDoc.CreateRichTextItem("TheCode")
+      		While Not stream.Iseos
+      			content = stream.Readtext(STMREAD_LINE, EOL_ANY)
+      			Call theItem.Appendtext(content)
+      		Wend
+      		Call theDoc.computeWithForm(True, False)
+      		Call theDoc.save(True, False)
+      nextLoop:
+      		Call stream.Close()
+      		theFileName = Dir$()
+      	Wend
+      	
+      	Call getCurrentUIWorkspace().Viewrefresh()
+      End Sub
+    signed: true
+    nonsummary: true
+  - name: $TITLE
+    type: text
+    data: BSXnotesUtilsUI
+    signed: true
+remaining: []
